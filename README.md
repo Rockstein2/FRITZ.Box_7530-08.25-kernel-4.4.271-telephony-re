@@ -59,6 +59,21 @@ The remaining blockers are the vendor `tdm_if_*` implementation/DMA
 descriptor format, the full DSP shared-memory semantics, the PCM primitive
 map, and the real 7530 hardware configuration.
 
+## FON standalone-driver track
+
+The `feature/fon-standalone-driver` branch investigates a minimal independent
+FXS driver for the 7530 analog port. Stage 1–3 documents:
+
+```text
+docs/fon-hardware.md       hardware architecture, SLIC boundary, PCM/TDM
+docs/fon-avm-analysis.md   AVM module call chains and reimplementation set
+docs/fon-feasibility.md    risk table and CONDITIONAL GO / NO-GO decision
+```
+
+Current conclusion: **CONDITIONAL GO**. The exact SLIC part and the QCA
+IPQ4019 TDM/DMA backend are not yet recovered; no driver code is claimed to
+work.
+
 ## Critical missing vendor-kernel APIs
 
 The modules are not merely tied to kernel 4.4 APIs. They import AVM/QCOM functions that OpenWrt 6.12 does not provide, including:
@@ -173,6 +188,7 @@ PYTHONPATH=src/mock python3 -m unittest discover -s src/mock/tests -v
 - `firmware/`: **local only after extraction**, DECT firmware and EEPROM data.
 - `reference/init.d/`: **local only after extraction**, vendor init scripts.
 - `include/`: reconstructed ABI, protocol and shared-memory layout headers.
+- `docs/`: FON hardware, AVM module and feasibility analyses.
 - `notes/`: per-module static analysis, including `pcmlink-sharedmem.md`.
 - `src/mock/`: userspace-only models and tests; no kernel modules are loaded.
 - `src/tools/`: disassembly, xref and HEX inspection helpers.
