@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: GPL-2.0-only
+config FON_TDM
+	tristate "FRITZ!Box 7530 FON TDM transport (diagnostic)"
+	depends on OF
+	depends on ARCH_QCOM || COMPILE_TEST
+	help
+	  Minimal, diagnostic-only transport driver for the analog FON
+	  interface of the FRITZ!Box 7530 (IPQ4019 + QCA ADSS/MBOX/TDM).
+
+	  This driver prepares the TX/RX TDM/MBOX DMA rings and exposes
+	  read-only diagnostic state.  It does not start DMA, drive ring
+	  voltage, or implement ALSA/DAHDI/CAPI.  Hardware writes and DMA
+	  start are disabled by default and require explicit module
+	  parameters and a separate validation step.
+
+	  Say M to build the module.  A device-tree node using
+	  compatible = "avm,fon-tdm" is required.

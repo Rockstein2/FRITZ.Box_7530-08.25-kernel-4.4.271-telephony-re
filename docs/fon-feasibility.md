@@ -1,6 +1,6 @@
 # FON standalone-driver feasibility
 
-Status: stage 3 assessment, updated by stages 4 and 5. This is a
+Status: stage 3 assessment, updated by stages 4–6. This is a
 static/architectural conclusion, not a tested driver.
 
 > Stage 4 update: `docs/fon-control-path.md` adds the Dialog SC14448
@@ -12,6 +12,14 @@ static/architectural conclusion, not a tested driver.
 > word in **TDM/MBOX slot 5**; hook status is read from RX slot 5 by
 > `PutRxDMA`. The old “missing transport” risk is removed, but the QCA ADSS
 > port and the SC14448 control-word semantics remain.
+>
+> Stage 6 update: a minimal diagnostic transport now exists in
+> `src/fon-driver/`. It compiles against Linux 6.8 headers and Linux 6.12
+> objects, passes offline frame/control tests, prepares TX/RX MBOX rings, and
+> keeps DMA start/line control disabled. The actual MBOX start path, the
+> SC14448 firmware dependency and the high-voltage line topology remain
+> blockers. See `docs/fon-tdm-hardware.md`, `docs/fon-linux612-port.md` and
+> `docs/fon-dialog-dependency.md`.
 
 ## 1. Direct answers
 
@@ -62,7 +70,7 @@ QCA IPQ4019 TDM/PCM + ADSS driver for Linux 6.12
 vendor tdm_if_config_init / tdm_if_dma_init / tdm_if_dma_start
   (4.4.271 source exists in the GPL tarball, not ported)
 FON slot-5 control/status implementation in a standalone driver
-  (transport recovered; implementation not written)
+  (offline encode/decode helpers exist; MBOX start path not implemented)
 ```
 
 The 2016 QCA IPQ4019 ASoC driver series (`ipq4019-adss.c`,
