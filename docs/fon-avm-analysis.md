@@ -1,10 +1,14 @@
 # AVM FON kernel-module analysis
 
-Status: stage 2 static analysis, updated by stage 4. No router was accessed,
-no module was loaded. Addresses are module-relative ELF offsets.
+Status: stage 2 static analysis, updated by stages 4 and 5. No router was
+accessed, no module was loaded. Addresses are module-relative ELF offsets.
 
 > Stage 4 update: see `docs/fon-control-path.md` for the Dialog SC14448
 > hypothesis, the no-UART finding and the corrected QCA transport analysis.
+>
+> Stage 5 update: `docs/fon-pcmlink-register-path.md` recovers the actual
+> register transport: a command ring consumed by `TxDMA`, a 16-bit control
+> word in TDM/MBOX slot 5, and `PutRxDMA` for hook status.
 
 ## 1. Modules in scope
 
@@ -87,6 +91,34 @@ Key facts:
 Therefore there are **no separate FON control messages over the Dialog UART**.
 The only runtime interaction left is transparent PCM or an undocumented PCM+
 mailbox. See `docs/fon-control-path.md` §4-§6.
+
+### 2.2 Stage 5: the actual PCMLINK register transport
+
+The selected link table is `FPGALink` at `.rodata+0xa8`, platform `QCA-ADSS`
+(not the 14-entry `ipq40xxtdm_hw` table). `FPGALink_SharedMemory` returns the
+`TDMPriv+0x4a0` window. The virtual-register path is:
+
+```text
+pcmlink_ul_writeregister
+  -> 8-byte ring entry at TDMPriv+0x4a0+0x68
+  -> TxDMA consumes it (next TX DMA callback)
+  -> build_slic_ctrl / _buildslic_ctrl_ring
+  -> 16-bit word at TX TDM/MBOX frame offset 0x0a (slot 5)
+  -> QCA ADSS MBOX/TDM DMA
+```
+
+Hook is the reverse:
+
+```text
+RX TDM/MBOX frame offset 0x0a (status)
+  -> PutRxDMA
+  -> value table entry for reg 0x44
+  -> pcmlink_ul_readregister(0x44) bit 7
+```
+
+`pcmlink_ll_set_status` exists (`FPGALink_Set_Status` at vtable `+0x3c`), but
+it is **not** the FON-register transport. The register path uses the
+ring/TxDMA/PutRxDMA route. See `docs/fon-pcmlink-register-path.md`.
 
 ## 3. Hardware-significant functions
 
@@ -173,11 +205,13 @@ FON state machine
             -> register bank
   -> pcmlink set_slic_ring_state / set_slic_ringfreq
        -> ring bitmask / half-period count
-  -> link backend / missing tdm_if_* transport
+  -> command ring consumed by TxDMA
+  -> 16-bit control word at TX TDM/MBOX slot 5
 ```
 
-The QCA backend has no `set_status` slot at vtable `+0x3c`; the old
-`pcmlink_ll_set_status` explanation is not valid on this target.
+The selected link table is `FPGALink`/`QCA-ADSS`; `Set_Status` exists but is
+not the register transport. The old `pcmlink_ll_set_status` explanation is
+disproved for FON registers.
 
 For SLIC0: bits 5/6 of register `0x48`. For SLIC1: bits 9/10. For SLIC2:
 bits 13/14.
@@ -237,10 +271,10 @@ manager+0x238 = pcmrouter callback argument
 | TDM DCL/DCL_2 | same | bit clock |
 | TDM DI/DO | same | data in/out |
 | TDM/PCM register block | `tdm_if_*` | IPQ4019 `0x7709000` |
-| TDM DMA | `tdm_if_dma_init` | 16 descriptors |
-| TDM IRQ / poll | `tdm_if_dma_irqcnt`, `ipq40xxtdm_linkpoll` | 0x7d-jiffy stall check |
+| TDM DMA | `tdm_if_dma_init` | ADSS MBOX DMA, 16 descriptors; GPL source exists |
+| TDM IRQ / poll | `tdm_if_dma_irqcnt`, `ipq40xxtdm_linkpoll` | GPL source exists; port to 6.12 needed |
 | Audio clocks | ADCC | `audio_tx_bclk/mclk`, `audio_rx_bclk/mclk` |
-| SLIC control | virtual regs 0x40/0x44/0x48/0x4c/0x50 | transport inside `tdm_if_*`/backend |
+| SLIC control | virtual regs 0x40/0x44/0x48/0x4c/0x50 | ring -> TxDMA -> TDM/MBOX slot 5 |
 | SLIC reset | `slics_reset` | exact GPIO/regulator unknown |
 | Hook | reg 0x44 bit 7 | polled via analog timer/state machine |
 | Ring | reg 0x48 bits 5/6 | `set_slic_ring_state/freq` |
@@ -264,18 +298,19 @@ The minimal set is:
 ```text
 SLIC line/ring/hook control
 one codec slot mapped to one TDM timeslot
-16-bit TDM RX/TX with 16 DMA descriptors
+16-bit TDM/MBOX RX/TX with 16 DMA descriptors
+FON control/status word in slot 5
 ```
 
 ## 8. Functions that must be reimplemented
 
 ```text
-SLIC virtual-register transport (currently inside pcmlink/tdm_if_*)
+slot-5 control/status serialization (TxDMA/PutRxDMA equivalent)
 SLIC reset/bring-up sequence
 hook/line-state polling
 ring cadence/frequency control
 codec-slot to TDM-timeslot routing
-QCA TDM/DMA backend (tdm_if_* equivalent)
+QCA ADSS/PCM/MBOX/DMA backend (tdm_if_* source available)
 ALSA SoC DAI/PCM or a small character-device PCM interface
 ```
 
@@ -293,16 +328,15 @@ PCMRoute routing logic
 
 ## 10. Open questions
 
-1. Exact discrete LM324/BCP53 line-feed/ring topology and component values.
+1. Exact SC14448 interpretation of the slot-5 control/status words.
+2. Exact discrete LM324/BCP53 line-feed/ring topology and component values.
    No separate SLIC IC is listed or identified; the 14-pin device is the LM324.
-2. Exact high-voltage ring generation and reset/regulator wiring.
-3. Complete virtual-register bit map beyond hook/ring.
-4. Exact `tdm_if_*` implementation and QCA ADSS register programming.
-5. Real 7530 TDM GPIO numbers.
-6. Whether SC14448 firmware participates in FON control.
-7. Whether FON audio uses the SC14448 codec or another codec on the PCM bus.
-8. Which transport carries the FON virtual registers (TDM control slot,
-   shared-memory mailbox, PCM+ mailbox, or a separate device).
+3. Exact high-voltage ring generation and reset/regulator wiring.
+4. Complete virtual-register bit map beyond hook/ring.
+5. Port of the QCA ADSS/PCM/MBOX source to Linux 6.12.
+6. Exact mapping of the 16-bit slot-5 control word to SC14448 GPIO/PWM/ADC.
+7. Whether SC14448 firmware participates in FON control.
+8. Whether FON audio uses the SC14448 codec or another codec on the PCM bus.
 9. Whether `pcmlink` virtual registers 0x40/0x44/0x48 are the same logical
    bank used by the DECT path (`pcmlink_ul_regnoemif_workaround`) or a
    separate FON bank.
@@ -320,4 +354,6 @@ notes/pcmlink.md
 notes/pcmlink-sharedmem.md
 notes/avm_dect.md
 docs/fon-hardware.md
+docs/fon-pcmlink-register-path.md
+tools/pcmlink_regs.py
 ```

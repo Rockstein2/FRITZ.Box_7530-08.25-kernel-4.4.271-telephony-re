@@ -1,7 +1,14 @@
 # FON control path and the Dialog SC14448 hypothesis
 
-Status: stage 4 static/board-evidence analysis. No router was accessed, no
-AVM module was loaded, and no driver code was written.
+Status: stage 4 static/board-evidence analysis, updated by stage 5. No router
+was accessed, no AVM module was loaded, and no driver code was written.
+
+> Stage 5 correction: `docs/fon-pcmlink-register-path.md` recovers the actual
+> transport. The selected link table is `FPGALink` at `.rodata+0xa8`
+> (platform `QCA-ADSS`), not the 14-entry `ipq40xxtdm_hw` table. The FON
+> register path is ring -> `TxDMA` -> 16-bit word in TDM/MBOX slot 5; `Set_Status`
+> exists but is not the register transport. Statements below that say the
+> transport is unknown or that QCA lacks `set_status` are superseded.
 
 ## 1. Hypothesis and verdict
 
@@ -94,20 +101,24 @@ controller on the FON side. `pcmlink` also has no QCA GPIO path for SLIC
 reset/ring/hook. The only known plausible digital agent between the Linux host
 and the discrete LM324/BCP53-16 line interface is therefore the **SC14448**.
 
-The most likely architecture is:
+Stage 5 recovered the Linux-side transport:
 
 ```text
 pcmlink virtual registers 0x40/0x44/0x48/0x4c/0x50
-  -> QCA TDM/PCM+ frame or shared-memory mailbox
-  -> SC14448 firmware
+  -> command ring
+  -> TxDMA
+  -> 16-bit control word in TDM/MBOX slot 5
+  -> QCA ADSS MBOX/TDM DMA
+  -> PCM/TDM/MBOX bus
+  -> SC14448 firmware (inferred)
   -> SC14448 GPIO/PWM/ADC pins
   -> discrete LM324/BCP53-16 line/ring circuit
   -> TAE/RJ11
 ```
 
-This is a strong inference from the board inventory and the absence of any
-other digital controller, but it is **not yet proven**. The exact mailbox
-protocol and pin mapping are still unknown.
+The Linux-side slot-5 transport is **confirmed**; the SC14448 direction of
+that slot is **inferred, high confidence**. See
+`docs/fon-pcmlink-register-path.md`.
 
 ## 3. Kernel call graph
 
@@ -171,33 +182,43 @@ ipq40xxtdm_linkdeinit    0xa334
 ipq40xxtdm_linkpoll      0xa1fc
 ```
 
-`ipq40xxtdm_linkinit` calls the missing vendor API:
+`ipq40xxtdm_linkinit` calls the QCA vendor API (source exists in the 08.25
+GPL tarball, but it is not part of Linux 6.12):
 
 ```text
 tdm_if_config_init(...)
 tdm_if_dma_init(..., TxData, RxData, ..., 16 descriptors)
 ```
 
-The QCA operation table is in `.rodata` at offset `0x17ac` and has 14
-pointers:
+The selected link table is **`FPGALink` at `.rodata+0xa8`**, platform
+`QCA-ADSS`; `ipq40xxtdm_hw` at `.rodata+0x17ac` is a hardware/backend table,
+not the top-level link table. The `FPGALink` table contains:
 
 ```text
-preinit, init, activate, deactivate, deinit, postexit, poll,
-suspendresume, checkhw, debug, clkchange, rxirqcount,
-rxirqcountreset, dmadescriptorcount
++0x00 FPGALink_PreInit
++0x04 FPGALink_Init
++0x08 FPGALink_Activate
++0x0c FPGALink_Poll
++0x10 pcmlink_ul_handler
++0x14 pcmlink_ul_control
++0x20 FPGALink_Deactivate
++0x24 FPGALink_Exit
++0x28 FPGALink_PostExit
++0x2c FPGALink_SuspendResume
++0x30 FPGALink_ReinitPCMBus
++0x34 FPGALink_ClkChange
++0x38 FPGALink_StatusPCMBus
++0x3c FPGALink_Set_Status
++0x40 FPGALink_SharedMemory
++0x50 -> "QCA-ADSS"
 ```
 
-`pcmlink_ll_set_status` calls vtable offset `+0x3c`, which is **outside** that
-14-entry table. On the QCA backend the call therefore returns `-1`. This is an
-important correction to the earlier assumption: the QCA FON control path is
-**not** proven to be `pcmlink_ll_set_status`.
-
-`pcmlink_ll_trigger_control` instead raises an IPI/wake-up through the link
-handle, and the shared-memory descriptor carries TX/RX slot data and control
-buffers. The missing piece is the implementation behind `tdm_if_*` and the
-remote/shared-memory side. It may program a control slot for the SLIC, or it
-may exchange a mailbox with the SC14448; the Linux-side module does not expose
-which.
+`pcmlink_ll_set_status` therefore **does** have a QCA callback; the earlier
+claim that it returned `-1` was based on the wrong table. However, the FON
+register path does **not** use `Set_Status`: `pcmlink_ul_writeregister`
+enqueues into `TDMPriv+0x4a0+0x68`; `TxDMA` consumes the ring and writes a
+16-bit control word to TX TDM/MBOX slot 5. Hook status comes back through
+`PutRxDMA`. See `docs/fon-pcmlink-register-path.md` §3-§5.
 
 `ipq40xxtdm_checkhw` only looks up the six `gpio_avm_pcmlink_*` TDM pins and
 uses `dakota_gpio_ctrl` on those pins. There is no QCA GPIO path for a SLIC
@@ -387,8 +408,11 @@ The FON line interface is a discrete design.
 - Hook is register 0x44 bit 7 for SLIC0.
 - Ring/line bits are register 0x48 bits 5/6 for SLIC0; the ring bits are
   toggled by `Handle_Ints_FPGA`.
-- `pcmlink` uses the QCA `ipq40xxtdm_*` backend and the missing `tdm_if_*`
-  API; the QCA operation table has no `set_status` slot at `+0x3c`.
+- `pcmlink` uses the `FPGALink`/`QCA-ADSS` table and the QCA ADSS TDM/MBOX
+  backend. The FON register path is ring -> `TxDMA` -> TX slot 5; hook is RX
+  slot 5 -> `PutRxDMA` -> register `0x44` bit 7.
+- `FPGALink_Set_Status` exists at vtable `+0x3c`, but it is not the
+  FON-register transport.
 - `Piglet`/`avm_dect` provide no FON/SLIC control API and do not import a
   generic UART transport.
 - The first-level Dialog firmware is a UART bootstrap; the second-level image
@@ -413,8 +437,8 @@ The FON line interface is a discrete design.
 - Which SC14448 GPIO/PWM/ADC pins control the discrete line interface.
 - The exact role/protocol of the SC14448 firmware in FON GPIO/ring/line
   control (likely involved, not proven).
-- The transport between QCA/`pcmlink` and the FON PHY (TDM control slot,
-  shared-memory mailbox, PCM+ mailbox, or something else).
+- The exact SC14448 interpretation of the confirmed TDM/MBOX slot-5 control
+  and status words.
 - Whether FON audio uses the SC14448 codec or another codec on the PCM bus.
 - High-voltage battery/ring generation topology.
 - Safe ring voltage/cadence limits and reset/regulator wiring.
@@ -425,8 +449,8 @@ A small independent module would need one of these architectures:
 
 | Route | What is required | Verdict |
 |---|---|---|
-| Reimplement `pcmlink` + QCA TDM | QCA ADSS/TDM/DMA programming, `tdm_if_*` equivalent, FON control transport | hard, 3-6 months |
-| Talk to SC14448 over PCM+ mailbox | PCM+ protocol, firmware command set, GPIO/audio mapping | most likely route; firmware protocol unknown |
+| Reimplement `pcmlink` + QCA ADSS | QCA ADSS/TDM/MBOX DMA port, slot-5 TX/RX, FON policy | hard, 3-6 months; source available |
+| Use SC14448 slot-5 protocol | 16-bit TX/RX word semantics, GPIO/audio mapping, possibly firmware | most likely route; slot-5 semantics unknown |
 | Bypass SC14448 | QCA GPIO/PCM directly to the discrete LM324/BCP53 line circuit | requires board rework/schematic; not stock |
 | Keep AVM `pcmlink`/Dialog firmware | not independent; out of project scope | rejected |
 
@@ -436,17 +460,16 @@ exists. DAHDI would not remove the backend or firmware dependency.
 The project therefore remains **CONDITIONAL GO**, but the Dialog hypothesis
 makes the condition stricter:
 
-1. Prove that FON control/audio can be driven without SC14448 firmware, **or**
-   recover enough of the PCM+ mailbox protocol to drive the stock firmware.
+1. Prove the SC14448 slot-5 control/status semantics and whether its firmware
+   is required for FON control/audio.
 2. Trace the discrete LM324/BCP53 line interface to the SC14448 GPIO/PWM/ADC
-   pins (or to the QCA TDM control stream) and recover the high-voltage/ring
-   topology.
-3. Recover the QCA TDM/ADSS/DMA programming.
+   pins and recover the high-voltage/ring topology.
+3. Port the QCA ADSS/TDM/MBOX DMA source to Linux 6.12.
 4. Validate hook/ring/line feed on a safe bench before connecting a telephone.
 
 If item 1 or 2 cannot be satisfied, a small independent module is **NO-GO**.
-With no separate SLIC IC identified, the SC14448 firmware dependency is now
-the central risk: the Linux side may have no direct pin-level access to the
+With no separate SLIC IC identified, the SC14448 firmware/slot-5 semantics are
+the central risk; the Linux side may have no direct pin-level access to the
 line interface.
 
 ## 10. Next evidence to collect
@@ -454,14 +477,15 @@ line interface.
 1. Board schematic or continuity check of the LM324, BCP53-16, the line
    transformer and the SC14448 GPIO/PWM/ADC pins; do not power the line for
    this.
-2. AVM GPL source for FRITZ!OS 08.25: `pcmlink_ll.c`, `tdm_if_*`,
-   `ipq40xxtdm_*`, `isdn_fon5` SLIC/FON code.
+2. AVM 08.25 GPL source: use `ipq-adss-avm.c`, `ipq-avm.c`, `ipq-adss.h`
+   for the QCA ADSS/MBOX backend; `pcmlink_ul.c`/`pcmlink_ll.c` are not in
+   the tarball and must be reconstructed from binary behavior.
 3. A read-only trace of `pcmlink_ul_writeregister(0x40/0x44/0x48/0x4c/0x50)`
    during hook/ring transitions on a stock box.
-4. A read-only trace of the QCA TDM shared-memory descriptor and any PCM+
-   control slots during the same transitions.
+4. A read-only capture of the QCA TDM/MBOX TX/RX frames, specifically slot 5
+   at byte offset `0x0a`, during the same transitions.
 5. A CR16C/Ghidra analysis of the second-level firmware with the SC14448
-   peripheral map, focused on the PCM+ interrupt handler and GPIO writes.
+   peripheral map, focused on the PCM/MBOX slot-5 handler and GPIO writes.
 6. A safe dummy-load bench test of the discrete line/ring circuit before any
    telephone is connected.
 
@@ -482,6 +506,12 @@ firmware/dectfw_secondlevel_441p2test.hex
 docs/fon-hardware.md
 docs/fon-avm-analysis.md
 docs/fon-feasibility.md
+docs/fon-pcmlink-register-path.md
+reports/fon-pcmlink-register-path.txt
+tools/pcmlink_regs.py
+
+AVM 08.25 GPL tarball (QCA ADSS/TDM source and 7530 DTS):
+https://osp.avm.de/fritzbox/fritzbox-7530/source-files-FRITZ.Box_7530-cortexa9-08.25.tar.gz
 
 BoxMatrix FRITZ!Box 7530 board inventory:
 https://boxmatrix.info/wiki/FRITZ!Box_7530

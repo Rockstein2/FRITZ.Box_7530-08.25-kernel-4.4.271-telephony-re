@@ -1,15 +1,19 @@
 # FON hardware architecture — FRITZ!Box 7530
 
-Status: stage 1 static analysis, updated by stage 4. No router was accessed, no
-module was loaded.
+Status: stage 1 static analysis, updated by stages 4 and 5. No router was
+accessed, no module was loaded.
 
 > Stage 4 update: `docs/fon-control-path.md` adds the Dialog SC14448
 > hypothesis, public board evidence (`LM324`, `BCP53-16`) and a CR16C firmware
 > inspection. The 14-pin device near the DECT antenna is the LM324; no
-> separate SLIC IC is listed or identified. It does not change the
-> control-register facts below,
-> but it rules out a separate FON UART protocol and corrects the assumption
-> that the QCA backend implements `pcmlink_ll_set_status`.
+> separate SLIC IC is listed or identified. It rules out a separate FON UART
+> protocol.
+>
+> Stage 5 update: `docs/fon-pcmlink-register-path.md` recovers the actual
+> transport. The selected link table is `FPGALink` at `.rodata+0xa8`
+> (platform `QCA-ADSS`), not the 14-entry `ipq40xxtdm_hw` table.
+> `FPGALink_Set_Status` and `FPGALink_SharedMemory` exist. The FON register
+> path uses `TxDMA`/`PutRxDMA` and **TDM/MBOX slot 5**, not `Set_Status`.
 
 ## 1. Scope and method
 
@@ -122,11 +126,11 @@ no DSP echo canceller
   `pcmlink_ul_readregister()` / `pcmlink_ul_writeregister()` accept register
   numbers up to `0x64`. `isdn_fbox_fon5` uses registers `0x40`, `0x44`, `0x48`,
   `0x4c` and `0x50` for line/ring/hook/status.
-- The hardware transport for those virtual registers is inside the selected
-  `pcmlink` link backend and the missing vendor `tdm_if_*` layer. It is not
-  exposed as a standard Linux bus. The QCA backend does **not** implement
-  `pcmlink_ll_set_status` at vtable `+0x3c`; that earlier assumption was wrong
-  (see §6.1).
+- The register path is a command ring consumed by `TxDMA`; the final control
+  word is a 16-bit value in TX TDM/MBOX slot 5. Hook status returns in RX slot
+  5 and is decoded by `PutRxDMA`. The selected link table is
+  `FPGALink`/`QCA-ADSS`; `Set_Status` exists but is not the FON-register
+  transport. See `docs/fon-pcmlink-register-path.md`.
 
 ### What the "SLIC" is not
 
@@ -214,14 +218,17 @@ pcmlink_ul_writeregister(reg,val,mask) 0x3b60
 ```
 
 Register numbers above `0x64` are rejected. The bank is held in
-`pcmlink_ul_manager`; the outgoing transport is inside the selected
-`pcmlink` link backend and the missing `tdm_if_*` layer.
+`pcmlink_ulreg` (`.bss+0x740`, `0x368` bytes); the shared command window is
+`TDMPriv+0x4a0` (`0x2dc` bytes), obtained through `FPGALink_SharedMemory`
+(`0x8930`). `pcmlink_ul_writeregister` enqueues an 8-byte command in the ring
+at `TDMPriv+0x4a0+0x68`; `TxDMA` (`0x9710`) consumes it.
 
-Stage 4 correction: the QCA backend's operation table has 14 entries and no
-`set_status` slot at `+0x3c`. `pcmlink_ll_set_status()` therefore returns
-`-1` on this backend. The earlier assumption that the virtual registers are
-transported by `pcmlink_ll_set_status()` is **not valid for QCA**. The actual
-transport is still unknown; see `docs/fon-control-path.md` §3.2.
+Stage 5 correction: the earlier “QCA backend has no `set_status`” statement was
+based on the wrong table. The selected `FPGALink` table has
+`FPGALink_Set_Status` at `+0x3c` and `FPGALink_SharedMemory` at `+0x40`.
+However, the FON register path **does not use `Set_Status`**. It serializes a
+16-bit control word into TX TDM/MBOX slot 5; `PutRxDMA` reads the RX slot 5
+status word. See `docs/fon-pcmlink-register-path.md` §3-§5.
 
 ### 6.2 Hook detection
 
@@ -381,21 +388,22 @@ timeslot and updates the `gPcmroute` slot table.
 
 | Resource | Evidence | Status |
 |---|---|---|
-| TDM FSC/FSC_2 | `gpio_avm_pcmlink_fsc`, `..._fsc_2` | names known, numbers from `hw_config` |
-| TDM DCL/DCL_2 | `gpio_avm_pcmlink_dcl`, `..._dcl_2` | names known, numbers from `hw_config` |
-| TDM DI/DO | `gpio_avm_pcmlink_di`, `..._do` | names known, numbers from `hw_config` |
+| TDM FSC/FSC_2 | `gpio_avm_pcmlink_fsc`, `..._fsc_2` | DTS: GPIO 22 / 26 |
+| TDM DCL/DCL_2 | `gpio_avm_pcmlink_dcl`, `..._dcl_2` | DTS: GPIO 21 / 25 |
+| TDM MCL/MCL_2 | `gpio_avm_pcmlink_mcl`, `..._mcl_2` | DTS: GPIO 20 / 24 |
+| TDM DI/DO | `gpio_avm_pcmlink_di`, `..._do` | DTS: GPIO 23 / 27 |
 | TDM/PCM register block | QCA IPQ4019 `0x7709000` | documented in QCA material |
-| TDM DMA | `tdm_if_dma_init`, 16 descriptors | vendor API missing |
-| TDM IRQ | `tdm_if_dma_irqcnt`, `ipq40xxtdm_linkpoll` | vendor API missing |
+| TDM DMA | ADSS MBOX DMA (MBOX0 TX/MBOX3 RX) | GPL source available; not 6.12 |
+| TDM IRQ | `tdm_if_dma_irqcnt`, `ipq40xxtdm_linkpoll` | GPL source available; not 6.12 |
+| FON control/status slot | TDM/MBOX slot 5, 16-bit | `TxDMA`/`PutRxDMA`, see new doc |
 | Audio clocks | ADCC `audio_tx_bclk/mclk`, `audio_rx_bclk/mclk` | QCA ADCC, no mainline TDM user |
 | SLIC reset | no direct GPIO in `isdn_fbox_fon5`; `slics_reset` via virtual regs | exact pin unknown |
 | SLIC IRQ | no direct IRQ; hook status polled/read via register `0x44` | no dedicated IRQ proven |
 | SLIC regulator | not visible in available artifacts | unknown |
-| DECT reset/UART | GPIO 18/16 and `msm_dectuart_*` | DECT only, out of scope |
+| DECT reset/ready/UART | GPIO 40/16 and `msm_dectuart_*` | DECT only, out of scope |
 
-The six TDM GPIO numbers are **not constants** in `pcmlink`; the module reads
-them from the AVM `hw_config` table by logical name. The real 7530 values must
-be read from the device tree/board data or from the running stock system.
+`pcmlink` still reads the TDM pins from the AVM `hw_config` table by logical
+name, but the 7530 DTS gives the actual values above.
 
 ## 9. Linux 6.12 support matrix
 
@@ -404,7 +412,7 @@ be read from the device tree/board data or from the running stock system.
 | IPQ4019 pinctrl/GPIO | yes (`pinctrl-ipq4019`) | yes | usable for TDM pins |
 | IPQ4019 clocks/reset | partial QCOM clock drivers | target-specific | TDM audio clocks need board data |
 | IPQ4019 TDM/PCM + ADSS | no mainline driver | not present | must port/reimplement |
-| QCA TDM DMA (`tdm_if_*`) | no | no | main blocker |
+| QCA TDM DMA (`tdm_if_*`) | no | no | source in 08.25 GPL tarball; 6.12 port needed |
 | I2S/SPDIF | separate QCA blocks | not the FON wiring | not a drop-in replacement |
 | ALSA SoC core | yes | yes | usable once a DAI/DMA exists |
 | DAHDI | out-of-tree | not installed | does not remove the TDM/DMA blocker |
@@ -428,10 +436,16 @@ clean TDM/DMA backend.
 - SLIC control is a virtual register bank `0x40/0x44/0x48/0x4c/0x50`.
 - Hook is register `0x44` bit 7 for SLIC0.
 - Ring is register `0x48` bits 5/6 for SLIC0.
-- PCM is 16-bit TDM with 16 DMA descriptors and six codec slots.
-- The QCA TDM/PCM block is at `0x7709000`.
-- The vendor `tdm_if_*` API is not in Linux 6.12.
-- The QCA backend has no `set_status` operation at vtable `+0x3c`.
+- PCM is 16-bit TDM with **ADSS MBOX DMA**, 16 descriptors and six codec
+  slots.
+- The QCA TDM/PCM block is at `0x7709000`; board DTS enables `tdm@0`,
+  `pcm@7704000`, `mbox0..4` and `stereo0..3`.
+- The selected link table is `FPGALink` at `.rodata+0xa8` (platform
+  `QCA-ADSS`); it has `Set_Status` at `+0x3c` and `SharedMemory` at `+0x40`.
+- The vendor `tdm_if_*` source exists in the 08.25 GPL tarball, but is not a
+  Linux 6.12 driver.
+- FON control is a 16-bit word in TX TDM/MBOX slot 5; hook is the RX slot 5
+  status word decoded into register `0x44` bit 7.
 - FON control has no UART path in `isdn_fbox_fon5`, `pcmlink` or `avm_dect`.
 - `Piglet_noemif` owns the Dialog UART but exposes no FON/SLIC API; its UART
   is used for DECT firmware loading.
@@ -450,12 +464,15 @@ clean TDM/DMA backend.
   **likely**, because no other digital controller is present, but not proven.
 - Whether the FON audio path uses the SC14448 codec or another codec on the
   PCM bus.
-- The transport from `pcmlink` to the FON PHY (TDM control slot/shared-memory
-  mailbox/PCM+ mailbox).
-- Whether the QCA TDM/ADSS driver can be ported cleanly to 6.12.
-- Real 7530 TDM GPIO numbers.
+- Exact SC14448 interpretation of the slot-5 control and status words.
+- Whether the SC14448 firmware handles FON control, and whether it must be
+  loaded for the FON path.
+- Whether the QCA ADSS/PCM/MBOX driver can be ported cleanly to 6.12.
 - Whether any closed DSP firmware is needed for basic 8 kHz PCM (the stock log
   suggests no DSP echo canceller; basic PCM may be firmware-free).
+
+The TDM GPIO numbers are now known from the 7530 DTS: FSC 22/FSC2 26, DCL
+21/DCL2 25, MCL 20/MCL2 24, DI 23, DO 27. There is no SLIC GPIO in that table.
 
 ## 11. Sources
 
@@ -470,8 +487,11 @@ notes/pcmlink.md
 notes/avm_dect.md
 notes/pcmlink-sharedmem.md
 docs/fon-control-path.md
+docs/fon-pcmlink-register-path.md
 reports/fon-dialog-firmware.txt
+reports/fon-pcmlink-register-path.txt
 OpenWrt FRITZ!Box 7530 device page (stock dmesg line)
+AVM 08.25 GPL tarball (QCA ADSS/TDM source and 7530 DTS)
 QCA IPQ4019 product brief (TDM/PCM/I2S/SPDIF)
 linux-arm-kernel 2016-07 IPQ4019 ASoC RFC (qca,ipq4019-pcm-tdm)
 BoxMatrix FRITZ!Box 7530 board inventory (community data)

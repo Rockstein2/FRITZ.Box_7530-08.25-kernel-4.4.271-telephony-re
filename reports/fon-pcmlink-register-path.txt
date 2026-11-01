@@ -1,0 +1,217 @@
+FON PCMLINK register path — raw evidence
+========================================
+Source: modules/ubik2/pcmlink.ko
+sha256: 6620510bc1d4b0f4d670e1e93d3f308dc3002785d3129521156eb5e1bc4a363b
+FRITZ!OS 08.25, ARM EABI5, Linux 4.4.271, not stripped.
+No module was loaded or executed.
+
+AVM 08.25 GPL tarball:
+  https://osp.avm.de/fritzbox/fritzbox-7530/source-files-FRITZ.Box_7530-cortexa9-08.25.tar.gz
+  sha256 8fe167fe849108d0f4fa99ee8c78c34bb8893993780387fe500c3e68fa66bcf0
+  size   626994064
+  relevant source:
+    sources/kernel/linux/sound/soc/qcom/ipq/ipq-adss-avm.c
+    sources/kernel/linux/sound/soc/qcom/ipq/ipq-avm.c
+    sources/kernel/linux/sound/soc/qcom/ipq/ipq-adss.h
+    sources/kernel/linux/arch/arm/boot/dts/Fritz_Box_HW236.dtsi
+    sources/kernel/linux/arch/arm/boot/dts/qcom-ipq4019-audio.dtsi
+  pcmlink_ul.c / pcmlink_ll.c are NOT present; pcmlink is proprietary.
+
+1. Actual link table
+-------------------
+pcmlink_getplatform @0x8c reads [link_table+0x50].
+Selected table: .rodata+0xa8, platform string .rodata.str1.1+0x10a = "QCA-ADSS".
+
+  .rodata+0xa8  relocations:
+    +0x00 FPGALink_PreInit       0x84b8
+    +0x04 FPGALink_Init          0x84dc
+    +0x08 FPGALink_Activate      0x8510
+    +0x0c FPGALink_Poll          0x85b4
+    +0x10 pcmlink_ul_handler     0x2e78
+    +0x14 pcmlink_ul_control     0x2c78
+    +0x20 FPGALink_Deactivate    0x8530
+    +0x24 FPGALink_Exit          0x854c
+    +0x28 FPGALink_PostExit      0x8568
+    +0x2c FPGALink_SuspendResume 0x8598
+    +0x30 FPGALink_ReinitPCMBus  0x857c
+    +0x34 FPGALink_ClkChange     0x8908
+    +0x38 FPGALink_StatusPCMBus  0x85a0
+    +0x3c FPGALink_Set_Status    0x891c
+    +0x40 FPGALink_SharedMemory  0x8930
+    +0x50 -> "QCA-ADSS"
+
+  The 14-entry ipq40xxtdm_hw table at .rodata+0x17ac is a hardware/backend
+  table, not the top-level link table.
+
+2. Shared window
+----------------
+FPGALink_SharedMemory @0x8930:
+  r3 = FPGA_Ctrl (.bss+0xcde8)
+  r0 = [r3+0x18]
+
+fpgadata_init @0x93d8:
+  r4 = 0xce60 (TDMPriv)
+  r0 = r5 = 0xd300 = TDMPriv+0x4a0
+  memzero(TDMPriv+0x4a0, 0x2dc)
+  [FPGA_Ctrl+0x18] = TDMPriv+0x4a0
+
+Therefore shared window = TDMPriv+0x4a0, size 0x2dc.
+Layout:
+  +0x068..0x267  64*8-byte command ring
+  +0x268         u16 consumer
+  +0x26a         u16 producer
+  +0x26c..0x2d3  26*u32 current values
+  +0x2d4         u32 read-mask-valid
+  +0x2d8         u32 event/retry flag
+
+3. API entry
+------------
+pcmlink_ul_writeregister @0x3b60:
+  r0=manager (.bss+0x438)
+  r0+8 = pcmlink_ulreg (.bss+0x740)
+  tail call lpcmlink_ul_writeregister(handle, reg, value, mask, -1)
+
+pcmlink_ul_readregister @0x3444:
+  r0=manager
+  r0+8 = pcmlink_ulreg
+  tail call lpcmlink_ul_readregister(handle, reg)
+
+4. Write path
+-------------
+lpcmlink_ul_writeregister @0x34b8:
+  r5 = reg>>2
+  base = [handle+0x158] = shared_window+0x68
+  shadow = [handle+0x10+4*r5]
+  metadata = [handle+0x15c+0x14*r5]
+  final = merge(shadow, current, mask)
+  [handle+0x10+4*r5] = final
+  [handle+0xc] |= 1<<r5
+  timestamp at [handle+0x78+8*r5]
+  producer = u16 [base+0x202]
+  entry = base + (producer & 0x3f)*8
+  [entry+0] = final
+  [entry+4] = r5
+  [entry+6] = timeout/valid value (observed 1)
+  [base+0x202] = (producer+1) & 0x3f
+
+No MMIO and no trigger call in this function.
+
+5. Read path
+------------
+lpcmlink_ul_readregister @0x3174:
+  base = [handle+0x158] = shared_window+0x68
+  r5 = reg>>2
+  shadow = [handle+0x10+4*r5]
+  real = [base+0x204+4*r5] = shared_window+0x26c+4*r5
+  mask = [handle+0x15c+0x14*r5]
+  return ((real ^ shadow) & mask) ^ shadow
+
+Read masks:
+  reg 0x40 0xfeeff000
+  reg 0x44 0x01100fff
+  reg 0x48 0xfeeff000
+  reg 0x4c 0x00001111
+  reg 0x50 0x00001111
+
+6. TxDMA consumes ring
+----------------------
+TxDMA @0x9710 (installed via tdm_if_dma_init TxData callback):
+  r4 = TDMPriv
+  r6 = TDMPriv+0x508 = shared_window+0x68
+  producer = u16 [r6+0x202]
+  consumer = u16 [r6+0x200]
+  entry = r6 + consumer*8
+  reg_word = u16 [entry+4]
+  value = u32 [entry+0]
+  consumer = (consumer+1)&0x3f
+  [r6+0x200] = consumer
+  for reg_word in {0x2c,0x48}:
+      [shared_window+0x26c+4*reg_word] = value
+      ctrl = build_slic_ctrl(r6, ring_half_period)
+      [TDMPriv+0x7fc] = ctrl
+  for reg_word == 0x44:
+      [TDMPriv+0x7f4] = value
+      [TDMPriv+0x7f6] = 5
+      ctrl = build_slic_ctrl(r6, value)
+      [TDMPriv+0x7fc] = ctrl
+
+build_slic_ctrl @0x8f68:
+  if r1 != 0: return r1 | 0x8000
+  v48 = u32 [r0+0x24c]  ; value-table reg 0x48
+  v2c = u32 [r0+0x230]  ; value-table reg 0x2c
+  ctrl = ((v48>>3)&0x1e0) | ((v48>>4)&0xf)
+  if v2c & (1<<17): ctrl |= 0x10
+  if v2c & (1<<18): ctrl |= 0x200
+  return ctrl | 0x4000
+
+TX frame header:
+  tx[0x00] = 0x0000
+  tx[0x02] = 0xfefe
+  tx[0x04] = 0xfefe
+  tx[0x06] = 0xfefe
+  tx[0x08] = 0x5555 or 0
+  tx[0x0a] = control word    <-- TDM slot 5
+  tx[0x0c..] = audio slots
+
+7. PutRxDMA updates hook
+------------------------
+PutRxDMA @0x9a60 (installed via tdm_if_dma_init RxData callback):
+  status = u16 [rx+0x0a]   <-- TDM slot 5
+  if status & 0x8000:
+      marker = 0x1000
+      [TDMPriv+0x73c] = status
+  else if (status & 0xfffffc00) == 0x4000:
+      [TDMPriv+0x73c] = status
+  else:
+      [TDMPriv+0x73c] = status ? status : 0xbad00000
+
+  reg44 = 0x00020008
+        | ((status << 3) & 0x00000f00)
+        | ((status << 4) & 0x000000ff)
+  [TDMPriv+0x750] = reg44
+  ; TDMPriv+0x750 = shared_window+0x26c+0x44
+
+slic_get_hook_state @0x4093c:
+  pcmlink_ul_readregister(0x44)
+  SLIC0: bit 7
+  => status bit 3 -> reg44 bit 7 -> hook
+
+8. QCA transport
+----------------
+Board DTS:
+  Fritz_Box_HW236.dtsi:277..317 enables tdm@0, qca-pcm-tdm@7709000,
+    audio@7700000, pcm@7704000, mbox0..4, stereo0..3.
+  qcom-ipq4019-audio.dtsi:
+    tdm: dma-tx=MBOX0_TX, dma-rx=MBOX3_RX, stereo-tx=STEREO0,
+         stereo-rx=STEREO3
+    pcm: dma-tx=MBOX3_TX, dma-rx=MBOX0_RX, stereo-tx=STEREO3,
+         stereo-rx=STEREO0
+
+QCA GPL source:
+  ipq-avm.c:30       tdm_if_config_init()
+  ipq-avm.c:72       tdm_if_dma_init()
+  ipq-adss-avm.c:2110 tdm_if_adss_config_init()
+  ipq-adss-avm.c:2188 tdm_if_adss_dma_init()
+  ipq-adss-avm.c:2234 tdm_if_adss_dma_start()
+  ipq-adss.h:33      ADSS_GLB_PCM_MBOX_CTRL_REG 0x0c
+  ipq-adss.h:121     ADSS_MBOXn_DMA_RX_DESCRIPTOR_BASE_REG 0x18
+  ipq-adss.h:128     ADSS_MBOXn_DMA_TX_DESCRIPTOR_BASE_REG 0x20
+
+The ADSS implementation uses MBOX DMA descriptors, not a plain TDM FIFO:
+  tdm_if_adss_dma_init -> mbox_dma_init(PLAYBACK/CAPTURE)
+  tdm_if_adss_dma_start -> prepare_desc/prepare_reg/start TX, wait, start RX.
+
+9. Interpretation boundary
+--------------------------
+CONFIRMED:
+  API -> ring -> TxDMA -> 16-bit TX slot 5.
+  RX slot 5 -> PutRxDMA -> reg0x44 bit 7.
+  QCA ADSS MBOX/TDM DMA is the transport.
+
+INFERRED HIGH:
+  SC14448 receives slot 5 and drives the discrete LM324/BCP53-16 line
+  interface.
+
+UNKNOWN:
+  exact SC14448 control/status bit semantics and firmware requirement.
+  high-voltage/ring topology and safe voltages.
