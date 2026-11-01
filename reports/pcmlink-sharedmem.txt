@@ -1,0 +1,646 @@
+pcmlink shared-memory reconstruction
+====================================
+Source: modules/ubik2/pcmlink.ko
+FRITZ!OS 08.25, ARM EABI5, kernel 4.4.271, not stripped.
+All addresses are module offsets. No code was executed.
+
+1. ELF objects and accessors
+---------------------------
+From readelf -sW:
+
+  0000d780  63720 OBJECT LOCAL DEFAULT 44 gPcmroute
+  000280c0   2292 OBJECT LOCAL DEFAULT 44 gPcmrouteKernel
+  0000cb0c    732 OBJECT LOCAL DEFAULT 44 SharedMemory
+
+63720 = 0xf8e8
+ 2292 = 0x8f4
+  732 = 0x2dc
+
+pcmroute_getsharedmem @0xc300:
+  0xc300: ldr r0, [pc]        ; literal at 0xc308 = 0xd780
+  0xc304: bx  lr
+=> returns &gPcmroute, not the DSP descriptor.
+
+pcmlink_ll_sharedmemory @0xe60:
+  0xe60: cmp r0, #0
+  0xe68: ldr r2, [r0]         ; ll_handle magic
+  0xe6c: ldr r3, [pc]         ; 0x01012014
+  0xe70: cmp r2, r3
+  0xe74: bne 0xe8c
+  0xe78: ldr r3, [r0, #8]     ; link operations table
+  0xe7c: ldr r3, [r3, #0x40]  ; backend shared-memory callback
+  0xe80: cmp r3, #0
+  0xe84: beq 0xe8c
+  0xe88: bx  r3
+=> returns the link/DSP descriptor through vtable slot +0x40.
+
+pcmlink_ll_dsp_to_host_addr @0xe08:
+  0xe14: ldr ip, [r0]         ; ll_handle magic
+  0xe18: ldr r1, [pc]         ; 0x01012014
+  0xe1c: cmp ip, r1
+  0xe28: ldr r1, [r0, #8]     ; link operations table
+  0xe2c: ldr lr, [r1, #0x44]  ; DSP->host callback
+  0xe48: bx  lr
+=> translation is callback slot +0x44.
+
+2. gPcmroute initialization
+---------------------------
+pcmroute_memshared_routerinit @0x178a0:
+  0x178a4: bl pcmroute_getsharedmem     ; r4 = &gPcmroute
+  0x178a8: movw r1, #0xeaac
+  0x178b0: bl __memzero
+  0x178b4: ldr r3, [pc]                 ; 0xc0afd54c
+  0x178b8: str r3, [r4]                 ; +0x0000 magic
+  0x178bc: add r3, r3, #0x2a000000
+  0x178c0: sub r3, r3, #0x38c00
+  0x178c4: sub r3, r3, #0x248
+  0x178c8: str r3, [r4, #4]             ; +0x0004 = 0xeaac4704
+  0x178cc: bl pcmroute_dtmfscan_init
+  0x178d0: add r0, r4, #0xdd00
+  0x178d4: add r0, r0, #0x98
+  0x178d8: pop {r4, lr}
+  0x178dc: b pcmroute_ecinit            ; gPcmroute+0xdd98
+
+pcmroute_memshared_routerexit @0x178e4:
+  pcmroute_ecexit(gPcmroute+0xdd98)
+  g722_freeallinst()
+  equalize_freeall()
+
+3. PCMRoute_Init and gPcmrouteKernel
+-------------------------------------
+PCMRoute_Init @0x15058:
+  0x15060: ldr r6, [pc]        ; 0x280c0 = &gPcmrouteKernel
+  0x15068: movw r1, #0x8f4
+  0x15070: bl __memzero        ; clear whole manager object
+  0x15074: str r4, [r6, #8]    ; arg0/context if zero path
+  0x15078: bl pcmroute_memshared_routerinit
+  0x1507c: bl pcmroute_getsharedmem
+  0x15080: str r0, [r6, #0xc]  ; gPcmrouteKernel+0x0c = &gPcmroute
+
+Nonzero path:
+  0x150bc: strd r2, r3, [r6]       ; manager+0x00/0x04 = arg2/arg3
+  0x150c0: str r4, [r6, #0x10]     ; manager+0x10 = arg0
+  0x150c4: add r6, r6, #0x14
+  0x150d4: add r0, r6, #0x8c0      ; manager+0x8d4: slot descriptor
+  0x150e0: bl pcmroute_slotconnectionlist_init
+  0x150e8: add r0, r5, #0x2980
+  0x150f0: add r0, r0, #0x2c       ; gPcmroute+0x29ac: second descriptor
+  0x15108: mov r3, #0x8c
+  0x15110: bl pcmroute_slotconnectionlist_init
+  0x15130: add r5, r5, #0x9a0      ; r5 = gPcmroute+0x29a0
+  0x1513c: strh r1, [r5, #0x10]    ; gPcmroute+0x29b0 = slot count
+  0x15148: ldr ip, [r5, #0x9b4]    ; gPcmroute+0x29b4 = slot table ptr
+  0x15158..0x15198: copy 9 dwords into each 0x198-byte slot entry
+
+4. gPcmroute region map
+-----------------------
+0x0000  u32 magic 0xc0afd54c
+0x0004  u32 derived 0xeaac4704
+0x0008  u16 command-ring head
+0x000a  u16 command-ring tail
+0x000c  0x104 * 0x28 command-ring entries
+0x288c  end of command ring
+0x28ac  4 * 0x40 connection-struct pool
+0x29ac  0x18 slot-table descriptor
+0x29b0  u16 slot count              (descriptor+0x04)
+0x29b4  u32 slot table pointer      (descriptor+0x08)
+0x29b8  u16 connection limit        (descriptor+0x0c) = 0x8c = 140
+0x29bc  u32 connection storage      (descriptor+0x10)
+0x29c0  u32 descriptor flags        (descriptor+0x14)
+0x29c4  140 * 0x10 connection entries
+0x3284  slot table, 0x198 per slot
+0xdd98  5 * 0x94 echo-canceller states
+0xe76c  3 * 0x24 codec callback table
+0xe828  0x44-byte per-slot EC/channel state
+0xeaa8  u16 PCMRoute context
+0xeaac  end of the zeroed area
+0xebac  0x18-byte channel state array
+0xf000  0x8e8-byte status block
+0xf8e8  end of gPcmroute
+
+5. Command ring evidence
+------------------------
+pcmroute_enqueue_torouter @0x17a50:
+  0x17a50: add ip, r0, #0x2980
+  0x17a54: add ip, ip, #0x30       ; gPcmroute+0x29b0
+  0x17a58: ldrh ip, [ip]           ; slot count
+  0x17a5c: cmp ip, r1
+  0x17a60: bxls lr                 ; reject slot >= count
+  0x17a6c: ldrh ip, [r0, #0xa]     ; tail
+  0x17a74: ldrh r1, [r4, #8]       ; head
+  0x17a80: add r5, r0, #1          ; next = tail+1
+  0x17a84: uxth r1, r1
+  0x17a8c: cmp r5, #0x104
+  0x17a90: movhs r5, #0            ; wrap at 0x104
+  0x17a94: cmp r1, r5
+  0x17a98: bne 0x17ad4             ; queue not full
+  0x17ad4: mov ip, #0x28
+  0x17adc: mul ip, ip, r0          ; 0x28 * tail
+  0x17ae0: add r2, r4, ip
+  0x17ae4: str lr, [r2, #0xc]      ; entry+0x00 = callback/context
+  0x17ae8: strb r6, [r2, #0x10]    ; entry+0x04 = slot byte
+  0x17afc: add r0, r0, #0x14       ; entry+0x08 = payload
+  0x17b00: bl memcpy
+  0x17b04: strh r5, [r4, #0xa]     ; tail = next
+
+l_pcmroutereadqueue @0xb4bc:
+  0xb4c8: ldr r4, [pc]             ; &gPcmroute
+  0xb4d8: add sl, r4, #0xc         ; command ring base
+  0xb4e8: ldrh r8, [r4, #8]        ; head
+  0xb4f0: ldrh r3, [r4, #0xa]      ; tail
+  0xb4f4: cmp r8, r3
+  0xb4fc: mov ip, #0x28
+  0xb504: mla ip, ip, r8, sl       ; 0x28*head + ring base
+  0xb508: ldm ip!, {r0,r1,r2,r3}   ; copy 0x28 bytes
+  0xb51c: ldrh r3, [fp]            ; fp = gPcmroute+0x2000+0x9b0
+  0xb530: mov r1, #0x198
+  0xb534: ldr r0, [sb, #0x9b4]     ; slot table pointer
+  0xb538: mul r1, r1, r7           ; 0x198 * slot
+  0xb53c: add r5, r0, r1
+  0xb5e0: cmp r8, #0x104
+  0xb5e4: movhs r8, #0            ; wrap
+  0xb5ec: strh r8, [r4, #8]        ; head = next
+
+6. Slot table and descriptor evidence
+--------------------------------------
+pcmroute_slotconnectionlist_init @0xc500:
+  0xc504: strhne r1, [r0, #4]      ; +0x04 slot count
+  0xc508: strne r2, [r0, #8]       ; +0x08 table pointer
+  0xc50c: cmp r3, #0
+  0xc510: strhne r3, [r0, #0xc]    ; +0x0c connection limit (0x8c)
+  0xc514: ldrne r3, [sp]
+  0xc518: strne r3, [r0, #0x10]    ; +0x10 storage pointer
+  0xc51c: ldr r3, [sp, #4]
+  0xc520: str r3, [r0, #0x14]      ; +0x14 flags
+  0xc524: mov r3, #0
+  0xc528: str r3, [r0]             ; +0x00 state
+  0xc52c: bx lr
+
+Layout check:
+  gPcmroute+0x3284 (slot table) - gPcmroute+0x29c4 (conn store) = 0x8c0
+  0x8c0 / 0x10 = 140 connection entries
+=> the connection array exactly fills the space before the fixed slot table.
+
+Connection entry evidence (pcmroute_settimeslot @0xce44):
+  0xcee8: ldr r2, [r5, #0x10]      ; connection storage pointer
+  0xceec: lsl r1, r3, #4           ; 0x10 * index
+  0xcef0: add r2, r2, r1           ; entry
+  0xcef4: ldrb r0, [r2, #0xc]      ; used flag
+  0xcef8: cmp r0, #0
+  0xcf00: mov r3, #1
+  0xcf04: strb r3, [r2, #0xc]      ; mark used
+  0xcf08: ldr r2, [r5, #0x10]
+  0xcf10: add r4, r2, r1
+  0xcf18: str r3, [r2, r1]         ; +0x00 = -1 (r3 was mvn 0)
+  0xcf1c: strbne sb, [r4, #2]      ; +0x02 = sink
+  0xcf20: strb r3, [r4, #4]        ; +0x04 = -1
+  0xcf28: str r0, [r4, #8]         ; +0x08 = next (0)
+
+pcmroute_findslot_by_sink @0xc538:
+  0xc53c: ldr r0, [r0]             ; descriptor+0x00 = list head
+  0xc550: ldrb r3, [r0, #2]        ; connection+0x02 = sink
+  0xc564: ldr r0, [r0, #8]         ; connection+0x08 = next
+
+pcmroute_is_slot_activ @0xc590:
+  0xc5b8: ldrb r3, [r5, #2]        ; source/sink byte
+  0xc5d4: ldrb r1, [r6, #1]        ; r6 = r5-1 => [r5] 
+  0xc600: ldrb r3, [sl, #3]        ; [r5+3]
+  0xc628: ldr r5, [r5, #8]         ; next
+
+pcmroute_numconnectedwithsrc @0xd110:
+  0xd140: ldrb r3, [ip, r2]        ; source byte selected by r2
+  0xd144: ldr ip, [ip, #8]         ; next
+
+Connection-entry layout (0x10 bytes):
+  +0x00 endpoint 0 (source)
+  +0x01 endpoint 1 (source)
+  +0x02 sink key
+  +0x03 multi-source alternate endpoint
+  +0x04 endpoint checked by findslot_as_source
+  +0x08 next connection
+  +0x0c used flag
+
+The sink at +0x02 and the link at +0x08 are unambiguous. Endpoint names are
+partially inferred from pcmroute_findslot_as_source, pcmroute_get_realsource_idx
+and pcmroute_numconnectedwithsrc.
+
+pcmroute_slotconnectionlist_exit @0xc530:
+  mov r1, #0x18
+  b __memzero                     ; descriptor is 0x18 bytes
+
+lpcmroute_sinkprocess @0xaa70:
+  0xaa90: ldr r3, [pc]             ; .bss+0xf780 = gPcmroute+0x2000
+  0xaa94: ldr fp, [r3, #0x9ac]     ; gPcmroute+0x29ac descriptor state
+  0xab14: ldr r1, [r3, #0x9b4]     ; gPcmroute+0x29b4 slot table ptr
+  0xab18: mov r3, #0x18
+  0xab1c: mla r3, r3, r4, r7       ; 0x18*channel + gPcmroute
+  0xab24: ldr r5, [r8, #4]         ; slot entry flags
+  0xab3c: ldr r3, [r8, #0x10]      ; slot entry +0x10
+  0xabdc: ldr r1, [r8, #0xc]
+  0xabe4: str r1, [r3, #0xebb4]    ; channel state +0x08
+  0xabec: str sl, [r3, #0xebbc]    ; channel state +0x10
+  0xabf4: strb sb, [r3, #0xebc0]   ; channel state +0x14
+  0xac84: ldr r3, [r4, #0x14]      ; slot callback
+  0xacb0: ldr r7, [r4, #8]         ; slot flags/word
+  0xad30: ldrb r3, [r4, #0x29]     ; 1-based EC slot index
+  0xad48: movw r2, #0xe828
+  0xad4c: ldr r7, [r3, r2]         ; gPcmroute+0xe828+0x44*(idx-1)
+  0xade0: ldrb r0, [r4, #0x190]    ; DTMF active
+  0xaeb0: ldrb r2, [sp, #0x32]     ; slot entry +0x2d?
+  0xb164: ldr r2, [r2, #0x8d0]     ; gPcmroute+0xf000+0x8d0
+
+Slot-entry layout (0x198 bytes, partial):
+  +0x004 u32 flags (bit 0x80 multi-source, bit 0x400, low 3 bits)
+  +0x008 u32
+  +0x00c u32
+  +0x010 u32 checked before callback
+  +0x014 u32 callback
+  +0x018 u32 callback
+  +0x026 u8
+  +0x028 u8 EC channel index
+  +0x029 u8 1-based EC state index
+  +0x02d u8 connection/user-set busy flag
+  +0x02e u8 second busy flag
+  +0x02f u8 adds flag 0x20; clears +0x30 block
+  +0x030 u8[0x8c] substructure
+  +0x11c u32 G.722 state
+  +0x18c u32 codec state
+  +0x190 u8[8] DTMF state (+0x190 is active byte)
+
+pcmroute_userset @0xc914:
+  0xc9a4: ldrb r1, [r7, #0x2d]
+  0xc9c0: ldrb r1, [r7, #0x2e]
+  0xc9d8: ldrb r1, [r7, #0x190]
+  0xc9f0: ldr r1, [r7, #0x18c]
+  0xca7c: ldrb r3, [r8, #0x2f]     ; adds 0x20 to flags
+  0xcacc: ldr r3, [r8, #8]         ; slot flags/word
+
+l_adddremove_entry @0xcb94:
+  0xcc04: ldrb r3, [r0, #0x190]    ; DTMF active
+  0xcc10: mov r1, #8
+  0xcc14: add r0, r0, #0x190
+  0xcc18: bl __memzero             ; clear 8-byte DTMF block
+
+pcmroute_hwchanviolation @0xc464:
+  0xc464: ldr r3, [pc]             ; .bss+0xf780 = gPcmroute+0x2000
+  0xc468: add r2, r3, #0x9b0       ; gPcmroute+0x29b0
+  0xc46c: ldrh ip, [r2]            ; slot count
+  0xc470: tst ip, #0x8000          ; disabled flag
+  0xc474: bxne lr
+  0xc480: ldr r3, [r3, #0x9b4]     ; slot table
+  0xc4a8: add r3, r3, #0x198       ; next entry
+  0xc4b4: ldr lr, [r3, #4]         ; flags
+  0xc4c0: ldr lr, [r3]             ; slot channel
+  0xc4cc: ldrb r3, [r3, #0x28]     ; EC index
+  0xc4dc: movw r0, #0xdd98
+  0xc4e8: mla r3, r2, r3, r0       ; gPcmroute+0xdd98+0x94*idx
+  0xc4ec: ldr r0, [pc]             ; &gPcmroute
+  0xc4f0: add r0, r0, r3
+  0xc4f4: b pcmroute_ecviolation
+
+7. Connection-struct pool
+--------------------------
+pcmroute_alloc_cstruct @0x17814:
+  0x17814: ldrb r2, [r1]           ; caller struct tag
+  0x17818: cmp r2, #0x3e
+  0x1781c: bhi 0x17884            ; reject
+  0x17824: movw r6, #0x28eb
+  0x17828: add ip, r0, r6          ; gPcmroute+0x28eb
+  0x17830: ldrb lr, [ip, r3, lsl #6] ; used flag at +0x28eb+0x40*i
+  0x17838: bne 0x17870
+  0x1783c: lsl r4, r3, #6
+  0x17844: add r3, r4, #0x2880
+  0x1784c: add r3, r3, #0x2c       ; gPcmroute+0x28ac+0x40*i
+  0x17858: bl memcpy
+  0x17860: mov r2, #1
+  0x17864: strb r2, [r4, r6]       ; entry+0x3f = used
+=> four 0x40-byte entries at gPcmroute+0x28ac, used flag at +0x3f.
+
+pcmroute_free_cstruct @0x17890:
+  strbne r3, [r0, #0x3f]           ; clear used flag
+
+8. Echo-canceller array
+-----------------------
+pcmroute_ecinit @0x17fa4:
+  0x17fac: bl EC_Init
+  0x17fb0: mov r4, #5
+  0x17fbc: mov r1, #0x94
+  0x17fc0: mov r0, r5
+  0x17fc4: bl __memzero            ; 5 * 0x94
+  0x17fc8: subs r4, r4, #1
+  0x17fcc: strb r7, [r5, #1]       ; +0x01 = 0xff
+  0x17fd0: str r6, [r5, #4]        ; +0x04 = 0xff
+  0x17fd4: bne 0x17fbc
+=> 5 entries of 0x94 at gPcmroute+0xdd98.
+
+pcmroute_get_ecbkanal_from_slot @0x1814c:
+  0x1814c: add r3, r0, #0x2e4      ; 5*0x94
+  0x18170: add r0, r0, #0x94
+  0x18174: cmp r0, r3
+=> confirms 5 entries.
+
+9. Codec table
+--------------
+PCMRoute_RegisterCODEC @0x13438:
+  0x13460: ldr r7, [r0]            ; codec id
+  0x13468: sub r3, r7, #1
+  0x1346c: cmp r3, #2
+  0x13470: bhi 0x1357c            ; only ids 1..3
+  0x13474: mov r3, #0x24
+  0x13478: movw r2, #0xe770
+  0x1347c: mla r3, r3, r7, fp      ; gPcmroute+0x24*id
+  0x13480: ldr r3, [r3, r2]        ; entry+0x04 duplicate check
+  0x135c4: mov r3, #0x24
+  0x135c8: movw r2, #0xe76c
+  0x135cc: mla r3, r3, r7, fp
+  0x135d0: str r7, [r3, r2]        ; entry+0x00 = id
+  0x135d8..0x13630: store callbacks at +0x04..+0x20
+
+PCMRoute_InternalCODEC @0x133ac:
+  0x133c8: mov r2, #0x24
+  0x133cc: mla r0, r2, r0, r3      ; 0x24*codec
+  0x133d0: movw r3, #0xe780
+  0x133d4: ldr r3, [r0, r3]        ; entry+0x14 callback
+  0x133e0: bx r3
+
+10. Channel and status blocks
+-----------------------------
+lpcmroute_sinkprocess @0xaa70:
+  0xaa90: ldr r3, [pc]             ; .bss+0xf780 = gPcmroute+0x2000
+  0xaa98: add r3, r3, #0xd000      ; gPcmroute+0xf000
+  0xaae0: mov r2, #0x198
+  0xaae4: mul r2, r2, r4           ; 0x198*channel
+  0xab18: mov r3, #0x18
+  0xab1c: mla r3, r3, r4, r7       ; 0x18*channel + gPcmroute
+  0xab20: add r8, r1, r2           ; slot entry
+  0xab24: ldr r5, [r8, #4]         ; slot flags
+  0xab3c: ldr r3, [r8, #0x10]
+  0xabdc: ldr r1, [r8, #0xc]
+  0xabe0: movw r2, #0xebb4
+  0xabe4: str r1, [r3, r2]
+  0xabe8: movw r2, #0xebbc
+  0xabec: str sl, [r3, r2]
+  0xabf0: movw r2, #0xebc0
+  0xabf4: strb sb, [r3, r2]
+  0xac84: ldr r3, [r4, #0x14]
+  0xad30: ldrb r3, [r4, #0x29]
+  0xad48: movw r2, #0xe828
+  0xad4c: ldr r7, [r3, r2]
+  0xade0: ldrb r0, [r4, #0x190]
+
+l_pcmroutereadqueue @0xb4bc:
+  0xb5f4: ldr r7, [pc]             ; .bss+0x1c780 = gPcmroute+0xf000
+  0xb5f8: ldr r3, [r7, #0x8cc]
+  0xb614: ldr r3, [r7, #0x8d0]
+  0xb620: and r2, r3, #0x20
+  0xb630: and r3, r3, #0x40
+  0xb69c: str r3, [r7, #0x8d8]
+  0xb6a0: ldr r3, [pc]             ; .bss+0x10130
+  0xb6a4: ldrh r3, [r3]
+  0xb6a8: str r3, [r7, #0x8dc]
+
+lpcmroute_sinkprocess @0xaa70:
+  0xaaec: ldrb r3, [r3, #0x8e0]    ; min channel
+  0xfaf8: strblo r4, [r3, #0x8e0]
+  0xab00: ldrb r3, [r3, #0x8e1]    ; max channel
+  0xab0c: strbhi r4, [r3, #0x8e1]
+
+11. gPcmrouteKernel and DSP descriptor
+--------------------------------------
+pcmlink_ul_register_pcmrouter @0x23f0:
+  0x241c: ldr sb, [pc]             ; &gPcmrouteKernel
+  0x2420: ldr r3, [sb, #4]
+  0x2424: mov r4, sb
+  0x2434: mov r1, #0x300
+  0x243c: bl __memzero             ; clear first 0x300 bytes
+  0x2440: add r2, sb, #0x300
+  0x2448: add r0, sb, #0x218
+  0x244c: bl __init_waitqueue_head ; manager+0x218
+  0x2450: bl pcmlink_getlinktype
+  0x245c: bl pcmlink_ll_init
+  0x2474: bl pcmlink_ll_sharedmemory
+  0x2480: str r0, [sb, #0x234]     ; descriptor pointer
+  0x2494: ldr r1, [r0, #0x24]
+  0x24a0: bl pcmlink_ll_dsp_to_host_addr
+  0x24ac: str r0, [sb, #0x224]     ; host address of +0x24
+  0x24b4: ldr r1, [r3, #0x28]
+  0x24b8: bl pcmlink_ll_dsp_to_host_addr
+  0x24c4: str r0, [sb, #0x230]     ; host address of +0x28
+  0x24c8: ldr r1, [r3, #0x38]
+  0x24cc: ldr r3, [r3, #0x3c]
+  0x24d0: cmp r1, r3
+  0x24d4: bls 0x25ec
+  0x24dc: bl pcmlink_ll_dsp_to_host_addr ; map +0x38
+  0x24f0: bl pcmlink_ll_dsp_to_host_addr ; map +0x3c
+  0x2508: sub r7, r7, r0                 ; delta
+  0x2518: bl pcmlink_ll_dsp_to_host_addr ; map +0x38 with delta
+  0x251c: str r0, [r4, #0x228]
+  0x253c: bl pcmlink_ll_dsp_to_host_addr ; map +0x3c with delta
+  0x2540: str r0, [r4, #0x22c]
+  0x257c: str r3, [r4]             ; manager magic 0x53428431
+  0x2580: str r5, [r4, #4]         ; ll_handle
+  0x2588: str r8, [r4, #0x238]     ; pcmrouter callback arg
+  0x2594: str r0, [r4, #8]         ; regnoemif handle
+  0x25a8: ldr r2, [r4, #0x234]
+  0x25b4: str r3, [r4, #0x210]     ; state 3
+  0x25b8: str r3, [r2, #0x30]      ; descriptor+0x30 = 3
+  0x25bc: str r5, [r4, #0x20c]     ; 0
+  0x25d8: str r0, [r4, #0x2b4]     ; debug handle
+  0x25e4: str r0, [r4, #0x2b8]     ; power-management handle
+
+SharedMemory objects:
+  VOIPOnlyLink_SharedMemory @0x7b80:
+    0x7b80: ldr r0, [pc]           ; literal 0xcb0c
+    0x7b84: bx lr
+  FPGALink_SharedMemory @0x8930:
+    0x8930: ldr r3, [pc]           ; literal 0xcde8
+    0x8934: ldr r0, [r3, #0x18]
+    0x8938: bx lr
+
+  .bss+0xcb0c, size 0x2dc  (VOIP shared descriptor)
+  .bss+0xcde8, size 0x2dc  (FPGA shared descriptor)
+
+Descriptor fields (relative to the descriptor pointer):
+  +0x24  table of 0x14-byte slot entries
+  +0x28  control/receive buffer base
+  +0x2C  current received length
+  +0x30  link state (3 = active, 0 = idle)
+  +0x34  status/command word
+  +0x38  buffer base A (TX allocation)
+  +0x3C  buffer base B (RX retrieval)
+  +0x44  bitmask
+  +0x48  bitmask
+  +0x4C  value
+  +0x50  value
+  +0x58  bitmask
+  +0x60  TX slot bitmask
+  +0x64  RX release/status
+  +0x68  regnoemif descriptor
+
+pcmlink_ul_rxget_slotdata_pcmrouter @0x1a50:
+  0x1ad8: mov r2, #0x14
+  0x1adc: ldr ip, [r3, #0x224]     ; descriptor+0x24 host address
+  0x1ae0: mul r2, r2, r1           ; 0x14 * slot
+  0x1ae4: add r0, ip, r2
+  0x1ae8: ldr r2, [ip, r2]         ; entry+0x00 slot/selector
+  0x1aec: cmp r2, #0x1f
+  0x1af8: ldr r4, [r0, #4]         ; entry+0x04 length
+  0x1afc: ldr r3, [r3, #0x22c]     ; descriptor+0x3c host address
+  0x1b08: ldr r2, [r0, #8]         ; entry+0x08 offset
+  0x1b10: add r3, r3, r2
+  0x1b14: str r3, [r5]             ; returned data pointer
+
+pcmlink_ul_txalloc_slotdata_pcmrouter @0x2338:
+  0x23ac: mov r3, #0x14
+  0x23b0: mul r2, r3, r1
+  0x23b4: ldr r3, [r0, #0x224]
+  0x23b8: add r1, r3, r2
+  0x23bc: ldr r3, [r3, r2]         ; entry+0x00
+  0x23c4: ldrls r4, [r0, #0x228]   ; descriptor+0x38 host address
+  0x23c8: ldrls r3, [r1, #8]       ; entry+0x08 offset
+  0x23cc: addls r4, r4, r3
+
+pcmlink_ul_txput_slotdata_pcmrouter @0x1b3c:
+  0x1bac: ldr r0, [r1, #0x224]
+  0x1bb0: mul r3, r3, r2
+  0x1bb4: ldr r0, [r0, r3]         ; entry+0x00
+  0x1bc8: ldr r2, [r1, #0x234]     ; descriptor
+  0x1bd0: ldr r3, [r2, #0x60]      ; TX slot bitmask
+  0x1bd4: orr r3, r3, r1, lsl r0
+  0x1bd8: str r3, [r2, #0x60]
+
+pcmlink_ul_rxfree_slotdata_pcmrouter @0x2290:
+  0x2300: ldr ip, [r3, #0x224]
+  0x2308: ldr r1, [ip, r0]
+  0x2310: ldrls r3, [r3, #0x234]
+  0x2314: strls r2, [r3, #0x64]     ; RX release/status
+
+pcmlink_ul_handler @0x2e78:
+  0x2eb4: ldr r3, [r4, #0x234]
+  0x2eb8: ldr r8, [r3, #0x2c]      ; received length
+  0x2ecc: ldr r1, [r4, #0x230]     ; descriptor+0x28 host address
+  0x2ed0: add r0, r4, #0x250
+  0x2ed4: bl memcpy
+
+pcmlink_ul_control @0x2c78:
+  0x2c8c: ldr r2, [r4, #0x234]
+  0x2c90: ldr r3, [r2, #0x34]      ; status/command
+  0x2ca0: ldr r1, [r2, #0x30]      ; link state
+  0x2cec: ldrne r3, [r4, #0x234]
+  0x2cf0: strne r2, [r3, #0x34]    ; clear status
+
+VOIPOnlyLink_Init @0x7818:
+  0x7818: ldr r3, [pc]             ; link object at 0xcab8
+  0x781c: add r2, r3, #0x54        ; 0xcb0c = SharedMemory
+  0x7824: str r2, [r3, #4]         ; link object points at descriptor
+  0x7838: str r2, [r3, #0x30]      ; state 0 in link object
+
+lvoiponly_SharedMemoryStatusMessage @0x7774:
+  0x7778: ldr r1, [r3, #4]         ; descriptor
+  0x777c: ldr r2, [r1, #0x30]      ; state
+  0x7790: cmp r2, #5
+  0x779c: movweq r2, #0x101
+  0x77f0: str r3, [r1, #0x2c]      ; length/status write
+
+12. Lifetime
+------------
+pcmlink_init
+  -> pcmlink_hrtimer_init
+  -> pcmlink_ul_decttransp_init
+  -> PCMRoute_Init(0,0,0,0)
+       -> zero gPcmrouteKernel[0x8f4]
+       -> gPcmrouteKernel+0xc = &gPcmroute
+       -> pcmroute_memshared_routerinit
+            -> zero gPcmroute[0xeaac]
+            -> gPcmroute+0x0 = 0xc0afd54c
+            -> gPcmroute+0x4 = 0xeaac4704
+            -> dtmfscan_init
+            -> ecinit(gPcmroute+0xdd98)
+
+pcmlink_ul_register_pcmrouter
+  -> clear gPcmrouteKernel[0x300]
+  -> pcmlink_ll_init(manager, link_ops)
+  -> pcmlink_ll_sharedmemory -> descriptor
+  -> map descriptor +0x24/+0x28/+0x38/+0x3c
+  -> pcmlink_ul_regnoemif_init(descriptor+0x68)
+  -> pcmlink_ll_activate
+  -> descriptor+0x30 = 3
+
+pcmlink_ul_release_pcmrouter
+  -> pcmlink_ul_regnoemif_exit
+  -> pcmlink_ll_exit
+  -> clear manager+0x238, debug, power-management
+  -> PCMRoute_Exit separately exits slot list + memshared router
+
+13. Exact tdm_if call arguments (adjacent evidence)
+---------------------------------------------------
+ipq40xxtdm_linkinit @0x9e40:
+  0x9ff8: ldr r3, [r4, #0x38]   ; config
+  0x9ffc: ldr r2, [r4, #0x30]   ; rx slots
+  0xa000: ldr r1, [r4, #0x34]   ; tx slots
+  0xa004: ldr r0, [r4, #0x24]   ; slot size
+  0xa008: bl tdm_if_config_init
+
+  0xa014: mov r3, #0x10
+  0xa018: str r3, [sp, #0xc]    ; arg8 = 16 descriptors
+  0xa028: bl __aeabi_uidiv
+  0xa038: str r0, [sp, #8]      ; arg7 = slot ratio
+  0xa03c: str r3, [sp, #4]      ; arg6 = slot size
+  0xa044: str r5, [sp]          ; arg5 = 1
+  0xa048: ldr r0, [pc]          ; .bss+0xd6a4 dma handle
+  0xa04c: bl tdm_if_dma_init
+
+  register order:
+    r0 handle, r1 ipq40xxtdm_TxData, r2 ipq40xxtdm_RxData,
+    r3 1, stack[0] 1, stack[1] slot_size, stack[2] ratio,
+    stack[3] 16
+
+ipq40xxtdm_linkactivate @0x9dd4:
+  0x9e20: bl tdm_if_config_init
+  0x9e24: bl tdm_if_dma_start
+  0x9e28: return 0
+
+ipq40xxtdm_linkdeactivate @0xa37c:
+  0xa394: bl tdm_if_dma_stop
+
+ipq40xxtdm_linkdeinit @0xa334:
+  0xa368: bl tdm_if_dma_exit
+  0xa36c: bl tdm_if_config_exit
+
+ipq40xxtdm_linkpoll @0xa1fc:
+  0xa258: add r0, sp, #4
+  0xa25c: add r1, sp, #8
+  0xa25c: bl tdm_if_dma_irqcnt    ; r0=&tx, r1=&rx
+  0xa2bc: reset counters path
+  0xa2c4: update last jiffies
+  compare (jiffies - manager+0x20) > 0x7d
+
+14. Unresolved
+--------------
+1. Command-ring entry first word semantics.
+2. Exact semantics of descriptor table fields +0x0c/+0x10 and the
+   +0x44..+0x64 bitmask/status words; buffer roles of +0x28/+0x38/+0x3c are
+   inferred from their consumers.
+3. Size/count of 0xE828 and 0xEBAC arrays.
+4. 0x198 slot-entry full layout; the 0x10 connection entry is mapped, but its
+   endpoint naming is partially inferred.
+5. Tail 0xEAAC..0xEFFF.
+6. QCA backend descriptor vs SharedMemory/FPGA objects.
+7. Runtime ownership of DSP range translations.
+
+15. Confidence
+--------------
+high:
+  - gPcmroute identity/size/magic/zero size
+  - command ring offset/count/entry size
+  - slot descriptor/table offsets and entry size
+  - connection array 140 x 0x10
+  - EC 5x0x94, codec 3x0x24
+  - manager+0x224..+0x234 mapping
+  - descriptor +0x24 table and +0x38/+0x3C buffer roles
+  - tdm_if call argument order
+medium:
+  - descriptor +0x44..+0x64 bitmask semantics
+  - slot/connection endpoint naming
+low-medium:
+  - tail region and ownership

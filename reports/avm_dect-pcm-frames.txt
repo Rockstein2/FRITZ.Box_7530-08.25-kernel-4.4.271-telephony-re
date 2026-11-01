@@ -6,10 +6,16 @@ Upper mail header (pcm_Task)
 ----------------------------
 `pcm_Task` receives a payload pointer r0 and computes r7 = r0 - 4:
 
-  mail-4  u16le length
-  mail-2  u8 task
-  mail-1  u8 primitive
-  mail+0  payload
+  mail-4  u16le payload length
+  mail-2  u8 task (source)
+  mail-1  u8 route/task selector
+  mail+0  payload; first u16le is the message primitive
+
+A more precise reading of AllocateMailPacket2 (0x22a10) is that the length
+field is the payload length, so total frame size = length + 4. The first
+u16le of the payload at frame+4 is the primitive checked by
+pcmdrv_enqueue_tx; the mail-1 byte is a separate route/task selector.
+The exact semantics of mail-1 remain unresolved.
 
 `pcm_Task` passes r7 and length+4 to pcmdrv_enqueue_tx.
 `pcmdrv_enqueue_tx` rejects length > 0xFC, inspects the first payload word

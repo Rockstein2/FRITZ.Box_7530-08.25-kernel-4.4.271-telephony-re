@@ -18,7 +18,9 @@ extern "C" {
 #define PCMLINK_SLOT_SIZE            16U
 #define PCMLINK_MAX_AUDIO_CHANNELS   7U
 #define PCMLINK_DMA_DESCRIPTORS      16U
-#define PCMLINK_UL_MANAGER_SIZE      0x300U
+#define PCMLINK_UL_MANAGER_SIZE      0x300U  /* prefix cleared by register;
+                                                 full object is 0x8f4, see
+                                                 pcmlink_sharedmem.h */
 #define PCMLINK_LL_MAGIC             0x01012014U
 
 /* GPIO resource table: six TDM pins in this order. */

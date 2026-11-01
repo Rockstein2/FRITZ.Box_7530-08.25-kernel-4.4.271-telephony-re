@@ -61,14 +61,30 @@ extern "C" {
 #define AVM_DECT_PCMROUTE_EC_OFFSET    0xDD98U
 
 /*
- * PCM mailbox framing observed in pcmdrv.c/pcm.c:
- *   u16 little-endian length
- *   mail task/primitive bytes
- *   payload
- *   checksum within the pcmdrv frame (see pcmdrv_checksum_valid)
- * The exact task/primitive offsets are documented in
- * reports/avm_dect-pcm-frames.txt; they are not claimed as a public ABI.
+ * PCM mailbox framing observed in pcmdrv.c/pcm.c and AllocateMailPacket2():
+ *
+ *   +0x00  u16le payload length
+ *   +0x02  u8    source task
+ *   +0x03  u8    route/task selector (exact name not proven)
+ *   +0x04  payload; first u16le is the message primitive
+ *
+ * total = payload length + 4; pcmdrv_enqueue_tx rejects total > 0xfc.
+ * The checksum is over frame[0 .. length+3], stored at frame[length+4].
  */
+#define AVM_DECT_PCM_HEADER_SIZE       4U
+
+struct avm_dect_pcm_header {
+    uint16_t length;        /* payload length, not total frame length */
+    uint8_t  source_task;
+    uint8_t  route;
+} __attribute__((packed));
+
+#define AVM_DECT_PCM_PRIM_PCM_STATUS   0xF625U
+#define AVM_DECT_PCM_PRIM_PCM_TX       0xF626U
+#define AVM_DECT_PCM_PRIM_REMOTE_STAT  0xFFF1U
+#define AVM_DECT_PCM_PRIM_ACTIVITY     0x0158U
+#define AVM_DECT_PCM_PRIM_TEST_CFM     0x0242U
+#define AVM_DECT_PCM_PRIM_SPECIAL      0x2FBAU
 
 #ifdef __cplusplus
 }

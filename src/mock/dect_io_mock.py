@@ -156,8 +156,10 @@ class DectIoMock:
         raise OSError(errno.EFAULT, "invalid ioctl command")
 
     # ---- helpers for tests --------------------------------------------
-    def make_write_frame(self, primitive: int, payload: bytes = b"", tag: int = DECT_IO_WRITE_TAG) -> bytes:
-        body = bytes([DECT_IO_CHANNEL]) + struct.pack("<H", primitive) + payload
+    def make_write_frame(self, primitive: int, payload: bytes = b"",
+                         tag: int = DECT_IO_WRITE_TAG,
+                         channel: int = DECT_IO_CHANNEL) -> bytes:
+        body = bytes([channel]) + struct.pack("<H", primitive) + payload
         return struct.pack("<HH", len(body), tag) + body
 
     def front_read_header(self) -> tuple[int, int, int]:

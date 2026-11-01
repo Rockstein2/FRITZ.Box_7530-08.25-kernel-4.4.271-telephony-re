@@ -162,8 +162,31 @@ the threshold. This is the same kind of hardware check that
 ```text
 tdm_if_config_init(slot_size, tx_slots, rx_slots, config)
 tdm_if_dma_init(dma_handle, ipq40xxtdm_TxData, ipq40xxtdm_RxData,
-                1, descriptor_count, slot_size, slot_ratio, 16)
+                1, 1, slot_size, slot_ratio, 16)
 ```
+
+The exact register/stack assignment is recovered from `0x9ff8..0xa04c`:
+
+```text
+r0 = [r4+0x24]  slot size (8 or 16)
+r1 = [r4+0x34]  tx slot count/flag
+r2 = [r4+0x30]  rx slot count/flag
+r3 = [r4+0x38]  config value
+
+tdm_if_dma_init:
+  r0 = .bss+0xd6a4 (DMA handle/context)
+  r1 = ipq40xxtdm_TxData
+  r2 = ipq40xxtdm_RxData
+  r3 = 1
+  stack[0] = 1
+  stack[1] = slot size
+  stack[2] = slot_ratio = uidiv([r5+0], [r5+8])
+  stack[3] = 0x10 (16 descriptors)
+```
+
+So the earlier “descriptor_count before slot_size” ordering was wrong; the
+fifth argument is a second `1`, and the descriptor count is the eighth
+argument.
 
 `ipq40xxtdm_linkactivate` then calls:
 
@@ -202,10 +225,64 @@ They are not present in the OpenWrt 6.12 kernel. Replacing `vermagic` is not
 enough; the QCA TDM/DMA driver or a clean ALSA/DAI + DMA implementation is
 required.
 
+### 3.4 Recovered host/router shared-memory layout
+
+`pcmlink` has two distinct state objects:
+
+```text
+gPcmroute         .bss+0xd780, 0xf8e8  host-side PCMRoute state
+gPcmrouteKernel   .bss+0x280c0, 0x8f4  upper-layer manager
+```
+
+`pcmroute_getsharedmem()` returns `&gPcmroute`. The DSP/link descriptor is a
+different object returned by `pcmlink_ll_sharedmemory()` and stored at
+`gPcmrouteKernel+0x234`.
+
+Recovered `gPcmroute` regions:
+
+```text
+0x0000  magic 0xc0afd54c
+0x0004  derived value 0xeaac4704
+0x0008  u16 command-ring head
+0x000a  u16 command-ring tail
+0x000c  0x104 * 0x28 command-ring entries
+0x28ac  4 * 0x40 connection-struct pool
+0x29ac  0x18-byte slot-table descriptor
+0x29b0  u16 slot count
+0x29b4  pointer to slot table at 0x3284
+0x29c4  140 * 0x10 connection entries
+0x3284  0x198-byte slot entries
+0xdd98  5 * 0x94 echo-canceller states
+0xe76c  3 * 0x24 codec callbacks
+0xe828  0x44-byte per-slot EC/channel state
+0xeaa8  u16 PCMRoute context
+0xebac  0x18-byte channel state array
+0xf000  0x8e8-byte status block
+```
+
+The manager stores the DSP mappings at `+0x224..+0x234`:
+
+```text
++0x224  host address of descriptor+0x24
++0x228  host address of descriptor+0x38 (or 0)
++0x22c  host address of descriptor+0x3c (or 0)
++0x230  host address of descriptor+0x28
++0x234  descriptor pointer from pcmlink_ll_sharedmemory()
++0x238  pcmrouter callback argument
+```
+
+The descriptor's `+0x24` table has 0x14-byte entries (`slot`, `length`,
+`offset`); `+0x38` is the TX allocation buffer base, `+0x3c` the RX retrieval
+buffer base, `+0x28` the control/receive buffer, `+0x2c` its current length,
+`+0x30` the link state and `+0x34` a status/command word.
+
+See `notes/pcmlink-sharedmem.md` and `include/pcmlink_sharedmem.h` for the
+complete table, structs and evidence.
+
 ## 4. PCM slot and DECT audio API
 
-`pcmlink_ul_register_pcmrouter` allocates the 0x300-byte upper manager and maps
-the DSP shared-memory slot tables. The slot path is:
+`pcmlink_ul_register_pcmrouter` clears the first 0x300 bytes of the 0x8f4-byte
+upper manager and maps the DSP shared-memory slot tables. The slot path is:
 
 ```text
 pcmlink_ul_openslots
@@ -303,11 +380,14 @@ slots, AVM shared-memory addresses, and the AVM trigger timing.
 ## 7. Unresolved questions
 
 1. Exact DT binding/GPIO numbers for the six QCA TDM pins on the 7530.
-2. Exact vendor prototypes of `tdm_if_config_init` and `tdm_if_dma_init`;
-   only argument sources and call order are proven.
+2. The vendor `tdm_if_*` implementation is still missing; the call-site
+   prototypes and argument order are now recovered, but the DMA descriptor
+   format is known only from the QCA call site.
 3. Whether the 7530 uses the vendor QCA TDM driver with FIQ, or a different
    backend in production.
-4. Complete `PCMRoute_*`/`pcmlink_ul_*` ABI details and shared-memory layout.
+4. Complete `PCMRoute_*`/`pcmlink_ul_*` ABI details; the host-side
+   `gPcmroute` region map is in `notes/pcmlink-sharedmem.md`, but the DSP
+   descriptor semantics and some slot/connection fields remain unresolved.
 5. Which codec/DSP firmware (if any) the 7530 actually requires; the module
    contains many codec/FFT/EC routines, but not all are used by DECT.
 6. Exact behavior of `pcmlink_ll_trigger_control` and hrtimer timing under
@@ -321,7 +401,10 @@ slots, AVM shared-memory addresses, and the AVM trigger timing.
 | 16-bit-only slots, max 7 audio channels | high | `ipq40xxtdm_linkinit`, `pcmlink_ul_openslots` |
 | `tdm_if_*` call order and DMA stall poll | high | `ipq40xxtdm_*` disassembly |
 | QCA backend/`QCA-ADSS` identity | high | strings + symbols |
-| exact vendor prototypes | medium | call-site inference only |
+| `tdm_if_*` call-site prototypes/argument order | high | register/stack assignment |
+| vendor `tdm_if_*` implementation/DMA descriptor | medium | call-site inference only |
+| `gPcmroute` region map and command ring | high | `0x15058`, `0x17a50`, `0xb4bc` |
+| DSP descriptor `+0x24/+0x28/+0x38/+0x3c` semantics | medium | `0x23f0` mapping only |
 | physical GPIO numbers | medium | values come from hw_config |
 | full shared-memory/timing semantics | low-medium | requires runtime tracing |
 | codec/DSP usage on 7530 | medium | module contents vs stock profile |
@@ -335,4 +418,7 @@ reports/pcmlink.disasm.txt
 reports/pcmlink-callgraph.txt
 reports/pcmlink-tdm-gpio.txt
 reports/pcmlink-api.txt
+reports/pcmlink-sharedmem.txt
+notes/pcmlink-sharedmem.md
+include/pcmlink_sharedmem.h
 ```

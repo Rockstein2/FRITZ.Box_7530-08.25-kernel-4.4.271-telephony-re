@@ -38,6 +38,27 @@ The following are not required for the first DECT-control experiment:
 - `ulpcmlink.ko`: remote PCM transport.
 - `nlaudio.ko`: auxiliary netlink audio bridge.
 
+## Analysis status
+
+Phase 1 (`dect_io`) and Phase 2 (Piglet loader) are complete. The boundary
+analysis now also covers `avm_dect`, `pcmlink` and the host-side `gPcmroute`
+layout:
+
+```text
+notes/dect_io.md                  /dev/dect_io ABI and queue behavior
+notes/piglet.md                   DECT UART loader, HEX framing, firmware patch
+notes/avm_dect.md                 DECT/PCM/control boundary
+notes/pcmlink.md                  QCA TDM/DMA and slot boundary
+notes/pcmlink-sharedmem.md        gPcmroute and DSP-descriptor map
+include/*.h                       reconstructed ABI/layout headers
+src/mock/                         userspace-only mocks (40 tests)
+reports/pcmlink-sharedmem.txt     raw shared-memory evidence
+```
+
+The remaining blockers are the vendor `tdm_if_*` implementation/DMA
+descriptor format, the full DSP shared-memory semantics, the PCM primitive
+map, and the real 7530 hardware configuration.
+
 ## Critical missing vendor-kernel APIs
 
 The modules are not merely tied to kernel 4.4 APIs. They import AVM/QCOM functions that OpenWrt 6.12 does not provide, including:
@@ -151,11 +172,16 @@ PYTHONPATH=src/mock python3 -m unittest discover -s src/mock/tests -v
 - `modules/`: **local only after extraction**, selected AVM kernel modules.
 - `firmware/`: **local only after extraction**, DECT firmware and EEPROM data.
 - `reference/init.d/`: **local only after extraction**, vendor init scripts.
+- `include/`: reconstructed ABI, protocol and shared-memory layout headers.
+- `notes/`: per-module static analysis, including `pcmlink-sharedmem.md`.
+- `src/mock/`: userspace-only models and tests; no kernel modules are loaded.
+- `src/tools/`: disassembly, xref and HEX inspection helpers.
 - `reports/imports/`: undefined symbols required by each module.
 - `reports/exports/`: symbols retained in each unstripped module.
 - `reports/symbols/`: complete address-sorted symbol tables.
 - `reports/functions/`: named text symbols, suitable as a Ghidra function map.
 - `reports/source-paths/`: source paths embedded by AVM builds.
 - `reports/*.modinfo.txt`: original metadata and parameters.
+- `reports/pcmlink-sharedmem.txt`: shared-memory evidence and region map.
 
 Do not load these original `.ko` files on the OpenWrt 6.12 kernel.

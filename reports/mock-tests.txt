@@ -1,3 +1,16 @@
+test_host_to_dect_callback_and_free (test_avm_dect_mock.AvmDectMockTests.test_host_to_dect_callback_and_free) ... ok
+test_init_registers_and_cleanup_releases_dect_control (test_avm_dect_mock.AvmDectMockTests.test_init_registers_and_cleanup_releases_dect_control) ... ok
+test_pcm_checksum (test_avm_dect_mock.AvmDectMockTests.test_pcm_checksum) ... ok
+test_pcm_rx_dispatch (test_avm_dect_mock.AvmDectMockTests.test_pcm_rx_dispatch) ... ok
+test_pcm_task_activity_and_queue (test_avm_dect_mock.AvmDectMockTests.test_pcm_task_activity_and_queue) ... ok
+test_pcm_task_drops_remote_status_until_enabled (test_avm_dect_mock.AvmDectMockTests.test_pcm_task_drops_remote_status_until_enabled) ... ok
+test_pcm_task_rejects_bad_length_route_and_size (test_avm_dect_mock.AvmDectMockTests.test_pcm_task_rejects_bad_length_route_and_size) ... ok
+test_rxtx_callback_control_buffer (test_avm_dect_mock.AvmDectMockTests.test_rxtx_callback_control_buffer) ... ok
+test_tx_requires_handler (test_avm_dect_mock.AvmDectMockTests.test_tx_requires_handler) ... ok
+test_tx_special_primitive_uses_mempool (test_avm_dect_mock.AvmDectMockTests.test_tx_special_primitive_uses_mempool) ... ok
+test_tx_strips_channel_and_forwards (test_avm_dect_mock.AvmDectMockTests.test_tx_strips_channel_and_forwards) ... ok
+test_uota_slot_lifecycle (test_avm_dect_mock.AvmDectMockTests.test_uota_slot_lifecycle) ... ok
+test_uota_slot_limits (test_avm_dect_mock.AvmDectMockTests.test_uota_slot_limits) ... ok
 test_debug_truncation (test_dect_io_mock.DectIoMockTests.test_debug_truncation) ... ok
 test_ioctl_time_and_debug (test_dect_io_mock.DectIoMockTests.test_ioctl_time_and_debug) ... ok
 test_nonblock_empty (test_dect_io_mock.DectIoMockTests.test_nonblock_empty) ... ok
@@ -6,6 +19,17 @@ test_read_header_and_message (test_dect_io_mock.DectIoMockTests.test_read_header
 test_single_open_and_append (test_dect_io_mock.DectIoMockTests.test_single_open_and_append) ... ok
 test_write_forwards_channel_primitive_payload (test_dect_io_mock.DectIoMockTests.test_write_forwards_channel_primitive_payload) ... ok
 test_write_rejects_lengths (test_dect_io_mock.DectIoMockTests.test_write_rejects_lengths) ... ok
+test_dect_to_userspace (test_dect_stack.DectStackMockTests.test_dect_to_userspace) ... ok
+test_pcm_activity_reaches_pcmlink (test_dect_stack.DectStackMockTests.test_pcm_activity_reaches_pcmlink) ... ok
+test_pcmlink_control_reaches_avm_dect (test_dect_stack.DectStackMockTests.test_pcmlink_control_reaches_avm_dect) ... ok
+test_uota_slot_uses_pcmlink (test_dect_stack.DectStackMockTests.test_uota_slot_uses_pcmlink) ... ok
+test_userspace_to_dect (test_dect_stack.DectStackMockTests.test_userspace_to_dect) ... ok
+test_activity_is_recorded (test_pcmlink_mock.PcmlinkMockTests.test_activity_is_recorded) ... ok
+test_audio_slot_data_and_close (test_pcmlink_mock.PcmlinkMockTests.test_audio_slot_data_and_close) ... ok
+test_audio_slot_linkmask_validation (test_pcmlink_mock.PcmlinkMockTests.test_audio_slot_linkmask_validation) ... ok
+test_config_requires_registration_and_is_one_shot (test_pcmlink_mock.PcmlinkMockTests.test_config_requires_registration_and_is_one_shot) ... ok
+test_dect_control_lifecycle (test_pcmlink_mock.PcmlinkMockTests.test_dect_control_lifecycle) ... ok
+test_register_requires_started_isdn (test_pcmlink_mock.PcmlinkMockTests.test_register_requires_started_isdn) ... ok
 test_first_level (test_piglet_image.PigletImageTests.test_first_level) ... ok
 test_p2test (test_piglet_image.PigletImageTests.test_p2test) ... ok
 test_second_level (test_piglet_image.PigletImageTests.test_second_level) ... ok
@@ -16,6 +40,6 @@ test_slow_first_level (test_piglet_uart.PigletUartTests.test_slow_first_level) .
 test_slow_second_level (test_piglet_uart.PigletUartTests.test_slow_second_level) ... ok
 
 ----------------------------------------------------------------------
-Ran 16 tests in 0.138s
+Ran 40 tests in 0.142s
 
 OK

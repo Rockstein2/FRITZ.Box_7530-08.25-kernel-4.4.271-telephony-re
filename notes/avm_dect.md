@@ -177,6 +177,13 @@ mail-1  u8 primitive
 mail+0  payload
 ```
 
+A more precise reading of `AllocateMailPacket2` (`0x22a10`) shows the 4-byte
+header is `{u16 payload_length, u8 source_task, u8 route/task byte}` and the
+**payload starts at `mail+0`**. The first `u16` of that payload is the message
+primitive checked by `pcmdrv_enqueue_tx` (`ldrh [frame+4]`). The byte at
+`mail-1` is therefore a task/route selector, not the same field as the message
+primitive. The exact name and semantics of the `mail-1` byte remain unresolved.
+
 The task length passed to `pcmdrv_enqueue_tx` is `length + 4`. For a mail that
 represents PCM activity, `pcm_Task` calls:
 

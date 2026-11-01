@@ -14,6 +14,31 @@ Models the `/dev/dect_io` ABI documented in `notes/dect_io.md`:
 - poll masks `0x104`/`0x145`;
 - ioctl 1 `{jiffies, 250}` and ioctl 2 debug print.
 
+## `avm_dect_mock.py`
+
+Models the observed `avm_dect.ko` boundary:
+
+- `avm_dect_if_init/deinit/tx` and the `[channel][primitive][payload]` input;
+- the `0x2fba` special-primitive path;
+- `UicpSendMailToHost` and the DECT-to-user callback;
+- the 0x1000-byte `RxTxCallback` control buffer;
+- PCM mail framing, the 0xfc limit, activity notification and checksum;
+- UOTA slot open/close through the pcmlink mock.
+
+## `pcmlink_mock.py`
+
+Models the small part of the `pcmlink` upper boundary used by `avm_dect`:
+
+- DECT-control register/config/release and the observed status probes;
+- audio-slot open/close with the 7-channel link-mask limit;
+- `pcmlink_ul_activity`;
+- DECT-control and audio-slot data delivery callbacks.
+
+## `dect_stack.py`
+
+Wires `DectIoMock -> AvmDectMock -> PcmlinkMock` into one userspace model. It
+does not emulate QCA TDM/DMA hardware.
+
 ## `piglet_uart_mock.py`
 
 Models the documented DECT upload handshake (`STX`, `SOH`, length, `ACK`,
@@ -44,4 +69,7 @@ The tests cover:
 - read header/body and partial reads;
 - poll, ioctl, single-open and O_APPEND behavior;
 - first-level, second-level and p2test firmware framing;
-- slow/fast UART upload and checksum/NACK behavior.
+- slow/fast UART upload and checksum/NACK behavior;
+- avm_dect TX/RX, special primitive, control buffer and PCM mail rules;
+- pcmlink DECT-control registration, slot masks and UOTA callbacks;
+- the wired `dect_io -> avm_dect -> pcmlink` chain.
