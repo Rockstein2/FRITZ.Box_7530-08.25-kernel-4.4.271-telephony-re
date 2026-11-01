@@ -1,0 +1,1242 @@
+
+=== dmgt_dect_to_api 0x10e700..0x10e854 (340 bytes) ===
+0x10e700: push     {r2, r3}
+0x10e704: push     {r0, r1, r2, r3, r4, r5, r6, r7, r8, sb, sl, lr}
+0x10e708: mov      r6, r1
+0x10e70c: ldr      r7, [pc, #0x128]                 ; lit@0x10e83c=.text+0xc14ec -> 0x6b27c | .text+0x1df2c
+0x10e710: ldr      r3, [pc, #0x128]                 ; lit@0x10e840=.text+0xc14f0 -> 0x648 | .hash+0x4bc
+0x10e714: add      r7, pc, r7
+0x10e718: ldr      r8, [sp, #0x30]
+0x10e71c: ldr      sb, [r7, r3]
+0x10e720: add      r5, r8, #3
+0x10e724: ldr      r3, [sb]
+0x10e728: uxth     r5, r5
+0x10e72c: strh     r5, [sp]
+0x10e730: add      r5, r5, #4
+0x10e734: str      r3, [sp, #0xc]
+0x10e738: cmp      r5, #0x80
+0x10e73c: ldr      r3, [pc, #0x100]                 ; lit@0x10e844=.text+0xc14f4 -> 0xffff8052
+0x10e740: strh     r3, [sp, #2]
+0x10e744: bls      #0x10e7f0                        ; -> dmgt_dect_to_api+0xf0
+0x10e748: ldr      r2, [pc, #0xf8]                  ; lit@0x10e848=.text+0xc14f8 -> 0x4c20f | .plt+0xa7
+0x10e74c: movw     r1, #0x877
+0x10e750: mov      r0, r5
+0x10e754: add      r2, pc, r2
+0x10e758: bl       #0x11fec0                        ; -> dmgt_manage_malloc+0x0
+0x10e75c: subs     r4, r0, #0
+0x10e760: beq      #0x10e7d8                        ; -> dmgt_dect_to_api+0xd8
+0x10e764: mov      r2, #4
+0x10e768: mov      r1, sp
+0x10e76c: mov      r0, r4
+0x10e770: bl       #0x4ccd4                         ; CALL memcpy
+0x10e774: strh     r6, [sp, #6]
+0x10e778: mov      r3, #0x14
+0x10e77c: strb     r3, [sp, #5]
+0x10e780: mov      r2, #3
+0x10e784: add      r1, sp, #5
+0x10e788: add      r0, r4, #4
+0x10e78c: mov      r6, #7
+0x10e790: bl       #0x4ccd4                         ; CALL memcpy
+0x10e794: add      r3, sp, #0x34
+0x10e798: str      r3, [sp, #8]
+0x10e79c: cmp      r8, #0
+0x10e7a0: bgt      #0x10e800                        ; -> dmgt_dect_to_api+0x100
+0x10e7a4: ldr      r3, [pc, #0xa0]                  ; lit@0x10e84c=.text+0xc14fc -> 0x614 | .hash+0x488
+0x10e7a8: mov      r2, r6
+0x10e7ac: mov      r1, r4
+0x10e7b0: ldr      r3, [r7, r3]
+0x10e7b4: ldr      r0, [r3]
+0x10e7b8: bl       #0x4ca10                         ; CALL write
+0x10e7bc: cmp      r5, #0x80
+0x10e7c0: bls      #0x10e7d8                        ; -> dmgt_dect_to_api+0xd8
+0x10e7c4: ldr      r2, [pc, #0x84]                  ; lit@0x10e850=.text+0xc1500 -> 0x4c193 | .plt+0x2b
+0x10e7c8: mov      r1, #0x890
+0x10e7cc: mov      r0, r4
+0x10e7d0: add      r2, pc, r2
+0x10e7d4: bl       #0x121188                        ; -> dmgt_manage_free+0x0
+0x10e7d8: ldr      r2, [sp, #0xc]
+0x10e7dc: mov      r0, #0
+0x10e7e0: ldr      r3, [sb]
+0x10e7e4: cmp      r2, r3
+0x10e7e8: beq      #0x10e82c                        ; -> dmgt_dect_to_api+0x12c
+0x10e7ec: bl       #0x4c710                         ; CALL __stack_chk_fail
+0x10e7f0: ldr      r3, [pc, #0x54]                  ; lit@0x10e84c=.text+0xc14fc -> 0x614 | .hash+0x488
+0x10e7f4: ldr      r4, [r7, r3]
+0x10e7f8: add      r4, r4, #0x200
+0x10e7fc: b        #0x10e764                        ; -> dmgt_dect_to_api+0x64
+0x10e800: ldr      r1, [sp, #8]
+0x10e804: add      r0, r4, r6
+0x10e808: mov      r3, r1
+0x10e80c: ldr      r1, [r1, #4]
+0x10e810: ldr      sl, [r3], #8
+0x10e814: str      r3, [sp, #8]
+0x10e818: mov      r2, sl
+0x10e81c: add      r6, r6, sl
+0x10e820: bl       #0x4ccd4                         ; CALL memcpy
+0x10e824: sub      r8, r8, sl
+0x10e828: b        #0x10e79c                        ; -> dmgt_dect_to_api+0x9c
+0x10e82c: add      sp, sp, #0x10
+0x10e830: pop      {r4, r5, r6, r7, r8, sb, sl, lr}
+0x10e834: add      sp, sp, #8
+0x10e838: bx       lr
+0x10e83c: andeq    fp, r6, ip, ror r2
+0x10e840: andeq    r0, r0, r8, asr #12
+
+=== dmgt_dect_from_api 0x111814..0x115758 (16196 bytes) ===
+0x111814: push     {r4, r5, r6, r7, r8, sb, sl, fp, lr}
+0x111818: sub      sp, sp, #0xc4
+0x11181c: ldr      r8, [pc, #0xf78]                 ; lit@0x11279c=.text+0xc544c -> 0x68164 | .text+0x1ae14
+0x111820: mov      r5, r1
+0x111824: ldr      r3, [pc, #0xf74]                 ; lit@0x1127a0=.text+0xc5450 -> 0x648 | .hash+0x4bc
+0x111828: mov      r4, r2
+0x11182c: add      r8, pc, r8
+0x111830: ldr      r3, [r8, r3]
+0x111834: str      r3, [sp, #0x4c]
+0x111838: ldr      r3, [r3]
+0x11183c: str      r3, [sp, #0xbc]
+0x111840: movw     r3, #0x2fda
+0x111844: cmp      r0, r3
+0x111848: beq      #0x11498c                        ; -> dmgt_dect_from_api+0x3178
+0x11184c: mov      r6, r0
+0x111850: bhi      #0x111cd4                        ; -> dmgt_dect_from_api+0x4c0
+0x111854: movw     r3, #0x2fa8
+0x111858: cmp      r0, r3
+0x11185c: beq      #0x112ec4                        ; -> dmgt_dect_from_api+0x16b0
+0x111860: bhi      #0x111aec                        ; -> dmgt_dect_from_api+0x2d8
+0x111864: movw     r3, #0x2f83
+0x111868: cmp      r0, r3
+0x11186c: beq      #0x1132d4                        ; -> dmgt_dect_from_api+0x1ac0
+0x111870: bhi      #0x1119e8                        ; -> dmgt_dect_from_api+0x1d4
+0x111874: movw     r3, #0x2f7b
+0x111878: cmp      r0, r3
+0x11187c: beq      #0x115170                        ; -> dmgt_dect_from_api+0x395c
+0x111880: bhi      #0x1118a4                        ; -> dmgt_dect_from_api+0x90
+0x111884: cmp      r0, #0x5e
+0x111888: beq      #0x114ec4                        ; -> dmgt_dect_from_api+0x36b0
+0x11188c: ldr      r3, [sp, #0x4c]
+0x111890: ldr      r2, [sp, #0xbc]
+0x111894: ldr      r3, [r3]
+0x111898: cmp      r2, r3
+0x11189c: beq      #0x115750                        ; -> dmgt_dect_from_api+0x3f3c
+0x1118a0: bl       #0x4c710                         ; CALL __stack_chk_fail
+0x1118a4: movw     r3, #0x2f7e
+0x1118a8: cmp      r0, r3
+0x1118ac: beq      #0x1151a4                        ; -> dmgt_dect_from_api+0x3990
+0x1118b0: movw     r3, #0x2f82
+0x1118b4: cmp      r0, r3
+0x1118b8: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x1118bc: ldrb     r0, [r4]
+0x1118c0: ldrb     r5, [r4, #1]
+0x1118c4: strb     r0, [sp, #0x57]
+0x1118c8: and      r0, r0, #7
+0x1118cc: bl       #0x11b29c                        ; -> dmgt_manage_find_pp+0x0
+0x1118d0: cmp      r0, #0
+0x1118d4: beq      #0x1118ec                        ; -> dmgt_dect_from_api+0xd8
+0x1118d8: ldr      r3, [r0, #0x14]
+0x1118dc: cmp      r3, #6
+0x1118e0: moveq    r3, #0
+0x1118e4: streq    r3, [r0, #0x14]
+0x1118e8: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x1118ec: ldrb     r0, [sp, #0x57]
+0x1118f0: add      r1, sp, #0x58
+0x1118f4: bl       #0x11b218                        ; -> dmgt_manage_find_pp_and_link+0x0
+0x1118f8: subs     r4, r0, #0
+0x1118fc: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111900: ldr      r3, [sp, #0x58]
+0x111904: movw     r1, #0x2f82
+0x111908: cmp      r6, r1
+0x11190c: sxtb     r0, r5
+0x111910: ldr      ip, [r3, #4]
+0x111914: add      r3, r4, #0x1000
+0x111918: moveq    r1, #0x80
+0x11191c: movne    r1, #0
+0x111920: ldr      r3, [r3, #0x444]
+0x111924: add      r3, r3, #0x144
+0x111928: add      r3, r3, #1
+0x11192c: add      r3, r4, r3, lsl #4
+0x111930: ldrb     r2, [r3, #4]
+0x111934: ldrb     r3, [r4, #0xcc]
+0x111938: orr      r2, r2, ip, lsl #8
+0x11193c: and      r3, r3, #0xf
+0x111940: uxth     r2, r2
+0x111944: orr      r0, r3, r0, lsl #8
+0x111948: orr      r0, r1, r0
+0x11194c: mov      r1, #0x2d
+0x111950: uxth     r0, r0
+0x111954: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x111958: ldr      r2, [sp, #0x58]
+0x11195c: ldr      r3, [r2, #4]
+0x111960: sub      r3, r3, #1
+0x111964: cmp      r3, #0x1d
+0x111968: addls    pc, pc, r3, lsl #2
+0x11196c: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111970: b        #0x1145d8                        ; -> dmgt_dect_from_api+0x2dc4
+0x111974: b        #0x1145d8                        ; -> dmgt_dect_from_api+0x2dc4
+0x111978: b        #0x114594                        ; -> dmgt_dect_from_api+0x2d80
+0x11197c: b        #0x1147c0                        ; -> dmgt_dect_from_api+0x2fac
+0x111980: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111984: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111988: b        #0x114530                        ; -> dmgt_dect_from_api+0x2d1c
+0x11198c: b        #0x114528                        ; -> dmgt_dect_from_api+0x2d14
+0x111990: b        #0x11476c                        ; -> dmgt_dect_from_api+0x2f58
+0x111994: b        #0x11476c                        ; -> dmgt_dect_from_api+0x2f58
+0x111998: b        #0x11476c                        ; -> dmgt_dect_from_api+0x2f58
+0x11199c: b        #0x11476c                        ; -> dmgt_dect_from_api+0x2f58
+0x1119a0: b        #0x11476c                        ; -> dmgt_dect_from_api+0x2f58
+0x1119a4: b        #0x11476c                        ; -> dmgt_dect_from_api+0x2f58
+0x1119a8: b        #0x1147c0                        ; -> dmgt_dect_from_api+0x2fac
+0x1119ac: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x1119b0: b        #0x1148d4                        ; -> dmgt_dect_from_api+0x30c0
+0x1119b4: b        #0x11476c                        ; -> dmgt_dect_from_api+0x2f58
+0x1119b8: b        #0x11476c                        ; -> dmgt_dect_from_api+0x2f58
+0x1119bc: b        #0x1145d8                        ; -> dmgt_dect_from_api+0x2dc4
+0x1119c0: b        #0x1145d8                        ; -> dmgt_dect_from_api+0x2dc4
+0x1119c4: b        #0x1145a8                        ; -> dmgt_dect_from_api+0x2d94
+0x1119c8: b        #0x1145d8                        ; -> dmgt_dect_from_api+0x2dc4
+0x1119cc: b        #0x1146f0                        ; -> dmgt_dect_from_api+0x2edc
+0x1119d0: b        #0x1147b8                        ; -> dmgt_dect_from_api+0x2fa4
+0x1119d4: b        #0x11476c                        ; -> dmgt_dect_from_api+0x2f58
+0x1119d8: b        #0x11476c                        ; -> dmgt_dect_from_api+0x2f58
+0x1119dc: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x1119e0: b        #0x114794                        ; -> dmgt_dect_from_api+0x2f80
+0x1119e4: b        #0x114530                        ; -> dmgt_dect_from_api+0x2d1c
+0x1119e8: movw     r3, #0x2f87
+0x1119ec: cmp      r0, r3
+0x1119f0: beq      #0x114438                        ; -> dmgt_dect_from_api+0x2c24
+0x1119f4: bhi      #0x111a08                        ; -> dmgt_dect_from_api+0x1f4
+0x1119f8: movw     r3, #0x2f86
+0x1119fc: cmp      r0, r3
+0x111a00: beq      #0x1118bc                        ; -> dmgt_dect_from_api+0xa8
+0x111a04: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111a08: movw     r3, #0x2f95
+0x111a0c: cmp      r0, r3
+0x111a10: beq      #0x114ed4                        ; -> dmgt_dect_from_api+0x36c0
+0x111a14: movw     r3, #0x2f9b
+0x111a18: cmp      r0, r3
+0x111a1c: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111a20: ldrb     r0, [r2]
+0x111a24: add      r1, sp, #0x58
+0x111a28: bl       #0x11b218                        ; -> dmgt_manage_find_pp_and_link+0x0
+0x111a2c: subs     r4, r0, #0
+0x111a30: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111a34: ldr      r3, [sp, #0x58]
+0x111a38: ldr      r3, [r3, #4]
+0x111a3c: cmp      r3, #0x18
+0x111a40: bhi      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111a44: ldr      r5, [pc, #0xd58]                 ; lit@0x1127a4=.text+0xc5454 -> 0x1042004
+0x111a48: mvn      r5, r5, lsr r3
+0x111a4c: ands     r5, r5, #1
+0x111a50: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111a54: ldrb     r0, [r4, #0xcc]
+0x111a58: add      r6, r4, #0x1000
+0x111a5c: ldr      r1, [r6, #0x444]
+0x111a60: add      r1, r1, #0x144
+0x111a64: add      r1, r1, #1
+0x111a68: add      r1, r4, r1, lsl #4
+0x111a6c: ldrb     r2, [r1, #4]
+0x111a70: mov      r1, #0x29
+0x111a74: orr      r2, r2, r3, lsl #8
+0x111a78: uxth     r2, r2
+0x111a7c: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x111a80: ldr      r3, [sp, #0x58]
+0x111a84: ldr      r2, [r3, #4]
+0x111a88: cmp      r2, #0xd
+0x111a8c: bne      #0x11381c                        ; -> dmgt_dect_from_api+0x2008
+0x111a90: mov      r1, #1
+0x111a94: mov      r0, r4
+0x111a98: bl       #0xd9f64                         ; -> dmgt_fon_find_link_with_state+0x0
+0x111a9c: cmp      r0, #0
+0x111aa0: beq      #0x111ab0                        ; -> dmgt_dect_from_api+0x29c
+0x111aa4: ldr      r3, [r0, #0x14]
+0x111aa8: cmp      r3, #0
+0x111aac: bne      #0x111abc                        ; -> dmgt_dect_from_api+0x2a8
+0x111ab0: ldr      r3, [sp, #0x58]
+0x111ab4: mov      r2, #0xe
+0x111ab8: str      r2, [r3, #4]
+0x111abc: ldrb     r3, [r6, #0x3d4]
+0x111ac0: mov      r0, r4
+0x111ac4: tst      r3, #2
+0x111ac8: ldrbeq   r3, [r4, #0x109]
+0x111acc: orreq    r3, r3, #1
+0x111ad0: strbeq   r3, [r4, #0x109]
+0x111ad4: ldr      r1, [sp, #0x58]
+0x111ad8: bl       #0x10fed8                        ; -> dmgt_dect_do_send+0x0
+0x111adc: mov      r1, #0
+0x111ae0: mov      r0, r4
+0x111ae4: bl       #0x10fed8                        ; -> dmgt_dect_do_send+0x0
+0x111ae8: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111aec: movw     r3, #0x2fcf
+0x111af0: cmp      r0, r3
+0x111af4: beq      #0x115228                        ; -> dmgt_dect_from_api+0x3a14
+0x111af8: bhi      #0x111bb8                        ; -> dmgt_dect_from_api+0x3a4
+0x111afc: movw     r3, #0x2fab
+0x111b00: cmp      r0, r3
+0x111b04: beq      #0x113874                        ; -> dmgt_dect_from_api+0x2060
+0x111b08: bhi      #0x111b64                        ; -> dmgt_dect_from_api+0x350
+0x111b0c: movw     r3, #0x2faa
+0x111b10: cmp      r0, r3
+0x111b14: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111b18: mov      sl, r2
+0x111b1c: add      r1, sp, #0x58
+0x111b20: ldrb     r0, [sl], #1
+0x111b24: strb     r0, [sp, #0x56]
+0x111b28: bl       #0x11b218                        ; -> dmgt_manage_find_pp_and_link+0x0
+0x111b2c: subs     r5, r0, #0
+0x111b30: bne      #0x113a30                        ; -> dmgt_dect_from_api+0x221c
+0x111b34: mov      r3, #0x10
+0x111b38: add      r2, sp, #0x56
+0x111b3c: strb     r3, [sp, #0x57]
+0x111b40: add      r3, sp, #0x57
+0x111b44: str      r3, [sp, #8]
+0x111b48: mov      r3, #1
+0x111b4c: str      r2, [sp]
+0x111b50: movw     r1, #0x2f85
+0x111b54: str      r3, [sp, #4]
+0x111b58: mov      r2, #2
+0x111b5c: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x111b60: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111b64: movw     r3, #0x2fbb
+0x111b68: cmp      r0, r3
+0x111b6c: beq      #0x1152e8                        ; -> dmgt_dect_from_api+0x3ad4
+0x111b70: movw     r3, #0x2fbd
+0x111b74: cmp      r0, r3
+0x111b78: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111b7c: mov      r0, r2
+0x111b80: ldrb     r6, [r0], #1
+0x111b84: bl       #0x10c588
+0x111b88: mov      r5, r0
+0x111b8c: mov      r0, r6
+0x111b90: bl       #0x11b29c                        ; -> dmgt_manage_find_pp+0x0
+0x111b94: cmp      r0, #0
+0x111b98: cmpne    r5, #1
+0x111b9c: movls    r3, #1
+0x111ba0: movhi    r3, #0
+0x111ba4: bls      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111ba8: add      r2, r4, #3
+0x111bac: mov      r1, #0xb
+0x111bb0: bl       #0x14a204                        ; -> dmgt_uota_handle_update_event+0x0
+0x111bb4: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111bb8: movw     r3, #0x2fd3
+0x111bbc: cmp      r0, r3
+0x111bc0: beq      #0x115334                        ; -> dmgt_dect_from_api+0x3b20
+0x111bc4: bhi      #0x111bf8                        ; -> dmgt_dect_from_api+0x3e4
+0x111bc8: movw     r3, #0x2fd2
+0x111bcc: cmp      r0, r3
+0x111bd0: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111bd4: ldrb     r0, [r2]
+0x111bd8: bl       #0x11b29c                        ; -> dmgt_manage_find_pp+0x0
+0x111bdc: cmp      r0, #0
+0x111be0: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111be4: mov      r3, #0
+0x111be8: add      r2, r4, #1
+0x111bec: mov      r1, #0xb
+0x111bf0: bl       #0x14a204                        ; -> dmgt_uota_handle_update_event+0x0
+0x111bf4: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111bf8: movw     r3, #0x2fd4
+0x111bfc: cmp      r0, r3
+0x111c00: beq      #0x114a94                        ; -> dmgt_dect_from_api+0x3280
+0x111c04: movw     r3, #0x2fd9
+0x111c08: cmp      r0, r3
+0x111c0c: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111c10: ldr      r3, [pc, #0xbc8]                 ; lit@0x1127e0=.text+0xc5490 -> 0x614 | .hash+0x488
+0x111c14: ldr      r7, [r8, r3]
+0x111c18: ldrb     r3, [r7, #0x8d]
+0x111c1c: tst      r3, #1
+0x111c20: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111c24: ldrb     r6, [r2]
+0x111c28: mov      r0, r6
+0x111c2c: bl       #0x11b29c                        ; -> dmgt_manage_find_pp+0x0
+0x111c30: subs     r4, r0, #0
+0x111c34: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111c38: movw     r5, #0x5ee
+0x111c3c: movw     r3, #0x774
+0x111c40: mov      r1, #0x30
+0x111c44: mov      r0, r6
+0x111c48: ldrh     r2, [r4, r5]
+0x111c4c: ldrh     r8, [r4, r3]
+0x111c50: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x111c54: mov      r0, r4
+0x111c58: bl       #0x13e7dc                        ; -> dmgt_catiq_free_lines+0x0
+0x111c5c: mov      r0, r4
+0x111c60: bl       #0xac2fc                         ; -> dmgt_avm_update_headset_lists+0x0
+0x111c64: mov      r0, r4
+0x111c68: bl       #0xc363c                         ; -> dmgt_avm_cleanup_reminder_lists+0x0
+0x111c6c: ldrh     r3, [r4, r5]
+0x111c70: cmp      r3, #0
+0x111c74: beq      #0x114a68                        ; -> dmgt_dect_from_api+0x3254
+0x111c78: ldr      r3, [r4, #0x644]
+0x111c7c: cmp      r3, #0
+0x111c80: beq      #0x114a68                        ; -> dmgt_dect_from_api+0x3254
+0x111c84: ldrb     r3, [r4, #0x109]
+0x111c88: orr      r3, r3, #2
+0x111c8c: strb     r3, [r4, #0x109]
+0x111c90: tst      r3, #4
+0x111c94: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111c98: mov      r0, r4
+0x111c9c: bl       #0xadf88                         ; -> dmgt_avm_cleanup_all_ringtones+0x0
+0x111ca0: ldrh     r2, [r4, r5]
+0x111ca4: mov      r1, #0xda
+0x111ca8: ldrb     r0, [r4, #0xcc]
+0x111cac: lsl      r2, r2, #8
+0x111cb0: and      r2, r2, #0xff00
+0x111cb4: and      r0, r0, #0xf
+0x111cb8: orr      r2, r2, #4
+0x111cbc: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x111cc0: ldrh     r2, [r4, r5]
+0x111cc4: mov      r0, r4
+0x111cc8: ldr      r1, [r4, #0x644]
+0x111ccc: bl       #0x12d9e0                        ; -> dmgt_user_remove+0x0
+0x111cd0: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111cd4: movw     r3, #0x2ff8
+0x111cd8: cmp      r0, r3
+0x111cdc: beq      #0x114c04                        ; -> dmgt_dect_from_api+0x33f0
+0x111ce0: bhi      #0x111f68                        ; -> dmgt_dect_from_api+0x754
+0x111ce4: movw     r3, #0x2fe7
+0x111ce8: cmp      r0, r3
+0x111cec: beq      #0x11553c                        ; -> dmgt_dect_from_api+0x3d28
+0x111cf0: bhi      #0x111e58                        ; -> dmgt_dect_from_api+0x644
+0x111cf4: movw     r3, #0x2fde
+0x111cf8: cmp      r0, r3
+0x111cfc: beq      #0x1120e8                        ; -> dmgt_dect_from_api+0x8d4
+0x111d00: bhi      #0x111e1c                        ; -> dmgt_dect_from_api+0x608
+0x111d04: movw     r3, #0x2fdc
+0x111d08: cmp      r0, r3
+0x111d0c: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111d10: ldr      r3, [pc, #0xac8]                 ; lit@0x1127e0=.text+0xc5490 -> 0x614 | .hash+0x488
+0x111d14: ldr      r6, [r8, r3]
+0x111d18: ldrb     r3, [r6, #0x8d]
+0x111d1c: tst      r3, #1
+0x111d20: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111d24: mov      r0, r2
+0x111d28: mov      r8, #1
+0x111d2c: add      r4, r4, #2
+0x111d30: bl       #0x10c588
+0x111d34: mov      r7, r0
+0x111d38: mov      r2, r0
+0x111d3c: and      r7, r7, #0x7e
+0x111d40: mov      r1, #0x2e
+0x111d44: mov      r0, #0
+0x111d48: sub      r5, r5, #2
+0x111d4c: mov      sb, r7
+0x111d50: mov      sl, r8
+0x111d54: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x111d58: cmp      sb, #0
+0x111d5c: bne      #0x1148e8                        ; -> dmgt_dect_from_api+0x30d4
+0x111d60: ldrb     r3, [r6, #0x8c]
+0x111d64: strb     sb, [r6, #0xae]
+0x111d68: tst      r3, #1
+0x111d6c: beq      #0x111d8c                        ; -> dmgt_dect_from_api+0x578
+0x111d70: mov      r2, #1
+0x111d74: mov      r1, #7
+0x111d78: mov      r0, #0x3c
+0x111d7c: bl       #0x111640                        ; -> dmgt_dect_subscription+0x0
+0x111d80: ldrb     r3, [r6, #0x8c]
+0x111d84: bfi      r3, sb, #0, #1
+0x111d88: strb     r3, [r6, #0x8c]
+0x111d8c: mov      r8, #1
+0x111d90: mov      r0, r7
+0x111d94: mov      sb, r8
+0x111d98: bl       #0x12553c                        ; -> dmgt_manage_cleanup_handset_user+0x0
+0x111d9c: cmp      r7, #0
+0x111da0: bne      #0x114914                        ; -> dmgt_dect_from_api+0x3100
+0x111da4: ldrb     r3, [r6, #0x91]
+0x111da8: bfi      r3, r7, #0, #1
+0x111dac: strb     r3, [r6, #0x91]
+0x111db0: ldrsb    r3, [r6, #0x90]
+0x111db4: cmp      r3, #0
+0x111db8: bge      #0x111dcc                        ; -> dmgt_dect_from_api+0x5b8
+0x111dbc: ldrb     r3, [r6, #0x90]
+0x111dc0: bfi      r3, r7, #7, #1
+0x111dc4: strb     r3, [r6, #0x90]
+0x111dc8: bl       #0x1255c4                        ; -> dmgt_manage_write_box_version+0x0
+0x111dcc: mov      r0, #9
+0x111dd0: bl       #0xed148                         ; -> dmgt_configd_rpc_init+0x0
+0x111dd4: ldr      r0, [pc, #0x9cc]                 ; lit@0x1127a8=.text+0xc5458 -> 0x62dc1 | .text+0x15a71
+0x111dd8: mov      r1, #0xa000000
+0x111ddc: add      r0, pc, r0
+0x111de0: bl       #0xed0f4                         ; -> dmgt_configd_rpc_send_get_config+0x0
+0x111de4: bl       #0xee288                         ; -> dmgt_sv_send_tam_status+0x0
+0x111de8: ldrb     r3, [r6, #0x8f]
+0x111dec: tst      r3, #0x10
+0x111df0: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111df4: bfc      r3, #4, #1
+0x111df8: strb     r3, [r6, #0x8f]
+0x111dfc: add      r6, r6, #0x2000
+0x111e00: ldr      r0, [r6, #0x914]
+0x111e04: cmp      r0, #0
+0x111e08: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111e0c: bl       #0x1002bc                        ; -> dmgt_if_handle_locked_req+0x0
+0x111e10: mov      r3, #0
+0x111e14: str      r3, [r6, #0x914]
+0x111e18: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111e1c: movw     r3, #0x2fe4
+0x111e20: cmp      r0, r3
+0x111e24: beq      #0x114fbc                        ; -> dmgt_dect_from_api+0x37a8
+0x111e28: movw     r3, #0x2fe6
+0x111e2c: cmp      r0, r3
+0x111e30: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111e34: cmp      r1, #1
+0x111e38: bls      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111e3c: ldrb     r0, [r2]
+0x111e40: ldrb     r5, [r2, #1]
+0x111e44: and      r0, r0, #7
+0x111e48: bl       #0x11b29c                        ; -> dmgt_manage_find_pp+0x0
+0x111e4c: cmp      r0, #0
+0x111e50: strbne   r5, [r0, #0x772]
+0x111e54: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111e58: movw     r3, #0x2fed
+0x111e5c: cmp      r0, r3
+0x111e60: beq      #0x114b5c                        ; -> dmgt_dect_from_api+0x3348
+0x111e64: bhi      #0x111ee0                        ; -> dmgt_dect_from_api+0x6cc
+0x111e68: movw     r3, #0x2fec
+0x111e6c: cmp      r0, r3
+0x111e70: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111e74: mov      r0, r2
+0x111e78: mov      r6, #1
+0x111e7c: add      r4, r4, #2
+0x111e80: bl       #0x10c588
+0x111e84: mov      r2, r0
+0x111e88: mov      r7, r0
+0x111e8c: mov      r1, #0x33
+0x111e90: mov      r0, #0
+0x111e94: sub      r5, r5, #2
+0x111e98: mov      r8, r6
+0x111e9c: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x111ea0: tst      r7, #0x7e
+0x111ea4: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111ea8: asr      r3, r7, r6
+0x111eac: tst      r3, #1
+0x111eb0: beq      #0x111ed4                        ; -> dmgt_dect_from_api+0x6c0
+0x111eb4: bic      r7, r7, r8, lsl r6
+0x111eb8: mov      r3, r5
+0x111ebc: str      r4, [sp]
+0x111ec0: sub      r2, r6, #1
+0x111ec4: mov      r1, #6
+0x111ec8: mov      r0, r6
+0x111ecc: uxth     r7, r7
+0x111ed0: bl       #0x11fd14                        ; -> dmgt_manage_alloc_repeater+0x0
+0x111ed4: add      r6, r6, #1
+0x111ed8: uxtb     r6, r6
+0x111edc: b        #0x111ea0                        ; -> dmgt_dect_from_api+0x68c
+0x111ee0: movw     r3, #0x2fef
+0x111ee4: cmp      r0, r3
+0x111ee8: beq      #0x114af8                        ; -> dmgt_dect_from_api+0x32e4
+0x111eec: movw     r3, #0x2ff7
+0x111ef0: cmp      r0, r3
+0x111ef4: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111ef8: mov      r0, r2
+0x111efc: add      r4, r4, #2
+0x111f00: sub      r5, r5, #2
+0x111f04: bl       #0x10c588
+0x111f08: mov      r2, r0
+0x111f0c: mov      r7, r0
+0x111f10: mov      r1, #0x36
+0x111f14: mov      r0, #0
+0x111f18: mov      r6, #0
+0x111f1c: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x111f20: uxth     r3, r6
+0x111f24: cmp      r7, r3
+0x111f28: bhi      #0x114be8                        ; -> dmgt_dect_from_api+0x33d4
+0x111f2c: ldr      r3, [pc, #0x8ac]                 ; lit@0x1127e0=.text+0xc5490 -> 0x614 | .hash+0x488
+0x111f30: ldr      r3, [r8, r3]
+0x111f34: ldrb     r2, [r3, #0x8f]
+0x111f38: tst      r2, #0x20
+0x111f3c: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111f40: bfc      r2, #5, #1
+0x111f44: add      r4, r3, #0x2000
+0x111f48: strb     r2, [r3, #0x8f]
+0x111f4c: ldr      r0, [r4, #0x918]
+0x111f50: cmp      r0, #0
+0x111f54: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111f58: bl       #0x144110                        ; -> dmgt_ule_handle_locked_req+0x0
+0x111f5c: mov      r3, #0
+0x111f60: str      r3, [r4, #0x918]
+0x111f64: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111f68: movw     r3, #0x3002
+0x111f6c: cmp      r0, r3
+0x111f70: beq      #0x114e08                        ; -> dmgt_dect_from_api+0x35f4
+0x111f74: bhi      #0x112040                        ; -> dmgt_dect_from_api+0x82c
+0x111f78: movw     r3, #0x2ffd
+0x111f7c: cmp      r0, r3
+0x111f80: beq      #0x114dac                        ; -> dmgt_dect_from_api+0x3598
+0x111f84: bhi      #0x111fe0                        ; -> dmgt_dect_from_api+0x7cc
+0x111f88: movw     r3, #0x2ffa
+0x111f8c: cmp      r0, r3
+0x111f90: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111f94: mov      r0, r2
+0x111f98: bl       #0x10c588
+0x111f9c: mov      r4, r0
+0x111fa0: mov      r2, #0
+0x111fa4: mov      r1, #0x35
+0x111fa8: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x111fac: cmp      r4, #0xf
+0x111fb0: bls      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111fb4: ldr      r3, [pc, #0x824]                 ; lit@0x1127e0=.text+0xc5490 -> 0x614 | .hash+0x488
+0x111fb8: mov      r1, r4
+0x111fbc: ldr      r0, [r8, r3]
+0x111fc0: add      r0, r0, #0x40
+0x111fc4: bl       #0x1180a0                        ; -> dmgt_manage_index_to_entry+0x0
+0x111fc8: subs     r4, r0, #0
+0x111fcc: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111fd0: bl       #0x144090                        ; -> dmgt_ule_send_unlocked_ind+0x0
+0x111fd4: mov      r0, r4
+0x111fd8: bl       #0x123b6c                        ; -> dmgt_manage_free_ule+0x0
+0x111fdc: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111fe0: movw     r3, #0x2ffe
+0x111fe4: cmp      r0, r3
+0x111fe8: beq      #0x114c84                        ; -> dmgt_dect_from_api+0x3470
+0x111fec: movw     r3, #0x2fff
+0x111ff0: cmp      r0, r3
+0x111ff4: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x111ff8: mov      r0, r2
+0x111ffc: bl       #0x10c588
+0x112000: mov      r6, r0
+0x112004: add      r0, r4, #2
+0x112008: bl       #0x10c588
+0x11200c: ldr      r3, [pc, #0x7cc]                 ; lit@0x1127e0=.text+0xc5490 -> 0x614 | .hash+0x488
+0x112010: mov      r5, r0
+0x112014: ldrb     r4, [r4, #4]
+0x112018: mov      r1, r6
+0x11201c: ldr      r0, [r8, r3]
+0x112020: add      r0, r0, #0x40
+0x112024: bl       #0x1180a0                        ; -> dmgt_manage_index_to_entry+0x0
+0x112028: cmp      r0, #0
+0x11202c: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x112030: mov      r2, r4
+0x112034: mov      r1, r5
+0x112038: bl       #0x14342c                        ; -> dmgt_ule_send_data_cfm+0x0
+0x11203c: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x112040: movw     r3, #0x3008
+0x112044: cmp      r0, r3
+0x112048: beq      #0x115598                        ; -> dmgt_dect_from_api+0x3d84
+0x11204c: bhi      #0x1120a0                        ; -> dmgt_dect_from_api+0x88c
+0x112050: movw     r3, #0x3004
+0x112054: cmp      r0, r3
+0x112058: beq      #0x114e60                        ; -> dmgt_dect_from_api+0x364c
+0x11205c: movw     r3, #0x3006
+0x112060: cmp      r0, r3
+0x112064: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x112068: ldrb     r0, [r2]
+0x11206c: and      r0, r0, #7
+0x112070: bl       #0x11b29c                        ; -> dmgt_manage_find_pp+0x0
+0x112074: subs     r5, r0, #0
+0x112078: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x11207c: ldrh     r0, [r5, #0xce]
+0x112080: bl       #0x11b208                        ; -> dmgt_manage_is_virtual_pp+0x0
+0x112084: cmp      r0, #0
+0x112088: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x11208c: ldrb     r1, [r4, #1]
+0x112090: add      r2, r4, #2
+0x112094: ldrh     r0, [r5, #0xce]
+0x112098: bl       #0x143ea0                        ; -> dmgt_ule_send_service_call_info_ind+0x0
+0x11209c: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x1120a0: movw     r3, #0xf612
+0x1120a4: cmp      r0, r3
+0x1120a8: beq      #0x115318                        ; -> dmgt_dect_from_api+0x3b04
+0x1120ac: movw     r3, #0xf614
+0x1120b0: cmp      r0, r3
+0x1120b4: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x1120b8: mov      r0, r2
+0x1120bc: bl       #0x100f4c                        ; -> dmgt_if_handle_monitor_dect_status_cfm+0x0
+0x1120c0: ldr      r3, [pc, #0x718]                 ; lit@0x1127e0=.text+0xc5490 -> 0x614 | .hash+0x488
+0x1120c4: ldr      r2, [r8, r3]
+0x1120c8: ldrb     r3, [r2, #0x94]
+0x1120cc: tst      r3, #0x40
+0x1120d0: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x1120d4: bfc      r3, #6, #1
+0x1120d8: add      r0, r4, #2
+0x1120dc: strb     r3, [r2, #0x94]
+0x1120e0: bl       #0xfff18                         ; -> dmgt_if_send_kpi+0x0
+0x1120e4: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x1120e8: ldrb     r3, [r2]
+0x1120ec: add      r6, r2, #6
+0x1120f0: ldrb     sl, [r2, #3]
+0x1120f4: strb     r3, [sp, #0x55]
+0x1120f8: and      r3, r3, #7
+0x1120fc: str      r3, [sp, #0x30]
+0x112100: ldrb     r3, [r2, #2]
+0x112104: ldrb     r7, [r2, #4]
+0x112108: str      r3, [sp, #0x20]
+0x11210c: ldrb     r3, [r2, #5]
+0x112110: ldrb     sb, [r2, #1]
+0x112114: str      r3, [sp, #0x2c]
+0x112118: ldr      r3, [sp, #0x2c]
+0x11211c: add      r2, sl, r7
+0x112120: add      r3, r3, r2
+0x112124: add      r4, r6, r3
+0x112128: str      r3, [sp, #0x1c]
+0x11212c: ldrb     r3, [r4, #2]
+0x112130: str      r3, [sp, #0x44]
+0x112134: ldr      r3, [sp, #0x1c]
+0x112138: add      r0, r3, #3
+0x11213c: add      r0, r6, r0
+0x112140: bl       #0x10c588
+0x112144: ldrb     r3, [r4, #5]
+0x112148: str      r0, [sp, #0x24]
+0x11214c: str      r3, [sp, #0x34]
+0x112150: ldr      r2, [sp, #0x34]
+0x112154: ldr      r3, [sp, #0x1c]
+0x112158: ldr      r0, [sp, #0x24]
+0x11215c: add      r2, r3, r2
+0x112160: add      r3, r6, r2
+0x112164: ldrb     r3, [r3, #6]
+0x112168: str      r3, [sp, #0x3c]
+0x11216c: add      r3, r2, r3
+0x112170: str      r3, [sp, #0x38]
+0x112174: add      r3, r6, r3
+0x112178: ldr      r1, [sp, #0x38]
+0x11217c: ldrb     r2, [r3, #7]
+0x112180: str      r2, [sp, #0x48]
+0x112184: add      r2, r2, r1
+0x112188: mov      r1, #0x26
+0x11218c: str      r2, [sp, #0x40]
+0x112190: add      r2, r2, #8
+0x112194: cmp      r2, r5
+0x112198: orr      r2, sl, sb, lsl #8
+0x11219c: movhs    r3, #0
+0x1121a0: ldrblo   r3, [r3, #8]
+0x1121a4: str      r3, [sp, #0x28]
+0x1121a8: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x1121ac: ldr      r0, [sp, #0x24]
+0x1121b0: bl       #0x11b208                        ; -> dmgt_manage_is_virtual_pp+0x0
+0x1121b4: cmp      r0, #0
+0x1121b8: beq      #0x112208                        ; -> dmgt_dect_from_api+0x9f4
+0x1121bc: cmp      sb, #6
+0x1121c0: cmpne    sb, #3
+0x1121c4: beq      #0x1121e4                        ; -> dmgt_dect_from_api+0x9d0
+0x1121c8: cmp      sb, #0
+0x1121cc: bne      #0x112208                        ; -> dmgt_dect_from_api+0x9f4
+0x1121d0: ldr      r3, [pc, #0x608]                 ; lit@0x1127e0=.text+0xc5490 -> 0x614 | .hash+0x488
+0x1121d4: ldr      r3, [r8, r3]
+0x1121d8: ldrb     r3, [r3, #0x90]
+0x1121dc: tst      r3, #2
+0x1121e0: beq      #0x112208                        ; -> dmgt_dect_from_api+0x9f4
+0x1121e4: ldr      r3, [pc, #0x5f4]                 ; lit@0x1127e0=.text+0xc5490 -> 0x614 | .hash+0x488
+0x1121e8: ldr      r1, [sp, #0x24]
+0x1121ec: ldr      r0, [r8, r3]
+0x1121f0: add      r0, r0, #0x40
+0x1121f4: bl       #0x1180a0                        ; -> dmgt_manage_index_to_entry+0x0
+0x1121f8: cmp      r0, #0
+0x1121fc: beq      #0x112208                        ; -> dmgt_dect_from_api+0x9f4
+0x112200: ldr      r1, [sp, #0x30]
+0x112204: bl       #0x1433b4                        ; -> dmgt_ule_alloc_virtual_pp+0x0
+0x112208: ldr      r0, [sp, #0x30]
+0x11220c: bl       #0x11b29c                        ; -> dmgt_manage_find_pp+0x0
+0x112210: subs     r4, r0, #0
+0x112214: beq      #0x1122d4                        ; -> dmgt_dect_from_api+0xac0
+0x112218: ldr      r0, [sp, #0x24]
+0x11221c: bl       #0x11b208                        ; -> dmgt_manage_is_virtual_pp+0x0
+0x112220: cmp      r0, #0
+0x112224: bne      #0x112238                        ; -> dmgt_dect_from_api+0xa24
+0x112228: ldr      r3, [r4, #0x644]
+0x11222c: cmp      r3, #0
+0x112230: moveq    r3, #0x10
+0x112234: beq      #0x1122d8                        ; -> dmgt_dect_from_api+0xac4
+0x112238: ldrb     r3, [r4, #0x114]
+0x11223c: mov      r0, r4
+0x112240: orr      r3, r3, #4
+0x112244: strb     r3, [r4, #0x114]
+0x112248: ldrb     r3, [r4, #0x109]
+0x11224c: orr      r3, r3, #0x10
+0x112250: strb     r3, [r4, #0x109]
+0x112254: bl       #0x10c614
+0x112258: ldr      r3, [r4, #0x14]
+0x11225c: cmp      r3, #5
+0x112260: bne      #0x112328                        ; -> dmgt_dect_from_api+0xb14
+0x112264: ldrb     r1, [sp, #0x55]
+0x112268: mov      r3, #0x14
+0x11226c: strb     r3, [sp, #0x58]
+0x112270: mov      r3, #6
+0x112274: str      r3, [r4, #0x14]
+0x112278: mov      r3, #0
+0x11227c: str      r3, [sp, #8]
+0x112280: mov      r2, r3
+0x112284: str      r3, [sp, #4]
+0x112288: mov      r0, r4
+0x11228c: str      r3, [sp]
+0x112290: bl       #0x10f520                        ; -> dmgt_dect_setup_ack_call+0x0
+0x112294: ldrb     r0, [r4, #0xcc]
+0x112298: add      r3, sp, #0x58
+0x11229c: str      r3, [sp, #8]
+0x1122a0: add      r2, sp, #0x55
+0x1122a4: str      r2, [sp]
+0x1122a8: mov      r3, #1
+0x1122ac: str      r3, [sp, #4]
+0x1122b0: mov      r2, #2
+0x1122b4: movw     r1, #0x2f85
+0x1122b8: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x1122bc: ldr      r3, [pc, #0x51c]                 ; lit@0x1127e0=.text+0xc5490 -> 0x614 | .hash+0x488
+0x1122c0: mov      r0, #0xb
+0x1122c4: ldr      r3, [r8, r3]
+0x1122c8: ldrb     r1, [r3, #0x54]
+0x1122cc: bl       #0x10ee8c                        ; -> dmgt_dect_stop_page+0x0
+0x1122d0: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x1122d4: mov      r3, #6
+0x1122d8: strb     r3, [sp, #0x58]
+0x1122dc: add      r3, sp, #0x58
+0x1122e0: str      r3, [sp, #8]
+0x1122e4: add      r2, sp, #0x55
+0x1122e8: str      r2, [sp]
+0x1122ec: mov      r3, #1
+0x1122f0: str      r3, [sp, #4]
+0x1122f4: mov      r2, #2
+0x1122f8: ldr      r0, [sp, #0x30]
+0x1122fc: movw     r1, #0x2f8e
+0x112300: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x112304: cmp      r4, #0
+0x112308: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x11230c: ldr      r3, [pc, #0x4cc]                 ; lit@0x1127e0=.text+0xc5490 -> 0x614 | .hash+0x488
+0x112310: ldr      r3, [r8, r3]
+0x112314: ldr      r3, [r3, #0x10]
+0x112318: cmp      r3, #0
+0x11231c: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x112320: ldr      r3, [r3]
+0x112324: b        #0x112318                        ; -> dmgt_dect_from_api+0xb04
+0x112328: cmp      r3, #0
+0x11232c: bne      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x112330: add      r1, r4, #0x1000
+0x112334: ldrb     fp, [r1, #0x10c]
+0x112338: ands     fp, fp, #8
+0x11233c: beq      #0x112374                        ; -> dmgt_dect_from_api+0xb60
+0x112340: mov      r3, #0x14
+0x112344: add      r2, sp, #0x55
+0x112348: strb     r3, [sp, #0x58]
+0x11234c: add      r3, sp, #0x58
+0x112350: ldrb     r0, [r4, #0xcc]
+0x112354: movw     r1, #0x2f8e
+0x112358: str      r3, [sp, #8]
+0x11235c: mov      r3, #1
+0x112360: str      r2, [sp]
+0x112364: mov      r2, #2
+0x112368: str      r3, [sp, #4]
+0x11236c: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x112370: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x112374: cmp      sb, #1
+0x112378: bhi      #0x112bbc                        ; -> dmgt_dect_from_api+0x13a8
+0x11237c: ldrb     r3, [sp, #0x55]
+0x112380: str      fp, [sp, #0x58]
+0x112384: strb     r3, [r4, #0x10]
+0x112388: mov      r3, #0xa
+0x11238c: str      r3, [r4, #0x14]
+0x112390: ldr      r3, [sp, #0x20]
+0x112394: ldrb     r2, [r4, #0x11a]
+0x112398: asr      r3, r3, #1
+0x11239c: bfi      r2, r3, #6, #1
+0x1123a0: strb     r2, [r4, #0x11a]
+0x1123a4: ldr      r3, [sp, #0x2c]
+0x1123a8: strb     sb, [r4, #0x18]
+0x1123ac: cmp      r3, #2
+0x1123b0: bls      #0x1123e4                        ; -> dmgt_dect_from_api+0xbd0
+0x1123b4: cmp      r3, #0x17
+0x1123b8: add      r0, r4, #0x1840
+0x1123bc: movlo    fp, r3
+0x1123c0: movhs    fp, #0x17
+0x1123c4: add      r3, sl, r7
+0x1123c8: sub      fp, fp, #2
+0x1123cc: uxtb     fp, fp
+0x1123d0: add      r1, r3, #2
+0x1123d4: add      r1, r6, r1
+0x1123d8: mov      r2, fp
+0x1123dc: add      r0, r0, #0x10
+0x1123e0: bl       #0x4ccd4                         ; CALL memcpy
+0x1123e4: add      fp, r4, fp
+0x1123e8: movw     r3, #0x1850
+0x1123ec: mov      r2, #0
+0x1123f0: strb     r2, [fp, r3]
+0x1123f4: add      r3, r4, #0x1000
+0x1123f8: ldr      r2, [sp, #0x20]
+0x1123fc: lsr      r2, r2, #7
+0x112400: strb     r2, [r3, #0x86c]
+0x112404: ldr      r2, [sp, #0x1c]
+0x112408: ldr      r3, [sp, #0x1c]
+0x11240c: ldrb     r2, [r6, r2]
+0x112410: add      r3, r6, r3
+0x112414: cmp      r2, #0
+0x112418: beq      #0x112428                        ; -> dmgt_dect_from_api+0xc14
+0x11241c: ldrb     r3, [r3, #1]
+0x112420: cmp      r3, #0
+0x112424: strbne   r3, [r4, #0x76f]
+0x112428: ldrb     r1, [r4, #0x76f]
+0x11242c: mov      r2, #1
+0x112430: mov      r0, r4
+0x112434: movw     r8, #0x774
+0x112438: bl       #0xdb554                         ; -> dmgt_fon_get_fon_codec_flags_from_dect_codec_list+0x0
+0x11243c: ldrh     r3, [r4, r8]
+0x112440: tst      r0, #8
+0x112444: moveq    fp, #2
+0x112448: movne    fp, #0xa
+0x11244c: cmp      sb, #1
+0x112450: bne      #0x1128dc                        ; -> dmgt_dect_from_api+0x10c8
+0x112454: cmp      r3, #0xd5
+0x112458: bne      #0x1156dc                        ; -> dmgt_dect_from_api+0x3ec8
+0x11245c: mov      r2, r6
+0x112460: mov      r1, sl
+0x112464: mov      r0, r4
+0x112468: bl       #0xf0fdc                         ; -> dmgt_sv_is_tam_setup_req+0x0
+0x11246c: cmp      r0, #0
+0x112470: beq      #0x112694                        ; -> dmgt_dect_from_api+0xe80
+0x112474: mov      r2, r6
+0x112478: mov      r1, sl
+0x11247c: mov      r0, r4
+0x112480: bl       #0xf0eac                         ; -> dmgt_sv_is_pickup_req+0x0
+0x112484: cmp      r0, #0
+0x112488: beq      #0x112658                        ; -> dmgt_dect_from_api+0xe44
+0x11248c: ldr      r1, [pc, #0x318]                 ; lit@0x1127ac=.text+0xc545c -> 0x47275 | .rel.dyn+0x123cd
+0x112490: add      r3, sp, #0x64
+0x112494: mov      r0, r3
+0x112498: add      r1, pc, r1
+0x11249c: bl       #0x4c998                         ; CALL strcpy
+0x1124a0: bl       #0x4c26c                         ; CALL strlen
+0x1124a4: add      r5, r7, r0
+0x1124a8: mov      r8, r0
+0x1124ac: uxtb     r5, r5
+0x1124b0: cmp      r7, #1
+0x1124b4: bls      #0x1124e4                        ; -> dmgt_dect_from_api+0xcd0
+0x1124b8: cmp      r7, #0x17
+0x1124bc: add      r1, sl, #1
+0x1124c0: add      r1, r6, r1
+0x1124c4: movlo    r2, r7
+0x1124c8: movhs    r2, #0x17
+0x1124cc: add      r0, sp, #0x64
+0x1124d0: add      r0, r0, r8
+0x1124d4: sub      r2, r2, #1
+0x1124d8: add      r5, r5, r2
+0x1124dc: uxtb     r5, r5
+0x1124e0: bl       #0x4ccd4                         ; CALL memcpy
+0x1124e4: add      r3, sp, #0xc0
+0x1124e8: mvn      r2, #0
+0x1124ec: add      r5, r3, r5
+0x1124f0: mov      r3, #0
+0x1124f4: strb     r3, [r5, #-0x5c]
+0x1124f8: add      r3, r4, #0x9000
+0x1124fc: strb     r2, [r3, #0x259]
+0x112500: mov      r0, r4
+0x112504: bl       #0xd9644                         ; -> dmgt_fon_is_headset+0x0
+0x112508: cmp      r0, #0
+0x11250c: beq      #0x1129b0                        ; -> dmgt_dect_from_api+0x119c
+0x112510: add      r1, sp, #0x58
+0x112514: mov      r0, r4
+0x112518: bl       #0xda894                         ; -> dmgt_fon_find_pickable_cntrl_pp+0x0
+0x11251c: subs     r6, r0, #0
+0x112520: beq      #0x1129b0                        ; -> dmgt_dect_from_api+0x119c
+0x112524: mov      r1, #0
+0x112528: mov      r0, r4
+0x11252c: bl       #0xd9f64                         ; -> dmgt_fon_find_link_with_state+0x0
+0x112530: subs     r5, r0, #0
+0x112534: beq      #0x1129a0                        ; -> dmgt_dect_from_api+0x118c
+0x112538: mov      r3, #1
+0x11253c: mov      r0, r4
+0x112540: str      r3, [r5]
+0x112544: str      r5, [r4, #0xc8]
+0x112548: bl       #0x14332c                        ; -> dmgt_catiq_is_20_call+0x0
+0x11254c: cmp      r0, #0
+0x112550: beq      #0x11259c                        ; -> dmgt_dect_from_api+0xd88
+0x112554: ldr      r3, [r5, #0x14]
+0x112558: cmp      r3, #0
+0x11255c: bne      #0x11259c                        ; -> dmgt_dect_from_api+0xd88
+0x112560: ldr      r2, [sp, #0x58]
+0x112564: add      r1, r4, #0x1840
+0x112568: ldrb     r3, [r4, #0x10c]
+0x11256c: add      r1, r1, #0x10
+0x112570: mov      r0, r4
+0x112574: bfi      r3, r2, #4, #1
+0x112578: strb     r3, [r4, #0x10c]
+0x11257c: bl       #0xd8abc                         ; -> dmgt_fon_get_next_msn+0x0
+0x112580: mov      r2, r0
+0x112584: mov      r1, #3
+0x112588: mov      r0, r4
+0x11258c: bl       #0x13dae8                        ; -> dmgt_catiq_alloc_call+0x0
+0x112590: str      r0, [r5, #0x14]
+0x112594: mov      r0, r4
+0x112598: bl       #0x142720                        ; -> dmgt_catiq_clear_internal_call+0x0
+0x11259c: ldr      r2, [pc, #0x20c]                 ; lit@0x1127b0=.text+0xc5460 -> 0x47414 | .rel.dyn+0x1256c
+0x1125a0: add      r5, r4, #0x18c
+0x1125a4: add      r5, r5, #1
+0x1125a8: add      r3, r6, #0x620
+0x1125ac: add      r2, pc, r2
+0x1125b0: add      r3, r3, #8
+0x1125b4: mov      r1, #0x19
+0x1125b8: mov      r0, r5
+0x1125bc: bl       #0x4c65c                         ; CALL snprintf
+0x1125c0: mov      r1, #0
+0x1125c4: mov      r0, r4
+0x1125c8: bl       #0xd8abc                         ; -> dmgt_fon_get_next_msn+0x0
+0x1125cc: add      r3, r6, #0x1000
+0x1125d0: mov      r6, #0
+0x1125d4: mov      r1, r0
+0x1125d8: mov      r0, r4
+0x1125dc: ldrb     r2, [r3, #0x86c]
+0x1125e0: mov      r3, fp
+0x1125e4: stm      sp, {r5, r6}
+0x1125e8: bl       #0xde88c                         ; -> dmgt_fon_dial_req+0x0
+0x1125ec: cmp      r0, r6
+0x1125f0: moveq    r3, #0x1b
+0x1125f4: streq    r3, [r4, #0x14]
+0x1125f8: beq      #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x1125fc: mov      r0, r4
+0x112600: bl       #0x14331c                        ; -> dmgt_catiq_is_20_pp+0x0
+0x112604: cmp      r0, #0
+0x112608: beq      #0x112648                        ; -> dmgt_dect_from_api+0xe34
+0x11260c: ldr      r3, [r4, #0xc8]
+0x112610: cmp      r3, #0
+0x112614: beq      #0x112648                        ; -> dmgt_dect_from_api+0xe34
+0x112618: ldr      r2, [r3, #0x14]
+0x11261c: cmp      r2, #0
+0x112620: beq      #0x112648                        ; -> dmgt_dect_from_api+0xe34
+0x112624: mov      r3, #0xff
+0x112628: mov      r1, r6
+0x11262c: str      r3, [sp]
+0x112630: mov      r0, r4
+0x112634: mov      r3, r6
+0x112638: bl       #0x10e62c                        ; -> dmgt_dect_call_info_req+0x0
+0x11263c: ldr      r1, [r4, #0xc8]
+0x112640: mov      r0, r4
+0x112644: bl       #0x13dbbc                        ; -> dmgt_catiq_free_call+0x0
+0x112648: mov      r1, #0x32
+0x11264c: mov      r0, r4
+0x112650: bl       #0x10fbd4                        ; -> dmgt_dect_abort_call+0x0
+0x112654: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x112658: add      r3, r4, #0x1000
+0x11265c: ldrb     r2, [r3, #0x104]
+0x112660: cmp      r2, #0xff
+0x112664: bne      #0x112678                        ; -> dmgt_dect_from_api+0xe64
+0x112668: mov      r1, #0xf
+0x11266c: mov      r0, r4
+0x112670: bl       #0x10fbd4                        ; -> dmgt_dect_abort_call+0x0
+0x112674: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x112678: ldr      r1, [pc, #0x134]                 ; lit@0x1127b4=.text+0xc5464 -> 0x482ff | .rel.dyn+0x13457
+0x11267c: add      r1, pc, r1
+0x112680: add      r5, sp, #0x64
+0x112684: mov      r0, r5
+0x112688: bl       #0x4d01c                         ; CALL sprintf
+0x11268c: mov      r0, r5
+0x112690: b        #0x1124a0                        ; -> dmgt_dect_from_api+0xc8c
+0x112694: ldrh     r3, [r4, r8]
+0x112698: cmp      r3, #0xd5
+0x11269c: bne      #0x1156dc                        ; -> dmgt_dect_from_api+0x3ec8
+0x1126a0: mov      r2, r6
+0x1126a4: mov      r1, sl
+0x1126a8: mov      r0, r4
+0x1126ac: bl       #0xf0f44                         ; -> dmgt_sv_is_tam_snoop_req+0x0
+0x1126b0: subs     r5, r0, #0
+0x1126b4: beq      #0x1126f0                        ; -> dmgt_dect_from_api+0xedc
+0x1126b8: add      r5, r4, #0x1000
+0x1126bc: ldrb     r3, [r5, #0x104]
+0x1126c0: cmp      r3, #0xff
+0x1126c4: bne      #0x1126d8                        ; -> dmgt_dect_from_api+0xec4
+0x1126c8: mov      r1, #0xf
+0x1126cc: mov      r0, r4
+0x1126d0: bl       #0x10fbd4                        ; -> dmgt_dect_abort_call+0x0
+0x1126d4: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x1126d8: mov      r0, r4
+0x1126dc: bl       #0xf1220                         ; -> dmgt_sv_start_tam_snooping+0x0
+0x1126e0: ldr      r1, [pc, #0xd0]                  ; lit@0x1127b8=.text+0xc5468 -> 0x47068 | .rel.dyn+0x121c0
+0x1126e4: ldrb     r2, [r5, #0x104]
+0x1126e8: add      r1, pc, r1
+0x1126ec: b        #0x112680                        ; -> dmgt_dect_from_api+0xe6c
+0x1126f0: ldrh     r3, [r4, r8]
+0x1126f4: cmp      r3, #0xd5
+0x1126f8: bne      #0x1156dc                        ; -> dmgt_dect_from_api+0x3ec8
+0x1126fc: mov      r2, r6
+0x112700: mov      r1, sl
+0x112704: mov      r0, r4
+0x112708: bl       #0xf0e14                         ; -> dmgt_sv_is_phonebook_setup_req+0x0
+0x11270c: cmp      r0, #0
+0x112710: beq      #0x1156dc                        ; -> dmgt_dect_from_api+0x3ec8
+0x112714: strb     r5, [sp, #0x56]
+0x112718: mov      r3, #2
+0x11271c: strb     r5, [sp, #0x57]
+0x112720: mov      r1, #0x80
+0x112724: str      r3, [r4, #0x14]
+0x112728: mov      r0, r4
+0x11272c: bl       #0xdb400                         ; -> dmgt_fon_mute_mode_req+0x0
+0x112730: ldrb     r0, [r4, #0xcc]
+0x112734: add      r3, sp, #0x57
+0x112738: str      r3, [sp, #0x10]
+0x11273c: add      r3, sp, #0x56
+0x112740: str      r3, [sp, #8]
+0x112744: add      r3, r4, #0x10
+0x112748: str      r3, [sp]
+0x11274c: mov      r2, #3
+0x112750: str      sb, [sp, #0xc]
+0x112754: mov      r3, sb
+0x112758: str      sb, [sp, #4]
+0x11275c: movw     r1, #0x2f84
+0x112760: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x112764: ldrb     r3, [r4, #0x11a]
+0x112768: bfi      r3, r5, #3, #1
+0x11276c: strb     r3, [r4, #0x11a]
+0x112770: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x112774: ldr      r2, [pc, #0x40]                  ; lit@0x1127bc=.text+0xc546c -> 0x46dd5 | .rel.dyn+0x11f2d
+0x112778: mov      r3, #2
+0x11277c: str      r3, [r4, #0x14]
+0x112780: mov      r1, #1
+0x112784: str      r6, [sp]
+0x112788: mov      r3, sl
+0x11278c: add      r2, pc, r2
+0x112790: mov      r0, r4
+0x112794: bl       #0xfc930                         ; -> dmgt_siemens_answer_service_call+0x0
+0x112798: b        #0x11188c                        ; -> dmgt_dect_from_api+0x78
+0x11279c: andeq    r8, r6, r4, ror #2
+0x1127a0: andeq    r0, r0, r8, asr #12
+
+=== dmgt_dect_init 0x115a70..0x115c94 (548 bytes) ===
+0x115a70: push     {r4, r5, r6, r7, lr}
+0x115a74: sub      sp, sp, #0x34
+0x115a78: ldr      r7, [pc, #0x1f4]                 ; lit@0x115c74=.text+0xc8924 -> 0x63f0c | .text+0x16bbc
+0x115a7c: mov      r1, #2
+0x115a80: ldr      r3, [pc, #0x1f0]                 ; lit@0x115c78=.text+0xc8928 -> 0x648 | .hash+0x4bc
+0x115a84: add      r7, pc, r7
+0x115a88: ldr      r0, [pc, #0x1ec]                 ; lit@0x115c7c=.text+0xc892c -> 0x44f02 | .rel.dyn+0x1005a
+0x115a8c: ldr      r5, [r7, r3]
+0x115a90: add      r0, pc, r0
+0x115a94: ldr      r3, [r5]
+0x115a98: str      r3, [sp, #0x2c]
+0x115a9c: bl       #0x4c854                         ; CALL open64
+0x115aa0: ldr      r2, [pc, #0x1d8]                 ; lit@0x115c80=.text+0xc8930 -> 0x614 | .hash+0x488
+0x115aa4: cmn      r0, #1
+0x115aa8: ldr      r4, [r7, r2]
+0x115aac: str      r0, [r4]
+0x115ab0: bne      #0x115acc                        ; -> dmgt_dect_init+0x5c
+0x115ab4: mov      r0, #0x65
+0x115ab8: ldr      r2, [sp, #0x2c]
+0x115abc: ldr      r3, [r5]
+0x115ac0: cmp      r2, r3
+0x115ac4: beq      #0x115c6c                        ; -> dmgt_dect_init+0x1fc
+0x115ac8: bl       #0x4c710                         ; CALL __stack_chk_fail
+0x115acc: ldr      r3, [pc, #0x1b0]                 ; lit@0x115c84=.text+0xc8934 -> 0xffff6afc
+0x115ad0: mov      r2, #0
+0x115ad4: add      r1, r4, #0x14c
+0x115ad8: add      r3, pc, r3
+0x115adc: str      r3, [sp]
+0x115ae0: ldr      r3, [pc, #0x1a0]                 ; lit@0x115c88=.text+0xc8938 -> 0xfffffc6c
+0x115ae4: add      r3, pc, r3
+0x115ae8: bl       #0x4c2d8                         ; CALL soac_ConnectFD
+0x115aec: subs     r6, r0, #0
+0x115af0: bne      #0x115ab4                        ; -> dmgt_dect_init+0x44
+0x115af4: ldr      r2, [r4]
+0x115af8: mov      r3, #6
+0x115afc: strb     r3, [sp, #0x28]
+0x115b00: mov      r3, #0x63
+0x115b04: strb     r3, [sp, #0x29]
+0x115b08: ldr      r3, [pc, #0x17c]                 ; lit@0x115c8c=.text+0xc893c -> 0x630 | .hash+0x4a4
+0x115b0c: strb     r6, [sp, #0x2a]
+0x115b10: strb     r6, [sp, #0x2b]
+0x115b14: ldr      r3, [r7, r3]
+0x115b18: add      r7, sp, #0x27
+0x115b1c: ldr      r1, [r4, #0x14c]
+0x115b20: ldr      r0, [r4, #0x164]
+0x115b24: str      r2, [r3]
+0x115b28: bl       #0x4cb24                         ; CALL soac_SocketList_Add
+0x115b2c: ldrb     r1, [r4, #0x8d]
+0x115b30: ldrb     r0, [r4, #0x8c]
+0x115b34: and      r1, r1, #1
+0x115b38: lsr      r0, r0, #7
+0x115b3c: bl       #0x10e908                        ; -> dmgt_dect_set_start_stop_mode+0x0
+0x115b40: ldrsb    r3, [r4, #0x8c]
+0x115b44: cmp      r3, #0
+0x115b48: movlt    r0, #0x77
+0x115b4c: movge    r0, #0x76
+0x115b50: bl       #0x101868                        ; -> dmgt_if_handle_led+0x0
+0x115b54: ldrb     r2, [r4, #0x8f]
+0x115b58: mov      r0, r6
+0x115b5c: str      r7, [sp]
+0x115b60: mvn      r3, r2
+0x115b64: tst      r2, #2
+0x115b68: moveq    r1, #2
+0x115b6c: movne    r1, #0
+0x115b70: and      r3, r3, #1
+0x115b74: tst      r2, #4
+0x115b78: orr      r3, r3, r1
+0x115b7c: moveq    r2, #4
+0x115b80: movne    r2, #0
+0x115b84: movw     r1, #0x2fe9
+0x115b88: orr      r3, r3, r2
+0x115b8c: strb     r3, [sp, #0x27]
+0x115b90: mov      r3, #1
+0x115b94: mov      r2, r3
+0x115b98: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115b9c: ldrb     r3, [r4, #0x8e]
+0x115ba0: movw     r1, #0x2fc4
+0x115ba4: str      r7, [sp]
+0x115ba8: mov      r0, r6
+0x115bac: ubfx     r3, r3, #4, #1
+0x115bb0: strb     r3, [sp, #0x27]
+0x115bb4: mov      r3, #1
+0x115bb8: mov      r2, r3
+0x115bbc: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115bc0: ldr      r0, [pc, #0xc8]                  ; lit@0x115c90=.text+0xc8940 -> 0x4334d | .rel.dyn+0xe4a5
+0x115bc4: add      r0, pc, r0
+0x115bc8: bl       #0x4d25c                         ; CALL getenv
+0x115bcc: cmp      r0, #0
+0x115bd0: beq      #0x115be4                        ; -> dmgt_dect_init+0x174
+0x115bd4: bl       #0x4c50c                         ; CALL atoi
+0x115bd8: strb     r0, [sp, #0x2b]
+0x115bdc: ubfx     r0, r0, #8, #4
+0x115be0: strb     r0, [sp, #0x2a]
+0x115be4: add      r2, sp, #0x29
+0x115be8: add      r3, sp, #0x28
+0x115bec: str      r2, [sp, #0x10]
+0x115bf0: add      r2, sp, #0x2a
+0x115bf4: str      r3, [sp, #0x18]
+0x115bf8: mov      r3, #1
+0x115bfc: str      r2, [sp, #8]
+0x115c00: add      r2, sp, #0x2b
+0x115c04: str      r3, [sp, #0x14]
+0x115c08: movw     r1, #0x2f7d
+0x115c0c: str      r3, [sp, #0xc]
+0x115c10: mov      r0, #0
+0x115c14: str      r3, [sp, #4]
+0x115c18: str      r2, [sp]
+0x115c1c: mov      r2, #4
+0x115c20: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115c24: mov      r2, #0
+0x115c28: movw     r1, #0x2fdb
+0x115c2c: mov      r0, r2
+0x115c30: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115c34: mov      r2, #0
+0x115c38: movw     r1, #0x2feb
+0x115c3c: mov      r0, r2
+0x115c40: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115c44: mov      r2, #0
+0x115c48: movw     r1, #0x2ff6
+0x115c4c: mov      r0, r2
+0x115c50: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115c54: ldrb     r3, [r4, #0x8f]
+0x115c58: orr      r3, r3, #0x20
+0x115c5c: strb     r3, [r4, #0x8f]
+0x115c60: bl       #0x1113e0                        ; -> dmgt_dect_update_no_emission+0x0
+0x115c64: mov      r0, #0
+0x115c68: b        #0x115ab8                        ; -> dmgt_dect_init+0x48
+0x115c6c: add      sp, sp, #0x34
+0x115c70: pop      {r4, r5, r6, r7, pc}
+0x115c74: andeq    r3, r6, ip, lsl #30
+0x115c78: andeq    r0, r0, r8, asr #12
+0x115c7c: andeq    r4, r4, r2, lsl #30
+0x115c80: andeq    r0, r0, r4, lsl r6
+
+=== dmgt_dect_finit 0x115c94..0x115cf4 (96 bytes) ===
+0x115c94: push     {r4, r5, r6, lr}
+0x115c98: ldr      r4, [pc, #0x44]                  ; lit@0x115ce4=.text+0xc8994 -> 0x63cf0 | .text+0x169a0
+0x115c9c: ldr      r3, [pc, #0x44]                  ; lit@0x115ce8=.text+0xc8998 -> 0x614 | .hash+0x488
+0x115ca0: add      r4, pc, r4
+0x115ca4: ldr      r5, [r4, r3]
+0x115ca8: ldr      r0, [r5, #0x14c]
+0x115cac: cmp      r0, #0
+0x115cb0: popeq    {r4, r5, r6, pc}
+0x115cb4: ldr      r2, [pc, #0x30]                  ; lit@0x115cec=.text+0xc899c -> 0x44ca7 | .rel.dyn+0xfdff
+0x115cb8: movw     r1, #0x17b4
+0x115cbc: add      r2, pc, r2
+0x115cc0: bl       #0x127d54                        ; -> dmgt_manage_soac_close+0x0
+0x115cc4: ldr      r2, [pc, #0x24]                  ; lit@0x115cf0=.text+0xc89a0 -> 0x630 | .hash+0x4a4
+0x115cc8: mov      r3, #0
+0x115ccc: str      r3, [r5, #0x14c]
+0x115cd0: mvn      r3, #0
+0x115cd4: str      r3, [r5]
+0x115cd8: ldr      r2, [r4, r2]
+0x115cdc: str      r3, [r2]
+0x115ce0: pop      {r4, r5, r6, pc}
+0x115ce4: strdeq   r3, r4, [r6], -r0
+0x115ce8: andeq    r0, r0, r4, lsl r6
+0x115cec: andeq    r4, r4, r7, lsr #25
+0x115cf0: andeq    r0, r0, r0, lsr r6

@@ -1,0 +1,14 @@
+filename:       ~/Downloads/OpenWrt7530/fritz7530-rootfs/lib/modules/4.4.271/ubik2/pcmlink.ko
+license:        
+(C) Copyright 2007-2025 AVM
+
+description:    PCMLINK 'Ultimate-Flexible-Router for PCM/Audio over C55/LANTIQ/QCA/BCM/AIROHA'
+depends:        
+vermagic:       4.4.271 SMP preempt mod_unload ARMv7 p2v8 
+parm:           voiponly:work without isdn-hardware (only voip) (bool)
+parm:           ignore_nocapi:ignore_nocapi (bool)
+parm:           noslic:noslic (bool)
+parm:           nocapi:nocapi (bool)
+parm:           c55x_hexfile:string
+parm:           remote:remote usage (bool)
+parm:           abmode:bit0: slic1 exist bit1: slic2 exist bit2: pots instead slic2 bit3: pots (clare2) instead slic2bit4: nt2 replace te, bit7: fpga bit8: fpga2 bit9: pef bit10: spitdm bit11: slot-shift-wa (int)

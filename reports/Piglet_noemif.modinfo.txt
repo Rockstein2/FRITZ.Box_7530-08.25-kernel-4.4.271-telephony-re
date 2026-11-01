@@ -1,0 +1,17 @@
+filename:       ~/Downloads/OpenWrt7530/fritz7530-rootfs/lib/modules/4.4.271/piglet_noemif/Piglet_noemif.ko
+author:         AVM GmbH
+license:        Proprietary.Copyright 2008-2024 by AVM
+
+description:    Piglet(AR9/VR9/AR10/GRX/WASP/IKANOS/PUMA/X86/QCOM/MediaTek) support by AVM
+depends:        
+vermagic:       4.4.271 SMP preempt mod_unload ARMv7 p2v8 
+parm:           piglet_dectmode:patch dect-mode (int)
+parm:           dect_serial:dect_serial (int)
+parm:           piglet_hostclkmaster:int
+parm:           async_loader:async_loader (int)
+parm:           piglet_bitfile:Piglet bitfile name (string)
+parm:           piglet_potsbitfile:Piglet bitfile name (POTS only) (string)
+parm:           piglet_bitfilemode:Piglet bitfile mode 0: auto 1: isdn 2: pots (int)
+parm:           dect_firstlevelfile:DECT firstlevel file name (string)
+parm:           dect_secondlevelfile:DECT secondlevel file name (string)
+parm:           ignore_nopiglet:ignore_nopiglet (int)

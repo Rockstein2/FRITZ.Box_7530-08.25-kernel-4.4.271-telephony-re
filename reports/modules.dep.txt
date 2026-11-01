@@ -1,0 +1,9 @@
+nlaudio/ulpcmlink.ko: ubik2/pcmlink.ko
+avm_dect/avm_dect.ko: ubik2/pcmlink.ko
+ubik2/pcmlink.ko:
+piglet_noemif/Piglet_noemif.ko:
+dect_io/dect_io.ko: avm_dect/avm_dect.ko ubik2/pcmlink.ko
+extra/rtp/krtp.ko: isdn_fon5/isdn_fbox_fon5.ko ubik2/pcmlink.ko
+nlaudio/nlaudio.ko: avm_dect/avm_dect.ko ubik2/pcmlink.ko
+isdn_fon5/isdn_fbox_fon5.ko: ubik2/pcmlink.ko
+capi_codec/capi_codec.ko: ubik2/pcmlink.ko

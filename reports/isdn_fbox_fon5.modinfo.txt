@@ -1,0 +1,15 @@
+filename:       ~/Downloads/OpenWrt7530/fritz7530-rootfs/lib/modules/4.4.271/isdn_fon5/isdn_fbox_fon5.ko
+license:        
+(C) Copyright 2007-2024 AVM
+
+description:    ISDN-Driver
+depends:        pcmlink
+vermagic:       4.4.271 SMP preempt mod_unload ARMv7 p2v8 
+parm:           io_addr:io_addr: I/O address (int)
+parm:           irq_num:irq_num: IRQ number (int)
+parm:           dect_hw:dect_hw: DECT_HW_Version (int)
+parm:           dect_on:dect_on: DECT activation (int)
+parm:           local_ec:local_ec: 1: echo-canceler 2: dtmf-scanner 3: all (int)
+parm:           debug_mode:debug mode (int)
+parm:           trace_mode:trace mode (int)
+parm:           patchvalue:patchvalue (int)

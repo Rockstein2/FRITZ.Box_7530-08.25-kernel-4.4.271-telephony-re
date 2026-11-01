@@ -1,0 +1,7 @@
+filename:       ~/Downloads/OpenWrt7530/fritz7530-rootfs/lib/modules/4.4.271/nlaudio/ulpcmlink.ko
+author:         AVM GmbH, 2009
+description:    AVM PCMLink Access Driver
+license:        Proprietary
+depends:        pcmlink
+vermagic:       4.4.271 SMP preempt mod_unload ARMv7 p2v8 
+parm:           tcpaddr:TCP Address of the client (charp)

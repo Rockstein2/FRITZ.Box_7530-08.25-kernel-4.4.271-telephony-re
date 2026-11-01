@@ -1,0 +1,32 @@
+
+=== dmgt_timer_get_system_ticks 0x12cab0..0x12cb28 (120 bytes) ===
+0x12cab0: ldr      r3, [pc, #0x64]                  ; lit@0x12cb1c=.text+0xdf7cc -> 0x4ced4 | .plt+0xd6c
+0x12cab4: mov      r1, #1
+0x12cab8: ldr      r2, [pc, #0x60]                  ; lit@0x12cb20=.text+0xdf7d0 -> 0x648 | .hash+0x4bc
+0x12cabc: add      r3, pc, r3
+0x12cac0: push     {r4, r5, lr}
+0x12cac4: sub      sp, sp, #0x14
+0x12cac8: ldr      r4, [r3, r2]
+0x12cacc: mov      r5, r0
+0x12cad0: ldr      r2, [r4]
+0x12cad4: str      r2, [sp, #0xc]
+0x12cad8: ldr      r2, [pc, #0x44]                  ; lit@0x12cb24=.text+0xdf7d4 -> 0x614 | .hash+0x488
+0x12cadc: ldr      r3, [r3, r2]
+0x12cae0: add      r2, sp, #4
+0x12cae4: ldr      r0, [r3]
+0x12cae8: bl       #0x11d374                        ; -> dmgt_manage_ioctl+0x0
+0x12caec: ldr      r2, [sp, #0xc]
+0x12caf0: cmp      r0, #0
+0x12caf4: movne    r3, #0
+0x12caf8: ldmibeq  sp, {r0, r3}
+0x12cafc: movne    r0, r3
+0x12cb00: str      r3, [r5]
+0x12cb04: ldr      r3, [r4]
+0x12cb08: cmp      r2, r3
+0x12cb0c: beq      #0x12cb14                        ; -> dmgt_timer_get_system_ticks+0x64
+0x12cb10: bl       #0x4c710                         ; CALL __stack_chk_fail
+0x12cb14: add      sp, sp, #0x14
+0x12cb18: pop      {r4, r5, pc}
+0x12cb1c: ldrdeq   ip, sp, [r4], -r4
+0x12cb20: andeq    r0, r0, r8, asr #12
+0x12cb24: andeq    r0, r0, r4, lsl r6

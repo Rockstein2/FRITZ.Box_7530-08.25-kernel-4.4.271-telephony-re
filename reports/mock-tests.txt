@@ -1,0 +1,21 @@
+test_debug_truncation (test_dect_io_mock.DectIoMockTests.test_debug_truncation) ... ok
+test_ioctl_time_and_debug (test_dect_io_mock.DectIoMockTests.test_ioctl_time_and_debug) ... ok
+test_nonblock_empty (test_dect_io_mock.DectIoMockTests.test_nonblock_empty) ... ok
+test_partial_read (test_dect_io_mock.DectIoMockTests.test_partial_read) ... ok
+test_read_header_and_message (test_dect_io_mock.DectIoMockTests.test_read_header_and_message) ... ok
+test_single_open_and_append (test_dect_io_mock.DectIoMockTests.test_single_open_and_append) ... ok
+test_write_forwards_channel_primitive_payload (test_dect_io_mock.DectIoMockTests.test_write_forwards_channel_primitive_payload) ... ok
+test_write_rejects_lengths (test_dect_io_mock.DectIoMockTests.test_write_rejects_lengths) ... ok
+test_first_level (test_piglet_image.PigletImageTests.test_first_level) ... ok
+test_p2test (test_piglet_image.PigletImageTests.test_p2test) ... ok
+test_second_level (test_piglet_image.PigletImageTests.test_second_level) ... ok
+test_bad_checksum_rejected (test_piglet_uart.PigletUartTests.test_bad_checksum_rejected) ... ok
+test_fast_second_level (test_piglet_uart.PigletUartTests.test_fast_second_level) ... ok
+test_hello_mismatch (test_piglet_uart.PigletUartTests.test_hello_mismatch) ... ok
+test_slow_first_level (test_piglet_uart.PigletUartTests.test_slow_first_level) ... ok
+test_slow_second_level (test_piglet_uart.PigletUartTests.test_slow_second_level) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.138s
+
+OK

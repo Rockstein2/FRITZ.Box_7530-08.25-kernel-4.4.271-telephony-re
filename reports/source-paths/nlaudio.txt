@@ -1,0 +1,3 @@
+/GU/FON_KMODS_cortexa9_build/src/main/../nlaudio/old_drain.c
+/GU/FON_KMODS_cortexa9_build/src/main/../nlaudio/old_input.c
+/GU/FON_KMODS_cortexa9_build/src/main/../nlaudio/old_queue.c

@@ -1,0 +1,276 @@
+
+===== .init.text offset=0x519c size=0x204 =====
+
+--- init_module 0x0..0x204 (516 bytes) ---
+0x0000: f0402de9   push     {r4, r5, r6, r7, lr}
+0x0004: 1cd04de2   sub      sp, sp, #0x1c
+0x0008: a4719fe5   ldr      r7, [pc, #0x1a4]
+0x000c: a4419fe5   ldr      r4, [pc, #0x1a4]
+0x0010: a4019fe5   ldr      r0, [pc, #0x1a4]
+0x0014: 003097e5   ldr      r3, [r7]
+0x0018: 14308de5   str      r3, [sp, #0x14]
+0x001c: 0030a0e3   mov      r3, #0
+0x0020: 283184e5   str      r3, [r4, #0x128]
+0x0024: feffffeb   bl       #0x24    ; reloc prom_getenv (type 28)
+0x0028: 90119fe5   ldr      r1, [pc, #0x190]
+0x002c: 0050a0e1   mov      r5, r0
+0x0030: feffffeb   bl       #0x30    ; reloc check_keyword (type 28)
+0x0034: 000050e3   cmp      r0, #0
+0x0038: 0500000a   beq      #0x54
+0x003c: 80119fe5   ldr      r1, [pc, #0x180]
+0x0040: 80019fe5   ldr      r0, [pc, #0x180]
+0x0044: feffffeb   bl       #0x44    ; reloc printk (type 28)
+0x0048: 7c319fe5   ldr      r3, [pc, #0x17c]
+0x004c: 7c219fe5   ldr      r2, [pc, #0x17c]
+0x0050: 102083e5   str      r2, [r3, #0x10]
+0x0054: 78119fe5   ldr      r1, [pc, #0x178]
+0x0058: 0500a0e1   mov      r0, r5
+0x005c: feffffeb   bl       #0x5c    ; reloc check_keyword (type 28)
+0x0060: 000050e3   cmp      r0, #0
+0x0064: 0400000a   beq      #0x7c
+0x0068: 54119fe5   ldr      r1, [pc, #0x154]
+0x006c: 64019fe5   ldr      r0, [pc, #0x164]
+0x0070: feffffeb   bl       #0x70    ; reloc printk (type 28)
+0x0074: 0130a0e3   mov      r3, #1
+0x0078: 3c3284e5   str      r3, [r4, #0x23c]
+0x007c: 403294e5   ldr      r3, [r4, #0x240]
+0x0080: 000053e3   cmp      r3, #0
+0x0084: 0e00001a   bne      #0xc4
+0x0088: 4c119fe5   ldr      r1, [pc, #0x14c]
+0x008c: 0500a0e1   mov      r0, r5
+0x0090: feffffeb   bl       #0x90    ; reloc check_keyword (type 28)
+0x0094: 000050e3   cmp      r0, #0
+0x0098: 0900000a   beq      #0xc4
+0x009c: 20119fe5   ldr      r1, [pc, #0x120]
+0x00a0: 0c50e0e3   mvn      r5, #0xc
+0x00a4: 34019fe5   ldr      r0, [pc, #0x134]
+0x00a8: feffffeb   bl       #0xa8    ; reloc printk (type 28)
+0x00ac: 14209de5   ldr      r2, [sp, #0x14]
+0x00b0: 0500a0e1   mov      r0, r5
+0x00b4: 003097e5   ldr      r3, [r7]
+0x00b8: 030052e1   cmp      r2, r3
+0x00bc: 3a00000a   beq      #0x1ac
+0x00c0: feffffeb   bl       #0xc0    ; reloc __stack_chk_fail (type 28)
+0x00c4: feffffeb   bl       #0xc4    ; reloc get_profile (type 28)
+0x00c8: 14319fe5   ldr      r3, [pc, #0x114]
+0x00cc: 000083e5   str      r0, [r3]
+0x00d0: 10319fe5   ldr      r3, [pc, #0x110]
+0x00d4: 0030d3e5   ldrb     r3, [r3]
+0x00d8: 000053e3   cmp      r3, #0
+0x00dc: e8309f05   ldreq    r3, [pc, #0xe8]
+0x00e0: e8209f05   ldreq    r2, [pc, #0xe8]
+0x00e4: 10208305   streq    r2, [r3, #0x10]
+0x00e8: feffffeb   bl       #0xe8    ; reloc piglet_requestinit (type 28)
+0x00ec: 005050e2   subs     r5, r0, #0
+0x00f0: 0800000a   beq      #0x118
+0x00f4: 0100a0e3   mov      r0, #1
+0x00f8: ec509fe5   ldr      r5, [pc, #0xec]
+0x00fc: feffffeb   bl       #0xfc    ; reloc log_piglet_exit (type 28)
+0x0100: c4309fe5   ldr      r3, [pc, #0xc4]
+0x0104: e4009fe5   ldr      r0, [pc, #0xe4]
+0x0108: 103093e5   ldr      r3, [r3, #0x10]
+0x010c: 33ff2fe1   blx      r3
+0x0110: feffffeb   bl       #0x110    ; reloc lpiglet_cleanup (type 28)
+0x0114: e4ffffea   b        #0xac
+0x0118: 2720a0e3   mov      r2, #0x27
+0x011c: 0110a0e3   mov      r1, #1
+0x0120: 04008de2   add      r0, sp, #4
+0x0124: feffffeb   bl       #0x124    ; reloc avm_event_build_id_mask (type 28)
+0x0128: 0530a0e1   mov      r3, r5
+0x012c: c0209fe5   ldr      r2, [pc, #0xc0]
+0x0130: 0010a0e1   mov      r1, r0
+0x0134: bc009fe5   ldr      r0, [pc, #0xbc]
+0x0138: feffffeb   bl       #0x138    ; reloc avm_event_source_register (type 28)
+0x013c: b43194e5   ldr      r3, [r4, #0x1b4]
+0x0140: 000053e3   cmp      r3, #0
+0x0144: 180184e5   str      r0, [r4, #0x118]
+0x0148: 0900000a   beq      #0x174
+0x014c: a8309fe5   ldr      r3, [pc, #0xa8]
+0x0150: 0020e0e3   mvn      r2, #0
+0x0154: 0510a0e1   mov      r1, r5
+0x0158: a0009fe5   ldr      r0, [pc, #0xa0]
+0x015c: feffffeb   bl       #0x15c    ; reloc kthread_create_on_node (type 28)
+0x0160: 010a70e3   cmn      r0, #0x1000
+0x0164: 0060a0e1   mov      r6, r0
+0x0168: 0000008a   bhi      #0x170
+0x016c: feffffeb   bl       #0x16c    ; reloc wake_up_process (type 28)
+0x0170: 146184e5   str      r6, [r4, #0x114]
+0x0174: 143194e5   ldr      r3, [r4, #0x114]
+0x0178: 000053e3   cmp      r3, #0
+0x017c: 0100000a   beq      #0x188
+0x0180: 010a73e3   cmn      r3, #0x1000
+0x0184: 0600009a   bls      #0x1a4
+0x0188: 0000a0e3   mov      r0, #0
+0x018c: feffffeb   bl       #0x18c    ; reloc piglet_loader_thread (type 28)
+0x0190: 004050e2   subs     r4, r0, #0
+0x0194: 0200000a   beq      #0x1a4
+0x0198: feffffeb   bl       #0x198    ; reloc lpiglet_cleanup (type 28)
+0x019c: 0450a0e1   mov      r5, r4
+0x01a0: c1ffffea   b        #0xac
+0x01a4: feffffeb   bl       #0x1a4    ; reloc dectuart_event_dim_led_status_init (type 28)
+0x01a8: bfffffea   b        #0xac
+0x01ac: 1cd08de2   add      sp, sp, #0x1c
+0x01b0: f080bde8   pop      {r4, r5, r6, r7, pc}
+0x01b4: 00000000   andeq    r0, r0, r0    ; reloc __stack_chk_guard (type 2)
+0x01b8: 18000000   andeq    r0, r0, r8, lsl r0
+0x01bc: 9a140000   muleq    r0, sl, r4
+0x01c0: a6140000   andeq    r1, r0, r6, lsr #9
+0x01c4: eb000000   andeq    r0, r0, fp, ror #1
+0x01c8: b4140000   strheq   r1, [r0], -r4
+0x01cc: 3c000000   andeq    r0, r0, ip, lsr r0
+0x01d0: 00000000   andeq    r0, r0, r0    ; reloc no_panic_printk (type 2)
+0x01d4: da140000   ldrdeq   r1, r2, [r0], -sl
+0x01d8: e6140000   andeq    r1, r0, r6, ror #9
+0x01dc: 1e150000   andeq    r1, r0, lr, lsl r5
+0x01e0: 27150000   andeq    r1, r0, r7, lsr #10
+0x01e4: 00000000   andeq    r0, r0, r0    ; reloc pProfile (type 2)
+0x01e8: 00000000   andeq    r0, r0, r0    ; reloc ar7wdt_panic_on_timeout (type 2)
+
+--- piglet_init 0x0..0x204 (516 bytes) ---
+0x0000: f0402de9   push     {r4, r5, r6, r7, lr}
+0x0004: 1cd04de2   sub      sp, sp, #0x1c
+0x0008: a4719fe5   ldr      r7, [pc, #0x1a4]
+0x000c: a4419fe5   ldr      r4, [pc, #0x1a4]
+0x0010: a4019fe5   ldr      r0, [pc, #0x1a4]
+0x0014: 003097e5   ldr      r3, [r7]
+0x0018: 14308de5   str      r3, [sp, #0x14]
+0x001c: 0030a0e3   mov      r3, #0
+0x0020: 283184e5   str      r3, [r4, #0x128]
+0x0024: feffffeb   bl       #0x24    ; reloc prom_getenv (type 28)
+0x0028: 90119fe5   ldr      r1, [pc, #0x190]
+0x002c: 0050a0e1   mov      r5, r0
+0x0030: feffffeb   bl       #0x30    ; reloc check_keyword (type 28)
+0x0034: 000050e3   cmp      r0, #0
+0x0038: 0500000a   beq      #0x54
+0x003c: 80119fe5   ldr      r1, [pc, #0x180]
+0x0040: 80019fe5   ldr      r0, [pc, #0x180]
+0x0044: feffffeb   bl       #0x44    ; reloc printk (type 28)
+0x0048: 7c319fe5   ldr      r3, [pc, #0x17c]
+0x004c: 7c219fe5   ldr      r2, [pc, #0x17c]
+0x0050: 102083e5   str      r2, [r3, #0x10]
+0x0054: 78119fe5   ldr      r1, [pc, #0x178]
+0x0058: 0500a0e1   mov      r0, r5
+0x005c: feffffeb   bl       #0x5c    ; reloc check_keyword (type 28)
+0x0060: 000050e3   cmp      r0, #0
+0x0064: 0400000a   beq      #0x7c
+0x0068: 54119fe5   ldr      r1, [pc, #0x154]
+0x006c: 64019fe5   ldr      r0, [pc, #0x164]
+0x0070: feffffeb   bl       #0x70    ; reloc printk (type 28)
+0x0074: 0130a0e3   mov      r3, #1
+0x0078: 3c3284e5   str      r3, [r4, #0x23c]
+0x007c: 403294e5   ldr      r3, [r4, #0x240]
+0x0080: 000053e3   cmp      r3, #0
+0x0084: 0e00001a   bne      #0xc4
+0x0088: 4c119fe5   ldr      r1, [pc, #0x14c]
+0x008c: 0500a0e1   mov      r0, r5
+0x0090: feffffeb   bl       #0x90    ; reloc check_keyword (type 28)
+0x0094: 000050e3   cmp      r0, #0
+0x0098: 0900000a   beq      #0xc4
+0x009c: 20119fe5   ldr      r1, [pc, #0x120]
+0x00a0: 0c50e0e3   mvn      r5, #0xc
+0x00a4: 34019fe5   ldr      r0, [pc, #0x134]
+0x00a8: feffffeb   bl       #0xa8    ; reloc printk (type 28)
+0x00ac: 14209de5   ldr      r2, [sp, #0x14]
+0x00b0: 0500a0e1   mov      r0, r5
+0x00b4: 003097e5   ldr      r3, [r7]
+0x00b8: 030052e1   cmp      r2, r3
+0x00bc: 3a00000a   beq      #0x1ac
+0x00c0: feffffeb   bl       #0xc0    ; reloc __stack_chk_fail (type 28)
+0x00c4: feffffeb   bl       #0xc4    ; reloc get_profile (type 28)
+0x00c8: 14319fe5   ldr      r3, [pc, #0x114]
+0x00cc: 000083e5   str      r0, [r3]
+0x00d0: 10319fe5   ldr      r3, [pc, #0x110]
+0x00d4: 0030d3e5   ldrb     r3, [r3]
+0x00d8: 000053e3   cmp      r3, #0
+0x00dc: e8309f05   ldreq    r3, [pc, #0xe8]
+0x00e0: e8209f05   ldreq    r2, [pc, #0xe8]
+0x00e4: 10208305   streq    r2, [r3, #0x10]
+0x00e8: feffffeb   bl       #0xe8    ; reloc piglet_requestinit (type 28)
+0x00ec: 005050e2   subs     r5, r0, #0
+0x00f0: 0800000a   beq      #0x118
+0x00f4: 0100a0e3   mov      r0, #1
+0x00f8: ec509fe5   ldr      r5, [pc, #0xec]
+0x00fc: feffffeb   bl       #0xfc    ; reloc log_piglet_exit (type 28)
+0x0100: c4309fe5   ldr      r3, [pc, #0xc4]
+0x0104: e4009fe5   ldr      r0, [pc, #0xe4]
+0x0108: 103093e5   ldr      r3, [r3, #0x10]
+0x010c: 33ff2fe1   blx      r3
+0x0110: feffffeb   bl       #0x110    ; reloc lpiglet_cleanup (type 28)
+0x0114: e4ffffea   b        #0xac
+0x0118: 2720a0e3   mov      r2, #0x27
+0x011c: 0110a0e3   mov      r1, #1
+0x0120: 04008de2   add      r0, sp, #4
+0x0124: feffffeb   bl       #0x124    ; reloc avm_event_build_id_mask (type 28)
+0x0128: 0530a0e1   mov      r3, r5
+0x012c: c0209fe5   ldr      r2, [pc, #0xc0]
+0x0130: 0010a0e1   mov      r1, r0
+0x0134: bc009fe5   ldr      r0, [pc, #0xbc]
+0x0138: feffffeb   bl       #0x138    ; reloc avm_event_source_register (type 28)
+0x013c: b43194e5   ldr      r3, [r4, #0x1b4]
+0x0140: 000053e3   cmp      r3, #0
+0x0144: 180184e5   str      r0, [r4, #0x118]
+0x0148: 0900000a   beq      #0x174
+0x014c: a8309fe5   ldr      r3, [pc, #0xa8]
+0x0150: 0020e0e3   mvn      r2, #0
+0x0154: 0510a0e1   mov      r1, r5
+0x0158: a0009fe5   ldr      r0, [pc, #0xa0]
+0x015c: feffffeb   bl       #0x15c    ; reloc kthread_create_on_node (type 28)
+0x0160: 010a70e3   cmn      r0, #0x1000
+0x0164: 0060a0e1   mov      r6, r0
+0x0168: 0000008a   bhi      #0x170
+0x016c: feffffeb   bl       #0x16c    ; reloc wake_up_process (type 28)
+0x0170: 146184e5   str      r6, [r4, #0x114]
+0x0174: 143194e5   ldr      r3, [r4, #0x114]
+0x0178: 000053e3   cmp      r3, #0
+0x017c: 0100000a   beq      #0x188
+0x0180: 010a73e3   cmn      r3, #0x1000
+0x0184: 0600009a   bls      #0x1a4
+0x0188: 0000a0e3   mov      r0, #0
+0x018c: feffffeb   bl       #0x18c    ; reloc piglet_loader_thread (type 28)
+0x0190: 004050e2   subs     r4, r0, #0
+0x0194: 0200000a   beq      #0x1a4
+0x0198: feffffeb   bl       #0x198    ; reloc lpiglet_cleanup (type 28)
+0x019c: 0450a0e1   mov      r5, r4
+0x01a0: c1ffffea   b        #0xac
+0x01a4: feffffeb   bl       #0x1a4    ; reloc dectuart_event_dim_led_status_init (type 28)
+0x01a8: bfffffea   b        #0xac
+0x01ac: 1cd08de2   add      sp, sp, #0x1c
+0x01b0: f080bde8   pop      {r4, r5, r6, r7, pc}
+0x01b4: 00000000   andeq    r0, r0, r0    ; reloc __stack_chk_guard (type 2)
+0x01b8: 18000000   andeq    r0, r0, r8, lsl r0
+0x01bc: 9a140000   muleq    r0, sl, r4
+0x01c0: a6140000   andeq    r1, r0, r6, lsr #9
+0x01c4: eb000000   andeq    r0, r0, fp, ror #1
+0x01c8: b4140000   strheq   r1, [r0], -r4
+0x01cc: 3c000000   andeq    r0, r0, ip, lsr r0
+0x01d0: 00000000   andeq    r0, r0, r0    ; reloc no_panic_printk (type 2)
+0x01d4: da140000   ldrdeq   r1, r2, [r0], -sl
+0x01d8: e6140000   andeq    r1, r0, r6, ror #9
+0x01dc: 1e150000   andeq    r1, r0, lr, lsl r5
+0x01e0: 27150000   andeq    r1, r0, r7, lsr #10
+0x01e4: 00000000   andeq    r0, r0, r0    ; reloc pProfile (type 2)
+0x01e8: 00000000   andeq    r0, r0, r0    ; reloc ar7wdt_panic_on_timeout (type 2)
+
+===== .exit.text offset=0x53a0 size=0x24 =====
+
+--- piglet_cleanup 0x0..0x24 (36 bytes) ---
+0x0000: 18309fe5   ldr      r3, [pc, #0x18]
+0x0004: 0000a0e3   mov      r0, #0
+0x0008: 10402de9   push     {r4, lr}
+0x000c: 240183e5   str      r0, [r3, #0x124]
+0x0010: feffffeb   bl       #0x10    ; reloc send_piglet_ready_event (type 28)
+0x0014: feffffeb   bl       #0x14    ; reloc dectuart_event_dim_led_status_exit (type 28)
+0x0018: 1040bde8   pop      {r4, lr}
+0x001c: feffffea   b        #0x1c    ; reloc lpiglet_cleanup (type 29)
+0x0020: 18000000   andeq    r0, r0, r8, lsl r0
+
+--- cleanup_module 0x0..0x24 (36 bytes) ---
+0x0000: 18309fe5   ldr      r3, [pc, #0x18]
+0x0004: 0000a0e3   mov      r0, #0
+0x0008: 10402de9   push     {r4, lr}
+0x000c: 240183e5   str      r0, [r3, #0x124]
+0x0010: feffffeb   bl       #0x10    ; reloc send_piglet_ready_event (type 28)
+0x0014: feffffeb   bl       #0x14    ; reloc dectuart_event_dim_led_status_exit (type 28)
+0x0018: 1040bde8   pop      {r4, lr}
+0x001c: feffffea   b        #0x1c    ; reloc lpiglet_cleanup (type 29)
+0x0020: 18000000   andeq    r0, r0, r8, lsl r0

@@ -1,0 +1,221 @@
+
+=== dmgt_dect_finit 0x115c94..0x115cf4 (96 bytes) ===
+0x115c94: push     {r4, r5, r6, lr}
+0x115c98: ldr      r4, [pc, #0x44]                  ; lit@0x115ce4=.text+0xc8994 -> 0x63cf0 | .text+0x169a0
+0x115c9c: ldr      r3, [pc, #0x44]                  ; lit@0x115ce8=.text+0xc8998 -> 0x614 | .hash+0x488
+0x115ca0: add      r4, pc, r4
+0x115ca4: ldr      r5, [r4, r3]
+0x115ca8: ldr      r0, [r5, #0x14c]
+0x115cac: cmp      r0, #0
+0x115cb0: popeq    {r4, r5, r6, pc}
+0x115cb4: ldr      r2, [pc, #0x30]                  ; lit@0x115cec=.text+0xc899c -> 0x44ca7 | .rel.dyn+0xfdff
+0x115cb8: movw     r1, #0x17b4
+0x115cbc: add      r2, pc, r2
+0x115cc0: bl       #0x127d54                        ; -> dmgt_manage_soac_close+0x0
+0x115cc4: ldr      r2, [pc, #0x24]                  ; lit@0x115cf0=.text+0xc89a0 -> 0x630 | .hash+0x4a4
+0x115cc8: mov      r3, #0
+0x115ccc: str      r3, [r5, #0x14c]
+0x115cd0: mvn      r3, #0
+0x115cd4: str      r3, [r5]
+0x115cd8: ldr      r2, [r4, r2]
+0x115cdc: str      r3, [r2]
+0x115ce0: pop      {r4, r5, r6, pc}
+0x115ce4: strdeq   r3, r4, [r6], -r0
+0x115ce8: andeq    r0, r0, r4, lsl r6
+0x115cec: andeq    r4, r4, r7, lsr #25
+0x115cf0: andeq    r0, r0, r0, lsr r6
+
+=== dmgt_manage_open2 0x11cffc..0x11d068 (108 bytes) ===
+0x11cffc: push     {r4, r5, r6, r7, r8, sb, sl, lr}
+0x11d000: mov      r8, r0
+0x11d004: mov      sb, r1
+0x11d008: mov      r5, #0
+0x11d00c: mov      r1, sb
+0x11d010: mov      r0, r8
+0x11d014: add      r5, r5, #1
+0x11d018: bl       #0x4c854                         ; CALL open64
+0x11d01c: subs     r7, r0, #0
+0x11d020: bge      #0x11d060                        ; -> dmgt_manage_open2+0x64
+0x11d024: bl       #0x4c9bc                         ; CALL __errno_location
+0x11d028: ldr      r4, [r0]
+0x11d02c: cmp      r5, #0xa
+0x11d030: mov      r6, r0
+0x11d034: sub      r2, r4, #4
+0x11d038: clz      r2, r2
+0x11d03c: lsr      r2, r2, #5
+0x11d040: moveq    r2, #0
+0x11d044: cmp      r2, #0
+0x11d048: bne      #0x11d00c                        ; -> dmgt_manage_open2+0x10
+0x11d04c: uxtb     r0, r4
+0x11d050: mov      r1, #0xc3
+0x11d054: orr      r0, r0, #0x100
+0x11d058: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x11d05c: str      r4, [r6]
+0x11d060: mov      r0, r7
+0x11d064: pop      {r4, r5, r6, r7, r8, sb, sl, pc}
+
+=== dmgt_dect_init 0x115a70..0x115c94 (548 bytes) ===
+0x115a70: push     {r4, r5, r6, r7, lr}
+0x115a74: sub      sp, sp, #0x34
+0x115a78: ldr      r7, [pc, #0x1f4]                 ; lit@0x115c74=.text+0xc8924 -> 0x63f0c | .text+0x16bbc
+0x115a7c: mov      r1, #2
+0x115a80: ldr      r3, [pc, #0x1f0]                 ; lit@0x115c78=.text+0xc8928 -> 0x648 | .hash+0x4bc
+0x115a84: add      r7, pc, r7
+0x115a88: ldr      r0, [pc, #0x1ec]                 ; lit@0x115c7c=.text+0xc892c -> 0x44f02 | .rel.dyn+0x1005a
+0x115a8c: ldr      r5, [r7, r3]
+0x115a90: add      r0, pc, r0
+0x115a94: ldr      r3, [r5]
+0x115a98: str      r3, [sp, #0x2c]
+0x115a9c: bl       #0x4c854                         ; CALL open64
+0x115aa0: ldr      r2, [pc, #0x1d8]                 ; lit@0x115c80=.text+0xc8930 -> 0x614 | .hash+0x488
+0x115aa4: cmn      r0, #1
+0x115aa8: ldr      r4, [r7, r2]
+0x115aac: str      r0, [r4]
+0x115ab0: bne      #0x115acc                        ; -> dmgt_dect_init+0x5c
+0x115ab4: mov      r0, #0x65
+0x115ab8: ldr      r2, [sp, #0x2c]
+0x115abc: ldr      r3, [r5]
+0x115ac0: cmp      r2, r3
+0x115ac4: beq      #0x115c6c                        ; -> dmgt_dect_init+0x1fc
+0x115ac8: bl       #0x4c710                         ; CALL __stack_chk_fail
+0x115acc: ldr      r3, [pc, #0x1b0]                 ; lit@0x115c84=.text+0xc8934 -> 0xffff6afc
+0x115ad0: mov      r2, #0
+0x115ad4: add      r1, r4, #0x14c
+0x115ad8: add      r3, pc, r3
+0x115adc: str      r3, [sp]
+0x115ae0: ldr      r3, [pc, #0x1a0]                 ; lit@0x115c88=.text+0xc8938 -> 0xfffffc6c
+0x115ae4: add      r3, pc, r3
+0x115ae8: bl       #0x4c2d8                         ; CALL soac_ConnectFD
+0x115aec: subs     r6, r0, #0
+0x115af0: bne      #0x115ab4                        ; -> dmgt_dect_init+0x44
+0x115af4: ldr      r2, [r4]
+0x115af8: mov      r3, #6
+0x115afc: strb     r3, [sp, #0x28]
+0x115b00: mov      r3, #0x63
+0x115b04: strb     r3, [sp, #0x29]
+0x115b08: ldr      r3, [pc, #0x17c]                 ; lit@0x115c8c=.text+0xc893c -> 0x630 | .hash+0x4a4
+0x115b0c: strb     r6, [sp, #0x2a]
+0x115b10: strb     r6, [sp, #0x2b]
+0x115b14: ldr      r3, [r7, r3]
+0x115b18: add      r7, sp, #0x27
+0x115b1c: ldr      r1, [r4, #0x14c]
+0x115b20: ldr      r0, [r4, #0x164]
+0x115b24: str      r2, [r3]
+0x115b28: bl       #0x4cb24                         ; CALL soac_SocketList_Add
+0x115b2c: ldrb     r1, [r4, #0x8d]
+0x115b30: ldrb     r0, [r4, #0x8c]
+0x115b34: and      r1, r1, #1
+0x115b38: lsr      r0, r0, #7
+0x115b3c: bl       #0x10e908                        ; -> dmgt_dect_set_start_stop_mode+0x0
+0x115b40: ldrsb    r3, [r4, #0x8c]
+0x115b44: cmp      r3, #0
+0x115b48: movlt    r0, #0x77
+0x115b4c: movge    r0, #0x76
+0x115b50: bl       #0x101868                        ; -> dmgt_if_handle_led+0x0
+0x115b54: ldrb     r2, [r4, #0x8f]
+0x115b58: mov      r0, r6
+0x115b5c: str      r7, [sp]
+0x115b60: mvn      r3, r2
+0x115b64: tst      r2, #2
+0x115b68: moveq    r1, #2
+0x115b6c: movne    r1, #0
+0x115b70: and      r3, r3, #1
+0x115b74: tst      r2, #4
+0x115b78: orr      r3, r3, r1
+0x115b7c: moveq    r2, #4
+0x115b80: movne    r2, #0
+0x115b84: movw     r1, #0x2fe9
+0x115b88: orr      r3, r3, r2
+0x115b8c: strb     r3, [sp, #0x27]
+0x115b90: mov      r3, #1
+0x115b94: mov      r2, r3
+0x115b98: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115b9c: ldrb     r3, [r4, #0x8e]
+0x115ba0: movw     r1, #0x2fc4
+0x115ba4: str      r7, [sp]
+0x115ba8: mov      r0, r6
+0x115bac: ubfx     r3, r3, #4, #1
+0x115bb0: strb     r3, [sp, #0x27]
+0x115bb4: mov      r3, #1
+0x115bb8: mov      r2, r3
+0x115bbc: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115bc0: ldr      r0, [pc, #0xc8]                  ; lit@0x115c90=.text+0xc8940 -> 0x4334d | .rel.dyn+0xe4a5
+0x115bc4: add      r0, pc, r0
+0x115bc8: bl       #0x4d25c                         ; CALL getenv
+0x115bcc: cmp      r0, #0
+0x115bd0: beq      #0x115be4                        ; -> dmgt_dect_init+0x174
+0x115bd4: bl       #0x4c50c                         ; CALL atoi
+0x115bd8: strb     r0, [sp, #0x2b]
+0x115bdc: ubfx     r0, r0, #8, #4
+0x115be0: strb     r0, [sp, #0x2a]
+0x115be4: add      r2, sp, #0x29
+0x115be8: add      r3, sp, #0x28
+0x115bec: str      r2, [sp, #0x10]
+0x115bf0: add      r2, sp, #0x2a
+0x115bf4: str      r3, [sp, #0x18]
+0x115bf8: mov      r3, #1
+0x115bfc: str      r2, [sp, #8]
+0x115c00: add      r2, sp, #0x2b
+0x115c04: str      r3, [sp, #0x14]
+0x115c08: movw     r1, #0x2f7d
+0x115c0c: str      r3, [sp, #0xc]
+0x115c10: mov      r0, #0
+0x115c14: str      r3, [sp, #4]
+0x115c18: str      r2, [sp]
+0x115c1c: mov      r2, #4
+0x115c20: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115c24: mov      r2, #0
+0x115c28: movw     r1, #0x2fdb
+0x115c2c: mov      r0, r2
+0x115c30: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115c34: mov      r2, #0
+0x115c38: movw     r1, #0x2feb
+0x115c3c: mov      r0, r2
+0x115c40: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115c44: mov      r2, #0
+0x115c48: movw     r1, #0x2ff6
+0x115c4c: mov      r0, r2
+0x115c50: bl       #0x10e700                        ; -> dmgt_dect_to_api+0x0
+0x115c54: ldrb     r3, [r4, #0x8f]
+0x115c58: orr      r3, r3, #0x20
+0x115c5c: strb     r3, [r4, #0x8f]
+0x115c60: bl       #0x1113e0                        ; -> dmgt_dect_update_no_emission+0x0
+0x115c64: mov      r0, #0
+0x115c68: b        #0x115ab8                        ; -> dmgt_dect_init+0x48
+0x115c6c: add      sp, sp, #0x34
+0x115c70: pop      {r4, r5, r6, r7, pc}
+0x115c74: andeq    r3, r6, ip, lsl #30
+0x115c78: andeq    r0, r0, r8, asr #12
+0x115c7c: andeq    r4, r4, r2, lsl #30
+0x115c80: andeq    r0, r0, r4, lsl r6
+
+=== dmgt_manage_open3 0x11d068..0x11d0dc (116 bytes) ===
+0x11d068: push     {r4, r5, r6, r7, r8, sb, sl, lr}
+0x11d06c: mov      r8, r0
+0x11d070: mov      sb, r1
+0x11d074: mov      sl, r2
+0x11d078: mov      r5, #0
+0x11d07c: mov      r2, sl
+0x11d080: mov      r1, sb
+0x11d084: mov      r0, r8
+0x11d088: add      r5, r5, #1
+0x11d08c: bl       #0x4c854                         ; CALL open64
+0x11d090: subs     r7, r0, #0
+0x11d094: bge      #0x11d0d4                        ; -> dmgt_manage_open3+0x6c
+0x11d098: bl       #0x4c9bc                         ; CALL __errno_location
+0x11d09c: ldr      r4, [r0]
+0x11d0a0: cmp      r5, #0xa
+0x11d0a4: mov      r6, r0
+0x11d0a8: sub      r2, r4, #4
+0x11d0ac: clz      r2, r2
+0x11d0b0: lsr      r2, r2, #5
+0x11d0b4: moveq    r2, #0
+0x11d0b8: cmp      r2, #0
+0x11d0bc: bne      #0x11d07c                        ; -> dmgt_manage_open3+0x14
+0x11d0c0: uxtb     r0, r4
+0x11d0c4: mov      r1, #0xc3
+0x11d0c8: orr      r0, r0, #0x200
+0x11d0cc: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x11d0d0: str      r4, [r6]
+0x11d0d4: mov      r0, r7
+0x11d0d8: pop      {r4, r5, r6, r7, r8, sb, sl, pc}

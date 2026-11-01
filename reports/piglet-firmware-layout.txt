@@ -1,0 +1,48 @@
+
+=== firmware/dectfw_firstlevel_441_slow.hex ===
+record types: {'0x0': 39, '0x1': 1, '0x4': 1} bad: 0
+data bytes: 618 min: 0x10080 max: 0x102e9
+blocks: 1
+  addr=0x00010080 len=618 (0x26a)
+payload bytes (block headers included): 626 0x272
+payload first 32: 000100800000026a14008020b022fffe1400800014009020b022fff514009000
+  mode0: header=0272 total=629
+  mode1: header=00000272 total=631
+first block data first 32: 14008020b022fffe1400800014009020b022fff514009000b05830000fc82040
+
+=== firmware/dectfw_secondlevel_441.hex ===
+record types: {'0x0': 3382, '0x1': 1, '0x4': 3} bad: 0
+data bytes: 54047 min: 0x0 max: 0x28dcd
+blocks: 9
+  addr=0x00000000 len=213 (0xd5)
+  addr=0x000000d6 len=477 (0x1dd)
+  addr=0x000002b4 len=6138 (0x17fa)
+  addr=0x000024f8 len=6150 (0x1806)
+  addr=0x00009000 len=875 (0x36b)
+  addr=0x00009c5e len=930 (0x3a2)
+  addr=0x00017300 len=2938 (0xb7a)
+  addr=0x00017fe0 len=24 (0x18)
+  addr=0x00020000 len=36302 (0x8dce)
+payload bytes (block headers included): 54119 0xd367
+payload first 32: 00000000000000d5a0000000350000001000e000a215002cdd010000d6000000
+  mode0: header=d367 total=54122
+  mode1: header=0000d367 total=54124
+first block data first 32: a0000000350000001000e000a215002cdd010000d6000000d6000000f2080000
+
+=== firmware/dectfw_secondlevel_441p2test.hex ===
+record types: {'0x0': 3112, '0x1': 1, '0x4': 3} bad: 0
+data bytes: 49736 min: 0x0 max: 0x27d49
+blocks: 8
+  addr=0x00000000 len=213 (0xd5)
+  addr=0x000000d6 len=5134 (0x140e)
+  addr=0x00001d56 len=8106 (0x1faa)
+  addr=0x00009000 len=1187 (0x4a3)
+  addr=0x00009b44 len=1212 (0x4bc)
+  addr=0x00017300 len=1786 (0x6fa)
+  addr=0x00017fe0 len=24 (0x18)
+  addr=0x00020000 len=32074 (0x7d4a)
+payload bytes (block headers included): 49800 0xc288
+payload first 32: 00000000000000d5a0000000350000001000e0001e10002c3e010000d6000000
+  mode0: header=c288 total=49803
+  mode1: header=0000c288 total=49805
+first block data first 32: a0000000350000001000e0001e10002c3e010000d6000000d60000009f060000

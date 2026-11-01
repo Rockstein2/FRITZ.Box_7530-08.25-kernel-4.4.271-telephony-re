@@ -1,0 +1,66 @@
+--- avm_dect_if_deinit 0xad68 20 bytes ---
+0xad68: ldr      r3, [pc, #8]
+0xad6c: mov      r2, #0
+0xad70: str      r2, [r3]
+0xad74: bx       lr
+0xad78: ldrdeq   r0, r1, [r0], -r4
+--- avm_dect_if_tx 0xada4 212 bytes ---
+0xada4: push     {r0, r1, r2, r4, r5, r6, r7, r8, sb, lr}
+0xada8: mov      r4, r0
+0xadac: ldr      r2, [pc, #0xb8]
+0xadb0: ldr      r0, [r2]
+0xadb4: mov      r7, r2
+0xadb8: str      r0, [sp, #4]
+0xadbc: ldr      r0, [pc, #0xac]
+0xadc0: ldr      r0, [r0]
+0xadc4: cmp      r0, #0
+0xadc8: mvneq    r0, #4
+0xadcc: beq      #0xae50
+0xadd0: ldrh     r0, [r4, #1]
+0xadd4: movw     r2, #0x2fba
+0xadd8: mov      r5, r4
+0xaddc: sub      r1, r1, #1
+0xade0: cmp      r0, r2
+0xade4: ldrb     r8, [r5], #1
+0xade8: bne      #0xae34
+0xadec: ldrb     r2, [r4, #4]
+0xadf0: mov      r3, lr
+0xadf4: ldr      r0, [pc, #0x78]
+0xadf8: strb     r2, [sp, #2]
+0xadfc: ldrb     r2, [r4, #5]
+0xae00: ldr      r0, [r0]
+0xae04: strb     r2, [sp, #3]
+0xae08: mov      r2, #0
+0xae0c: ldrh     r6, [sp, #2]
+0xae10: mov      r1, r6
+0xae14: bl       #0xae14
+0xae18: subs     sb, r0, #0
+0xae1c: beq      #0xae2c
+0xae20: mov      r2, r6
+0xae24: add      r1, r4, #6
+0xae28: bl       #0xae28
+0xae2c: mov      r1, #9
+0xae30: str      sb, [r4, #6]
+0xae34: mov      r2, r5
+0xae38: uxth     r1, r1
+0xae3c: mov      r0, r8
+0xae40: bl       #0xae40
+0xae44: mov      r0, #1
+0xae48: bl       #0xae48
+0xae4c: mov      r0, #0
+0xae50: ldr      r2, [sp, #4]
+0xae54: ldr      r3, [r7]
+0xae58: cmp      r2, r3
+0xae5c: beq      #0xae64
+0xae60: bl       #0xae60
+0xae64: add      sp, sp, #0xc
+0xae68: pop      {r4, r5, r6, r7, r8, sb, pc}
+0xae6c: andeq    r0, r0, r0
+0xae70: ldrdeq   r0, r1, [r0], -r4
+0xae74: andeq    r0, r0, r0
+--- avm_dect_if_init 0xad54 20 bytes ---
+0xad54: ldr      r3, [pc, #8]
+0xad58: str      r0, [r3]
+0xad5c: mov      r0, #0
+0xad60: bx       lr
+0xad64: ldrdeq   r0, r1, [r0], -r4

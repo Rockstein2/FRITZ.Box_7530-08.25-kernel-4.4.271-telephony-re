@@ -1,0 +1,1094 @@
+
+===== .text offset=0x58 size=0xca0 =====
+
+--- dect_uicp_file_poll 0x0..0x9c (156 bytes) ---
+0x0000: 70402de9   push     {r4, r5, r6, lr}
+0x0004: 0060a0e1   mov      r6, r0
+0x0008: 74409fe5   ldr      r4, [pc, #0x74]
+0x000c: 0150a0e1   mov      r5, r1
+0x0010: 003094e5   ldr      r3, [r4]
+0x0014: 040013e3   tst      r3, #4
+0x0018: 0200000a   beq      #0x28
+0x001c: 64109fe5   ldr      r1, [pc, #0x64]
+0x0020: 64009fe5   ldr      r0, [pc, #0x64]
+0x0024: feffffeb   bl       #0x24    ; reloc printk (type 28)
+0x0028: 000055e3   cmp      r5, #0
+0x002c: 0600000a   beq      #0x4c
+0x0030: 003095e5   ldr      r3, [r5]
+0x0034: 000053e3   cmp      r3, #0
+0x0038: 0300000a   beq      #0x4c
+0x003c: 0520a0e1   mov      r2, r5
+0x0040: 48109fe5   ldr      r1, [pc, #0x48]
+0x0044: 0600a0e1   mov      r0, r6
+0x0048: 33ff2fe1   blx      r3
+0x004c: 40309fe5   ldr      r3, [pc, #0x40]
+0x0050: 455100e3   movw     r5, #0x145
+0x0054: 102094e5   ldr      r2, [r4, #0x10]
+0x0058: 030052e1   cmp      r2, r3
+0x005c: 003094e5   ldr      r3, [r4]
+0x0060: 415fa003   moveq    r5, #0x104
+0x0064: 040013e3   tst      r3, #4
+0x0068: 0300000a   beq      #0x7c
+0x006c: 0520a0e1   mov      r2, r5
+0x0070: 10109fe5   ldr      r1, [pc, #0x10]
+0x0074: 1c009fe5   ldr      r0, [pc, #0x1c]
+0x0078: feffffeb   bl       #0x78    ; reloc printk (type 28)
+0x007c: 0500a0e1   mov      r0, r5
+0x0080: 7080bde8   pop      {r4, r5, r6, pc}
+0x0084: 00000000   andeq    r0, r0, r0
+0x0088: 00000000   andeq    r0, r0, r0
+0x008c: 00000000   andeq    r0, r0, r0
+0x0090: 04000000   andeq    r0, r0, r4
+0x0094: 10000000   andeq    r0, r0, r0, lsl r0
+0x0098: 0d000000   andeq    r0, r0, sp
+
+--- dect_uicp_file_fasync 0x9c..0xf0 (84 bytes) ---
+0x009c: 40309fe5   ldr      r3, [pc, #0x40]
+0x00a0: f0412de9   push     {r4, r5, r6, r7, r8, lr}
+0x00a4: 0050a0e1   mov      r5, r0
+0x00a8: 003093e5   ldr      r3, [r3]
+0x00ac: 0140a0e1   mov      r4, r1
+0x00b0: 0260a0e1   mov      r6, r2
+0x00b4: 947091e5   ldr      r7, [r1, #0x94]
+0x00b8: 040013e3   tst      r3, #4
+0x00bc: 0200000a   beq      #0xcc
+0x00c0: 20109fe5   ldr      r1, [pc, #0x20]
+0x00c4: 20009fe5   ldr      r0, [pc, #0x20]
+0x00c8: feffffeb   bl       #0xc8    ; reloc printk (type 28)
+0x00cc: 0c3087e2   add      r3, r7, #0xc
+0x00d0: 0620a0e1   mov      r2, r6
+0x00d4: 0410a0e1   mov      r1, r4
+0x00d8: 0500a0e1   mov      r0, r5
+0x00dc: f041bde8   pop      {r4, r5, r6, r7, r8, lr}
+0x00e0: feffffea   b        #0xe0    ; reloc fasync_helper (type 29)
+0x00e4: 00000000   andeq    r0, r0, r0
+0x00e8: 14000000   andeq    r0, r0, r4, lsl r0
+0x00ec: 30000000   andeq    r0, r0, r0, lsr r0
+
+--- dect_uicp_file_close 0xf0..0x164 (116 bytes) ---
+0x00f0: 5c309fe5   ldr      r3, [pc, #0x5c]
+0x00f4: 10402de9   push     {r4, lr}
+0x00f8: 0140a0e1   mov      r4, r1
+0x00fc: 003093e5   ldr      r3, [r3]
+0x0100: 040013e3   tst      r3, #4
+0x0104: 0200000a   beq      #0x114
+0x0108: 48109fe5   ldr      r1, [pc, #0x48]
+0x010c: 48009fe5   ldr      r0, [pc, #0x48]
+0x0110: feffffeb   bl       #0x110    ; reloc printk (type 28)
+0x0114: 943094e5   ldr      r3, [r4, #0x94]
+0x0118: 000053e3   cmp      r3, #0
+0x011c: 0700000a   beq      #0x140
+0x0120: 0020a0e3   mov      r2, #0
+0x0124: 0410a0e1   mov      r1, r4
+0x0128: 0000e0e3   mvn      r0, #0
+0x012c: daffffeb   bl       #0x9c
+0x0130: 940094e5   ldr      r0, [r4, #0x94]
+0x0134: feffffeb   bl       #0x134    ; reloc kfree (type 28)
+0x0138: 0030a0e3   mov      r3, #0
+0x013c: 943084e5   str      r3, [r4, #0x94]
+0x0140: 18309fe5   ldr      r3, [pc, #0x18]
+0x0144: 0000a0e3   mov      r0, #0
+0x0148: 000083e5   str      r0, [r3]
+0x014c: 040083e5   str      r0, [r3, #4]
+0x0150: 1080bde8   pop      {r4, pc}
+0x0154: 00000000   andeq    r0, r0, r0
+0x0158: 2a000000   andeq    r0, r0, sl, lsr #32
+0x015c: 30000000   andeq    r0, r0, r0, lsr r0
+0x0160: 00000000   andeq    r0, r0, r0
+
+--- dect_uicp_file_open 0x164..0x268 (260 bytes) ---
+0x0164: f0412de9   push     {r4, r5, r6, r7, r8, lr}
+0x0168: 5bf07ff5   dmb      ish
+0x016c: d4509fe5   ldr      r5, [pc, #0xd4]
+0x0170: 00f095f5   pldw     [r5]
+0x0174: 9f3f95e1   ldrex    r3, [r5]
+0x0178: 013083e2   add      r3, r3, #1
+0x017c: 932f85e1   strex    r2, r3, [r5]
+0x0180: 000032e3   teq      r2, #0
+0x0184: faffff1a   bne      #0x174
+0x0188: 5bf07ff5   dmb      ish
+0x018c: 010053e3   cmp      r3, #1
+0x0190: 080000da   ble      #0x1b8
+0x0194: b0309fe5   ldr      r3, [pc, #0xb0]
+0x0198: 003093e5   ldr      r3, [r3]
+0x019c: 010013e3   tst      r3, #1
+0x01a0: 0200000a   beq      #0x1b0
+0x01a4: a4109fe5   ldr      r1, [pc, #0xa4]
+0x01a8: a4009fe5   ldr      r0, [pc, #0xa4]
+0x01ac: feffffeb   bl       #0x1ac    ; reloc printk (type 28)
+0x01b0: 0f00e0e3   mvn      r0, #0xf
+0x01b4: f081bde8   pop      {r4, r5, r6, r7, r8, pc}
+0x01b8: 200091e5   ldr      r0, [r1, #0x20]
+0x01bc: 0160a0e1   mov      r6, r1
+0x01c0: 0570a0e1   mov      r7, r5
+0x01c4: 014b10e2   ands     r4, r0, #0x400
+0x01c8: 0a00000a   beq      #0x1f8
+0x01cc: 78309fe5   ldr      r3, [pc, #0x78]
+0x01d0: 003093e5   ldr      r3, [r3]
+0x01d4: 010013e3   tst      r3, #1
+0x01d8: 0200000a   beq      #0x1e8
+0x01dc: 6c109fe5   ldr      r1, [pc, #0x6c]
+0x01e0: 70009fe5   ldr      r0, [pc, #0x70]
+0x01e4: feffffeb   bl       #0x1e4    ; reloc printk (type 28)
+0x01e8: 0030a0e3   mov      r3, #0
+0x01ec: 0d00e0e3   mvn      r0, #0xd
+0x01f0: 003087e5   str      r3, [r7]
+0x01f4: f081bde8   pop      {r4, r5, r6, r7, r8, pc}
+0x01f8: 5c309fe5   ldr      r3, [pc, #0x5c]
+0x01fc: 5c109fe5   ldr      r1, [pc, #0x5c]
+0x0200: 180093e5   ldr      r0, [r3, #0x18]
+0x0204: feffffeb   bl       #0x204    ; reloc kmem_cache_alloc (type 28)
+0x0208: 000050e3   cmp      r0, #0
+0x020c: 0600001a   bne      #0x22c
+0x0210: 34309fe5   ldr      r3, [pc, #0x34]
+0x0214: 003093e5   ldr      r3, [r3]
+0x0218: 010013e3   tst      r3, #1
+0x021c: f1ffff0a   beq      #0x1e8
+0x0220: 28109fe5   ldr      r1, [pc, #0x28]
+0x0224: 38009fe5   ldr      r0, [pc, #0x38]
+0x0228: edffffea   b        #0x1e4
+0x022c: 483086e2   add      r3, r6, #0x48
+0x0230: 083080e5   str      r3, [r0, #8]
+0x0234: 940086e5   str      r0, [r6, #0x94]
+0x0238: 0130a0e3   mov      r3, #1
+0x023c: 0400a0e1   mov      r0, r4
+0x0240: 043085e5   str      r3, [r5, #4]
+0x0244: f081bde8   pop      {r4, r5, r6, r7, r8, pc}
+0x0248: 00000000   andeq    r0, r0, r0
+0x024c: 00000000   andeq    r0, r0, r0
+0x0250: 3f000000   andeq    r0, r0, pc, lsr r0
+0x0254: 37000000   andeq    r0, r0, r7, lsr r0
+0x0258: 58000000   andeq    r0, r0, r8, asr r0
+0x025c: 00000000   andeq    r0, r0, r0    ; reloc kmalloc_caches (type 2)
+0x0260: c0804002   subeq    r8, r0, #0xc0
+0x0264: 7b000000   andeq    r0, r0, fp, ror r0
+
+--- dect_uicp_file_read 0x268..0x58c (804 bytes) ---
+0x0268: f04f2de9   push     {r4, r5, r6, r7, r8, sb, sl, fp, lr}
+0x026c: 0370a0e1   mov      r7, r3
+0x0270: d4329fe5   ldr      r3, [pc, #0x2d4]
+0x0274: 0290a0e1   mov      sb, r2
+0x0278: d0629fe5   ldr      r6, [pc, #0x2d0]
+0x027c: 24d04de2   sub      sp, sp, #0x24
+0x0280: 00a0a0e1   mov      sl, r0
+0x0284: 0180a0e1   mov      r8, r1
+0x0288: 002093e5   ldr      r2, [r3]
+0x028c: 00308de5   str      r3, [sp]
+0x0290: 1c208de5   str      r2, [sp, #0x1c]
+0x0294: 002096e5   ldr      r2, [r6]
+0x0298: 040012e3   tst      r2, #4
+0x029c: 0200000a   beq      #0x2ac
+0x02a0: ac129fe5   ldr      r1, [pc, #0x2ac]
+0x02a4: ac029fe5   ldr      r0, [pc, #0x2ac]
+0x02a8: feffffeb   bl       #0x2a8    ; reloc printk (type 28)
+0x02ac: a8b29fe5   ldr      fp, [pc, #0x2a8]
+0x02b0: 0050a0e3   mov      r5, #0
+0x02b4: 104096e5   ldr      r4, [r6, #0x10]
+0x02b8: 0b0054e1   cmp      r4, fp
+0x02bc: 2400000a   beq      #0x354
+0x02c0: 085094e5   ldr      r5, [r4, #8]
+0x02c4: 0c0094e5   ldr      r0, [r4, #0xc]
+0x02c8: 005045e0   sub      r5, r5, r0
+0x02cc: 090055e1   cmp      r5, sb
+0x02d0: 0950a021   movhs    r5, sb
+0x02d4: 003096e5   ldr      r3, [r6]
+0x02d8: 040013e3   tst      r3, #4
+0x02dc: 0200000a   beq      #0x2ec
+0x02e0: 6c129fe5   ldr      r1, [pc, #0x26c]
+0x02e4: 74029fe5   ldr      r0, [pc, #0x274]
+0x02e8: feffffeb   bl       #0x2e8    ; reloc printk (type 28)
+0x02ec: 0020a0e3   mov      r2, #0
+0x02f0: dd1100e3   movw     r1, #0x1dd
+0x02f4: 68029fe5   ldr      r0, [pc, #0x268]
+0x02f8: feffffeb   bl       #0x2f8    ; reloc __might_sleep (type 28)
+0x02fc: 103096e5   ldr      r3, [r6, #0x10]
+0x0300: 54229fe5   ldr      r2, [pc, #0x254]
+0x0304: 020053e1   cmp      r3, r2
+0x0308: 2600001a   bne      #0x3a8
+0x030c: 14308de2   add      r3, sp, #0x14
+0x0310: 14308de5   str      r3, [sp, #0x14]
+0x0314: 18308de5   str      r3, [sp, #0x18]
+0x0318: 0030a0e3   mov      r3, #0
+0x031c: 08308de5   str      r3, [sp, #8]
+0x0320: 0120a0e3   mov      r2, #1
+0x0324: 08108de2   add      r1, sp, #8
+0x0328: 38029fe5   ldr      r0, [pc, #0x238]
+0x032c: feffffeb   bl       #0x32c    ; reloc prepare_to_wait_event (type 28)
+0x0330: 102096e5   ldr      r2, [r6, #0x10]
+0x0334: 20129fe5   ldr      r1, [pc, #0x220]
+0x0338: 010052e1   cmp      r2, r1
+0x033c: 0030a0e1   mov      r3, r0
+0x0340: 0800001a   bne      #0x368
+0x0344: 000050e3   cmp      r0, #0
+0x0348: 0700001a   bne      #0x36c
+0x034c: feffffeb   bl       #0x34c    ; reloc schedule (type 28)
+0x0350: f2ffffea   b        #0x320
+0x0354: 20409ae5   ldr      r4, [sl, #0x20]
+0x0358: 024b14e2   ands     r4, r4, #0x800
+0x035c: dcffff0a   beq      #0x2d4
+0x0360: 0a00e0e3   mvn      r0, #0xa
+0x0364: 660000ea   b        #0x504
+0x0368: 0030a0e3   mov      r3, #0
+0x036c: 08108de2   add      r1, sp, #8
+0x0370: f0019fe5   ldr      r0, [pc, #0x1f0]
+0x0374: 04308de5   str      r3, [sp, #4]
+0x0378: feffffeb   bl       #0x378    ; reloc finish_wait (type 28)
+0x037c: 04309de5   ldr      r3, [sp, #4]
+0x0380: 000053e3   cmp      r3, #0
+0x0384: 0700000a   beq      #0x3a8
+0x0388: 003096e5   ldr      r3, [r6]
+0x038c: 040013e3   tst      r3, #4
+0x0390: 0200000a   beq      #0x3a0
+0x0394: b8119fe5   ldr      r1, [pc, #0x1b8]
+0x0398: cc019fe5   ldr      r0, [pc, #0x1cc]
+0x039c: feffffeb   bl       #0x39c    ; reloc printk (type 28)
+0x03a0: c8019fe5   ldr      r0, [pc, #0x1c8]
+0x03a4: 560000ea   b        #0x504
+0x03a8: 003096e5   ldr      r3, [r6]
+0x03ac: 040013e3   tst      r3, #4
+0x03b0: 0200000a   beq      #0x3c0
+0x03b4: 98119fe5   ldr      r1, [pc, #0x198]
+0x03b8: b4019fe5   ldr      r0, [pc, #0x1b4]
+0x03bc: feffffeb   bl       #0x3bc    ; reloc printk (type 28)
+0x03c0: 000054e3   cmp      r4, #0
+0x03c4: baffff0a   beq      #0x2b4
+0x03c8: 0d30a0e1   mov      r3, sp
+0x03cc: ff2dc3e3   bic      r2, r3, #0x3fc0
+0x03d0: 3f20c2e3   bic      r2, r2, #0x3f
+0x03d4: 083092e5   ldr      r3, [r2, #8]
+0x03d8: 051098e0   adds     r1, r8, r5
+0x03dc: 0310d130   sbcslo   r1, r1, r3
+0x03e0: 0030a033   movlo    r3, #0
+0x03e4: 000053e3   cmp      r3, #0
+0x03e8: 0500a011   movne    r0, r5
+0x03ec: 0c00001a   bne      #0x424
+0x03f0: 109f13ee   mrc      p15, #0, sb, c3, c0, #0
+0x03f4: 0c30c9e3   bic      r3, sb, #0xc
+0x03f8: 0c1094e5   ldr      r1, [r4, #0xc]
+0x03fc: 043083e3   orr      r3, r3, #4
+0x0400: 103f03ee   mcr      p15, #0, r3, c3, c0, #0
+0x0404: 6ff07ff5   isb      sy
+0x0408: 101081e2   add      r1, r1, #0x10
+0x040c: 0520a0e1   mov      r2, r5
+0x0410: 011084e0   add      r1, r4, r1
+0x0414: 0800a0e1   mov      r0, r8
+0x0418: feffffeb   bl       #0x418    ; reloc arm_copy_to_user (type 28)
+0x041c: 109f03ee   mcr      p15, #0, sb, c3, c0, #0
+0x0420: 6ff07ff5   isb      sy
+0x0424: 000050e3   cmp      r0, #0
+0x0428: 002096e5   ldr      r2, [r6]
+0x042c: 0600000a   beq      #0x44c
+0x0430: 010012e3   tst      r2, #1
+0x0434: 0200000a   beq      #0x444
+0x0438: 14119fe5   ldr      r1, [pc, #0x114]
+0x043c: 34019fe5   ldr      r0, [pc, #0x134]
+0x0440: feffffeb   bl       #0x440    ; reloc printk (type 28)
+0x0444: 0d00e0e3   mvn      r0, #0xd
+0x0448: 2d0000ea   b        #0x504
+0x044c: 040012e3   tst      r2, #4
+0x0450: 083094e5   ldr      r3, [r4, #8]
+0x0454: 0c1094e5   ldr      r1, [r4, #0xc]
+0x0458: 0500000a   beq      #0x474
+0x045c: 053043e0   sub      r3, r3, r5
+0x0460: 0520a0e1   mov      r2, r5
+0x0464: 013043e0   sub      r3, r3, r1
+0x0468: 0c019fe5   ldr      r0, [pc, #0x10c]
+0x046c: e0109fe5   ldr      r1, [pc, #0xe0]
+0x0470: feffffeb   bl       #0x470    ; reloc printk (type 28)
+0x0474: 0c2094e5   ldr      r2, [r4, #0xc]
+0x0478: 083094e5   ldr      r3, [r4, #8]
+0x047c: 022085e0   add      r2, r5, r2
+0x0480: 0c2084e5   str      r2, [r4, #0xc]
+0x0484: 030052e1   cmp      r2, r3
+0x0488: 2800001a   bne      #0x530
+0x048c: 060052e3   cmp      r2, #6
+0x0490: 003096e5   ldr      r3, [r6]
+0x0494: 2000009a   bls      #0x51c
+0x0498: 040013e3   tst      r3, #4
+0x049c: 0700000a   beq      #0x4c0
+0x04a0: 1530d4e5   ldrb     r3, [r4, #0x15]
+0x04a4: a8109fe5   ldr      r1, [pc, #0xa8]
+0x04a8: d0009fe5   ldr      r0, [pc, #0xd0]
+0x04ac: 0830cde5   strb     r3, [sp, #8]
+0x04b0: 1630d4e5   ldrb     r3, [r4, #0x16]
+0x04b4: 0930cde5   strb     r3, [sp, #9]
+0x04b8: b820dde1   ldrh     r2, [sp, #8]
+0x04bc: feffffeb   bl       #0x4bc    ; reloc printk (type 28)
+0x04c0: bc009fe5   ldr      r0, [pc, #0xbc]
+0x04c4: 018ca0e3   mov      r8, #0x100
+0x04c8: feffffeb   bl       #0x4c8    ; reloc _raw_spin_lock_irqsave (type 28)
+0x04cc: d020c4e1   ldrd     r2, r3, [r4]
+0x04d0: 029ca0e3   mov      sb, #0x200
+0x04d4: 043082e5   str      r3, [r2, #4]
+0x04d8: 002083e5   str      r2, [r3]
+0x04dc: f080c4e1   strd     r8, sb, [r4]
+0x04e0: 0010a0e1   mov      r1, r0
+0x04e4: 98009fe5   ldr      r0, [pc, #0x98]
+0x04e8: feffffeb   bl       #0x4e8    ; reloc _raw_spin_unlock_irqrestore (type 28)
+0x04ec: 0400a0e1   mov      r0, r4
+0x04f0: feffffeb   bl       #0x4f0    ; reloc kfree (type 28)
+0x04f4: 0020a0e3   mov      r2, #0
+0x04f8: 0030a0e3   mov      r3, #0
+0x04fc: f020c7e1   strd     r2, r3, [r7]
+0x0500: 0500a0e1   mov      r0, r5
+0x0504: 00309de5   ldr      r3, [sp]
+0x0508: 1c209de5   ldr      r2, [sp, #0x1c]
+0x050c: 003093e5   ldr      r3, [r3]
+0x0510: 030052e1   cmp      r2, r3
+0x0514: 0a00000a   beq      #0x544
+0x0518: feffffeb   bl       #0x518    ; reloc __stack_chk_fail (type 28)
+0x051c: 020013e3   tst      r3, #2
+0x0520: e6ffff0a   beq      #0x4c0
+0x0524: 28109fe5   ldr      r1, [pc, #0x28]
+0x0528: 58009fe5   ldr      r0, [pc, #0x58]
+0x052c: e2ffffea   b        #0x4bc
+0x0530: d020c7e1   ldrd     r2, r3, [r7]
+0x0534: 050092e0   adds     r0, r2, r5
+0x0538: 0010a3e2   adc      r1, r3, #0
+0x053c: f000c7e1   strd     r0, r1, [r7]
+0x0540: eeffffea   b        #0x500
+0x0544: 24d08de2   add      sp, sp, #0x24
+0x0548: f08fbde8   pop      {r4, r5, r6, r7, r8, sb, sl, fp, pc}
+0x054c: 00000000   andeq    r0, r0, r0    ; reloc __stack_chk_guard (type 2)
+0x0550: 00000000   andeq    r0, r0, r0
+0x0554: 53000000   andeq    r0, r0, r3, asr r0
+0x0558: 95000000   muleq    r0, r5, r0
+0x055c: 10000000   andeq    r0, r0, r0, lsl r0
+0x0560: a1000000   andeq    r0, r0, r1, lsr #1
+0x0564: b1000000   strheq   r0, [r0], -r1
+0x0568: 04000000   andeq    r0, r0, r4
+0x056c: ed000000   andeq    r0, r0, sp, ror #1
+
+--- dect_uicp_file_ioctl 0x58c..0x72c (416 bytes) ---
+0x058c: f0402de9   push     {r4, r5, r6, r7, lr}
+0x0590: 010051e3   cmp      r1, #1
+0x0594: 70419fe5   ldr      r4, [pc, #0x170]
+0x0598: 14d04de2   sub      sp, sp, #0x14
+0x059c: 0200a0e1   mov      r0, r2
+0x05a0: 003094e5   ldr      r3, [r4]
+0x05a4: 0c308de5   str      r3, [sp, #0xc]
+0x05a8: 2000001a   bne      #0x630
+0x05ac: 5c319fe5   ldr      r3, [pc, #0x15c]
+0x05b0: 003093e5   ldr      r3, [r3]
+0x05b4: 04308de5   str      r3, [sp, #4]
+0x05b8: fa30a0e3   mov      r3, #0xfa
+0x05bc: 08308de5   str      r3, [sp, #8]
+0x05c0: 0d30a0e1   mov      r3, sp
+0x05c4: ff2dc3e3   bic      r2, r3, #0x3fc0
+0x05c8: 3f20c2e3   bic      r2, r2, #0x3f
+0x05cc: 083092e5   ldr      r3, [r2, #8]
+0x05d0: 081090e2   adds     r1, r0, #8
+0x05d4: 0310d130   sbcslo   r1, r1, r3
+0x05d8: 0030a033   movlo    r3, #0
+0x05dc: 000053e3   cmp      r3, #0
+0x05e0: 0500000a   beq      #0x5fc
+0x05e4: 1500e0e3   mvn      r0, #0x15
+0x05e8: 0c209de5   ldr      r2, [sp, #0xc]
+0x05ec: 003094e5   ldr      r3, [r4]
+0x05f0: 030052e1   cmp      r2, r3
+0x05f4: 4200000a   beq      #0x704
+0x05f8: feffffeb   bl       #0x5f8    ; reloc __stack_chk_fail (type 28)
+0x05fc: 105f13ee   mrc      p15, #0, r5, c3, c0, #0
+0x0600: 0c30c5e3   bic      r3, r5, #0xc
+0x0604: 043083e3   orr      r3, r3, #4
+0x0608: 103f03ee   mcr      p15, #0, r3, c3, c0, #0
+0x060c: 6ff07ff5   isb      sy
+0x0610: 0820a0e3   mov      r2, #8
+0x0614: 04108de2   add      r1, sp, #4
+0x0618: feffffeb   bl       #0x618    ; reloc arm_copy_to_user (type 28)
+0x061c: 105f03ee   mcr      p15, #0, r5, c3, c0, #0
+0x0620: 6ff07ff5   isb      sy
+0x0624: 000050e3   cmp      r0, #0
+0x0628: edffff1a   bne      #0x5e4
+0x062c: edffffea   b        #0x5e8
+0x0630: 020051e3   cmp      r1, #2
+0x0634: 0d00e013   mvnne    r0, #0xd
+0x0638: eaffff1a   bne      #0x5e8
+0x063c: 0d30a0e1   mov      r3, sp
+0x0640: ff2dc3e3   bic      r2, r3, #0x3fc0
+0x0644: 3f20c2e3   bic      r2, r2, #0x3f
+0x0648: 083092e5   ldr      r3, [r2, #8]
+0x064c: 011c90e2   adds     r1, r0, #0x100
+0x0650: 0310d130   sbcslo   r1, r1, r3
+0x0654: 0030a033   movlo    r3, #0
+0x0658: 000053e3   cmp      r3, #0
+0x065c: 1a00001a   bne      #0x6cc
+0x0660: 107f13ee   mrc      p15, #0, r7, c3, c0, #0
+0x0664: 0c30c7e3   bic      r3, r7, #0xc
+0x0668: 043083e3   orr      r3, r3, #4
+0x066c: 103f03ee   mcr      p15, #0, r3, c3, c0, #0
+0x0670: 6ff07ff5   isb      sy
+0x0674: 98509fe5   ldr      r5, [pc, #0x98]
+0x0678: 0010a0e1   mov      r1, r0
+0x067c: 012ca0e3   mov      r2, #0x100
+0x0680: 0c0085e2   add      r0, r5, #0xc
+0x0684: feffffeb   bl       #0x684    ; reloc arm_copy_from_user (type 28)
+0x0688: 0060a0e1   mov      r6, r0
+0x068c: 107f03ee   mcr      p15, #0, r7, c3, c0, #0
+0x0690: 6ff07ff5   isb      sy
+0x0694: 000050e3   cmp      r0, #0
+0x0698: 0f00001a   bne      #0x6dc
+0x069c: 011ca0e3   mov      r1, #0x100
+0x06a0: 0c0085e2   add      r0, r5, #0xc
+0x06a4: feffffeb   bl       #0x6a4    ; reloc strnlen (type 28)
+0x06a8: 68109fe5   ldr      r1, [pc, #0x68]
+0x06ac: 010c50e3   cmp      r0, #0x100
+0x06b0: 64009fe5   ldr      r0, [pc, #0x64]
+0x06b4: 0b61c505   strbeq   r6, [r5, #0x10b]
+0x06b8: 2e30a003   moveq    r3, #0x2e
+0x06bc: 0931c505   strbeq   r3, [r5, #0x109]
+0x06c0: 0a31c505   strbeq   r3, [r5, #0x10a]
+0x06c4: feffffeb   bl       #0x6c4    ; reloc printk (type 28)
+0x06c8: 0b0000ea   b        #0x6fc
+0x06cc: 011ca0e3   mov      r1, #0x100
+0x06d0: 40009fe5   ldr      r0, [pc, #0x40]
+0x06d4: feffffeb   bl       #0x6d4    ; reloc __memzero (type 28)
+0x06d8: 016ca0e3   mov      r6, #0x100
+0x06dc: 3c309fe5   ldr      r3, [pc, #0x3c]
+0x06e0: 000093e5   ldr      r0, [r3]
+0x06e4: 010010e2   ands     r0, r0, #1
+0x06e8: beffff0a   beq      #0x5e8
+0x06ec: 0620a0e1   mov      r2, r6
+0x06f0: 2c109fe5   ldr      r1, [pc, #0x2c]
+0x06f4: 2c009fe5   ldr      r0, [pc, #0x2c]
+0x06f8: feffffeb   bl       #0x6f8    ; reloc printk (type 28)
+0x06fc: 0000a0e3   mov      r0, #0
+0x0700: b8ffffea   b        #0x5e8
+0x0704: 14d08de2   add      sp, sp, #0x14
+0x0708: f080bde8   pop      {r4, r5, r6, r7, pc}
+0x070c: 00000000   andeq    r0, r0, r0    ; reloc __stack_chk_guard (type 2)
+0x0710: 00000000   andeq    r0, r0, r0    ; reloc jiffies (type 2)
+0x0714: 00000000   andeq    r0, r0, r0
+0x0718: 0c000000   andeq    r0, r0, ip
+0x071c: b0010000   strheq   r0, [r0], -r0
+0x0720: 00000000   andeq    r0, r0, r0
+0x0724: 67000000   andeq    r0, r0, r7, rrx
+0x0728: 8a010000   andeq    r0, r0, sl, lsl #3
+
+--- dect_uicp_file_write 0x72c..0x97c (592 bytes) ---
+0x072c: f3412de9   push     {r0, r1, r4, r5, r6, r7, r8, lr}
+0x0730: 0160a0e1   mov      r6, r1
+0x0734: 00729fe5   ldr      r7, [pc, #0x200]
+0x0738: 0240a0e1   mov      r4, r2
+0x073c: fc519fe5   ldr      r5, [pc, #0x1fc]
+0x0740: 003097e5   ldr      r3, [r7]
+0x0744: 04308de5   str      r3, [sp, #4]
+0x0748: 003095e5   ldr      r3, [r5]
+0x074c: 040013e3   tst      r3, #4
+0x0750: 0200000a   beq      #0x760
+0x0754: e8119fe5   ldr      r1, [pc, #0x1e8]
+0x0758: e8019fe5   ldr      r0, [pc, #0x1e8]
+0x075c: feffffeb   bl       #0x75c    ; reloc printk (type 28)
+0x0760: 030054e3   cmp      r4, #3
+0x0764: 0d00008a   bhi      #0x7a0
+0x0768: 003095e5   ldr      r3, [r5]
+0x076c: 010013e3   tst      r3, #1
+0x0770: 0500001a   bne      #0x78c
+0x0774: 0400e0e3   mvn      r0, #4
+0x0778: 04209de5   ldr      r2, [sp, #4]
+0x077c: 003097e5   ldr      r3, [r7]
+0x0780: 030052e1   cmp      r2, r3
+0x0784: 6a00000a   beq      #0x934
+0x0788: feffffeb   bl       #0x788    ; reloc __stack_chk_fail (type 28)
+0x078c: b0119fe5   ldr      r1, [pc, #0x1b0]
+0x0790: 0420a0e3   mov      r2, #4
+0x0794: b0019fe5   ldr      r0, [pc, #0x1b0]
+0x0798: feffffeb   bl       #0x798    ; reloc printk (type 28)
+0x079c: f4ffffea   b        #0x774
+0x07a0: c10d54e3   cmp      r4, #0x3040
+0x07a4: 0600009a   bls      #0x7c4
+0x07a8: 003095e5   ldr      r3, [r5]
+0x07ac: 010013e3   tst      r3, #1
+0x07b0: efffff0a   beq      #0x774
+0x07b4: c12da0e3   mov      r2, #0x3040
+0x07b8: 84119fe5   ldr      r1, [pc, #0x184]
+0x07bc: 8c019fe5   ldr      r0, [pc, #0x18c]
+0x07c0: f4ffffea   b        #0x798
+0x07c4: 0d30a0e1   mov      r3, sp
+0x07c8: ff2dc3e3   bic      r2, r3, #0x3fc0
+0x07cc: 3f20c2e3   bic      r2, r2, #0x3f
+0x07d0: 083092e5   ldr      r3, [r2, #8]
+0x07d4: 041096e0   adds     r1, r6, r4
+0x07d8: 0310d130   sbcslo   r1, r1, r3
+0x07dc: 0030a033   movlo    r3, #0
+0x07e0: 000053e3   cmp      r3, #0
+0x07e4: 1500001a   bne      #0x840
+0x07e8: 108f13ee   mrc      p15, #0, r8, c3, c0, #0
+0x07ec: 0c30c8e3   bic      r3, r8, #0xc
+0x07f0: 043083e3   orr      r3, r3, #4
+0x07f4: 103f03ee   mcr      p15, #0, r3, c3, c0, #0
+0x07f8: 6ff07ff5   isb      sy
+0x07fc: 50019fe5   ldr      r0, [pc, #0x150]
+0x0800: 0420a0e1   mov      r2, r4
+0x0804: 0610a0e1   mov      r1, r6
+0x0808: feffffeb   bl       #0x808    ; reloc arm_copy_from_user (type 28)
+0x080c: 0030a0e1   mov      r3, r0
+0x0810: 108f03ee   mcr      p15, #0, r8, c3, c0, #0
+0x0814: 6ff07ff5   isb      sy
+0x0818: 000053e3   cmp      r3, #0
+0x081c: 001095e5   ldr      r1, [r5]
+0x0820: 0b00000a   beq      #0x854
+0x0824: 010011e3   tst      r1, #1
+0x0828: 1100000a   beq      #0x874
+0x082c: 24119fe5   ldr      r1, [pc, #0x124]
+0x0830: 0420a0e1   mov      r2, r4
+0x0834: 20019fe5   ldr      r0, [pc, #0x120]
+0x0838: feffffeb   bl       #0x838    ; reloc printk (type 28)
+0x083c: 0c0000ea   b        #0x874
+0x0840: 0410a0e1   mov      r1, r4
+0x0844: 08019fe5   ldr      r0, [pc, #0x108]
+0x0848: feffffeb   bl       #0x848    ; reloc __memzero (type 28)
+0x084c: 0430a0e1   mov      r3, r4
+0x0850: f0ffffea   b        #0x818
+0x0854: 060054e3   cmp      r4, #6
+0x0858: 0c00008a   bhi      #0x890
+0x085c: 010011e3   tst      r1, #1
+0x0860: 0300000a   beq      #0x874
+0x0864: 0420a0e1   mov      r2, r4
+0x0868: e8109fe5   ldr      r1, [pc, #0xe8]
+0x086c: ec009fe5   ldr      r0, [pc, #0xec]
+0x0870: feffffeb   bl       #0x870    ; reloc printk (type 28)
+0x0874: 003095e5   ldr      r3, [r5]
+0x0878: 010013e3   tst      r3, #1
+0x087c: bcffff0a   beq      #0x774
+0x0880: 0420e0e3   mvn      r2, #4
+0x0884: b8109fe5   ldr      r1, [pc, #0xb8]
+0x0888: d4009fe5   ldr      r0, [pc, #0xd4]
+0x088c: c1ffffea   b        #0x798
+0x0890: bc609fe5   ldr      r6, [pc, #0xbc]
+0x0894: b020d6e1   ldrh     r2, [r6]
+0x0898: 043082e2   add      r3, r2, #4
+0x089c: 030054e1   cmp      r4, r3
+0x08a0: 0500000a   beq      #0x8bc
+0x08a4: 010011e3   tst      r1, #1
+0x08a8: f1ffff0a   beq      #0x874
+0x08ac: 0430a0e1   mov      r3, r4
+0x08b0: a0109fe5   ldr      r1, [pc, #0xa0]
+0x08b4: ac009fe5   ldr      r0, [pc, #0xac]
+0x08b8: deffffea   b        #0x838
+0x08bc: 020052e3   cmp      r2, #2
+0x08c0: 1600009a   bls      #0x920
+0x08c4: 040011e3   tst      r1, #4
+0x08c8: 0700000a   beq      #0x8ec
+0x08cc: 0530d6e5   ldrb     r3, [r6, #5]
+0x08d0: 80109fe5   ldr      r1, [pc, #0x80]
+0x08d4: 90009fe5   ldr      r0, [pc, #0x90]
+0x08d8: 0230cde5   strb     r3, [sp, #2]
+0x08dc: 0630d6e5   ldrb     r3, [r6, #6]
+0x08e0: 0330cde5   strb     r3, [sp, #3]
+0x08e4: b220dde1   ldrh     r2, [sp, #2]
+0x08e8: feffffeb   bl       #0x8e8    ; reloc printk (type 28)
+0x08ec: b010d6e1   ldrh     r1, [r6]
+0x08f0: 78009fe5   ldr      r0, [pc, #0x78]
+0x08f4: feffffeb   bl       #0x8f4    ; reloc avm_dect_if_tx (type 28)
+0x08f8: 002050e2   subs     r2, r0, #0
+0x08fc: 0500000a   beq      #0x918
+0x0900: 003095e5   ldr      r3, [r5]
+0x0904: 020013e3   tst      r3, #2
+0x0908: 0200000a   beq      #0x918
+0x090c: 44109fe5   ldr      r1, [pc, #0x44]
+0x0910: 5c009fe5   ldr      r0, [pc, #0x5c]
+0x0914: feffffeb   bl       #0x914    ; reloc printk (type 28)
+0x0918: 0400a0e1   mov      r0, r4
+0x091c: 95ffffea   b        #0x778
+0x0920: 020011e3   tst      r1, #2
+0x0924: f0ffff0a   beq      #0x8ec
+0x0928: 28109fe5   ldr      r1, [pc, #0x28]
+0x092c: 44009fe5   ldr      r0, [pc, #0x44]
+0x0930: ecffffea   b        #0x8e8
+0x0934: 08d08de2   add      sp, sp, #8
+0x0938: f081bde8   pop      {r4, r5, r6, r7, r8, pc}
+0x093c: 00000000   andeq    r0, r0, r0    ; reloc __stack_chk_guard (type 2)
+0x0940: 00000000   andeq    r0, r0, r0
+0x0944: 7c000000   andeq    r0, r0, ip, ror r0
+0x0948: b6010000   strheq   r0, [r0], -r6
+0x094c: c8010000   andeq    r0, r0, r8, asr #3
+0x0950: e1010000   andeq    r0, r0, r1, ror #3
+0x0954: 00000000   andeq    r0, r0, r0    ; reloc dect_uicp_from_user_buffer (type 2)
+0x0958: 91000000   muleq    r0, r1, r0
+0x095c: f9010000   strdeq   r0, r1, [r0], -sb
+0x0960: 28020000   andeq    r0, r0, r8, lsr #4
+0x0964: 7f020000   andeq    r0, r0, pc, ror r2
+0x0968: 44020000   andeq    r0, r0, r4, asr #4
+0x096c: 5d010000   andeq    r0, r0, sp, asr r1
+0x0970: 04000000   andeq    r0, r0, r4    ; reloc dect_uicp_from_user_buffer (type 2)
+0x0974: 61020000   andeq    r0, r0, r1, ror #4
+0x0978: 75010000   andeq    r0, r0, r5, ror r1
+
+--- dect_uicp_handle_debug_cmd 0x97c..0x9f8 (124 bytes) ---
+0x097c: 13402de9   push     {r0, r1, r4, lr}
+0x0980: 0a20a0e3   mov      r2, #0xa
+0x0984: 54409fe5   ldr      r4, [pc, #0x54]
+0x0988: 0d10a0e1   mov      r1, sp
+0x098c: 003094e5   ldr      r3, [r4]
+0x0990: 04308de5   str      r3, [sp, #4]
+0x0994: 48309fe5   ldr      r3, [pc, #0x48]
+0x0998: 00308de5   str      r3, [sp]
+0x099c: feffffeb   bl       #0x99c    ; reloc simple_strtoul (type 28)
+0x09a0: 0f0050e3   cmp      r0, #0xf
+0x09a4: 0020a0e1   mov      r2, r0
+0x09a8: 38309f95   ldrls    r3, [pc, #0x38]
+0x09ac: 38109f85   ldrhi    r1, [pc, #0x38]
+0x09b0: 38009f85   ldrhi    r0, [pc, #0x38]
+0x09b4: 30109f95   ldrls    r1, [pc, #0x30]
+0x09b8: 34009f95   ldrls    r0, [pc, #0x34]
+0x09bc: 00208395   strls    r2, [r3]
+0x09c0: feffffeb   bl       #0x9c0    ; reloc printk (type 28)
+0x09c4: 04209de5   ldr      r2, [sp, #4]
+0x09c8: 003094e5   ldr      r3, [r4]
+0x09cc: 030052e1   cmp      r2, r3
+0x09d0: 0000000a   beq      #0x9d8
+0x09d4: feffffeb   bl       #0x9d4    ; reloc __stack_chk_fail (type 28)
+0x09d8: 08d08de2   add      sp, sp, #8
+0x09dc: 1080bde8   pop      {r4, pc}
+0x09e0: 00000000   andeq    r0, r0, r0    ; reloc __stack_chk_guard (type 2)
+0x09e4: 5d030000   andeq    r0, r0, sp, asr r3
+0x09e8: 00000000   andeq    r0, r0, r0
+0x09ec: 4b010000   andeq    r0, r0, fp, asr #2
+0x09f0: 5e030000   andeq    r0, r0, lr, asr r3
+0x09f4: 80030000   andeq    r0, r0, r0, lsl #7
+
+--- dect_uicp_parse_cmdline 0x9f8..0xa78 (128 bytes) ---
+0x09f8: 10402de9   push     {r4, lr}
+0x09fc: 0040a0e1   mov      r4, r0
+0x0a00: 50109fe5   ldr      r1, [pc, #0x50]
+0x0a04: feffffeb   bl       #0xa04    ; reloc strstr (type 28)
+0x0a08: 000050e3   cmp      r0, #0
+0x0a0c: 0200000a   beq      #0xa1c
+0x0a10: 060080e2   add      r0, r0, #6
+0x0a14: 1040bde8   pop      {r4, lr}
+0x0a18: feffffea   b        #0xa18    ; reloc dect_uicp_handle_debug_cmd (type 29)
+0x0a1c: 0420a0e1   mov      r2, r4
+0x0a20: 34109fe5   ldr      r1, [pc, #0x34]
+0x0a24: 34009fe5   ldr      r0, [pc, #0x34]
+0x0a28: feffffeb   bl       #0xa28    ; reloc printk (type 28)
+0x0a2c: 30009fe5   ldr      r0, [pc, #0x30]
+0x0a30: feffffeb   bl       #0xa30    ; reloc printk (type 28)
+0x0a34: 2c009fe5   ldr      r0, [pc, #0x2c]
+0x0a38: feffffeb   bl       #0xa38    ; reloc printk (type 28)
+0x0a3c: 28009fe5   ldr      r0, [pc, #0x28]
+0x0a40: feffffeb   bl       #0xa40    ; reloc printk (type 28)
+0x0a44: 24009fe5   ldr      r0, [pc, #0x24]
+0x0a48: feffffeb   bl       #0xa48    ; reloc printk (type 28)
+0x0a4c: 20009fe5   ldr      r0, [pc, #0x20]
+0x0a50: 1040bde8   pop      {r4, lr}
+0x0a54: feffffea   b        #0xa54    ; reloc printk (type 29)
+0x0a58: a1030000   andeq    r0, r0, r1, lsr #7
+0x0a5c: 66010000   andeq    r0, r0, r6, ror #2
+0x0a60: a7030000   andeq    r0, r0, r7, lsr #7
+0x0a64: c2030000   andeq    r0, r0, r2, asr #7
+0x0a68: 0b040000   andeq    r0, r0, fp, lsl #8
+0x0a6c: 22040000   andeq    r0, r0, r2, lsr #8
+0x0a70: 3a040000   andeq    r0, r0, sl, lsr r4
+0x0a74: 52040000   andeq    r0, r0, r2, asr r4
+
+--- dect_uicp_manage_kcalloc 0xa78..0xa80 (8 bytes) ---
+0x0a78: 021981e3   orr      r1, r1, #0x8000
+0x0a7c: feffffea   b        #0xa7c    ; reloc __kmalloc (type 29)
+
+--- dect_uicp_fpapi_handle_to_user 0xa80..0xbc4 (324 bytes) ---
+0x0a80: f3412de9   push     {r0, r1, r4, r5, r6, r7, r8, lr}
+0x0a84: 0080a0e1   mov      r8, r0
+0x0a88: 10519fe5   ldr      r5, [pc, #0x110]
+0x0a8c: 0170a0e1   mov      r7, r1
+0x0a90: 0c619fe5   ldr      r6, [pc, #0x10c]
+0x0a94: 003095e5   ldr      r3, [r5]
+0x0a98: 04308de5   str      r3, [sp, #4]
+0x0a9c: 003096e5   ldr      r3, [r6]
+0x0aa0: 040013e3   tst      r3, #4
+0x0aa4: 0700000a   beq      #0xac8
+0x0aa8: 0030d0e5   ldrb     r3, [r0]
+0x0aac: f4109fe5   ldr      r1, [pc, #0xf4]
+0x0ab0: 0030cde5   strb     r3, [sp]
+0x0ab4: 0130d0e5   ldrb     r3, [r0, #1]
+0x0ab8: ec009fe5   ldr      r0, [pc, #0xec]
+0x0abc: 0130cde5   strb     r3, [sp, #1]
+0x0ac0: b020dde1   ldrh     r2, [sp]
+0x0ac4: feffffeb   bl       #0xac4    ; reloc printk (type 28)
+0x0ac8: e0109fe5   ldr      r1, [pc, #0xe0]
+0x0acc: 190087e2   add      r0, r7, #0x19
+0x0ad0: feffffeb   bl       #0xad0    ; reloc dect_uicp_manage_kcalloc (type 28)
+0x0ad4: 004050e2   subs     r4, r0, #0
+0x0ad8: 0c00001a   bne      #0xb10
+0x0adc: 003096e5   ldr      r3, [r6]
+0x0ae0: 04209de5   ldr      r2, [sp, #4]
+0x0ae4: 020013e3   tst      r3, #2
+0x0ae8: 003095e5   ldr      r3, [r5]
+0x0aec: 2700000a   beq      #0xb90
+0x0af0: 030052e1   cmp      r2, r3
+0x0af4: 0000000a   beq      #0xafc
+0x0af8: feffffeb   bl       #0xaf8    ; reloc __stack_chk_fail (type 28)
+0x0afc: a4109fe5   ldr      r1, [pc, #0xa4]
+0x0b00: ac009fe5   ldr      r0, [pc, #0xac]
+0x0b04: 08d08de2   add      sp, sp, #8
+0x0b08: f041bde8   pop      {r4, r5, r6, r7, r8, lr}
+0x0b0c: feffffea   b        #0xb0c    ; reloc printk (type 29)
+0x0b10: 013087e2   add      r3, r7, #1
+0x0b14: b030cde1   strh     r3, [sp]
+0x0b18: 98309fe5   ldr      r3, [pc, #0x98]
+0x0b1c: 0720a0e1   mov      r2, r7
+0x0b20: 0810a0e1   mov      r1, r8
+0x0b24: 004084e5   str      r4, [r4]
+0x0b28: 044084e5   str      r4, [r4, #4]
+0x0b2c: 150084e2   add      r0, r4, #0x15
+0x0b30: b230cde1   strh     r3, [sp, #2]
+0x0b34: 057087e2   add      r7, r7, #5
+0x0b38: 00309de5   ldr      r3, [sp]
+0x0b3c: 103084e5   str      r3, [r4, #0x10]
+0x0b40: 0030a0e3   mov      r3, #0
+0x0b44: 1430c4e5   strb     r3, [r4, #0x14]
+0x0b48: feffffeb   bl       #0xb48    ; reloc memcpy (type 28)
+0x0b4c: 087084e5   str      r7, [r4, #8]
+0x0b50: 64009fe5   ldr      r0, [pc, #0x64]
+0x0b54: feffffeb   bl       #0xb54    ; reloc _raw_spin_lock_irqsave (type 28)
+0x0b58: 143096e5   ldr      r3, [r6, #0x14]
+0x0b5c: 5c209fe5   ldr      r2, [pc, #0x5c]
+0x0b60: 144086e5   str      r4, [r6, #0x14]
+0x0b64: f020c4e1   strd     r2, r3, [r4]
+0x0b68: 004083e5   str      r4, [r3]
+0x0b6c: 04209de5   ldr      r2, [sp, #4]
+0x0b70: 0010a0e1   mov      r1, r0
+0x0b74: 003095e5   ldr      r3, [r5]
+0x0b78: 030052e1   cmp      r2, r3
+0x0b7c: ddffff1a   bne      #0xaf8
+0x0b80: 34009fe5   ldr      r0, [pc, #0x34]
+0x0b84: 08d08de2   add      sp, sp, #8
+0x0b88: f041bde8   pop      {r4, r5, r6, r7, r8, lr}
+0x0b8c: feffffea   b        #0xb8c    ; reloc _raw_spin_unlock_irqrestore (type 29)
+0x0b90: 030052e1   cmp      r2, r3
+0x0b94: d7ffff1a   bne      #0xaf8
+0x0b98: 08d08de2   add      sp, sp, #8
+0x0b9c: f081bde8   pop      {r4, r5, r6, r7, r8, pc}
+0x0ba0: 00000000   andeq    r0, r0, r0    ; reloc __stack_chk_guard (type 2)
+0x0ba4: 00000000   andeq    r0, r0, r0
+0x0ba8: 7e010000   andeq    r0, r0, lr, ror r1
+0x0bac: 76040000   andeq    r0, r0, r6, ror r4
+0x0bb0: c0004002   subeq    r0, r0, #0xc0
+0x0bb4: 8e040000   andeq    r0, r0, lr, lsl #9
+
+--- dect_uicp_from_dect 0xbc4..0xca0 (220 bytes) ---
+0x0bc4: b8c09fe5   ldr      ip, [pc, #0xb8]
+0x0bc8: 0120a0e1   mov      r2, r1
+0x0bcc: 13402de9   push     {r0, r1, r4, lr}
+0x0bd0: 04c09ce5   ldr      ip, [ip, #4]
+0x0bd4: ac409fe5   ldr      r4, [pc, #0xac]
+0x0bd8: 00005ce3   cmp      ip, #0
+0x0bdc: 0c00001a   bne      #0xc14
+0x0be0: 001094e5   ldr      r1, [r4]
+0x0be4: 040011e3   tst      r1, #4
+0x0be8: 0700000a   beq      #0xc0c
+0x0bec: 020052e3   cmp      r2, #2
+0x0bf0: 0030a0e1   mov      r3, r0
+0x0bf4: 00008de5   str      r0, [sp]
+0x0bf8: 0230a031   movlo    r3, r2
+0x0bfc: 0230a023   movhs    r3, #2
+0x0c00: 84109fe5   ldr      r1, [pc, #0x84]
+0x0c04: 84009fe5   ldr      r0, [pc, #0x84]
+0x0c08: feffffeb   bl       #0xc08    ; reloc printk (type 28)
+0x0c0c: 08d08de2   add      sp, sp, #8
+0x0c10: 1080bde8   pop      {r4, pc}
+0x0c14: 010051e3   cmp      r1, #1
+0x0c18: 0700008a   bhi      #0xc3c
+0x0c1c: 003094e5   ldr      r3, [r4]
+0x0c20: 020013e3   tst      r3, #2
+0x0c24: f8ffff0a   beq      #0xc0c
+0x0c28: 5c109fe5   ldr      r1, [pc, #0x5c]
+0x0c2c: 60009fe5   ldr      r0, [pc, #0x60]
+0x0c30: 08d08de2   add      sp, sp, #8
+0x0c34: 1040bde8   pop      {r4, lr}
+0x0c38: feffffea   b        #0xc38    ; reloc printk (type 29)
+0x0c3c: feffffeb   bl       #0xc3c    ; reloc dect_uicp_fpapi_handle_to_user (type 28)
+0x0c40: 102094e5   ldr      r2, [r4, #0x10]
+0x0c44: 103084e2   add      r3, r4, #0x10
+0x0c48: 030052e1   cmp      r2, r3
+0x0c4c: eeffff0a   beq      #0xc0c
+0x0c50: 003094e5   ldr      r3, [r4]
+0x0c54: 040013e3   tst      r3, #4
+0x0c58: 0200000a   beq      #0xc68
+0x0c5c: 28109fe5   ldr      r1, [pc, #0x28]
+0x0c60: 30009fe5   ldr      r0, [pc, #0x30]
+0x0c64: feffffeb   bl       #0xc64    ; reloc printk (type 28)
+0x0c68: 0120a0e3   mov      r2, #1
+0x0c6c: 0030a0e3   mov      r3, #0
+0x0c70: 0210a0e1   mov      r1, r2
+0x0c74: 20009fe5   ldr      r0, [pc, #0x20]
+0x0c78: 08d08de2   add      sp, sp, #8
+0x0c7c: 1040bde8   pop      {r4, lr}
+0x0c80: feffffea   b        #0xc80    ; reloc __wake_up (type 29)
+0x0c84: 00000000   andeq    r0, r0, r0
+0x0c88: 00000000   andeq    r0, r0, r0
+0x0c8c: 9d010000   muleq    r0, sp, r1
+0x0c90: a4040000   andeq    r0, r0, r4, lsr #9
+0x0c94: d6040000   ldrdeq   r0, r1, [r0], -r6
+0x0c98: 04010000   andeq    r0, r0, r4, lsl #2
+0x0c9c: 04000000   andeq    r0, r0, r4
+
+===== .init.text offset=0xcf8 size=0x184 =====
+
+--- init_module 0x0..0x184 (388 bytes) ---
+0x0000: f0412de9   push     {r4, r5, r6, r7, r8, lr}
+0x0004: 3c619fe5   ldr      r6, [pc, #0x13c]
+0x0008: 003096e5   ldr      r3, [r6]
+0x000c: 040013e3   tst      r3, #4
+0x0010: 0200000a   beq      #0x20
+0x0014: 30119fe5   ldr      r1, [pc, #0x130]
+0x0018: 30019fe5   ldr      r0, [pc, #0x130]
+0x001c: feffffeb   bl       #0x1c    ; reloc printk (type 28)
+0x0020: 2c419fe5   ldr      r4, [pc, #0x12c]
+0x0024: 0120a0e3   mov      r2, #1
+0x0028: 28319fe5   ldr      r3, [pc, #0x128]
+0x002c: 0010a0e3   mov      r1, #0
+0x0030: 430f84e2   add      r0, r4, #0x10c
+0x0034: feffffeb   bl       #0x34    ; reloc alloc_chrdev_region (type 28)
+0x0038: 005050e2   subs     r5, r0, #0
+0x003c: 0a00000a   beq      #0x6c
+0x0040: 003096e5   ldr      r3, [r6]
+0x0044: 010013e3   tst      r3, #1
+0x0048: 0200001a   bne      #0x58
+0x004c: 08519fe5   ldr      r5, [pc, #0x108]
+0x0050: 0500a0e1   mov      r0, r5
+0x0054: f081bde8   pop      {r4, r5, r6, r7, r8, pc}
+0x0058: 0520a0e1   mov      r2, r5
+0x005c: e8109fe5   ldr      r1, [pc, #0xe8]
+0x0060: f8009fe5   ldr      r0, [pc, #0xf8]
+0x0064: feffffeb   bl       #0x64    ; reloc printk (type 28)
+0x0068: f7ffffea   b        #0x4c
+0x006c: feffffeb   bl       #0x6c    ; reloc cdev_alloc (type 28)
+0x0070: 000050e3   cmp      r0, #0
+0x0074: 100184e5   str      r0, [r4, #0x110]
+0x0078: 0900001a   bne      #0xa4
+0x007c: 0110a0e3   mov      r1, #1
+0x0080: 0c0194e5   ldr      r0, [r4, #0x10c]
+0x0084: feffffeb   bl       #0x84    ; reloc unregister_chrdev_region (type 28)
+0x0088: 003096e5   ldr      r3, [r6]
+0x008c: 010013e3   tst      r3, #1
+0x0090: edffff0a   beq      #0x4c
+0x0094: b0109fe5   ldr      r1, [pc, #0xb0]
+0x0098: c4009fe5   ldr      r0, [pc, #0xc4]
+0x009c: feffffeb   bl       #0x9c    ; reloc printk (type 28)
+0x00a0: e9ffffea   b        #0x4c
+0x00a4: bc209fe5   ldr      r2, [pc, #0xbc]
+0x00a8: bc709fe5   ldr      r7, [pc, #0xbc]
+0x00ac: a4109fe5   ldr      r1, [pc, #0xa4]
+0x00b0: 242080e5   str      r2, [r0, #0x24]
+0x00b4: 287080e5   str      r7, [r0, #0x28]
+0x00b8: feffffeb   bl       #0xb8    ; reloc kobject_set_name (type 28)
+0x00bc: 0120a0e3   mov      r2, #1
+0x00c0: 0c1194e5   ldr      r1, [r4, #0x10c]
+0x00c4: 100194e5   ldr      r0, [r4, #0x110]
+0x00c8: 085084e5   str      r5, [r4, #8]
+0x00cc: 045084e5   str      r5, [r4, #4]
+0x00d0: feffffeb   bl       #0xd0    ; reloc cdev_add (type 28)
+0x00d4: 005050e2   subs     r5, r0, #0
+0x00d8: 0a00000a   beq      #0x108
+0x00dc: 100194e5   ldr      r0, [r4, #0x110]
+0x00e0: feffffeb   bl       #0xe0    ; reloc kobject_put (type 28)
+0x00e4: 0110a0e3   mov      r1, #1
+0x00e8: 0c0194e5   ldr      r0, [r4, #0x10c]
+0x00ec: feffffeb   bl       #0xec    ; reloc unregister_chrdev_region (type 28)
+0x00f0: 003096e5   ldr      r3, [r6]
+0x00f4: 010013e3   tst      r3, #1
+0x00f8: 16104712   subne    r1, r7, #0x16
+0x00fc: 6c009f15   ldrne    r0, [pc, #0x6c]
+0x0100: d1ffff0a   beq      #0x4c
+0x0104: e4ffffea   b        #0x9c
+0x0108: 64009fe5   ldr      r0, [pc, #0x64]
+0x010c: feffffeb   bl       #0x10c    ; reloc avm_dect_if_init (type 28)
+0x0110: 000050e3   cmp      r0, #0
+0x0114: 0500000a   beq      #0x130
+0x0118: 003096e5   ldr      r3, [r6]
+0x011c: 010013e3   tst      r3, #1
+0x0120: c9ffff0a   beq      #0x4c
+0x0124: 161047e2   sub      r1, r7, #0x16
+0x0128: 48009fe5   ldr      r0, [pc, #0x48]
+0x012c: daffffea   b        #0x9c
+0x0130: 0520a0e1   mov      r2, r5
+0x0134: 40109fe5   ldr      r1, [pc, #0x40]
+0x0138: 40009fe5   ldr      r0, [pc, #0x40]
+0x013c: feffffeb   bl       #0x13c    ; reloc avm_DebugCallRegister (type 28)
+0x0140: 140184e5   str      r0, [r4, #0x114]
+0x0144: c1ffffea   b        #0x50
+0x0148: 00000000   andeq    r0, r0, r0
+0x014c: b2000000   strheq   r0, [r0], -r2
+0x0150: 98020000   muleq    r0, r8, r2
+0x0154: 00000000   andeq    r0, r0, r0
+0x0158: a6020000   andeq    r0, r0, r6, lsr #5
+
+--- dect_uicp_file_init 0x0..0x184 (388 bytes) ---
+0x0000: f0412de9   push     {r4, r5, r6, r7, r8, lr}
+0x0004: 3c619fe5   ldr      r6, [pc, #0x13c]
+0x0008: 003096e5   ldr      r3, [r6]
+0x000c: 040013e3   tst      r3, #4
+0x0010: 0200000a   beq      #0x20
+0x0014: 30119fe5   ldr      r1, [pc, #0x130]
+0x0018: 30019fe5   ldr      r0, [pc, #0x130]
+0x001c: feffffeb   bl       #0x1c    ; reloc printk (type 28)
+0x0020: 2c419fe5   ldr      r4, [pc, #0x12c]
+0x0024: 0120a0e3   mov      r2, #1
+0x0028: 28319fe5   ldr      r3, [pc, #0x128]
+0x002c: 0010a0e3   mov      r1, #0
+0x0030: 430f84e2   add      r0, r4, #0x10c
+0x0034: feffffeb   bl       #0x34    ; reloc alloc_chrdev_region (type 28)
+0x0038: 005050e2   subs     r5, r0, #0
+0x003c: 0a00000a   beq      #0x6c
+0x0040: 003096e5   ldr      r3, [r6]
+0x0044: 010013e3   tst      r3, #1
+0x0048: 0200001a   bne      #0x58
+0x004c: 08519fe5   ldr      r5, [pc, #0x108]
+0x0050: 0500a0e1   mov      r0, r5
+0x0054: f081bde8   pop      {r4, r5, r6, r7, r8, pc}
+0x0058: 0520a0e1   mov      r2, r5
+0x005c: e8109fe5   ldr      r1, [pc, #0xe8]
+0x0060: f8009fe5   ldr      r0, [pc, #0xf8]
+0x0064: feffffeb   bl       #0x64    ; reloc printk (type 28)
+0x0068: f7ffffea   b        #0x4c
+0x006c: feffffeb   bl       #0x6c    ; reloc cdev_alloc (type 28)
+0x0070: 000050e3   cmp      r0, #0
+0x0074: 100184e5   str      r0, [r4, #0x110]
+0x0078: 0900001a   bne      #0xa4
+0x007c: 0110a0e3   mov      r1, #1
+0x0080: 0c0194e5   ldr      r0, [r4, #0x10c]
+0x0084: feffffeb   bl       #0x84    ; reloc unregister_chrdev_region (type 28)
+0x0088: 003096e5   ldr      r3, [r6]
+0x008c: 010013e3   tst      r3, #1
+0x0090: edffff0a   beq      #0x4c
+0x0094: b0109fe5   ldr      r1, [pc, #0xb0]
+0x0098: c4009fe5   ldr      r0, [pc, #0xc4]
+0x009c: feffffeb   bl       #0x9c    ; reloc printk (type 28)
+0x00a0: e9ffffea   b        #0x4c
+0x00a4: bc209fe5   ldr      r2, [pc, #0xbc]
+0x00a8: bc709fe5   ldr      r7, [pc, #0xbc]
+0x00ac: a4109fe5   ldr      r1, [pc, #0xa4]
+0x00b0: 242080e5   str      r2, [r0, #0x24]
+0x00b4: 287080e5   str      r7, [r0, #0x28]
+0x00b8: feffffeb   bl       #0xb8    ; reloc kobject_set_name (type 28)
+0x00bc: 0120a0e3   mov      r2, #1
+0x00c0: 0c1194e5   ldr      r1, [r4, #0x10c]
+0x00c4: 100194e5   ldr      r0, [r4, #0x110]
+0x00c8: 085084e5   str      r5, [r4, #8]
+0x00cc: 045084e5   str      r5, [r4, #4]
+0x00d0: feffffeb   bl       #0xd0    ; reloc cdev_add (type 28)
+0x00d4: 005050e2   subs     r5, r0, #0
+0x00d8: 0a00000a   beq      #0x108
+0x00dc: 100194e5   ldr      r0, [r4, #0x110]
+0x00e0: feffffeb   bl       #0xe0    ; reloc kobject_put (type 28)
+0x00e4: 0110a0e3   mov      r1, #1
+0x00e8: 0c0194e5   ldr      r0, [r4, #0x10c]
+0x00ec: feffffeb   bl       #0xec    ; reloc unregister_chrdev_region (type 28)
+0x00f0: 003096e5   ldr      r3, [r6]
+0x00f4: 010013e3   tst      r3, #1
+0x00f8: 16104712   subne    r1, r7, #0x16
+0x00fc: 6c009f15   ldrne    r0, [pc, #0x6c]
+0x0100: d1ffff0a   beq      #0x4c
+0x0104: e4ffffea   b        #0x9c
+0x0108: 64009fe5   ldr      r0, [pc, #0x64]
+0x010c: feffffeb   bl       #0x10c    ; reloc avm_dect_if_init (type 28)
+0x0110: 000050e3   cmp      r0, #0
+0x0114: 0500000a   beq      #0x130
+0x0118: 003096e5   ldr      r3, [r6]
+0x011c: 010013e3   tst      r3, #1
+0x0120: c9ffff0a   beq      #0x4c
+0x0124: 161047e2   sub      r1, r7, #0x16
+0x0128: 48009fe5   ldr      r0, [pc, #0x48]
+0x012c: daffffea   b        #0x9c
+0x0130: 0520a0e1   mov      r2, r5
+0x0134: 40109fe5   ldr      r1, [pc, #0x40]
+0x0138: 40009fe5   ldr      r0, [pc, #0x40]
+0x013c: feffffeb   bl       #0x13c    ; reloc avm_DebugCallRegister (type 28)
+0x0140: 140184e5   str      r0, [r4, #0x114]
+0x0144: c1ffffea   b        #0x50
+0x0148: 00000000   andeq    r0, r0, r0
+0x014c: b2000000   strheq   r0, [r0], -r2
+0x0150: 98020000   muleq    r0, r8, r2
+0x0154: 00000000   andeq    r0, r0, r0
+0x0158: a6020000   andeq    r0, r0, r6, lsr #5
+
+===== .exit.text offset=0xe7c size=0x6c =====
+
+--- cleanup_module 0x0..0x6c (108 bytes) ---
+0x0000: 54309fe5   ldr      r3, [pc, #0x54]
+0x0004: 10402de9   push     {r4, lr}
+0x0008: 003093e5   ldr      r3, [r3]
+0x000c: 4c409fe5   ldr      r4, [pc, #0x4c]
+0x0010: 040013e3   tst      r3, #4
+0x0014: 0300000a   beq      #0x28
+0x0018: 0c2194e5   ldr      r2, [r4, #0x10c]
+0x001c: 40109fe5   ldr      r1, [pc, #0x40]
+0x0020: 40009fe5   ldr      r0, [pc, #0x40]
+0x0024: feffffeb   bl       #0x24    ; reloc printk (type 28)
+0x0028: 140194e5   ldr      r0, [r4, #0x114]
+0x002c: 000050e3   cmp      r0, #0
+0x0030: 0200000a   beq      #0x40
+0x0034: feffffeb   bl       #0x34    ; reloc avm_DebugCallUnRegister (type 28)
+0x0038: 0030a0e3   mov      r3, #0
+0x003c: 143184e5   str      r3, [r4, #0x114]
+0x0040: feffffeb   bl       #0x40    ; reloc avm_dect_if_deinit (type 28)
+0x0044: 100194e5   ldr      r0, [r4, #0x110]
+0x0048: feffffeb   bl       #0x48    ; reloc cdev_del (type 28)
+0x004c: 0c0194e5   ldr      r0, [r4, #0x10c]
+0x0050: 0110a0e3   mov      r1, #1
+0x0054: 1040bde8   pop      {r4, lr}
+0x0058: feffffea   b        #0x58    ; reloc unregister_chrdev_region (type 29)
+0x005c: 00000000   andeq    r0, r0, r0
+0x0060: 00000000   andeq    r0, r0, r0
+0x0064: 34010000   andeq    r0, r0, r4, lsr r1
+0x0068: 40030000   andeq    r0, r0, r0, asr #6
+
+--- dect_uicp_file_cleanup 0x0..0x6c (108 bytes) ---
+0x0000: 54309fe5   ldr      r3, [pc, #0x54]
+0x0004: 10402de9   push     {r4, lr}
+0x0008: 003093e5   ldr      r3, [r3]
+0x000c: 4c409fe5   ldr      r4, [pc, #0x4c]
+0x0010: 040013e3   tst      r3, #4
+0x0014: 0300000a   beq      #0x28
+0x0018: 0c2194e5   ldr      r2, [r4, #0x10c]
+0x001c: 40109fe5   ldr      r1, [pc, #0x40]
+0x0020: 40009fe5   ldr      r0, [pc, #0x40]
+0x0024: feffffeb   bl       #0x24    ; reloc printk (type 28)
+0x0028: 140194e5   ldr      r0, [r4, #0x114]
+0x002c: 000050e3   cmp      r0, #0
+0x0030: 0200000a   beq      #0x40
+0x0034: feffffeb   bl       #0x34    ; reloc avm_DebugCallUnRegister (type 28)
+0x0038: 0030a0e3   mov      r3, #0
+0x003c: 143184e5   str      r3, [r4, #0x114]
+0x0040: feffffeb   bl       #0x40    ; reloc avm_dect_if_deinit (type 28)
+0x0044: 100194e5   ldr      r0, [r4, #0x110]
+0x0048: feffffeb   bl       #0x48    ; reloc cdev_del (type 28)
+0x004c: 0c0194e5   ldr      r0, [r4, #0x10c]
+0x0050: 0110a0e3   mov      r1, #1
+0x0054: 1040bde8   pop      {r4, lr}
+0x0058: feffffea   b        #0x58    ; reloc unregister_chrdev_region (type 29)
+0x005c: 00000000   andeq    r0, r0, r0
+0x0060: 00000000   andeq    r0, r0, r0
+0x0064: 34010000   andeq    r0, r0, r4, lsr r1
+0x0068: 40030000   andeq    r0, r0, r0, asr #6
+
+===== .text.unlikely offset=0xee8 size=0x68 =====
+
+--- dect_uicp_dump 0x0..0x68 (104 bytes) ---
+0x0000: f0472de9   push     {r4, r5, r6, r7, r8, sb, sl, lr}
+0x0004: 0140a0e1   mov      r4, r1
+0x0008: 0010a0e1   mov      r1, r0
+0x000c: 48009fe5   ldr      r0, [pc, #0x48]
+0x0010: 0250a0e1   mov      r5, r2
+0x0014: feffffeb   bl       #0x14    ; reloc printk (type 28)
+0x0018: 40709fe5   ldr      r7, [pc, #0x40]
+0x001c: 40809fe5   ldr      r8, [pc, #0x40]
+0x0020: 000054e3   cmp      r4, #0
+0x0024: f087bd08   popeq    {r4, r5, r6, r7, r8, sb, sl, pc}
+0x0028: 100054e3   cmp      r4, #0x10
+0x002c: 0460a031   movlo    r6, r4
+0x0030: 1060a023   movhs    r6, #0x10
+0x0034: 069085e0   add      sb, r5, r6
+0x0038: 0110d5e4   ldrb     r1, [r5], #1
+0x003c: 0700a0e1   mov      r0, r7
+0x0040: feffffeb   bl       #0x40    ; reloc printk (type 28)
+0x0044: 050059e1   cmp      sb, r5
+0x0048: faffff1a   bne      #0x38
+0x004c: 0800a0e1   mov      r0, r8
+0x0050: 064044e0   sub      r4, r4, r6
+0x0054: feffffeb   bl       #0x54    ; reloc printk (type 28)
+0x0058: f0ffffea   b        #0x20
+0x005c: 69040000   andeq    r0, r0, sb, ror #8
+0x0060: 6e040000   andeq    r0, r0, lr, ror #8
+0x0064: 74040000   andeq    r0, r0, r4, ror r4

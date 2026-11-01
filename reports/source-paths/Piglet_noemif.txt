@@ -1,0 +1,4 @@
+/GU/FON_KMODS_cortexa9_build/src/main/../piglet_noemif/bitfile_loader.c
+/GU/FON_KMODS_cortexa9_build/src/main/../piglet_noemif/dect14488_loader.c
+/GU/FON_KMODS_cortexa9_build/src/main/../piglet_noemif/dect_uart.c
+/GU/FON_KMODS_cortexa9_build/src/main/../piglet_noemif/profile.c

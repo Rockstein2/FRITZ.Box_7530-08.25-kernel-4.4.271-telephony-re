@@ -1,0 +1,9 @@
+/GU/FON_KMODS_cortexa9_build/src/main/../avm_dect/driver/dect_src/api_fp.c
+/GU/FON_KMODS_cortexa9_build/src/main/../avm_dect/driver/dect_src/ccfp.c
+/GU/FON_KMODS_cortexa9_build/src/main/../avm_dect/driver/dect_src/dect_debug.c
+/GU/FON_KMODS_cortexa9_build/src/main/../avm_dect/driver/dect_src/dect_monitor.c
+/GU/FON_KMODS_cortexa9_build/src/main/../avm_dect/driver/dect_src/minigapfp.c
+/GU/FON_KMODS_cortexa9_build/src/main/../avm_dect/driver/dect_src/pcmdrv.c
+/GU/FON_KMODS_cortexa9_build/src/main/../avm_dect/driver/dect_src/switchctrl.c
+/GU/FON_KMODS_cortexa9_build/src/main/../avm_dect/driver/os_src/main.c
+/GU/FON_KMODS_cortexa9_build/src/main/../avm_dect/driver/os_src/pcm.c

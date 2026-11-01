@@ -1,0 +1,19 @@
+# Proprietary AVM binaries, firmware and extracted vendor scripts.
+# Keep them locally; reproduce by extracting the vendor image into these paths.
+modules/
+firmware/
+reference/
+
+# Vendor firmware images / Windows recovery tools / backups.
+FRITZ*.image
+FRITZ*.exe
+backups/
+
+# Python and editor noise.
+__pycache__/
+*.py[cod]
+*.swp
+*~
+
+# Private session handoff (not for publication)
+HANDOFF.md

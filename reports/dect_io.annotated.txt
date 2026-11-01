@@ -1,0 +1,862 @@
+
+--- dect_uicp_file_poll 0x0..0x9c ---
+0x0000: push     {r4, r5, r6, lr}
+0x0004: mov      r6, r0
+0x0008: ldr      r4, [pc, #0x74]                ; lit@0x84 -> .data+0x0
+0x000c: mov      r5, r1
+0x0010: ldr      r3, [r4]
+0x0014: tst      r3, #4
+0x0018: beq      #0x28                          ; -> dect_uicp_file_poll+0x28
+0x001c: ldr      r1, [pc, #0x64]                ; lit@0x88 -> .rodata+0x0 "dect_uicp_file_poll"
+0x0020: ldr      r0, [pc, #0x64]                ; lit@0x8c -> .rodata.str1.1+0x0 "4%s: wait:
+"
+0x0024: bl       #0x24                          ; -> dect_uicp_file_poll+0x24 | reloc printk
+0x0028: cmp      r5, #0
+0x002c: beq      #0x4c                          ; -> dect_uicp_file_poll+0x4c
+0x0030: ldr      r3, [r5]
+0x0034: cmp      r3, #0
+0x0038: beq      #0x4c                          ; -> dect_uicp_file_poll+0x4c
+0x003c: mov      r2, r5
+0x0040: ldr      r1, [pc, #0x48]                ; lit@0x90 -> .data+0x4
+0x0044: mov      r0, r6
+0x0048: blx      r3
+0x004c: ldr      r3, [pc, #0x40]                ; lit@0x94 -> .data+0x10
+0x0050: movw     r5, #0x145
+0x0054: ldr      r2, [r4, #0x10]
+0x0058: cmp      r2, r3
+0x005c: ldr      r3, [r4]
+0x0060: moveq    r5, #0x104
+0x0064: tst      r3, #4
+0x0068: beq      #0x7c                          ; -> dect_uicp_file_poll+0x7c
+0x006c: mov      r2, r5
+0x0070: ldr      r1, [pc, #0x10]                ; lit@0x88 -> .rodata+0x0 "dect_uicp_file_poll"
+0x0074: ldr      r0, [pc, #0x1c]                ; lit@0x98 -> .rodata.str1.1+0xd "4%s: back from wait, status 0x%x
+"
+0x0078: bl       #0x78                          ; -> dect_uicp_file_poll+0x78 | reloc printk
+0x007c: mov      r0, r5
+0x0080: pop      {r4, r5, r6, pc}
+0x0084: andeq    r0, r0, r0                     ; reloc .data
+0x0088: andeq    r0, r0, r0                     ; reloc .rodata
+0x008c: andeq    r0, r0, r0                     ; reloc .rodata.str1.1
+0x0090: andeq    r0, r0, r4                     ; reloc .data
+0x0094: andeq    r0, r0, r0, lsl r0             ; reloc .data
+0x0098: andeq    r0, r0, sp                     ; reloc .rodata.str1.1
+
+--- dect_uicp_file_fasync 0x9c..0xf0 ---
+0x009c: ldr      r3, [pc, #0x40]                ; lit@0xe4 -> .data+0x0
+0x00a0: push     {r4, r5, r6, r7, r8, lr}
+0x00a4: mov      r5, r0
+0x00a8: ldr      r3, [r3]
+0x00ac: mov      r4, r1
+0x00b0: mov      r6, r2
+0x00b4: ldr      r7, [r1, #0x94]
+0x00b8: tst      r3, #4
+0x00bc: beq      #0xcc                          ; -> dect_uicp_file_fasync+0x30
+0x00c0: ldr      r1, [pc, #0x20]                ; lit@0xe8 -> .rodata+0x14 "dect_uicp_file_fasync"
+0x00c4: ldr      r0, [pc, #0x20]                ; lit@0xec -> .rodata.str1.1+0x30 "4%s:
+"
+0x00c8: bl       #0xc8                          ; -> dect_uicp_file_fasync+0x2c | reloc printk
+0x00cc: add      r3, r7, #0xc
+0x00d0: mov      r2, r6
+0x00d4: mov      r1, r4
+0x00d8: mov      r0, r5
+0x00dc: pop      {r4, r5, r6, r7, r8, lr}
+0x00e0: b        #0xe0                          ; -> dect_uicp_file_fasync+0x44 | reloc fasync_helper
+0x00e4: andeq    r0, r0, r0                     ; reloc .data
+0x00e8: andeq    r0, r0, r4, lsl r0             ; reloc .rodata
+0x00ec: andeq    r0, r0, r0, lsr r0             ; reloc .rodata.str1.1
+
+--- dect_uicp_file_close 0xf0..0x164 ---
+0x00f0: ldr      r3, [pc, #0x5c]                ; lit@0x154 -> .data+0x0
+0x00f4: push     {r4, lr}
+0x00f8: mov      r4, r1
+0x00fc: ldr      r3, [r3]
+0x0100: tst      r3, #4
+0x0104: beq      #0x114                         ; -> dect_uicp_file_close+0x24
+0x0108: ldr      r1, [pc, #0x48]                ; lit@0x158 -> .rodata+0x2a "dect_uicp_file_close"
+0x010c: ldr      r0, [pc, #0x48]                ; lit@0x15c -> .rodata.str1.1+0x30 "4%s:
+"
+0x0110: bl       #0x110                         ; -> dect_uicp_file_close+0x20 | reloc printk
+0x0114: ldr      r3, [r4, #0x94]
+0x0118: cmp      r3, #0
+0x011c: beq      #0x140                         ; -> dect_uicp_file_close+0x50
+0x0120: mov      r2, #0
+0x0124: mov      r1, r4
+0x0128: mvn      r0, #0
+0x012c: bl       #0x9c                          ; -> $a
+0x0130: ldr      r0, [r4, #0x94]
+0x0134: bl       #0x134                         ; -> dect_uicp_file_close+0x44 | reloc kfree
+0x0138: mov      r3, #0
+0x013c: str      r3, [r4, #0x94]
+0x0140: ldr      r3, [pc, #0x18]                ; lit@0x160 -> .bss+0x0
+0x0144: mov      r0, #0
+0x0148: str      r0, [r3]
+0x014c: str      r0, [r3, #4]
+0x0150: pop      {r4, pc}
+0x0154: andeq    r0, r0, r0                     ; reloc .data
+0x0158: andeq    r0, r0, sl, lsr #32            ; reloc .rodata
+0x015c: andeq    r0, r0, r0, lsr r0             ; reloc .rodata.str1.1
+0x0160: andeq    r0, r0, r0                     ; reloc .bss
+
+--- dect_uicp_file_open 0x164..0x268 ---
+0x0164: push     {r4, r5, r6, r7, r8, lr}
+0x0168: dmb      ish
+0x016c: ldr      r5, [pc, #0xd4]                ; lit@0x248 -> .bss+0x0
+0x0170: pldw     [r5]
+0x0174: ldrex    r3, [r5]
+0x0178: add      r3, r3, #1
+0x017c: strex    r2, r3, [r5]
+0x0180: teq      r2, #0
+0x0184: bne      #0x174                         ; -> dect_uicp_file_open+0x10
+0x0188: dmb      ish
+0x018c: cmp      r3, #1
+0x0190: ble      #0x1b8                         ; -> dect_uicp_file_open+0x54
+0x0194: ldr      r3, [pc, #0xb0]                ; lit@0x24c -> .data+0x0
+0x0198: ldr      r3, [r3]
+0x019c: tst      r3, #1
+0x01a0: beq      #0x1b0                         ; -> dect_uicp_file_open+0x4c
+0x01a4: ldr      r1, [pc, #0xa4]                ; lit@0x250 -> .rodata+0x3f "dect_uicp_file_open"
+0x01a8: ldr      r0, [pc, #0xa4]                ; lit@0x254 -> .rodata.str1.1+0x37 "3%s: client already registered
+"
+0x01ac: bl       #0x1ac                         ; -> dect_uicp_file_open+0x48 | reloc printk
+0x01b0: mvn      r0, #0xf
+0x01b4: pop      {r4, r5, r6, r7, r8, pc}
+0x01b8: ldr      r0, [r1, #0x20]
+0x01bc: mov      r6, r1
+0x01c0: mov      r7, r5
+0x01c4: ands     r4, r0, #0x400
+0x01c8: beq      #0x1f8                         ; -> dect_uicp_file_open+0x94
+0x01cc: ldr      r3, [pc, #0x78]                ; lit@0x24c -> .data+0x0
+0x01d0: ldr      r3, [r3]
+0x01d4: tst      r3, #1
+0x01d8: beq      #0x1e8                         ; -> dect_uicp_file_open+0x84
+0x01dc: ldr      r1, [pc, #0x6c]                ; lit@0x250 -> .rodata+0x3f "dect_uicp_file_open"
+0x01e0: ldr      r0, [pc, #0x70]                ; lit@0x258 -> .rodata.str1.1+0x58 "3%s: open O_APPEND not supported
+"
+0x01e4: bl       #0x1e4                         ; -> dect_uicp_file_open+0x80 | reloc printk
+0x01e8: mov      r3, #0
+0x01ec: mvn      r0, #0xd
+0x01f0: str      r3, [r7]
+0x01f4: pop      {r4, r5, r6, r7, r8, pc}
+0x01f8: ldr      r3, [pc, #0x5c]                ; lit@0x25c -> kmalloc_caches
+0x01fc: ldr      r1, [pc, #0x5c]                ; lit@0x260 = 0x24080c0
+0x0200: ldr      r0, [r3, #0x18]
+0x0204: bl       #0x204                         ; -> dect_uicp_file_open+0xa0 | reloc kmem_cache_alloc
+0x0208: cmp      r0, #0
+0x020c: bne      #0x22c                         ; -> dect_uicp_file_open+0xc8
+0x0210: ldr      r3, [pc, #0x34]                ; lit@0x24c -> .data+0x0
+0x0214: ldr      r3, [r3]
+0x0218: tst      r3, #1
+0x021c: beq      #0x1e8                         ; -> dect_uicp_file_open+0x84
+0x0220: ldr      r1, [pc, #0x28]                ; lit@0x250 -> .rodata+0x3f "dect_uicp_file_open"
+0x0224: ldr      r0, [pc, #0x38]                ; lit@0x264 -> .rodata.str1.1+0x7b "3%s: open malloc failed
+"
+0x0228: b        #0x1e4                         ; -> dect_uicp_file_open+0x80
+0x022c: add      r3, r6, #0x48
+0x0230: str      r3, [r0, #8]
+0x0234: str      r0, [r6, #0x94]
+0x0238: mov      r3, #1
+0x023c: mov      r0, r4
+0x0240: str      r3, [r5, #4]
+0x0244: pop      {r4, r5, r6, r7, r8, pc}
+0x0248: andeq    r0, r0, r0                     ; reloc .bss
+0x024c: andeq    r0, r0, r0                     ; reloc .data
+0x0250: andeq    r0, r0, pc, lsr r0             ; reloc .rodata
+0x0254: andeq    r0, r0, r7, lsr r0             ; reloc .rodata.str1.1
+0x0258: andeq    r0, r0, r8, asr r0             ; reloc .rodata.str1.1
+0x025c: andeq    r0, r0, r0                     ; reloc kmalloc_caches
+0x0260: subeq    r8, r0, #0xc0
+0x0264: andeq    r0, r0, fp, ror r0             ; reloc .rodata.str1.1
+
+--- dect_uicp_file_read 0x268..0x58c ---
+0x0268: push     {r4, r5, r6, r7, r8, sb, sl, fp, lr}
+0x026c: mov      r7, r3
+0x0270: ldr      r3, [pc, #0x2d4]               ; lit@0x54c -> __stack_chk_guard
+0x0274: mov      sb, r2
+0x0278: ldr      r6, [pc, #0x2d0]               ; lit@0x550 -> .data+0x0
+0x027c: sub      sp, sp, #0x24
+0x0280: mov      sl, r0
+0x0284: mov      r8, r1
+0x0288: ldr      r2, [r3]
+0x028c: str      r3, [sp]
+0x0290: str      r2, [sp, #0x1c]
+0x0294: ldr      r2, [r6]
+0x0298: tst      r2, #4
+0x029c: beq      #0x2ac                         ; -> dect_uicp_file_read+0x44
+0x02a0: ldr      r1, [pc, #0x2ac]               ; lit@0x554 -> .rodata+0x53 "dect_uicp_file_read"
+0x02a4: ldr      r0, [pc, #0x2ac]               ; lit@0x558 -> .rodata.str1.1+0x95 "4%s, init
+"
+0x02a8: bl       #0x2a8                         ; -> dect_uicp_file_read+0x40 | reloc printk
+0x02ac: ldr      fp, [pc, #0x2a8]               ; lit@0x55c -> .data+0x10
+0x02b0: mov      r5, #0
+0x02b4: ldr      r4, [r6, #0x10]
+0x02b8: cmp      r4, fp
+0x02bc: beq      #0x354                         ; -> dect_uicp_file_read+0xec
+0x02c0: ldr      r5, [r4, #8]
+0x02c4: ldr      r0, [r4, #0xc]
+0x02c8: sub      r5, r5, r0
+0x02cc: cmp      r5, sb
+0x02d0: movhs    r5, sb
+0x02d4: ldr      r3, [r6]
+0x02d8: tst      r3, #4
+0x02dc: beq      #0x2ec                         ; -> dect_uicp_file_read+0x84
+0x02e0: ldr      r1, [pc, #0x26c]               ; lit@0x554 -> .rodata+0x53 "dect_uicp_file_read"
+0x02e4: ldr      r0, [pc, #0x274]               ; lit@0x560 -> .rodata.str1.1+0xa1 "4%s: sleep on
+"
+0x02e8: bl       #0x2e8                         ; -> dect_uicp_file_read+0x80 | reloc printk
+0x02ec: mov      r2, #0
+0x02f0: movw     r1, #0x1dd
+0x02f4: ldr      r0, [pc, #0x268]               ; lit@0x564 -> .rodata.str1.1+0xb1 "/GU/FON_KMODS_cortexa9_build/src/main/../dect_io/dio_file.c"
+0x02f8: bl       #0x2f8                         ; -> dect_uicp_file_read+0x90 | reloc __might_sleep
+0x02fc: ldr      r3, [r6, #0x10]
+0x0300: ldr      r2, [pc, #0x254]               ; lit@0x55c -> .data+0x10
+0x0304: cmp      r3, r2
+0x0308: bne      #0x3a8                         ; -> dect_uicp_file_read+0x140
+0x030c: add      r3, sp, #0x14
+0x0310: str      r3, [sp, #0x14]
+0x0314: str      r3, [sp, #0x18]
+0x0318: mov      r3, #0
+0x031c: str      r3, [sp, #8]
+0x0320: mov      r2, #1
+0x0324: add      r1, sp, #8
+0x0328: ldr      r0, [pc, #0x238]               ; lit@0x568 -> .data+0x4
+0x032c: bl       #0x32c                         ; -> dect_uicp_file_read+0xc4 | reloc prepare_to_wait_event
+0x0330: ldr      r2, [r6, #0x10]
+0x0334: ldr      r1, [pc, #0x220]               ; lit@0x55c -> .data+0x10
+0x0338: cmp      r2, r1
+0x033c: mov      r3, r0
+0x0340: bne      #0x368                         ; -> dect_uicp_file_read+0x100
+0x0344: cmp      r0, #0
+0x0348: bne      #0x36c                         ; -> dect_uicp_file_read+0x104
+0x034c: bl       #0x34c                         ; -> dect_uicp_file_read+0xe4 | reloc schedule
+0x0350: b        #0x320                         ; -> dect_uicp_file_read+0xb8
+0x0354: ldr      r4, [sl, #0x20]
+0x0358: ands     r4, r4, #0x800
+0x035c: beq      #0x2d4                         ; -> dect_uicp_file_read+0x6c
+0x0360: mvn      r0, #0xa
+0x0364: b        #0x504                         ; -> dect_uicp_file_read+0x29c
+0x0368: mov      r3, #0
+0x036c: add      r1, sp, #8
+0x0370: ldr      r0, [pc, #0x1f0]               ; lit@0x568 -> .data+0x4
+0x0374: str      r3, [sp, #4]
+0x0378: bl       #0x378                         ; -> dect_uicp_file_read+0x110 | reloc finish_wait
+0x037c: ldr      r3, [sp, #4]
+0x0380: cmp      r3, #0
+0x0384: beq      #0x3a8                         ; -> dect_uicp_file_read+0x140
+0x0388: ldr      r3, [r6]
+0x038c: tst      r3, #4
+0x0390: beq      #0x3a0                         ; -> dect_uicp_file_read+0x138
+0x0394: ldr      r1, [pc, #0x1b8]               ; lit@0x554 -> .rodata+0x53 "dect_uicp_file_read"
+0x0398: ldr      r0, [pc, #0x1cc]               ; lit@0x56c -> .rodata.str1.1+0xed "4%s, handle released
+"
+0x039c: bl       #0x39c                         ; -> dect_uicp_file_read+0x134 | reloc printk
+0x03a0: ldr      r0, [pc, #0x1c8]               ; lit@0x570 = 0xfffffe00
+0x03a4: b        #0x504                         ; -> dect_uicp_file_read+0x29c
+0x03a8: ldr      r3, [r6]
+0x03ac: tst      r3, #4
+0x03b0: beq      #0x3c0                         ; -> dect_uicp_file_read+0x158
+0x03b4: ldr      r1, [pc, #0x198]               ; lit@0x554 -> .rodata+0x53 "dect_uicp_file_read"
+0x03b8: ldr      r0, [pc, #0x1b4]               ; lit@0x574 -> .rodata.str1.1+0x104 "4%s: wake up
+"
+0x03bc: bl       #0x3bc                         ; -> dect_uicp_file_read+0x154 | reloc printk
+0x03c0: cmp      r4, #0
+0x03c4: beq      #0x2b4                         ; -> dect_uicp_file_read+0x4c
+0x03c8: mov      r3, sp
+0x03cc: bic      r2, r3, #0x3fc0
+0x03d0: bic      r2, r2, #0x3f                  ; -> dect_uicp_file_poll+0x3f
+0x03d4: ldr      r3, [r2, #8]
+0x03d8: adds     r1, r8, r5
+0x03dc: sbcslo   r1, r1, r3
+0x03e0: movlo    r3, #0
+0x03e4: cmp      r3, #0
+0x03e8: movne    r0, r5
+0x03ec: bne      #0x424                         ; -> dect_uicp_file_read+0x1bc
+0x03f0: mrc      p15, #0, sb, c3, c0, #0
+0x03f4: bic      r3, sb, #0xc                   ; -> dect_uicp_file_poll+0xc
+0x03f8: ldr      r1, [r4, #0xc]
+0x03fc: orr      r3, r3, #4
+0x0400: mcr      p15, #0, r3, c3, c0, #0
+0x0404: isb      sy
+0x0408: add      r1, r1, #0x10
+0x040c: mov      r2, r5
+0x0410: add      r1, r4, r1
+0x0414: mov      r0, r8
+0x0418: bl       #0x418                         ; -> dect_uicp_file_read+0x1b0 | reloc arm_copy_to_user
+0x041c: mcr      p15, #0, sb, c3, c0, #0
+0x0420: isb      sy
+0x0424: cmp      r0, #0
+0x0428: ldr      r2, [r6]
+0x042c: beq      #0x44c                         ; -> dect_uicp_file_read+0x1e4
+0x0430: tst      r2, #1
+0x0434: beq      #0x444                         ; -> dect_uicp_file_read+0x1dc
+0x0438: ldr      r1, [pc, #0x114]               ; lit@0x554 -> .rodata+0x53 "dect_uicp_file_read"
+0x043c: ldr      r0, [pc, #0x134]               ; lit@0x578 -> .rodata.str1.1+0x113 "3%s: copy_to_user failed
+"
+0x0440: bl       #0x440                         ; -> dect_uicp_file_read+0x1d8 | reloc printk
+0x0444: mvn      r0, #0xd
+0x0448: b        #0x504                         ; -> dect_uicp_file_read+0x29c
+0x044c: tst      r2, #4
+0x0450: ldr      r3, [r4, #8]
+0x0454: ldr      r1, [r4, #0xc]
+0x0458: beq      #0x474                         ; -> dect_uicp_file_read+0x20c
+0x045c: sub      r3, r3, r5
+0x0460: mov      r2, r5
+0x0464: sub      r3, r3, r1
+0x0468: ldr      r0, [pc, #0x10c]               ; lit@0x57c -> .rodata.str1.1+0x12e "4%s, copy %u bytes to user data, wait for %u
+"
+0x046c: ldr      r1, [pc, #0xe0]                ; lit@0x554 -> .rodata+0x53 "dect_uicp_file_read"
+0x0470: bl       #0x470                         ; -> dect_uicp_file_read+0x208 | reloc printk
+0x0474: ldr      r2, [r4, #0xc]
+0x0478: ldr      r3, [r4, #8]
+0x047c: add      r2, r5, r2
+0x0480: str      r2, [r4, #0xc]
+0x0484: cmp      r2, r3
+0x0488: bne      #0x530                         ; -> dect_uicp_file_read+0x2c8
+0x048c: cmp      r2, #6
+0x0490: ldr      r3, [r6]
+0x0494: bls      #0x51c                         ; -> dect_uicp_file_read+0x2b4
+0x0498: tst      r3, #4
+0x049c: beq      #0x4c0                         ; -> dect_uicp_file_read+0x258
+0x04a0: ldrb     r3, [r4, #0x15]
+0x04a4: ldr      r1, [pc, #0xa8]                ; lit@0x554 -> .rodata+0x53 "dect_uicp_file_read"
+0x04a8: ldr      r0, [pc, #0xd0]                ; lit@0x580 -> .rodata.str1.1+0x15d "4%s: primitive 0x%04x
+"
+0x04ac: strb     r3, [sp, #8]
+0x04b0: ldrb     r3, [r4, #0x16]
+0x04b4: strb     r3, [sp, #9]
+0x04b8: ldrh     r2, [sp, #8]
+0x04bc: bl       #0x4bc                         ; -> dect_uicp_file_read+0x254 | reloc printk
+0x04c0: ldr      r0, [pc, #0xbc]                ; lit@0x584 -> .bss+0x8
+0x04c4: mov      r8, #0x100
+0x04c8: bl       #0x4c8                         ; -> dect_uicp_file_read+0x260 | reloc _raw_spin_lock_irqsave
+0x04cc: ldrd     r2, r3, [r4]
+0x04d0: mov      sb, #0x200
+0x04d4: str      r3, [r2, #4]
+0x04d8: str      r2, [r3]
+0x04dc: strd     r8, sb, [r4]
+0x04e0: mov      r1, r0
+0x04e4: ldr      r0, [pc, #0x98]                ; lit@0x584 -> .bss+0x8
+0x04e8: bl       #0x4e8                         ; -> dect_uicp_file_read+0x280 | reloc _raw_spin_unlock_irqrestore
+0x04ec: mov      r0, r4
+0x04f0: bl       #0x4f0                         ; -> dect_uicp_file_read+0x288 | reloc kfree
+0x04f4: mov      r2, #0
+0x04f8: mov      r3, #0
+0x04fc: strd     r2, r3, [r7]
+0x0500: mov      r0, r5
+0x0504: ldr      r3, [sp]
+0x0508: ldr      r2, [sp, #0x1c]
+0x050c: ldr      r3, [r3]
+0x0510: cmp      r2, r3
+0x0514: beq      #0x544                         ; -> dect_uicp_file_read+0x2dc
+0x0518: bl       #0x518                         ; -> dect_uicp_file_read+0x2b0 | reloc __stack_chk_fail
+0x051c: tst      r3, #2
+0x0520: beq      #0x4c0                         ; -> dect_uicp_file_read+0x258
+0x0524: ldr      r1, [pc, #0x28]                ; lit@0x554 -> .rodata+0x53 "dect_uicp_file_read"
+0x0528: ldr      r0, [pc, #0x58]                ; lit@0x588 -> .rodata.str1.1+0x175 "4%s: ill length %u
+"
+0x052c: b        #0x4bc                         ; -> dect_uicp_file_read+0x254
+0x0530: ldrd     r2, r3, [r7]
+0x0534: adds     r0, r2, r5
+0x0538: adc      r1, r3, #0
+0x053c: strd     r0, r1, [r7]
+0x0540: b        #0x500                         ; -> dect_uicp_file_read+0x298
+0x0544: add      sp, sp, #0x24
+0x0548: pop      {r4, r5, r6, r7, r8, sb, sl, fp, pc}
+0x054c: andeq    r0, r0, r0                     ; reloc __stack_chk_guard
+0x0550: andeq    r0, r0, r0                     ; reloc .data
+0x0554: andeq    r0, r0, r3, asr r0             ; reloc .rodata
+0x0558: muleq    r0, r5, r0                     ; reloc .rodata.str1.1
+0x055c: andeq    r0, r0, r0, lsl r0             ; reloc .data
+0x0560: andeq    r0, r0, r1, lsr #1             ; reloc .rodata.str1.1
+0x0564: strheq   r0, [r0], -r1                  ; reloc .rodata.str1.1
+0x0568: andeq    r0, r0, r4                     ; reloc .data
+0x056c: andeq    r0, r0, sp, ror #1             ; reloc .rodata.str1.1
+
+--- dect_uicp_file_ioctl 0x58c..0x72c ---
+0x058c: push     {r4, r5, r6, r7, lr}
+0x0590: cmp      r1, #1
+0x0594: ldr      r4, [pc, #0x170]               ; lit@0x70c -> __stack_chk_guard
+0x0598: sub      sp, sp, #0x14
+0x059c: mov      r0, r2
+0x05a0: ldr      r3, [r4]
+0x05a4: str      r3, [sp, #0xc]
+0x05a8: bne      #0x630                         ; -> dect_uicp_file_ioctl+0xa4
+0x05ac: ldr      r3, [pc, #0x15c]               ; lit@0x710 -> jiffies
+0x05b0: ldr      r3, [r3]
+0x05b4: str      r3, [sp, #4]
+0x05b8: mov      r3, #0xfa
+0x05bc: str      r3, [sp, #8]
+0x05c0: mov      r3, sp
+0x05c4: bic      r2, r3, #0x3fc0
+0x05c8: bic      r2, r2, #0x3f                  ; -> dect_uicp_file_poll+0x3f
+0x05cc: ldr      r3, [r2, #8]
+0x05d0: adds     r1, r0, #8
+0x05d4: sbcslo   r1, r1, r3
+0x05d8: movlo    r3, #0
+0x05dc: cmp      r3, #0
+0x05e0: beq      #0x5fc                         ; -> dect_uicp_file_ioctl+0x70
+0x05e4: mvn      r0, #0x15
+0x05e8: ldr      r2, [sp, #0xc]
+0x05ec: ldr      r3, [r4]
+0x05f0: cmp      r2, r3
+0x05f4: beq      #0x704                         ; -> dect_uicp_file_ioctl+0x178
+0x05f8: bl       #0x5f8                         ; -> dect_uicp_file_ioctl+0x6c | reloc __stack_chk_fail
+0x05fc: mrc      p15, #0, r5, c3, c0, #0
+0x0600: bic      r3, r5, #0xc                   ; -> dect_uicp_file_poll+0xc
+0x0604: orr      r3, r3, #4
+0x0608: mcr      p15, #0, r3, c3, c0, #0
+0x060c: isb      sy
+0x0610: mov      r2, #8
+0x0614: add      r1, sp, #4
+0x0618: bl       #0x618                         ; -> dect_uicp_file_ioctl+0x8c | reloc arm_copy_to_user
+0x061c: mcr      p15, #0, r5, c3, c0, #0
+0x0620: isb      sy
+0x0624: cmp      r0, #0
+0x0628: bne      #0x5e4                         ; -> dect_uicp_file_ioctl+0x58
+0x062c: b        #0x5e8                         ; -> dect_uicp_file_ioctl+0x5c
+0x0630: cmp      r1, #2
+0x0634: mvnne    r0, #0xd
+0x0638: bne      #0x5e8                         ; -> dect_uicp_file_ioctl+0x5c
+0x063c: mov      r3, sp
+0x0640: bic      r2, r3, #0x3fc0
+0x0644: bic      r2, r2, #0x3f                  ; -> dect_uicp_file_poll+0x3f
+0x0648: ldr      r3, [r2, #8]
+0x064c: adds     r1, r0, #0x100
+0x0650: sbcslo   r1, r1, r3
+0x0654: movlo    r3, #0
+0x0658: cmp      r3, #0
+0x065c: bne      #0x6cc                         ; -> dect_uicp_file_ioctl+0x140
+0x0660: mrc      p15, #0, r7, c3, c0, #0
+0x0664: bic      r3, r7, #0xc                   ; -> dect_uicp_file_poll+0xc
+0x0668: orr      r3, r3, #4
+0x066c: mcr      p15, #0, r3, c3, c0, #0
+0x0670: isb      sy
+0x0674: ldr      r5, [pc, #0x98]                ; lit@0x714 -> .bss+0x0
+0x0678: mov      r1, r0
+0x067c: mov      r2, #0x100
+0x0680: add      r0, r5, #0xc
+0x0684: bl       #0x684                         ; -> dect_uicp_file_ioctl+0xf8 | reloc arm_copy_from_user
+0x0688: mov      r6, r0
+0x068c: mcr      p15, #0, r7, c3, c0, #0
+0x0690: isb      sy
+0x0694: cmp      r0, #0
+0x0698: bne      #0x6dc                         ; -> dect_uicp_file_ioctl+0x150
+0x069c: mov      r1, #0x100
+0x06a0: add      r0, r5, #0xc
+0x06a4: bl       #0x6a4                         ; -> dect_uicp_file_ioctl+0x118 | reloc strnlen
+0x06a8: ldr      r1, [pc, #0x68]                ; lit@0x718 -> .bss+0xc
+0x06ac: cmp      r0, #0x100
+0x06b0: ldr      r0, [pc, #0x64]                ; lit@0x71c -> .rodata.str1.1+0x1b0 "3%s
+"
+0x06b4: strbeq   r6, [r5, #0x10b]
+0x06b8: moveq    r3, #0x2e
+0x06bc: strbeq   r3, [r5, #0x109]
+0x06c0: strbeq   r3, [r5, #0x10a]
+0x06c4: bl       #0x6c4                         ; -> dect_uicp_file_ioctl+0x138 | reloc printk
+0x06c8: b        #0x6fc                         ; -> dect_uicp_file_ioctl+0x170
+0x06cc: mov      r1, #0x100
+0x06d0: ldr      r0, [pc, #0x40]                ; lit@0x718 -> .bss+0xc
+0x06d4: bl       #0x6d4                         ; -> dect_uicp_file_ioctl+0x148 | reloc __memzero
+0x06d8: mov      r6, #0x100
+0x06dc: ldr      r3, [pc, #0x3c]                ; lit@0x720 -> .data+0x0
+0x06e0: ldr      r0, [r3]
+0x06e4: ands     r0, r0, #1
+0x06e8: beq      #0x5e8                         ; -> dect_uicp_file_ioctl+0x5c
+0x06ec: mov      r2, r6
+0x06f0: ldr      r1, [pc, #0x2c]                ; lit@0x724 -> .rodata+0x67 "dect_uicp_file_ioctl"
+0x06f4: ldr      r0, [pc, #0x2c]                ; lit@0x728 -> .rodata.str1.1+0x18a "3%s: copy_from_user failed with %ld
+"
+0x06f8: bl       #0x6f8                         ; -> dect_uicp_file_ioctl+0x16c | reloc printk
+0x06fc: mov      r0, #0
+0x0700: b        #0x5e8                         ; -> dect_uicp_file_ioctl+0x5c
+0x0704: add      sp, sp, #0x14
+0x0708: pop      {r4, r5, r6, r7, pc}
+0x070c: andeq    r0, r0, r0                     ; reloc __stack_chk_guard
+0x0710: andeq    r0, r0, r0                     ; reloc jiffies
+0x0714: andeq    r0, r0, r0                     ; reloc .bss
+0x0718: andeq    r0, r0, ip                     ; reloc .bss
+0x071c: strheq   r0, [r0], -r0                  ; reloc .rodata.str1.1
+0x0720: andeq    r0, r0, r0                     ; reloc .data
+0x0724: andeq    r0, r0, r7, rrx                ; reloc .rodata
+0x0728: andeq    r0, r0, sl, lsl #3             ; reloc .rodata.str1.1
+
+--- dect_uicp_file_write 0x72c..0x97c ---
+0x072c: push     {r0, r1, r4, r5, r6, r7, r8, lr}
+0x0730: mov      r6, r1
+0x0734: ldr      r7, [pc, #0x200]               ; lit@0x93c -> __stack_chk_guard
+0x0738: mov      r4, r2
+0x073c: ldr      r5, [pc, #0x1fc]               ; lit@0x940 -> .data+0x0
+0x0740: ldr      r3, [r7]
+0x0744: str      r3, [sp, #4]
+0x0748: ldr      r3, [r5]
+0x074c: tst      r3, #4
+0x0750: beq      #0x760                         ; -> dect_uicp_file_write+0x34
+0x0754: ldr      r1, [pc, #0x1e8]               ; lit@0x944 -> .rodata+0x7c "dect_uicp_file_write"
+0x0758: ldr      r0, [pc, #0x1e8]               ; lit@0x948 -> .rodata.str1.1+0x1b6 "4%s: length %zu
+"
+0x075c: bl       #0x75c                         ; -> dect_uicp_file_write+0x30 | reloc printk
+0x0760: cmp      r4, #3
+0x0764: bhi      #0x7a0                         ; -> dect_uicp_file_write+0x74
+0x0768: ldr      r3, [r5]
+0x076c: tst      r3, #1
+0x0770: bne      #0x78c                         ; -> dect_uicp_file_write+0x60
+0x0774: mvn      r0, #4
+0x0778: ldr      r2, [sp, #4]
+0x077c: ldr      r3, [r7]
+0x0780: cmp      r2, r3
+0x0784: beq      #0x934                         ; -> dect_uicp_file_write+0x208
+0x0788: bl       #0x788                         ; -> dect_uicp_file_write+0x5c | reloc __stack_chk_fail
+0x078c: ldr      r1, [pc, #0x1b0]               ; lit@0x944 -> .rodata+0x7c "dect_uicp_file_write"
+0x0790: mov      r2, #4
+0x0794: ldr      r0, [pc, #0x1b0]               ; lit@0x94c -> .rodata.str1.1+0x1c8 "3%s: write_lengh < %zu
+"
+0x0798: bl       #0x798                         ; -> dect_uicp_file_write+0x6c | reloc printk
+0x079c: b        #0x774                         ; -> dect_uicp_file_write+0x48
+0x07a0: cmp      r4, #0x3040
+0x07a4: bls      #0x7c4                         ; -> dect_uicp_file_write+0x98
+0x07a8: ldr      r3, [r5]
+0x07ac: tst      r3, #1
+0x07b0: beq      #0x774                         ; -> dect_uicp_file_write+0x48
+0x07b4: mov      r2, #0x3040
+0x07b8: ldr      r1, [pc, #0x184]               ; lit@0x944 -> .rodata+0x7c "dect_uicp_file_write"
+0x07bc: ldr      r0, [pc, #0x18c]               ; lit@0x950 -> .rodata.str1.1+0x1e1 "3%s: write_lengh > %u
+"
+0x07c0: b        #0x798                         ; -> dect_uicp_file_write+0x6c
+0x07c4: mov      r3, sp
+0x07c8: bic      r2, r3, #0x3fc0
+0x07cc: bic      r2, r2, #0x3f                  ; -> dect_uicp_file_poll+0x3f
+0x07d0: ldr      r3, [r2, #8]
+0x07d4: adds     r1, r6, r4
+0x07d8: sbcslo   r1, r1, r3
+0x07dc: movlo    r3, #0
+0x07e0: cmp      r3, #0
+0x07e4: bne      #0x840                         ; -> dect_uicp_file_write+0x114
+0x07e8: mrc      p15, #0, r8, c3, c0, #0
+0x07ec: bic      r3, r8, #0xc                   ; -> dect_uicp_file_poll+0xc
+0x07f0: orr      r3, r3, #4
+0x07f4: mcr      p15, #0, r3, c3, c0, #0
+0x07f8: isb      sy
+0x07fc: ldr      r0, [pc, #0x150]               ; lit@0x954 -> dect_uicp_from_user_buffer
+0x0800: mov      r2, r4
+0x0804: mov      r1, r6
+0x0808: bl       #0x808                         ; -> dect_uicp_file_write+0xdc | reloc arm_copy_from_user
+0x080c: mov      r3, r0
+0x0810: mcr      p15, #0, r8, c3, c0, #0
+0x0814: isb      sy
+0x0818: cmp      r3, #0
+0x081c: ldr      r1, [r5]
+0x0820: beq      #0x854                         ; -> dect_uicp_file_write+0x128
+0x0824: tst      r1, #1
+0x0828: beq      #0x874                         ; -> dect_uicp_file_write+0x148
+0x082c: ldr      r1, [pc, #0x124]               ; lit@0x958 -> .rodata+0x91 "dect_uicp_fpapi_handle_from_user"
+0x0830: mov      r2, r4
+0x0834: ldr      r0, [pc, #0x120]               ; lit@0x95c -> .rodata.str1.1+0x1f9 "3%s: copy_from_user (len %zu) failed with %d
+"
+0x0838: bl       #0x838                         ; -> dect_uicp_file_write+0x10c | reloc printk
+0x083c: b        #0x874                         ; -> dect_uicp_file_write+0x148
+0x0840: mov      r1, r4
+0x0844: ldr      r0, [pc, #0x108]               ; lit@0x954 -> dect_uicp_from_user_buffer
+0x0848: bl       #0x848                         ; -> dect_uicp_file_write+0x11c | reloc __memzero
+0x084c: mov      r3, r4
+0x0850: b        #0x818                         ; -> dect_uicp_file_write+0xec
+0x0854: cmp      r4, #6
+0x0858: bhi      #0x890                         ; -> dect_uicp_file_write+0x164
+0x085c: tst      r1, #1
+0x0860: beq      #0x874                         ; -> dect_uicp_file_write+0x148
+0x0864: mov      r2, r4
+0x0868: ldr      r1, [pc, #0xe8]                ; lit@0x958 -> .rodata+0x91 "dect_uicp_fpapi_handle_from_user"
+0x086c: ldr      r0, [pc, #0xec]                ; lit@0x960 -> .rodata.str1.1+0x228 "3%s: length %zu too short
+"
+0x0870: bl       #0x870                         ; -> dect_uicp_file_write+0x144 | reloc printk
+0x0874: ldr      r3, [r5]
+0x0878: tst      r3, #1
+0x087c: beq      #0x774                         ; -> dect_uicp_file_write+0x48
+0x0880: mvn      r2, #4
+0x0884: ldr      r1, [pc, #0xb8]                ; lit@0x944 -> .rodata+0x7c "dect_uicp_file_write"
+0x0888: ldr      r0, [pc, #0xd4]                ; lit@0x964 -> .rodata.str1.1+0x27f "3%s: failed error 0x%x
+"
+0x088c: b        #0x798                         ; -> dect_uicp_file_write+0x6c
+0x0890: ldr      r6, [pc, #0xbc]                ; lit@0x954 -> dect_uicp_from_user_buffer
+0x0894: ldrh     r2, [r6]
+0x0898: add      r3, r2, #4
+0x089c: cmp      r4, r3
+0x08a0: beq      #0x8bc                         ; -> dect_uicp_file_write+0x190
+0x08a4: tst      r1, #1
+0x08a8: beq      #0x874                         ; -> dect_uicp_file_write+0x148
+0x08ac: mov      r3, r4
+0x08b0: ldr      r1, [pc, #0xa0]                ; lit@0x958 -> .rodata+0x91 "dect_uicp_fpapi_handle_from_user"
+0x08b4: ldr      r0, [pc, #0xac]                ; lit@0x968 -> .rodata.str1.1+0x244 "3%s: ill length %u <-> %zu
+"
+0x08b8: b        #0x838                         ; -> dect_uicp_file_write+0x10c
+0x08bc: cmp      r2, #2
+0x08c0: bls      #0x920                         ; -> dect_uicp_file_write+0x1f4
+0x08c4: tst      r1, #4
+0x08c8: beq      #0x8ec                         ; -> dect_uicp_file_write+0x1c0
+0x08cc: ldrb     r3, [r6, #5]
+0x08d0: ldr      r1, [pc, #0x80]                ; lit@0x958 -> .rodata+0x91 "dect_uicp_fpapi_handle_from_user"
+0x08d4: ldr      r0, [pc, #0x90]                ; lit@0x96c -> .rodata.str1.1+0x15d "4%s: primitive 0x%04x
+"
+0x08d8: strb     r3, [sp, #2]
+0x08dc: ldrb     r3, [r6, #6]
+0x08e0: strb     r3, [sp, #3]
+0x08e4: ldrh     r2, [sp, #2]
+0x08e8: bl       #0x8e8                         ; -> dect_uicp_file_write+0x1bc | reloc printk
+0x08ec: ldrh     r1, [r6]
+0x08f0: ldr      r0, [pc, #0x78]                ; lit@0x970 -> dect_uicp_from_user_buffer+0x4
+0x08f4: bl       #0x8f4                         ; -> dect_uicp_file_write+0x1c8 | reloc avm_dect_if_tx
+0x08f8: subs     r2, r0, #0
+0x08fc: beq      #0x918                         ; -> dect_uicp_file_write+0x1ec
+0x0900: ldr      r3, [r5]
+0x0904: tst      r3, #2
+0x0908: beq      #0x918                         ; -> dect_uicp_file_write+0x1ec
+0x090c: ldr      r1, [pc, #0x44]                ; lit@0x958 -> .rodata+0x91 "dect_uicp_fpapi_handle_from_user"
+0x0910: ldr      r0, [pc, #0x5c]                ; lit@0x974 -> .rodata.str1.1+0x261 "4%s: avm_dect_if_tx, err %d
+"
+0x0914: bl       #0x914                         ; -> dect_uicp_file_write+0x1e8 | reloc printk
+0x0918: mov      r0, r4
+0x091c: b        #0x778                         ; -> dect_uicp_file_write+0x4c
+0x0920: tst      r1, #2
+0x0924: beq      #0x8ec                         ; -> dect_uicp_file_write+0x1c0
+0x0928: ldr      r1, [pc, #0x28]                ; lit@0x958 -> .rodata+0x91 "dect_uicp_fpapi_handle_from_user"
+0x092c: ldr      r0, [pc, #0x44]                ; lit@0x978 -> .rodata.str1.1+0x175 "4%s: ill length %u
+"
+0x0930: b        #0x8e8                         ; -> dect_uicp_file_write+0x1bc
+0x0934: add      sp, sp, #8
+0x0938: pop      {r4, r5, r6, r7, r8, pc}
+0x093c: andeq    r0, r0, r0                     ; reloc __stack_chk_guard
+0x0940: andeq    r0, r0, r0                     ; reloc .data
+0x0944: andeq    r0, r0, ip, ror r0             ; reloc .rodata
+0x0948: strheq   r0, [r0], -r6                  ; reloc .rodata.str1.1
+0x094c: andeq    r0, r0, r8, asr #3             ; reloc .rodata.str1.1
+0x0950: andeq    r0, r0, r1, ror #3             ; reloc .rodata.str1.1
+0x0954: andeq    r0, r0, r0                     ; reloc dect_uicp_from_user_buffer
+0x0958: muleq    r0, r1, r0                     ; reloc .rodata
+0x095c: strdeq   r0, r1, [r0], -sb              ; reloc .rodata.str1.1
+0x0960: andeq    r0, r0, r8, lsr #4             ; reloc .rodata.str1.1
+0x0964: andeq    r0, r0, pc, ror r2             ; reloc .rodata.str1.1
+0x0968: andeq    r0, r0, r4, asr #4             ; reloc .rodata.str1.1
+0x096c: andeq    r0, r0, sp, asr r1             ; reloc .rodata.str1.1
+0x0970: andeq    r0, r0, r4                     ; reloc dect_uicp_from_user_buffer
+0x0974: andeq    r0, r0, r1, ror #4             ; reloc .rodata.str1.1
+0x0978: andeq    r0, r0, r5, ror r1             ; reloc .rodata.str1.1
+
+--- dect_uicp_handle_debug_cmd 0x97c..0x9f8 ---
+0x097c: push     {r0, r1, r4, lr}
+0x0980: mov      r2, #0xa
+0x0984: ldr      r4, [pc, #0x54]                ; lit@0x9e0 -> __stack_chk_guard
+0x0988: mov      r1, sp
+0x098c: ldr      r3, [r4]
+0x0990: str      r3, [sp, #4]
+0x0994: ldr      r3, [pc, #0x48]                ; lit@0x9e4 -> .rodata.str1.1+0x35d
+0x0998: str      r3, [sp]
+0x099c: bl       #0x99c                         ; -> dect_uicp_handle_debug_cmd+0x20 | reloc simple_strtoul
+0x09a0: cmp      r0, #0xf
+0x09a4: mov      r2, r0
+0x09a8: ldrls    r3, [pc, #0x38]                ; lit@0x9e8 -> .data+0x0
+0x09ac: ldrhi    r1, [pc, #0x38]                ; lit@0x9ec -> .rodata+0x14b "dect_uicp_handle_debug_cmd"
+0x09b0: ldrhi    r0, [pc, #0x38]                ; lit@0x9f0 -> .rodata.str1.1+0x35e "3%s: invalid debug_level 0x%02x
+"
+0x09b4: ldrls    r1, [pc, #0x30]                ; lit@0x9ec -> .rodata+0x14b "dect_uicp_handle_debug_cmd"
+0x09b8: ldrls    r0, [pc, #0x34]                ; lit@0x9f4 -> .rodata.str1.1+0x380 "3%s: debug level set to 0x%02x
+"
+0x09bc: strls    r2, [r3]
+0x09c0: bl       #0x9c0                         ; -> dect_uicp_handle_debug_cmd+0x44 | reloc printk
+0x09c4: ldr      r2, [sp, #4]
+0x09c8: ldr      r3, [r4]
+0x09cc: cmp      r2, r3
+0x09d0: beq      #0x9d8                         ; -> dect_uicp_handle_debug_cmd+0x5c
+0x09d4: bl       #0x9d4                         ; -> dect_uicp_handle_debug_cmd+0x58 | reloc __stack_chk_fail
+0x09d8: add      sp, sp, #8
+0x09dc: pop      {r4, pc}
+0x09e0: andeq    r0, r0, r0                     ; reloc __stack_chk_guard
+0x09e4: andeq    r0, r0, sp, asr r3             ; reloc .rodata.str1.1
+0x09e8: andeq    r0, r0, r0                     ; reloc .data
+0x09ec: andeq    r0, r0, fp, asr #2             ; reloc .rodata
+0x09f0: andeq    r0, r0, lr, asr r3             ; reloc .rodata.str1.1
+0x09f4: andeq    r0, r0, r0, lsl #7             ; reloc .rodata.str1.1
+
+--- dect_uicp_parse_cmdline 0x9f8..0xa78 ---
+0x09f8: push     {r4, lr}
+0x09fc: mov      r4, r0
+0x0a00: ldr      r1, [pc, #0x50]                ; lit@0xa58 -> .rodata.str1.1+0x3a1 "debug"
+0x0a04: bl       #0xa04                         ; -> dect_uicp_parse_cmdline+0xc | reloc strstr
+0x0a08: cmp      r0, #0
+0x0a0c: beq      #0xa1c                         ; -> dect_uicp_parse_cmdline+0x24
+0x0a10: add      r0, r0, #6
+0x0a14: pop      {r4, lr}
+0x0a18: b        #0xa18                         ; -> dect_uicp_parse_cmdline+0x20 | reloc dect_uicp_handle_debug_cmd
+0x0a1c: mov      r2, r4
+0x0a20: ldr      r1, [pc, #0x34]                ; lit@0xa5c -> .rodata+0x166 "dect_uicp_parse_cmdline"
+0x0a24: ldr      r0, [pc, #0x34]                ; lit@0xa60 -> .rodata.str1.1+0x3a7 "3%s: invalid command: %s
+"
+0x0a28: bl       #0xa28                         ; -> dect_uicp_parse_cmdline+0x30 | reloc printk
+0x0a2c: ldr      r0, [pc, #0x30]                ; lit@0xa64 -> .rodata.str1.1+0x3c2 "3debug <bit_mask>      set debug output to selected level in bit_mask:
+"
+0x0a30: bl       #0xa30                         ; -> dect_uicp_parse_cmdline+0x38 | reloc printk
+0x0a34: ldr      r0, [pc, #0x2c]                ; lit@0xa68 -> .rodata.str1.1+0x40b "3     Bit 0: DEB_ERR
+"
+0x0a38: bl       #0xa38                         ; -> dect_uicp_parse_cmdline+0x40 | reloc printk
+0x0a3c: ldr      r0, [pc, #0x28]                ; lit@0xa6c -> .rodata.str1.1+0x422 "3     Bit 1: DEB_WARN
+"
+0x0a40: bl       #0xa40                         ; -> dect_uicp_parse_cmdline+0x48 | reloc printk
+0x0a44: ldr      r0, [pc, #0x24]                ; lit@0xa70 -> .rodata.str1.1+0x43a "3     Bit 2: DEB_INFO
+"
+0x0a48: bl       #0xa48                         ; -> dect_uicp_parse_cmdline+0x50 | reloc printk
+0x0a4c: ldr      r0, [pc, #0x20]                ; lit@0xa74 -> .rodata.str1.1+0x452 "3     Bit 3: DEB_TRC
+"
+0x0a50: pop      {r4, lr}
+0x0a54: b        #0xa54                         ; -> dect_uicp_parse_cmdline+0x5c | reloc printk
+0x0a58: andeq    r0, r0, r1, lsr #7             ; reloc .rodata.str1.1
+0x0a5c: andeq    r0, r0, r6, ror #2             ; reloc .rodata
+0x0a60: andeq    r0, r0, r7, lsr #7             ; reloc .rodata.str1.1
+0x0a64: andeq    r0, r0, r2, asr #7             ; reloc .rodata.str1.1
+0x0a68: andeq    r0, r0, fp, lsl #8             ; reloc .rodata.str1.1
+0x0a6c: andeq    r0, r0, r2, lsr #8             ; reloc .rodata.str1.1
+0x0a70: andeq    r0, r0, sl, lsr r4             ; reloc .rodata.str1.1
+0x0a74: andeq    r0, r0, r2, asr r4             ; reloc .rodata.str1.1
+
+--- dect_uicp_manage_kcalloc 0xa78..0xa80 ---
+0x0a78: orr      r1, r1, #0x8000
+0x0a7c: b        #0xa7c                         ; -> dect_uicp_manage_kcalloc+0x4 | reloc __kmalloc
+
+--- dect_uicp_fpapi_handle_to_user 0xa80..0xbc4 ---
+0x0a80: push     {r0, r1, r4, r5, r6, r7, r8, lr}
+0x0a84: mov      r8, r0
+0x0a88: ldr      r5, [pc, #0x110]               ; lit@0xba0 -> __stack_chk_guard
+0x0a8c: mov      r7, r1
+0x0a90: ldr      r6, [pc, #0x10c]               ; lit@0xba4 -> .data+0x0
+0x0a94: ldr      r3, [r5]
+0x0a98: str      r3, [sp, #4]
+0x0a9c: ldr      r3, [r6]
+0x0aa0: tst      r3, #4
+0x0aa4: beq      #0xac8                         ; -> dect_uicp_fpapi_handle_to_user+0x48
+0x0aa8: ldrb     r3, [r0]
+0x0aac: ldr      r1, [pc, #0xf4]                ; lit@0xba8 -> .rodata+0x17e "dect_uicp_fpapi_handle_to_user"
+0x0ab0: strb     r3, [sp]
+0x0ab4: ldrb     r3, [r0, #1]
+0x0ab8: ldr      r0, [pc, #0xec]                ; lit@0xbac -> .rodata.str1.1+0x476 "4%s: primitive 0x%08x
+"
+0x0abc: strb     r3, [sp, #1]
+0x0ac0: ldrh     r2, [sp]
+0x0ac4: bl       #0xac4                         ; -> dect_uicp_fpapi_handle_to_user+0x44 | reloc printk
+0x0ac8: ldr      r1, [pc, #0xe0]                ; lit@0xbb0 = 0x24000c0
+0x0acc: add      r0, r7, #0x19
+0x0ad0: bl       #0xad0                         ; -> dect_uicp_fpapi_handle_to_user+0x50 | reloc dect_uicp_manage_kcalloc
+0x0ad4: subs     r4, r0, #0
+0x0ad8: bne      #0xb10                         ; -> dect_uicp_fpapi_handle_to_user+0x90
+0x0adc: ldr      r3, [r6]
+0x0ae0: ldr      r2, [sp, #4]
+0x0ae4: tst      r3, #2
+0x0ae8: ldr      r3, [r5]
+0x0aec: beq      #0xb90                         ; -> dect_uicp_fpapi_handle_to_user+0x110
+0x0af0: cmp      r2, r3
+0x0af4: beq      #0xafc                         ; -> dect_uicp_fpapi_handle_to_user+0x7c
+0x0af8: bl       #0xaf8                         ; -> dect_uicp_fpapi_handle_to_user+0x78 | reloc __stack_chk_fail
+0x0afc: ldr      r1, [pc, #0xa4]                ; lit@0xba8 -> .rodata+0x17e "dect_uicp_fpapi_handle_to_user"
+0x0b00: ldr      r0, [pc, #0xac]                ; lit@0xbb4 -> .rodata.str1.1+0x48e "4%s: nomem, discard
+"
+0x0b04: add      sp, sp, #8
+0x0b08: pop      {r4, r5, r6, r7, r8, lr}
+0x0b0c: b        #0xb0c                         ; -> dect_uicp_fpapi_handle_to_user+0x8c | reloc printk
+0x0b10: add      r3, r7, #1
+0x0b14: strh     r3, [sp]
+0x0b18: ldr      r3, [pc, #0x98]                ; lit@0xbb8 = 0xffff8053
+0x0b1c: mov      r2, r7
+0x0b20: mov      r1, r8
+0x0b24: str      r4, [r4]
+0x0b28: str      r4, [r4, #4]
+0x0b2c: add      r0, r4, #0x15
+0x0b30: strh     r3, [sp, #2]
+0x0b34: add      r7, r7, #5
+0x0b38: ldr      r3, [sp]
+0x0b3c: str      r3, [r4, #0x10]
+0x0b40: mov      r3, #0
+0x0b44: strb     r3, [r4, #0x14]
+0x0b48: bl       #0xb48                         ; -> dect_uicp_fpapi_handle_to_user+0xc8 | reloc memcpy
+0x0b4c: str      r7, [r4, #8]
+0x0b50: ldr      r0, [pc, #0x64]                ; lit@0xbbc -> .bss+0x8
+0x0b54: bl       #0xb54                         ; -> dect_uicp_fpapi_handle_to_user+0xd4 | reloc _raw_spin_lock_irqsave
+0x0b58: ldr      r3, [r6, #0x14]
+0x0b5c: ldr      r2, [pc, #0x5c]                ; lit@0xbc0 -> .data+0x10
+0x0b60: str      r4, [r6, #0x14]
+0x0b64: strd     r2, r3, [r4]
+0x0b68: str      r4, [r3]
+0x0b6c: ldr      r2, [sp, #4]
+0x0b70: mov      r1, r0
+0x0b74: ldr      r3, [r5]
+0x0b78: cmp      r2, r3
+0x0b7c: bne      #0xaf8                         ; -> dect_uicp_fpapi_handle_to_user+0x78
+0x0b80: ldr      r0, [pc, #0x34]                ; lit@0xbbc -> .bss+0x8
+0x0b84: add      sp, sp, #8
+0x0b88: pop      {r4, r5, r6, r7, r8, lr}
+0x0b8c: b        #0xb8c                         ; -> dect_uicp_fpapi_handle_to_user+0x10c | reloc _raw_spin_unlock_irqrestore
+0x0b90: cmp      r2, r3
+0x0b94: bne      #0xaf8                         ; -> dect_uicp_fpapi_handle_to_user+0x78
+0x0b98: add      sp, sp, #8
+0x0b9c: pop      {r4, r5, r6, r7, r8, pc}
+0x0ba0: andeq    r0, r0, r0                     ; reloc __stack_chk_guard
+0x0ba4: andeq    r0, r0, r0                     ; reloc .data
+0x0ba8: andeq    r0, r0, lr, ror r1             ; reloc .rodata
+0x0bac: andeq    r0, r0, r6, ror r4             ; reloc .rodata.str1.1
+0x0bb0: subeq    r0, r0, #0xc0
+0x0bb4: andeq    r0, r0, lr, lsl #9             ; reloc .rodata.str1.1
+
+--- dect_uicp_from_dect 0xbc4..0xca0 ---
+0x0bc4: ldr      ip, [pc, #0xb8]                ; lit@0xc84 -> .bss+0x0
+0x0bc8: mov      r2, r1
+0x0bcc: push     {r0, r1, r4, lr}
+0x0bd0: ldr      ip, [ip, #4]
+0x0bd4: ldr      r4, [pc, #0xac]                ; lit@0xc88 -> .data+0x0
+0x0bd8: cmp      ip, #0
+0x0bdc: bne      #0xc14                         ; -> dect_uicp_from_dect+0x50
+0x0be0: ldr      r1, [r4]
+0x0be4: tst      r1, #4
+0x0be8: beq      #0xc0c                         ; -> dect_uicp_from_dect+0x48
+0x0bec: cmp      r2, #2
+0x0bf0: mov      r3, r0
+0x0bf4: str      r0, [sp]
+0x0bf8: movlo    r3, r2
+0x0bfc: movhs    r3, #2
+0x0c00: ldr      r1, [pc, #0x84]                ; lit@0xc8c -> .rodata+0x19d "dect_uicp_from_dect"
+0x0c04: ldr      r0, [pc, #0x84]                ; lit@0xc90 -> .rodata.str1.1+0x4a4 "4%s: ignore %u bytes, dect_manager not up: %*ph
+"
+0x0c08: bl       #0xc08                         ; -> dect_uicp_from_dect+0x44 | reloc printk
+0x0c0c: add      sp, sp, #8
+0x0c10: pop      {r4, pc}
+0x0c14: cmp      r1, #1
+0x0c18: bhi      #0xc3c                         ; -> dect_uicp_from_dect+0x78
+0x0c1c: ldr      r3, [r4]
+0x0c20: tst      r3, #2
+0x0c24: beq      #0xc0c                         ; -> dect_uicp_from_dect+0x48
+0x0c28: ldr      r1, [pc, #0x5c]                ; lit@0xc8c -> .rodata+0x19d "dect_uicp_from_dect"
+0x0c2c: ldr      r0, [pc, #0x60]                ; lit@0xc94 -> .rodata.str1.1+0x4d6 "4%s: length %u too small
+"
+0x0c30: add      sp, sp, #8
+0x0c34: pop      {r4, lr}
+0x0c38: b        #0xc38                         ; -> dect_uicp_from_dect+0x74 | reloc printk
+0x0c3c: bl       #0xc3c                         ; -> dect_uicp_from_dect+0x78 | reloc dect_uicp_fpapi_handle_to_user
+0x0c40: ldr      r2, [r4, #0x10]
+0x0c44: add      r3, r4, #0x10
+0x0c48: cmp      r2, r3
+0x0c4c: beq      #0xc0c                         ; -> dect_uicp_from_dect+0x48
+0x0c50: ldr      r3, [r4]
+0x0c54: tst      r3, #4
+0x0c58: beq      #0xc68                         ; -> dect_uicp_from_dect+0xa4
+0x0c5c: ldr      r1, [pc, #0x28]                ; lit@0xc8c -> .rodata+0x19d "dect_uicp_from_dect"
+0x0c60: ldr      r0, [pc, #0x30]                ; lit@0xc98 -> .rodata.str1.1+0x104 "4%s: wake up
+"
+0x0c64: bl       #0xc64                         ; -> dect_uicp_from_dect+0xa0 | reloc printk
+0x0c68: mov      r2, #1
+0x0c6c: mov      r3, #0
+0x0c70: mov      r1, r2
+0x0c74: ldr      r0, [pc, #0x20]                ; lit@0xc9c -> .data+0x4
+0x0c78: add      sp, sp, #8
+0x0c7c: pop      {r4, lr}
+0x0c80: b        #0xc80                         ; -> dect_uicp_from_dect+0xbc | reloc __wake_up
+0x0c84: andeq    r0, r0, r0                     ; reloc .bss
+0x0c88: andeq    r0, r0, r0                     ; reloc .data
+0x0c8c: muleq    r0, sp, r1                     ; reloc .rodata
+0x0c90: andeq    r0, r0, r4, lsr #9             ; reloc .rodata.str1.1
+0x0c94: ldrdeq   r0, r1, [r0], -r6              ; reloc .rodata.str1.1
+0x0c98: andeq    r0, r0, r4, lsl #2             ; reloc .rodata.str1.1
+0x0c9c: andeq    r0, r0, r4                     ; reloc .data

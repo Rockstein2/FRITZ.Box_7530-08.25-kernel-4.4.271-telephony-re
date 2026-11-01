@@ -1,0 +1,103 @@
+dect_io.ko static call graph
+===========================
+Source: modules/dect_io/dect_io.ko
+Offsets are section-relative. Calls to vendor symbols are marked [VENDOR].
+
+init_module / dect_uicp_file_init (.init.text 0x000)
+  -> printk
+  -> alloc_chrdev_region(&dect_uicp_file.dev, 0, 1, "dect_io")
+  -> cdev_alloc
+  -> kobject_set_name
+  -> cdev_add
+  -> avm_dect_if_init(dect_uicp_from_dect)              [VENDOR]
+  -> avm_DebugCallRegister                              [VENDOR]
+  -> unregister_chrdev_region (error paths)
+  -> kobject_put (error paths)
+
+cleanup_module / dect_uicp_file_cleanup (.exit.text 0x000)
+  -> avm_DebugCallUnRegister                            [VENDOR]
+  -> avm_dect_if_deinit                                 [VENDOR]
+  -> cdev_del
+  -> unregister_chrdev_region
+
+dect_uicp_file_open (.text 0x164)
+  -> atomic increment dect_uicp_open_flag
+  -> kmem_cache_alloc(kmalloc_caches[6], GFP_KERNEL|__GFP_ZERO)
+  -> set filp->private_data
+  -> set is_open
+
+dect_uicp_file_close (.text 0x0f0)
+  -> fasync_helper(-1, filp, 0, &private->fasync)
+  -> kfree(private)
+  -> clear dect_uicp_open_flag
+  -> clear is_open
+
+dect_uicp_file_fasync (.text 0x09c)
+  -> fasync_helper(fd, filp, on, &private->fasync)
+
+dect_uicp_file_poll (.text 0x000)
+  -> wait->qproc(filp, &dect_uicp_read_wait_queue_head, wait)
+  -> returns 0x104 when queue empty
+  -> returns 0x145 when queue nonempty
+
+dect_uicp_file_read (.text 0x268)
+  -> prepare_to_wait_event(&dect_uicp_read_wait_queue_head, ...)
+  -> schedule
+  -> finish_wait
+  -> arm_copy_to_user
+  -> _raw_spin_lock_irqsave(&dio_spin_lock)
+  -> list_del(entry)
+  -> _raw_spin_unlock_irqrestore(&dio_spin_lock)
+  -> kfree(entry)
+  -> updates *ppos
+  -> returns -EAGAIN, -ERESTARTSYS, -EFAULT, or copied bytes
+
+dect_uicp_file_write (.text 0x72c)
+  -> validates count (3 < count <= 0x3040)
+  -> arm_copy_from_user(dect_uicp_from_user_buffer, user_buf, count)
+  -> validates le16(frame[0]) + 4 == count
+  -> avm_dect_if_tx(frame + 4, le16(frame[0]))          [VENDOR]
+  -> always returns count on a valid frame
+  -> returns -EIO on length/copy errors
+
+dect_uicp_file_ioctl (.text 0x58c)
+  cmd 1:
+    -> access_ok(VERIFY_WRITE, arg, 8)
+    -> arm_copy_to_user(arg, {jiffies, 250}, 8)
+    -> returns 0 / -EINVAL
+  cmd 2:
+    -> access_ok(VERIFY_READ, arg, 256)
+    -> arm_copy_from_user(buf.25011, arg, 256)
+    -> strnlen(buf.25011, 256)
+    -> printk(KERN_ERR "%s\n", buf.25011)
+    -> returns 0 even on copy failure
+
+dect_uicp_from_dect (.text 0xbc4)                         [VENDOR CALLBACK]
+  -> checks is_open
+  -> rejects len <= 1
+  -> dect_uicp_fpapi_handle_to_user(data, len)
+  -> checks dect_uicp_to_api_list nonempty
+  -> __wake_up(&dect_uicp_read_wait_queue_head, TASK_NORMAL, 1, NULL)
+
+dect_uicp_fpapi_handle_to_user (.text 0xa80)
+  -> dect_uicp_manage_kcalloc(len + 0x19, GFP)
+       -> __kmalloc(size, flags | 0x8000)
+  -> memcpy(entry+0x15, data, len)
+  -> initializes list entry, total=len+5, copied=0,
+     header={len+1,0x8053}, status=0
+  -> _raw_spin_lock_irqsave(&dio_spin_lock)
+  -> list_add_tail(entry, &dect_uicp_to_api_list)
+  -> _raw_spin_unlock_irqrestore(&dio_spin_lock)
+
+dect_uicp_parse_cmdline (.text 0x9f8)
+  -> strstr(cmdline, "debug")
+  -> dect_uicp_handle_debug_cmd()
+  -> printk(help text)
+
+dect_uicp_handle_debug_cmd (.text 0x97c)
+  -> simple_strtoul
+  -> stores debug_level if <= 15
+  -> printk
+
+dect_uicp_dump (.text.unlikely 0x000)
+  -> printk hex dump helper

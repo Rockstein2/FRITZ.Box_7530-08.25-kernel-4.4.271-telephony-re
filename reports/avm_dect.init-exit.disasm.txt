@@ -1,0 +1,196 @@
+
+===== .init.text offset=0x26618 size=0x18c =====
+
+--- init_module 0x0..0x18c (396 bytes) ---
+0x0000: f0472de9   push     {r4, r5, r6, r7, r8, sb, sl, lr}
+0x0004: 0117a0e3   mov      r1, #0x40000
+0x0008: 5c019fe5   ldr      r0, [pc, #0x15c]
+0x000c: 0e90a0e1   mov      sb, lr
+0x0010: feffffeb   bl       #0x10    ; reloc simplemempool_alloc_init (type 28)
+0x0014: 54619fe5   ldr      r6, [pc, #0x154]
+0x0018: 000050e3   cmp      r0, #0
+0x001c: 0b00e003   mvneq    r0, #0xb
+0x0020: 010a70e3   cmn      r0, #0x1000
+0x0024: 000086e5   str      r0, [r6]
+0x0028: 0300009a   bls      #0x3c
+0x002c: 0030a0e3   mov      r3, #0
+0x0030: 0b00e0e3   mvn      r0, #0xb
+0x0034: 003086e5   str      r3, [r6]
+0x0038: f087bde8   pop      {r4, r5, r6, r7, r8, sb, sl, pc}
+0x003c: 30419fe5   ldr      r4, [pc, #0x130]
+0x0040: feffffeb   bl       #0x40    ; reloc avm_dect_debug_register (type 28)
+0x0044: feffffeb   bl       #0x44    ; reloc avm_support_register (type 28)
+0x0048: 4810a0e3   mov      r1, #0x48
+0x004c: 0070a0e3   mov      r7, #0
+0x0050: 0180a0e3   mov      r8, #1
+0x0054: 0400a0e1   mov      r0, r4
+0x0058: 0450a0e1   mov      r5, r4
+0x005c: feffffeb   bl       #0x5c    ; reloc __memzero (type 28)
+0x0060: 103084e2   add      r3, r4, #0x10
+0x0064: 047084e5   str      r7, [r4, #4]
+0x0068: 401084e2   add      r1, r4, #0x40
+0x006c: 087084e5   str      r7, [r4, #8]
+0x0070: 3c0084e2   add      r0, r4, #0x3c
+0x0074: 0c8084e5   str      r8, [r4, #0xc]
+0x0078: 103084e5   str      r3, [r4, #0x10]
+0x007c: 143084e5   str      r3, [r4, #0x14]
+0x0080: f0209fe5   ldr      r2, [pc, #0xf0]
+0x0084: feffffeb   bl       #0x84    ; reloc pcmlink_ul_register_dectcontrol (type 28)
+0x0088: 070050e1   cmp      r0, r7
+0x008c: 380084e5   str      r0, [r4, #0x38]
+0x0090: 0d00001a   bne      #0xcc
+0x0094: 1c0094e5   ldr      r0, [r4, #0x1c]
+0x0098: 06a0a0e1   mov      sl, r6
+0x009c: 070050e1   cmp      r0, r7
+0x00a0: 0300000a   beq      #0xb4
+0x00a4: feffffeb   bl       #0xa4    ; reloc cdev_del (type 28)
+0x00a8: 2110a0e3   mov      r1, #0x21
+0x00ac: 180094e5   ldr      r0, [r4, #0x18]
+0x00b0: feffffeb   bl       #0xb0    ; reloc unregister_chrdev_region (type 28)
+0x00b4: feffffeb   bl       #0xb4    ; reloc avm_dect_debug_exit (type 28)
+0x00b8: feffffeb   bl       #0xb8    ; reloc avm_support_exit (type 28)
+0x00bc: 00009ae5   ldr      r0, [sl]
+0x00c0: feffffeb   bl       #0xc0    ; reloc simplemempool_alloc_exit (type 28)
+0x00c4: b0009fe5   ldr      r0, [pc, #0xb0]
+0x00c8: f087bde8   pop      {r4, r5, r6, r7, r8, sb, sl, pc}
+0x00cc: 0930a0e1   mov      r3, sb
+0x00d0: 0720a0e1   mov      r2, r7
+0x00d4: 3c1094e5   ldr      r1, [r4, #0x3c]
+0x00d8: 000096e5   ldr      r0, [r6]
+0x00dc: feffffeb   bl       #0xdc    ; reloc simplemempool_alloc (type 28)
+0x00e0: 012aa0e3   mov      r2, #0x1000
+0x00e4: 0210a0e1   mov      r1, r2
+0x00e8: 440084e5   str      r0, [r4, #0x44]
+0x00ec: 380094e5   ldr      r0, [r4, #0x38]
+0x00f0: feffffeb   bl       #0xf0    ; reloc pcmlink_ul_config_dectcontrol (type 28)
+0x00f4: 4c2084e2   add      r2, r4, #0x4c
+0x00f8: 80109fe5   ldr      r1, [pc, #0x80]
+0x00fc: 200084e2   add      r0, r4, #0x20
+0x0100: feffffeb   bl       #0x100    ; reloc __init_waitqueue_head (type 28)
+0x0104: 443094e5   ldr      r3, [r4, #0x44]
+0x0108: 008084e5   str      r8, [r4]
+0x010c: 000053e3   cmp      r3, #0
+0x0110: 0900000a   beq      #0x13c
+0x0114: 0410a0e1   mov      r1, r4
+0x0118: 64309fe5   ldr      r3, [pc, #0x64]
+0x011c: 0020e0e3   mvn      r2, #0
+0x0120: 60009fe5   ldr      r0, [pc, #0x60]
+0x0124: feffffeb   bl       #0x124    ; reloc kthread_create_on_node (type 28)
+0x0128: 010a70e3   cmn      r0, #0x1000
+0x012c: 0040a0e1   mov      r4, r0
+0x0130: 0000008a   bhi      #0x138
+0x0134: feffffeb   bl       #0x134    ; reloc wake_up_process (type 28)
+0x0138: 2c4085e5   str      r4, [r5, #0x2c]
+0x013c: 2c3095e5   ldr      r3, [r5, #0x2c]
+0x0140: 0040a0e3   mov      r4, #0
+0x0144: 000053e3   cmp      r3, #0
+0x0148: 0100000a   beq      #0x154
+0x014c: 010a73e3   cmn      r3, #0x1000
+0x0150: 0200009a   bls      #0x160
+0x0154: 2c4085e5   str      r4, [r5, #0x2c]
+0x0158: feffffeb   bl       #0x158    ; reloc avm_dect_cleanup (type 28)
+0x015c: d8ffffea   b        #0xc4
+0x0160: feffffeb   bl       #0x160    ; reloc onu_init (type 28)
+0x0164: 0400a0e1   mov      r0, r4
+0x0168: f087bde8   pop      {r4, r5, r6, r7, r8, sb, sl, pc}
+0x016c: 484c0000   andeq    r4, r0, r8, asr #24
+0x0170: 00000000   andeq    r0, r0, r0    ; reloc gDectMemPool (type 2)
+0x0174: cc3e0000   andeq    r3, r0, ip, asr #29
+0x0178: 00000000   andeq    r0, r0, r0    ; reloc RxTxCallback (type 2)
+
+--- avm_dect_init 0x0..0x18c (396 bytes) ---
+0x0000: f0472de9   push     {r4, r5, r6, r7, r8, sb, sl, lr}
+0x0004: 0117a0e3   mov      r1, #0x40000
+0x0008: 5c019fe5   ldr      r0, [pc, #0x15c]
+0x000c: 0e90a0e1   mov      sb, lr
+0x0010: feffffeb   bl       #0x10    ; reloc simplemempool_alloc_init (type 28)
+0x0014: 54619fe5   ldr      r6, [pc, #0x154]
+0x0018: 000050e3   cmp      r0, #0
+0x001c: 0b00e003   mvneq    r0, #0xb
+0x0020: 010a70e3   cmn      r0, #0x1000
+0x0024: 000086e5   str      r0, [r6]
+0x0028: 0300009a   bls      #0x3c
+0x002c: 0030a0e3   mov      r3, #0
+0x0030: 0b00e0e3   mvn      r0, #0xb
+0x0034: 003086e5   str      r3, [r6]
+0x0038: f087bde8   pop      {r4, r5, r6, r7, r8, sb, sl, pc}
+0x003c: 30419fe5   ldr      r4, [pc, #0x130]
+0x0040: feffffeb   bl       #0x40    ; reloc avm_dect_debug_register (type 28)
+0x0044: feffffeb   bl       #0x44    ; reloc avm_support_register (type 28)
+0x0048: 4810a0e3   mov      r1, #0x48
+0x004c: 0070a0e3   mov      r7, #0
+0x0050: 0180a0e3   mov      r8, #1
+0x0054: 0400a0e1   mov      r0, r4
+0x0058: 0450a0e1   mov      r5, r4
+0x005c: feffffeb   bl       #0x5c    ; reloc __memzero (type 28)
+0x0060: 103084e2   add      r3, r4, #0x10
+0x0064: 047084e5   str      r7, [r4, #4]
+0x0068: 401084e2   add      r1, r4, #0x40
+0x006c: 087084e5   str      r7, [r4, #8]
+0x0070: 3c0084e2   add      r0, r4, #0x3c
+0x0074: 0c8084e5   str      r8, [r4, #0xc]
+0x0078: 103084e5   str      r3, [r4, #0x10]
+0x007c: 143084e5   str      r3, [r4, #0x14]
+0x0080: f0209fe5   ldr      r2, [pc, #0xf0]
+0x0084: feffffeb   bl       #0x84    ; reloc pcmlink_ul_register_dectcontrol (type 28)
+0x0088: 070050e1   cmp      r0, r7
+0x008c: 380084e5   str      r0, [r4, #0x38]
+0x0090: 0d00001a   bne      #0xcc
+0x0094: 1c0094e5   ldr      r0, [r4, #0x1c]
+0x0098: 06a0a0e1   mov      sl, r6
+0x009c: 070050e1   cmp      r0, r7
+0x00a0: 0300000a   beq      #0xb4
+0x00a4: feffffeb   bl       #0xa4    ; reloc cdev_del (type 28)
+0x00a8: 2110a0e3   mov      r1, #0x21
+0x00ac: 180094e5   ldr      r0, [r4, #0x18]
+0x00b0: feffffeb   bl       #0xb0    ; reloc unregister_chrdev_region (type 28)
+0x00b4: feffffeb   bl       #0xb4    ; reloc avm_dect_debug_exit (type 28)
+0x00b8: feffffeb   bl       #0xb8    ; reloc avm_support_exit (type 28)
+0x00bc: 00009ae5   ldr      r0, [sl]
+0x00c0: feffffeb   bl       #0xc0    ; reloc simplemempool_alloc_exit (type 28)
+0x00c4: b0009fe5   ldr      r0, [pc, #0xb0]
+0x00c8: f087bde8   pop      {r4, r5, r6, r7, r8, sb, sl, pc}
+0x00cc: 0930a0e1   mov      r3, sb
+0x00d0: 0720a0e1   mov      r2, r7
+0x00d4: 3c1094e5   ldr      r1, [r4, #0x3c]
+0x00d8: 000096e5   ldr      r0, [r6]
+0x00dc: feffffeb   bl       #0xdc    ; reloc simplemempool_alloc (type 28)
+0x00e0: 012aa0e3   mov      r2, #0x1000
+0x00e4: 0210a0e1   mov      r1, r2
+0x00e8: 440084e5   str      r0, [r4, #0x44]
+0x00ec: 380094e5   ldr      r0, [r4, #0x38]
+0x00f0: feffffeb   bl       #0xf0    ; reloc pcmlink_ul_config_dectcontrol (type 28)
+0x00f4: 4c2084e2   add      r2, r4, #0x4c
+0x00f8: 80109fe5   ldr      r1, [pc, #0x80]
+0x00fc: 200084e2   add      r0, r4, #0x20
+0x0100: feffffeb   bl       #0x100    ; reloc __init_waitqueue_head (type 28)
+0x0104: 443094e5   ldr      r3, [r4, #0x44]
+0x0108: 008084e5   str      r8, [r4]
+0x010c: 000053e3   cmp      r3, #0
+0x0110: 0900000a   beq      #0x13c
+0x0114: 0410a0e1   mov      r1, r4
+0x0118: 64309fe5   ldr      r3, [pc, #0x64]
+0x011c: 0020e0e3   mvn      r2, #0
+0x0120: 60009fe5   ldr      r0, [pc, #0x60]
+0x0124: feffffeb   bl       #0x124    ; reloc kthread_create_on_node (type 28)
+0x0128: 010a70e3   cmn      r0, #0x1000
+0x012c: 0040a0e1   mov      r4, r0
+0x0130: 0000008a   bhi      #0x138
+0x0134: feffffeb   bl       #0x134    ; reloc wake_up_process (type 28)
+0x0138: 2c4085e5   str      r4, [r5, #0x2c]
+0x013c: 2c3095e5   ldr      r3, [r5, #0x2c]
+0x0140: 0040a0e3   mov      r4, #0
+0x0144: 000053e3   cmp      r3, #0
+0x0148: 0100000a   beq      #0x154
+0x014c: 010a73e3   cmn      r3, #0x1000
+0x0150: 0200009a   bls      #0x160
+0x0154: 2c4085e5   str      r4, [r5, #0x2c]
+0x0158: feffffeb   bl       #0x158    ; reloc avm_dect_cleanup (type 28)
+0x015c: d8ffffea   b        #0xc4
+0x0160: feffffeb   bl       #0x160    ; reloc onu_init (type 28)
+0x0164: 0400a0e1   mov      r0, r4
+0x0168: f087bde8   pop      {r4, r5, r6, r7, r8, sb, sl, pc}
+0x016c: 484c0000   andeq    r4, r0, r8, asr #24
+0x0170: 00000000   andeq    r0, r0, r0    ; reloc gDectMemPool (type 2)
+0x0174: cc3e0000   andeq    r3, r0, ip, asr #29
+0x0178: 00000000   andeq    r0, r0, r0    ; reloc RxTxCallback (type 2)

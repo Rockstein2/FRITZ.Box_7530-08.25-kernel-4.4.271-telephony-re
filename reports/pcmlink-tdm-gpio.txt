@@ -1,0 +1,7 @@
+pcmlinktdm_gpioconfig: .data+0xd4, 6 records of 0x2c
+entry 0: name='gpio_avm_pcmlink_fsc' start=0xffffffff end=0xffffffff flags=0x100 pinA=1 pinB=1 pinHW=0 flags28=1
+entry 1: name='gpio_avm_pcmlink_fsc_2' start=0xffffffff end=0xffffffff flags=0x100 pinA=1 pinB=1 pinHW=0 flags28=0
+entry 2: name='gpio_avm_pcmlink_dcl' start=0xffffffff end=0xffffffff flags=0x100 pinA=1 pinB=1 pinHW=0 flags28=1
+entry 3: name='gpio_avm_pcmlink_dcl_2' start=0xffffffff end=0xffffffff flags=0x100 pinA=1 pinB=1 pinHW=0 flags28=0
+entry 4: name='gpio_avm_pcmlink_di' start=0xffffffff end=0xffffffff flags=0x100 pinA=1 pinB=1 pinHW=0 flags28=0
+entry 5: name='gpio_avm_pcmlink_do' start=0xffffffff end=0xffffffff flags=0x100 pinA=1 pinB=1 pinHW=0 flags28=0

@@ -1,0 +1,4 @@
+/GU/NETWORK_SOURCE_cortexa9_build/src/main/kernelmodules/libs/avmcsock/gen/sharedlibs/avmcsock/ctimer.c
+/GU/NETWORK_SOURCE_cortexa9_build/src/main/kernelmodules/libs/avmcsock/xxxmsg.c
+/GU/NETWORK_SOURCE_cortexa9_build/src/main/kernelmodules/libs/srtp/gen/sharedlibs/srtp/crypto/kernel/crypto_kernel.c
+/GU/NETWORK_SOURCE_cortexa9_build/src/main/kernelmodules/rtp/krtpsession.c

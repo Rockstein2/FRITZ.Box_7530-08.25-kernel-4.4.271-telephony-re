@@ -1,0 +1,148 @@
+
+=== dmgt_dect_dev_closed 0x10c5dc..0x10c614 (56 bytes) ===
+0x10c5dc: ldr      r3, [pc, #0x28]                  ; lit@0x10c60c=.text+0xbf2bc -> 0x6d3a8 | .text+0x20058
+0x10c5e0: mov      r0, #0
+0x10c5e4: ldr      r2, [pc, #0x24]                  ; lit@0x10c610=.text+0xbf2c0 -> 0x614 | .hash+0x488
+0x10c5e8: add      r3, pc, r3
+0x10c5ec: ldr      r3, [r3, r2]
+0x10c5f0: mov      r2, #0
+0x10c5f4: str      r2, [r3, #0x14c]
+0x10c5f8: ldr      r2, [r3]
+0x10c5fc: cmn      r2, #1
+0x10c600: mvnne    r2, #0
+0x10c604: strne    r2, [r3]
+0x10c608: bx       lr
+0x10c60c: andeq    sp, r6, r8, lsr #7
+0x10c610: andeq    r0, r0, r4, lsl r6
+
+=== dmgt_manage_ioctl 0x11d374..0x11d42c (184 bytes) ===
+0x11d374: push     {r3, r4, r5, r6, r7, r8, sb, sl, fp, lr}
+0x11d378: mov      r4, r0
+0x11d37c: ldr      sb, [pc, #0xa0]                  ; lit@0x11d424=.text+0xd00d4 -> 0x5c604 | .text+0xf2b4
+0x11d380: mov      sl, r1
+0x11d384: mov      fp, r2
+0x11d388: mov      r6, #0
+0x11d38c: add      sb, pc, sb
+0x11d390: mov      r2, fp
+0x11d394: mov      r1, sl
+0x11d398: mov      r0, r4
+0x11d39c: add      r6, r6, #1
+0x11d3a0: bl       #0x4c5fc                         ; CALL ioctl
+0x11d3a4: subs     r8, r0, #0
+0x11d3a8: bge      #0x11d41c                        ; -> dmgt_manage_ioctl+0xa8
+0x11d3ac: bl       #0x4c9bc                         ; CALL __errno_location
+0x11d3b0: ldr      r5, [r0]
+0x11d3b4: cmp      r6, #0xa
+0x11d3b8: mov      r7, r0
+0x11d3bc: sub      r2, r5, #4
+0x11d3c0: clz      r2, r2
+0x11d3c4: lsr      r2, r2, #5
+0x11d3c8: moveq    r2, #0
+0x11d3cc: cmp      r2, #0
+0x11d3d0: bne      #0x11d390                        ; -> dmgt_manage_ioctl+0x1c
+0x11d3d4: uxtb     r0, r5
+0x11d3d8: mov      r1, #0xc3
+0x11d3dc: orr      r0, r0, #0x600
+0x11d3e0: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x11d3e4: ldr      r3, [pc, #0x3c]                  ; lit@0x11d428=.text+0xd00d8 -> 0x630 | .hash+0x4a4
+0x11d3e8: ldr      r3, [sb, r3]
+0x11d3ec: ldr      r0, [r3]
+0x11d3f0: cmp      r0, r4
+0x11d3f4: beq      #0x11d408                        ; -> dmgt_manage_ioctl+0x94
+0x11d3f8: uxth     r2, r0
+0x11d3fc: mov      r1, #0xc5
+0x11d400: lsr      r0, r0, #0x10
+0x11d404: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x11d408: uxth     r2, r4
+0x11d40c: mov      r1, #0xc4
+0x11d410: lsr      r0, r4, #0x10
+0x11d414: bl       #0x11cf28                        ; -> dmgt_manage_write_crv_info+0x0
+0x11d418: str      r5, [r7]
+0x11d41c: mov      r0, r8
+0x11d420: pop      {r3, r4, r5, r6, r7, r8, sb, sl, fp, pc}
+0x11d424: andeq    ip, r5, r4, lsl #12
+0x11d428: andeq    r0, r0, r0, lsr r6
+
+=== dmgt_dect_dev_read 0x115758..0x1158a0 (328 bytes) ===
+0x115758: ldr      r3, [pc, #0x12c]                 ; lit@0x11588c=.text+0xc853c -> 0x64230 | .text+0x16ee0
+0x11575c: ldr      r2, [pc, #0x12c]                 ; lit@0x115890=.text+0xc8540 -> 0x648 | .hash+0x4bc
+0x115760: add      r3, pc, r3
+0x115764: push     {r4, r5, r6, r7, lr}
+0x115768: sub      sp, sp, #0x14
+0x11576c: ldr      r6, [r3, r2]
+0x115770: ldr      r2, [r6]
+0x115774: str      r2, [sp, #0xc]
+0x115778: ldr      r2, [pc, #0x114]                 ; lit@0x115894=.text+0xc8544 -> 0x614 | .hash+0x488
+0x11577c: ldr      r5, [r3, r2]
+0x115780: mov      r2, #4
+0x115784: add      r1, sp, r2
+0x115788: ldr      r0, [r5]
+0x11578c: bl       #0x4c8b4                         ; CALL read
+0x115790: cmp      r0, #4
+0x115794: bne      #0x11586c                        ; -> dmgt_dect_dev_read+0x114
+0x115798: ldrh     r0, [sp, #4]
+0x11579c: cmp      r0, #0x80
+0x1157a0: addls    r4, r5, #0x180
+0x1157a4: bls      #0x1157c4                        ; -> dmgt_dect_dev_read+0x6c
+0x1157a8: ldr      r2, [pc, #0xe8]                  ; lit@0x115898=.text+0xc8548 -> 0x451b3 | .rel.dyn+0x1030b
+0x1157ac: movw     r1, #0x1731
+0x1157b0: add      r2, pc, r2
+0x1157b4: bl       #0x11fec0                        ; -> dmgt_manage_malloc+0x0
+0x1157b8: subs     r4, r0, #0
+0x1157bc: addeq    r7, r5, #0x180
+0x1157c0: beq      #0x115860                        ; -> dmgt_dect_dev_read+0x108
+0x1157c4: ldrh     r2, [sp, #4]
+0x1157c8: cmp      r2, #0
+0x1157cc: beq      #0x11586c                        ; -> dmgt_dect_dev_read+0x114
+0x1157d0: ldr      r0, [r5]
+0x1157d4: mov      r1, r4
+0x1157d8: bl       #0x4c8b4                         ; CALL read
+0x1157dc: ldrh     r5, [sp, #4]
+0x1157e0: cmp      r5, r0
+0x1157e4: bne      #0x115828                        ; -> dmgt_dect_dev_read+0xd0
+0x1157e8: ldrb     r2, [sp, #6]
+0x1157ec: cmp      r5, #2
+0x1157f0: sub      r3, r2, #0x53
+0x1157f4: clz      r3, r3
+0x1157f8: lsr      r3, r3, #5
+0x1157fc: movle    r3, #0
+0x115800: cmp      r3, #0
+0x115804: beq      #0x115828                        ; -> dmgt_dect_dev_read+0xd0
+0x115808: mov      r2, #3
+0x11580c: mov      r1, r4
+0x115810: add      r0, sp, #9
+0x115814: bl       #0x4ccd4                         ; CALL memcpy
+0x115818: ldrh     r0, [sp, #0xa]
+0x11581c: add      r2, r4, #3
+0x115820: sub      r1, r5, #3
+0x115824: bl       #0x111814                        ; -> dmgt_dect_from_api+0x0
+0x115828: ldrh     r3, [sp, #4]
+0x11582c: cmp      r3, #0x80
+0x115830: bls      #0x11586c                        ; -> dmgt_dect_dev_read+0x114
+0x115834: ldr      r2, [pc, #0x60]                  ; lit@0x11589c=.text+0xc854c -> 0x45123 | .rel.dyn+0x1027b
+0x115838: movw     r1, #0x1758
+0x11583c: mov      r0, r4
+0x115840: add      r2, pc, r2
+0x115844: bl       #0x121188                        ; -> dmgt_manage_free+0x0
+0x115848: b        #0x11586c                        ; -> dmgt_dect_dev_read+0x114
+0x11584c: ldr      r0, [r5]
+0x115850: mov      r2, #0x80
+0x115854: mov      r1, r7
+0x115858: add      r4, r4, #0x80
+0x11585c: bl       #0x4c8b4                         ; CALL read
+0x115860: ldrh     r3, [sp, #4]
+0x115864: cmp      r3, r4
+0x115868: bhi      #0x11584c                        ; -> dmgt_dect_dev_read+0xf4
+0x11586c: ldr      r2, [sp, #0xc]
+0x115870: mov      r0, #0
+0x115874: ldr      r3, [r6]
+0x115878: cmp      r2, r3
+0x11587c: beq      #0x115884                        ; -> dmgt_dect_dev_read+0x12c
+0x115880: bl       #0x4c710                         ; CALL __stack_chk_fail
+0x115884: add      sp, sp, #0x14
+0x115888: pop      {r4, r5, r6, r7, pc}
+0x11588c: andeq    r4, r6, r0, lsr r2
+0x115890: andeq    r0, r0, r8, asr #12
+0x115894: andeq    r0, r0, r4, lsl r6
+0x115898: strheq   r5, [r4], -r3
+0x11589c: andeq    r5, r4, r3, lsr #2

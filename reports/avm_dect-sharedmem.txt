@@ -1,0 +1,36 @@
+pcmlink / PCMRoute shared state
+===============================
+Source: pcmlink.ko
+
+gPcmroute
+  section: .bss
+  offset:  0xd780
+  size:    0xf8e8 (63720 bytes)
+  accessor: pcmroute_getsharedmem @0xc300 -> &gPcmroute
+
+pcmroute_memshared_routerinit @0x178a0
+  -> pcmroute_getsharedmem()
+  -> __memzero(base, 0xeaac)
+  -> base+0x00 = 0xc0afd54c (magic)
+  -> base+0x04 = derived 32-bit value
+  -> pcmroute_dtmfscan_init()
+  -> pcmroute_ecinit(base + 0xdd98)
+
+pcmroute_memshared_routerexit @0x178e4
+  -> pcmroute_ecexit(base + 0xdd98)
+  -> g722_freeallinst()
+  -> equalize_freeall()
+
+Separate link object:
+  SharedMemory .bss+0xcb0c size 0x2dc
+
+pcmlink_ul_register_pcmrouter @0x23f0 maps shared memory:
+  r0 = pcmlink_ll_sharedmemory()
+  [manager+0x234] = r0
+  [manager+0x224] = dsp_to_host_addr(r0 + 0x24)
+  [manager+0x228] = dsp_to_host_addr(...)
+  [manager+0x22c] = dsp_to_host_addr(...)
+  [manager+0x230] = dsp_to_host_addr(...)
+
+The exact field layout of gPcmroute and of the DSP shared-memory descriptor
+beyond offsets 0x24/0x28/0x38/0x3c is unresolved; runtime tracing is needed.

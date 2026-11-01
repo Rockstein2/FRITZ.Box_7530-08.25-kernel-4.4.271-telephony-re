@@ -1,0 +1,28 @@
+Piglet_noemif default profile (profile_list, .data 0x00, 60 bytes)
+=================================================================
+name: "235" (.rodata.str1.1+0x109b)
+
+offset  field                         value
+0x00    name pointer                  "235"
+0x04    gpio_avm_piglet_noemif_data   0xffffffff (absent)
+0x08    gpio_avm_piglet_noemif_done   0xffffffff (absent)
+0x0c    gpio_avm_piglet_noemif_clk    0xffffffff (absent)
+0x10    gpio_avm_piglet_noemif_prog   0xffffffff (absent)
+0x14    gpio_avm_piglet_noemif_fpgaok 0xffffffff (absent)
+0x18    gpio_avm_piglet_clockout      0xffffffff (absent)
+0x1c    reserved/legacy               0
+0x20    reserved/legacy               0
+0x24    dect mode / cached cfg        0x00000105
+0x28    gpio_avm_dect_reset           0x00000012 (GPIO 18)
+0x2c    gpio_avm_dect_rd              0x00000010 (GPIO 16)
+0x30    gpio_avm_dect_tx              0xffffffff (absent; UART)
+0x34    reserved/legacy               0
+0x38    reserved/legacy               0xffffffff
+
+The runtime AVM hw_config table can override every GPIO value via
+avm_get_hw_config_table(); the table above is the fallback profile used when
+the lookup has no entry.
+
+Evidence:
+  modules/piglet_noemif/Piglet_noemif.ko .data 0x00..0x3b
+  get_profile @0x2b08

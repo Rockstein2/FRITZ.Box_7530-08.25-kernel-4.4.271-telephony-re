@@ -1,0 +1,127 @@
+Piglet_noemif.ko static call graph
+=================================
+Source: modules/piglet_noemif/Piglet_noemif.ko
+Offsets are .text section offsets unless marked .init.text/.exit.text.
+Vendor APIs are marked [VENDOR].
+
+init_module / piglet_init (.init.text 0x000)
+  -> prom_getenv("kernel_args")
+  -> check_keyword("nopiglet"/"pigletcalib"/"pigletnopanic")
+  -> get_profile()
+  -> piglet_requestinit()
+  -> avm_event_build_id_mask()                  [VENDOR]
+  -> avm_event_source_register()                [VENDOR]
+  -> kthread_create_on_node(piglet_loader_thread)
+     or direct piglet_loader_thread(0) when async_loader is off
+  -> dectuart_event_dim_led_status_init()
+
+piglet_cleanup / cleanup_module (.exit.text 0x000)
+  -> send_piglet_ready_event()
+  -> dectuart_event_dim_led_status_exit()
+  -> lpiglet_cleanup()
+
+piglet_loader_thread (0x414c)
+  -> piglet_requestinit/requestrelease
+  -> piglet_reset()                            [optional FPGA]
+  -> dect_requestinit()
+  -> dect_file_process() via pdect_file_process
+  -> Check_TDMInterface()                      [unless Host-CPU master]
+  -> piglet_bitfile_process()                  [optional]
+  -> PowerManagmentRegister()                  [VENDOR]
+  -> send_piglet_ready_event()
+  -> msleep()
+
+get_profile (0x2b08)
+  -> prom_getenv("HWRevision"/"HWSubRevision")
+  -> avm_get_hw_config_table()                 [VENDOR]
+  -> strcmp(name, gpio_avm_*)
+  -> printk/log
+  -> fills profile_list (.data+0x00, 60 bytes)
+
+use of profile_list
+  -> XBIT_* / dect_loader / dect_requestinit / piglet_reset
+
+piglet_reset (0x644)
+  -> XBIT_Init(1) if profile+0x10 != -1
+  -> arm_delay_ops
+
+XBIT_Init (0xa8)
+  -> dakota_gpio_ctrl(profile+0x10, 0, 1)      [VENDOR]
+  -> dakota_gpio_out_bit(profile+0x10, 1)      [VENDOR]
+  -> dakota_gpio_ctrl(profile+0x04, 0, 1)      [VENDOR]
+  -> dakota_gpio_ctrl(profile+0x0c, 0, 1)      [VENDOR]
+  -> dakota_gpio_ctrl(profile+0x08, 0, 0)      [VENDOR]
+  -> XBIT_WritePort_XBIT_PROG/DIN/CLK
+  -> dakota_gpio_in_bit(profile+0x08)          [VENDOR]
+
+piglet_bitfile_process (0x4e0)
+  -> request_firmware()
+  -> XBIT_Init / XBIT_WriteData
+  -> dakota_gpio_in_bit(DONE)
+  -> release_firmware
+  -> bitfile_preload_add/free
+
+dect_requestinit (0x2a88)
+  -> dakota_gpio_ctrl(profile+0x30, 1, 1)      [VENDOR]
+  -> sets gRequestDect_ok
+
+dect_requestrelease (0x2ae0)
+  -> msm_dectuart_exit()                       [VENDOR]
+  -> clears gRequestDect_ok
+
+dect_file_process (0x2760)
+  -> strstr(filename, "441"/"488"/"DA14495"/"DCX81")
+  -> strstr(filename, "_slow"/"_fast")
+  -> ihex2bin(filename, base, &len, mode=0)
+  -> ihex2bin(filename, 0, &len, mode=1)
+  -> patch_dectfw(image, dectmode, base)
+  -> dect_loader(first_image, len, mode, async)
+  -> dect_loader(second_image, len, mode, async)
+  -> msm_console_stop/start for shared UART
+  -> msm_dectuart_exit
+  -> vfree
+
+ihex2bin (0x1ee8)
+  -> request_firmware()                        [VENDOR]
+  -> vmalloc(0x30005)
+  -> valtohex / checksum validation
+  -> groups contiguous addresses into blocks
+  -> writes u32be address + u32be length + data
+  -> writes u16be/u32be outer payload length
+  -> writes XOR checksum
+  -> release_firmware / vfree
+
+patch_dectfw (0x1954)
+  -> avm_prom_get_config(1, buf, 0x40)         [VENDOR]
+  -> get_bufaddr_from_dectaddr()
+  -> replace_tag()
+  -> prom_getenv("maca")                       [VENDOR]
+  -> get_mac_ziffer()
+  -> writes RFPI tag 1 / dectmode tag 7 / stub tag 9
+  -> recomputes XOR checksum
+  -> log_piglet
+
+dect_loader (0x9a8)
+  -> arm_delay_ops                              [VENDOR]
+  -> dakota_gpio_ctrl/out_bit(profile+0x28)    [VENDOR]
+  -> dakota_gpio_ctrl/out_bit(profile+0x2c)    [VENDOR]
+  -> msm_dectuart_init()                       [VENDOR]
+  -> msm_dectuart_get_char/put_char()          [VENDOR]
+  -> jiffies_to_msecs()
+  -> _cond_resched / ___might_sleep
+  -> schedule
+  -> msleep(10)
+  -> log_piglet
+
+Check_TDMInterface (0x3f0c)
+  -> ipq40xx_get_cyclefreq/cycles              [VENDOR]
+  -> avm_get_hw_config_table()                 [VENDOR]
+  -> strcmp(gpio_avm_pcmlink_fsc/dcl)
+  -> dakota_gpio_ctrl/get_membase()            [VENDOR]
+  -> piglet_lock/unlock
+  -> printk TDM rates
+
+Optional UART sniffer
+  -> dectuart_sniffer_init/exit
+  -> socket/listen/route thread
+  -> dectuart_event_dim_led_status_init/exit

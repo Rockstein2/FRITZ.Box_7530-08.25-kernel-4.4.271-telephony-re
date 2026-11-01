@@ -1,0 +1,113 @@
+pcmlink.ko static call graph (hardware-facing subset)
+=====================================================
+Source: modules/ubik2/pcmlink.ko
+Offsets are .text offsets unless .init.text/.exit.text.
+
+init_module / pcmlink_init (.init.text 0x000)
+  -> check kernel args (noslic/voiponly/nocapi/ignore_nocapi)
+  -> pcmlink_hrtimer_init()
+  -> platform/backend selection
+  -> pcmlink_ul_decttransp_init()
+  -> PCMRoute_Init()
+  -> register_reboot_notifier()
+
+pcmlink_ul_register_pcmrouter (0x23f0)
+  -> pcmlink_is_remoteserver()
+  -> pcmlink_getlinktype()
+  -> pcmlink_ll_init()
+  -> pcmlink_ll_sharedmemory()
+  -> pcmlink_ll_dsp_to_host_addr()
+  -> pcmlink_ul_regnoemif_init()
+  -> PowerManagmentActivatePowerMode("telefon_profile_4ms")
+  -> pcmlink_ll_activate()
+  -> pcmlink_ll_trigger_control()
+  -> avm_DebugCallRegister("pcmlink")
+  -> PowerManagmentRegister("pcmlink")
+
+pcmlink_ll_init (0xb20)
+  -> kmem_cache_alloc()
+  -> pcmlink_module_get()
+  -> ipq40xx_get_cyclefreq/cycles/cycles_to_usec
+  -> avm_event_sink_register("piglet_ready_sink")
+  -> kthread_create_on_node(l_controltimer_thread)
+  -> kthread_bind/wake_up_process
+  -> wait queue for init
+
+pcmlink_ll_activate (0xe98)
+  -> pcmlink_ll_trigger_control()
+  -> schedule_timeout(0x1388)
+
+ipq40xxtdm_linkinit (0x9e40)
+  -> __memzero
+  -> avm_get_hw_config_table()
+  -> strcmp(gpio_avm_pcmlink_*)
+  -> request_resource(&gpio_resource, pin_entry)
+  -> dakota_gpio_ctrl()
+  -> dakota_gpio_pinconfig()
+  -> tdm_if_config_init()
+  -> tdm_if_dma_init()
+  -> register_sysctl_table()
+  error:
+  -> ltdm_release_gpioresource()
+  -> tdm_if_config_exit()
+
+ipq40xxtdm_linkactivate (0x9dd4)
+  -> tdm_if_config_init()
+  -> tdm_if_dma_start()
+
+ipq40xxtdm_linkdeinit (0xa334)
+  -> unregister_sysctl_table()
+  -> tdm_if_dma_exit()
+  -> tdm_if_config_exit()
+
+ipq40xxtdm_linkdeactivate (0xa37c)
+  -> tdm_if_dma_stop()
+
+ipq40xxtdm_linkpoll (0xa1fc)
+  -> tdm_if_dma_irqcnt()
+  -> printk on discontinued counters
+  -> force DMA reinit flag
+
+ipq40xxtdm_checkhw (0xa3b4)
+  -> avm_get_hw_config_table()
+  -> strcmp(gpio_avm_pcmlink_fsc/dcl)
+  -> dakota_gpio_get_membase()
+  -> dakota_gpio_ctrl()
+  -> ipq40xx_get_cyclefreq/cycles
+  -> avm_mask_all_fiqs_down/avm_unmask_all_fiqs_up
+  -> printk("TDM: FS ... CLK ...")
+
+ipq40xxtdm_TxData (0x9c38)
+  -> TDM handle TX callback
+  -> optional timing callback
+
+ipq40xxtdm_RxData (0x9bf4)
+  -> TDM handle RX callback
+  -> optional timing callback
+
+pcmlink_ul_openslots (0x4820)
+  -> get_ul_manager
+  -> lpcmlink_linkmask_check
+  -> avm_mask_all_fiqs_down/unmask
+  -> simplemempool_alloc
+  -> g722_allocsize/g722_encoderinit
+  -> list_add_tail
+
+pcmlink_ul_rxget_slotdata_pcmrouter (0x1a50)
+  -> get_ul_manager
+  -> reads slot table/shared-memory address
+
+pcmlink_ul_txput_slotdata_pcmrouter (0x1b3c)
+  -> get_ul_manager
+  -> marks codec channel ready
+
+pcmlink_ul_setslotparam_pcmrouter (0x1c00)
+  -> get_ul_manager
+  -> updates slot masks/params
+
+pcmlink_ul_register_dectcontrol (0x3fa8)
+  -> pcmlink_ul_manager
+  -> DECT ctrl slot setup
+
+PCMRoute_* (0xbd90 etc.)
+  -> slot/time-slot routing, CODEC registration, DTMF/EC/LMR controls

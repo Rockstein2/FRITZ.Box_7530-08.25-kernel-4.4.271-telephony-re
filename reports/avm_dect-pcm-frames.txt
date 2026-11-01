@@ -1,0 +1,57 @@
+avm_dect PCM/mail frame observations
+====================================
+All addresses are module offsets; no router code was executed.
+
+Upper mail header (pcm_Task)
+----------------------------
+`pcm_Task` receives a payload pointer r0 and computes r7 = r0 - 4:
+
+  mail-4  u16le length
+  mail-2  u8 task
+  mail-1  u8 primitive
+  mail+0  payload
+
+`pcm_Task` passes r7 and length+4 to pcmdrv_enqueue_tx.
+`pcmdrv_enqueue_tx` rejects length > 0xFC, inspects the first payload word
+(offset +4) for primitives 0xf626, 0xfff1, 0x158, byte-swaps selected fields,
+masks FIQ, and enqueues on g_pcmdrv_tx_queue.
+
+Receive mail
+------------
+`pcmdrv_check_rx_mails` dequeues from g_pcmdrv_rx_queue. It rejects a mail
+length <= 7 (minimum 8), then dispatches primitives:
+
+  0xf625  PCM status/indication (fixed 0x2d-byte form)
+  0xfff1  PCM_CMD_REMOTE_STATUS_IND / stub OS status
+  0x242   remote PCM test confirmation
+
+It byte-swaps 16-bit fields for selected status records and forwards other
+mails through SendMailRaw.
+
+Checksum
+--------
+`pcmdrv_checksum_valid(p)`:
+
+  length = le16(p[0])
+  checksum over p[0 .. length+3]
+  received checksum at p[length+4 .. length+5]
+
+`pcm_rx_tx_handler` uses 0xAA as a start marker and parses a byte stream into
+g_mail_rx_buf (`.bss+0xc108`); pcm_local_stat is at `.bss+0x3958`.
+The exact task/primitive numbers are only partially documented.
+
+Activity
+--------
+`pcm_Task` calls pcmlink_ul_activity(0, 0x100000, 1) before enqueueing a
+PCM-related mail. `FpUI` also calls pcmlink_ul_activity around DECT UOTA
+start/status paths.
+
+Evidence
+--------
+pcm_Task             0x23bf4
+pcm_TaskInit         0x23994
+pcmdrv_enqueue_tx    0x232e0
+pcmdrv_check_rx_mails 0x236f8
+pcmdrv_checksum_valid 0x23618
+pcm_rx_tx_handler    0x19614
+RxTxCallback         0x21b9c

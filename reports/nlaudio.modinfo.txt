@@ -1,0 +1,9 @@
+filename:       ~/Downloads/OpenWrt7530/fritz7530-rootfs/lib/modules/4.4.271/nlaudio/nlaudio.ko
+author:         Jens Braeuer, AVM GmbH, 2009
+description:    AVM Dect Audio Driver
+license:        Proprietary
+depends:        pcmlink,avm_dect
+vermagic:       4.4.271 SMP preempt mod_unload ARMv7 p2v8 
+parm:           internal_drain:int
+parm:           random_sid:bool
+parm:           testmode:int

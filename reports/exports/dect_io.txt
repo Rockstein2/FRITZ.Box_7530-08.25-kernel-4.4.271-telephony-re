@@ -1,0 +1,16 @@
+00000000 T cleanup_module
+00000000 T dect_uicp_dump
+00000000 T dect_uicp_file_cleanup
+00000000 T dect_uicp_file_init
+0000058c T dect_uicp_file_ioctl
+00000a80 T dect_uicp_fpapi_handle_to_user
+00000118 B dect_uicp_from_user_buffer
+0000097c T dect_uicp_handle_debug_cmd
+00000a78 T dect_uicp_manage_kcalloc
+000009f8 T dect_uicp_parse_cmdline
+00000004 D dect_uicp_read_wait_queue_head
+00000010 D dect_uicp_to_api_list
+00000008 B dio_spin_lock
+00000000 T init_module
+00000004 B is_open
+00000000 D __this_module

@@ -1,0 +1,4 @@
+/GU/FON_KMODS_cortexa9_build/src/main/../ubik2/pcmlink_ll.c
+/GU/FON_KMODS_cortexa9_build/src/main/../ubik2/pcmlink_socket.c
+/GU/FON_KMODS_cortexa9_build/src/main/../ubik2/pcmlink_ul.c
+/GU/FON_KMODS_cortexa9_build/src/main/../ubik2/pcmlink_uldectctrl.c

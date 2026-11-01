@@ -1,0 +1,132 @@
+dect_manager -> /dev/dect_io static cross-references
+====================================================
+Binary: ~/Downloads/OpenWrt7530/fritz7530-rootfs/usr/bin/dect_manager
+Type:   ARM PIE, stripped, uClibc
+VAs below are file/PIE virtual addresses, not runtime addresses.
+
+Open
+----
+Function: dmgt_dect_init @ 0x115a70 (size 0x224)
+
+  0x115a88  ldr  r0, [pc, #0x1ec]       ; literal 0x00044f02
+  0x115a90  add  r0, pc, r0             ; PC=0x115a98 -> 0x15a99a
+  0x115a94  ldr  r3, [r5]
+  0x115a9c  bl   open64                 ; r1=2 (O_RDWR)
+
+  .rodata string at 0x15a99a: "/dev/dect_io"
+
+The returned fd is stored in the global object addressed through the GOT.
+The function then calls soac_ConnectFD and sends initialization primitives
+through dmgt_dect_to_api(), including 0x2f7d, 0x2fdb, 0x2feb, 0x2ff6.
+
+Write
+-----
+Function: dmgt_dect_to_api @ 0x10e700 (size 0x154)
+
+  0x10e71c  ldr  r8, [sp, #0x30]        ; total payload length
+  0x10e720  add  r5, r8, #3
+  0x10e724  ldr  r3, [sb]
+  0x10e728  uxth r5, r5
+  0x10e72c  strh r5, [sp]               ; header.length = payload + 3
+  0x10e730  add  r5, r5, #4
+  0x10e738  cmp  r5, #0x80
+  0x10e73c  ldr  r3, [pc, #0x100]       ; 0xffff8052
+  0x10e740  strh r3, [sp, #2]           ; header.tag = 0x8052
+  0x10e770  bl   memcpy                 ; 4-byte {length,tag} header
+  0x10e774  strh r6, [sp, #6]           ; primitive
+  0x10e778  mov  r3, #0x14
+  0x10e77c  strb r3, [sp, #5]           ; channel = 0x14
+  0x10e78c  mov  r6, #7
+  0x10e790  bl   memcpy                 ; [0x14][primitive le16]
+  0x10e7b8  bl   write                  ; fd from global object
+  0x10e7b8  write length = 7 + payload
+
+Observed userspace frame:
+
+  u16le length = payload_len + 3
+  u16le tag    = 0x8052
+  u8    channel= 0x14
+  u16le primitive
+  u8    payload[payload_len]
+
+dect_io validates only length + 4 == write_count, drops the first 4 bytes,
+and calls avm_dect_if_tx(frame+4, length).
+
+Read
+----
+Function: dmgt_dect_dev_read @ 0x115758 (size 0x148)
+
+  0x11578c  bl   read                   ; read(fd, sp+4, 4)
+  0x115798  ldrh r0, [sp, #4]           ; u16 length
+  0x1157a0  cmp  r0, #0x80
+  0x1157a8  bl   dmgt_manage_malloc     ; if length > 128
+  0x1157d8  bl   read                   ; read(fd, buf, length)
+  0x1157e8  ldrb r2, [sp, #6]           ; low byte of tag
+  0x1157ec  cmp  r5, #2
+  0x1157f0  sub  r3, r2, #0x53
+  0x115800  beq  drop                   ; tag low byte must be 0x53
+  0x115814  bl   memcpy                 ; copy status+primitive (3 bytes)
+  0x115818  ldrh r0, [sp, #0xa]         ; primitive at buf[1..2]
+  0x11581c  add  r2, r4, #3             ; payload at buf+3
+  0x115820  sub  r1, r5, #3             ; payload length
+  0x115824  bl   dmgt_dect_from_api
+
+Observed read frame:
+
+  u16le length = status + primitive + payload = payload_len + 3
+  u16le tag    = 0x8053
+  u8    status = 0 (ignored by dect_manager)
+  u16le primitive
+  u8    payload[payload_len]
+
+dect_manager reads 4 bytes, then exactly 'length' bytes.
+
+ioctl
+-----
+Function: dmgt_timer_get_system_ticks @ 0x12cab0 (size 0x78)
+  -> dmgt_manage_ioctl @ 0x11d374 (size 0xb8)
+  -> ioctl(fd, 1, &local8)
+
+  0x12cad0  ldr  r2, [r4]              ; stack canary
+  0x12cae0  add  r2, sp, #4             ; arg = &local8
+  0x12cae4  ldr  r0, [r3]               ; fd from global object
+  0x12cae8  bl   dmgt_manage_ioctl      ; cmd r1=1
+  0x12caf0  cmp  r0, #0
+  0x12caf8  ldmibeq sp, {r0, r3}        ; r0=jiffies, r3=250
+  0x12cb00  str  r3, [r5]               ; *out = 250
+
+dmgt_manage_ioctl @ 0x11d374:
+
+  0x11d3a0  bl   ioctl
+  0x11d3ac  bl   __errno_location
+  0x11d3b4  cmp  r6, #0xa              ; max 10 attempts
+  0x11d3bc  sub  r2, r5, #4             ; errno == EINTR?
+  0x11d3d0  bne  retry
+  0x11d418  str  r5, [r7]               ; preserve errno on final failure
+
+Only cmd 1 is used by this binary. No direct call to dmgt_manage_ioctl with
+cmd 2 exists in dect_manager. No ioctl _IO encoding is used.
+
+Close / device-lost
+-------------------
+dmgt_dect_finit @ 0x115c94:
+  -> dmgt_manage_soac_close(fd)
+  -> clears global fd (-1) and related state
+
+dmgt_dect_dev_closed @ 0x10c5dc:
+  -> clears object+0x14c and sets object[0] = -1
+
+No poll/fasync references
+-------------------------
+The scan of direct PLT calls found read/open64/write/ioctl for this device,
+but no poll or fasync call sites in dect_manager. Other select-based paths
+were not attributed to this device.
+
+Evidence files
+--------------
+reports/dect_manager-dect_io-disasm.txt
+reports/dect_manager-dect-core-disasm.txt
+reports/dect_manager-init-disasm.txt
+reports/dect_manager-io-xrefs.txt
+reports/dect_manager-dect_io-callers.txt
+reports/dect_manager-timer-ioctl-disasm.txt
