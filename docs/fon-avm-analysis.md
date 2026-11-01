@@ -51,7 +51,7 @@ pcmlink.ko
 QCA IPQ4019 TDM/PCM + DMA + ADCC
         |
         v
-single SLIC (part unknown) + DECT codec slots
+discrete LM324/BCP53-16 FON line interface (no SLIC IC) + DECT codec slots
 ```
 
 ### 2.1 Stage 4: Dialog SC14448 and module interaction
@@ -80,6 +80,9 @@ Key facts:
 - `Piglet` has optional `piglet_potsbitfile`/`te_pots_mode` parameters, but
   the 7530 uses `abmode=1` with `Pots=0` and no FPGA/POTS path. They are not
   the 7530 FON control path.
+- The FON PHY is discrete: LM324 (the 14-pin device) plus BCP53-16 and the
+  line transformer. No separate SLIC IC is listed or identified; the AVM
+  "SLIC" is a logical channel over this discrete line interface.
 
 Therefore there are **no separate FON control messages over the Dialog UART**.
 The only runtime interaction left is transparent PCM or an undocumented PCM+
@@ -290,18 +293,19 @@ PCMRoute routing logic
 
 ## 10. Open questions
 
-1. Exact SLIC/14-pin device part and datasheet.
-2. Exact high-voltage line-feed/ring topology and reset/regulator wiring.
+1. Exact discrete LM324/BCP53 line-feed/ring topology and component values.
+   No separate SLIC IC is listed or identified; the 14-pin device is the LM324.
+2. Exact high-voltage ring generation and reset/regulator wiring.
 3. Complete virtual-register bit map beyond hook/ring.
 4. Exact `tdm_if_*` implementation and QCA ADSS register programming.
 5. Real 7530 TDM GPIO numbers.
 6. Whether SC14448 firmware participates in FON control.
-7. Whether FON audio uses the SC14448 codec or a separate SLIC codec.
+7. Whether FON audio uses the SC14448 codec or another codec on the PCM bus.
 8. Which transport carries the FON virtual registers (TDM control slot,
    shared-memory mailbox, PCM+ mailbox, or a separate device).
 9. Whether `pcmlink` virtual registers 0x40/0x44/0x48 are the same logical
    bank used by the DECT path (`pcmlink_ul_regnoemif_workaround`) or a
-   separate SLIC bank.
+   separate FON bank.
 10. Whether basic 8 kHz PCM needs any closed DSP firmware.
 
 ## 11. Sources

@@ -4,11 +4,12 @@ Status: stage 1 static analysis, updated by stage 4. No router was accessed, no
 module was loaded.
 
 > Stage 4 update: `docs/fon-control-path.md` adds the Dialog SC14448
-> hypothesis, public board evidence (`LM324`, `BCP53-16`, an unidentified
-> 14-pin device) and a CR16C firmware inspection. It does not change the
-> control-register facts below, but it rules out a separate FON UART protocol
-> and corrects the assumption that the QCA backend implements
-> `pcmlink_ll_set_status`.
+> hypothesis, public board evidence (`LM324`, `BCP53-16`) and a CR16C firmware
+> inspection. The 14-pin device near the DECT antenna is the LM324; no
+> separate SLIC IC is listed or identified. It does not change the
+> control-register facts below,
+> but it rules out a separate FON UART protocol and corrects the assumption
+> that the QCA backend implements `pcmlink_ll_set_status`.
 
 ## 1. Scope and method
 
@@ -104,7 +105,7 @@ no hardware cross-switch
 no DSP echo canceller
 ```
 
-## 4. What the SLIC part is — and what it is not
+## 4. What the "SLIC" is — and what it is not
 
 ### Confirmed
 
@@ -127,24 +128,30 @@ no DSP echo canceller
   `pcmlink_ll_set_status` at vtable `+0x3c`; that earlier assumption was wrong
   (see §6.1).
 
-### Not confirmed
+### What the "SLIC" is not
 
-The exact SLIC part number is **not present** in any string, symbol or
-device-tree artifact available locally:
+There is **no separate SLIC IC** in the public board inventory. The "SLIC"
+is an AVM logical channel implemented by a discrete circuit:
+
+```text
+LM324 (14-pin quad op-amp)
+BCP53-16 (1.5 A PNP)
+line transformer WE-40799-LF1 and passives
+```
+
+The exact SLIC-part strings are absent because no such part is present:
 
 ```text
 no "Si321x", "Si3217x", "PEF", "LE58", "ZL880", "VE880",
    "Legerity", "Zarlink", "Silicon Labs" strings
 no separate SLIC driver module
 no SLIC node in the OpenWrt 7530 DTS
-no SLIC entry in the public 7530 chip lists
+no separate SLIC entry in the public 7530 chip lists
 ```
 
-The available public chip lists name only the Dialog SC14448 and the Lantiq
-VRX518. The SLIC is either on the unphotographed side of the PCB or is part of
-an AVM-specific line interface. It must not be assumed to be a particular
-Silicon Labs/Infineon/Legerity part without board inspection or AVM GPL
-source.
+The 14-pin device near the DECT antenna is the **LM324**, not a separate SLIC
+module. The remaining unknown is the exact discrete high-voltage/ring topology
+and the mapping of its control signals, not a missing SLIC datasheet.
 
 What can be said safely:
 
@@ -154,13 +161,10 @@ Its host-visible model is an AVM 16-bit control/status register bank
 at virtual registers 0x40..0x50.
 ```
 
-Public board inventories list the FON components as **LM324** and
-**BCP53-16**, with the DECT SC14448 nearby; a 14-pin device near the DECT
-antenna was reported but not identified. This points to a discrete/14-pin
-analog line interface, not a standard SPI/I2C SLIC. The register map and the
-16-bit control word are consistent with a logic-controlled SLIC/ring-generator
-interface, but neither a ProSLIC nor an Ag1171/KS0835F-class module is proven.
-See `docs/fon-control-path.md` §2 and §7.
+The register map and the 16-bit control word are consistent with a small set
+of logic-level line/ring control signals driving the discrete circuit, not
+with a programmable ProSLIC register model. See
+`docs/fon-control-path.md` §2 and §7.
 
 The 16-bit control word and the two software-toggled ring bits do **not** by
 themselves prove a programmable SLIC register model. They may be a small set
@@ -194,8 +198,9 @@ of logic-level line/ring control bits.
 
 The DECT Dialog SC14448 also shares the PCM/TDM/codec-slot infrastructure.
 Stage 4 leaves open whether its codec/GPIO is part of the FON box or only the
-DECT side; see `docs/fon-control-path.md` §2 and §5. The discrete LM324 /
-BCP53-16 / 14-pin device is the likely high-voltage/analog part.
+DECT side; see `docs/fon-control-path.md` §2 and §5. The FON PHY is the
+discrete **LM324 + BCP53-16** line interface; the 14-pin device is the LM324,
+not a separate SLIC IC.
 
 ## 6. Control plane
 
@@ -403,7 +408,7 @@ be read from the device tree/board data or from the running stock system.
 | I2S/SPDIF | separate QCA blocks | not the FON wiring | not a drop-in replacement |
 | ALSA SoC core | yes | yes | usable once a DAI/DMA exists |
 | DAHDI | out-of-tree | not installed | does not remove the TDM/DMA blocker |
-| SLIC driver | none for this AVM virtual register interface | none | must implement or reuse recovered sequence |
+| Discrete FON line interface | none for this AVM virtual register interface | none | must implement or reuse recovered sequence |
 
 The 2016 QCA IPQ4019 ASoC driver series (`ipq4019-adss.c`,
 `ipq4019-pcm-tdm.c`, `ipq4019-cpu-dai.c`, `ipq4019-mbox.c`) was an RFC and did
@@ -414,8 +419,12 @@ clean TDM/DMA backend.
 
 ### Confirmed
 
-- The 7530 has exactly one SLIC channel (`abmode=1`; boot log `Slics=1`).
+- The 7530 has exactly one logical SLIC channel (`abmode=1`; boot log
+  `Slics=1`). This is an AVM software channel, not a separate SLIC IC.
 - There is no separate Linux SPI/I2C/GPIO SLIC driver in the AVM stack.
+- The FON PHY is a discrete LM324 + BCP53-16 line interface. The 14-pin
+  device near the DECT antenna is the LM324; no separate SLIC IC is listed or
+  identified.
 - SLIC control is a virtual register bank `0x40/0x44/0x48/0x4c/0x50`.
 - Hook is register `0x44` bit 7 for SLIC0.
 - Ring is register `0x48` bits 5/6 for SLIC0.
@@ -426,16 +435,21 @@ clean TDM/DMA backend.
 - FON control has no UART path in `isdn_fbox_fon5`, `pcmlink` or `avm_dect`.
 - `Piglet_noemif` owns the Dialog UART but exposes no FON/SLIC API; its UART
   is used for DECT firmware loading.
-- Public board data lists LM324 and BCP53-16 as FON chips and an unidentified
-  14-pin device near the DECT antenna.
+- Public board data lists LM324 and BCP53-16 as FON chips; the 14-pin device
+  near the DECT antenna is the LM324. No separate SLIC IC is listed or
+  identified.
 
 ### Unconfirmed / unknown
 
-- Exact SLIC/14-pin device part number and datasheet.
-- Exact high-voltage line-feed/ring topology and reset/regulator wiring.
+- Exact discrete LM324/BCP53 line-feed/ring topology and component values.
+- Which SC14448 GPIO/PWM/ADC pins control the discrete line interface, and
+  the exact firmware/mailbox protocol.
+- Exact high-voltage ring generation and reset/regulator wiring.
 - Complete virtual-register bit meanings.
-- Whether the SC14448 firmware participates in FON control.
-- Whether the FON audio path uses the SC14448 codec or a separate SLIC codec.
+- Whether the SC14448 firmware participates in FON control. This is now
+  **likely**, because no other digital controller is present, but not proven.
+- Whether the FON audio path uses the SC14448 codec or another codec on the
+  PCM bus.
 - The transport from `pcmlink` to the FON PHY (TDM control slot/shared-memory
   mailbox/PCM+ mailbox).
 - Whether the QCA TDM/ADSS driver can be ported cleanly to 6.12.
@@ -461,5 +475,6 @@ OpenWrt FRITZ!Box 7530 device page (stock dmesg line)
 QCA IPQ4019 product brief (TDM/PCM/I2S/SPDIF)
 linux-arm-kernel 2016-07 IPQ4019 ASoC RFC (qca,ipq4019-pcm-tdm)
 BoxMatrix FRITZ!Box 7530 board inventory (community data)
+Board-owner inspection: the 14-pin device is the LM324
 Renesas SC14448/SC14441 short datasheets
 ```

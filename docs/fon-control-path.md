@@ -10,13 +10,16 @@ The hypothesis under test was:
 > The FON port is an LM324 analog path plus the built-in audio codec of the
 > Dialog SC14448; it is not a separate SPI/I2C SLIC.
 
-The result is **partly supported, but not in the simple form**.
+The result is **largely supported at board level, but the control/audio
+transport is still unproven**.
 
 Supported:
 
 - The 7530 FON PHY is **discrete/analog**, not a standard Linux SPI/I2C/GPIO
   SLIC. Public board inventories list **LM324** and **BCP53-16** as the FON
-  chips; a 14-pin device near the DECT antenna was reported but not identified.
+  chips; the 14-pin device near the DECT antenna is the **LM324** quad op-amp.
+  No separate SLIC IC is listed or identified. The "SLIC" in the AVM software
+  is a logical channel built around this discrete line interface.
 - The **SC14448** is the only intelligent telephony IC on the board with a
   dual audio codec, a 6-channel PCM+ interface, ADC/opamps for line sensing,
   and GPIO. It is a plausible codec/line controller for the analog port.
@@ -29,7 +32,7 @@ Not proven:
 - The exact transport from the `pcmlink` virtual-register bank to the physical
   FON PHY.
 - Whether the SC14448 firmware participates in FON line/ring control.
-- The exact SLIC/ring-generator part and the high-voltage topology.
+- The exact discrete LM324/BCP53 line-feed/ring topology and component values.
 - Whether the SC14448 PCM+ interface carries FON audio, DECT audio only, or
   both.
 
@@ -48,15 +51,17 @@ Public board data, not a vendor schematic:
 | Item | Evidence | Most likely role | Confidence |
 |---|---|---|---|
 | Dialog SC14448-B96R101QNC | BoxMatrix 7530 chip list; Renesas SC14448/SC14441 family datasheets | DECT baseband, dual codec, 6-channel PCM+, GPIO/ADC/opamps | high presence, medium FON role |
-| LM324 | BoxMatrix 7530 FON chip list | quad op-amp: audio buffer, line sensing, or line-driver support | high presence, medium role |
+| LM324 (14-pin) | BoxMatrix 7530 FON chip list; board-owner inspection | quad op-amp: audio buffer, line sensing, line-driver/ring support | high presence, medium role |
 | BCP53-16 | BoxMatrix 7530 FON chip list | 1.5 A PNP: line-feed/ring/power switch | high presence, low role |
-| 14-pin device near DECT antenna | IP-Phone-Forum 7530 teardown thread; not identified | possible SLIC module (Ag1171/KS0835F class) or relay/opto device | low |
 | WE-40799-LF1 | BoxMatrix 7530 FON transformer list | common-mode choke / line filter | high |
+| Separate SLIC IC | no such chip listed/identified in the board inventory; no such driver in the AVM stack | FON PHY is a discrete circuit, not an SPI/I2C SLIC | medium-high |
 | Separate SPI/I2C SLIC driver | no such driver or import in the AVM stack | not the control architecture | high |
 
 The community inventory is useful because it records what is physically on
-the board, but it is not a substitute for a schematic. The 14-pin device is
-the main unresolved board-level item.
+the board, but it is not a substitute for a schematic. The 14-pin device
+seen in the teardown is the LM324. The remaining board-level uncertainty
+is the **discrete high-voltage/line-feed/ring topology**, not the identity of
+a separate SLIC chip.
 
 ### 2.1 Why the SC14448 is plausible
 
@@ -70,17 +75,39 @@ The SC14448/SC14441 family provides:
 - no high-voltage FXS line driver.
 
 The last point is important: the SC14448 cannot directly generate the battery
-and ringing voltages of an FXS port. A discrete line-feed/ring network or a
-separate SLIC module is still required. The LM324 + BCP53-16 inventory is
-consistent with such a discrete network. A 14-pin SLIC module with an
-integrated DC/DC converter and ringing generator (for example the Silvertel
-Ag1171 or a KS0835F-class module) would also fit the 14-pin observation, but
-this is a candidate, not an identification.
+and ringing voltages of an FXS port. A discrete line-feed/ring network is
+still required. The LM324 + BCP53-16 inventory is exactly such a discrete
+network; the 14-pin device is the LM324, not a separate SLIC module. The
+remaining question is how the discrete network is wired and which SC14448
+GPIO/PWM/ADC pins (or which PCM+ mailbox commands) control it.
 
 The SC14441 family also has a low-voltage PSTN/line interface (hook-switch
 output, line-current/polarity ADCs, ringing input). That is primarily an FXO
 feature set, not proof that the 7530's FXS port is handled by the same pins.
 It does show that the family is intended to connect to analog line hardware.
+
+### 2.2 The likely control chain after identifying the 14-pin device
+
+With the 14-pin device identified as the LM324 and no separate SLIC/CPLD/FPGA
+identified in the public inventory, there is no known standalone digital SLIC
+controller on the FON side. `pcmlink` also has no QCA GPIO path for SLIC
+reset/ring/hook. The only known plausible digital agent between the Linux host
+and the discrete LM324/BCP53-16 line interface is therefore the **SC14448**.
+
+The most likely architecture is:
+
+```text
+pcmlink virtual registers 0x40/0x44/0x48/0x4c/0x50
+  -> QCA TDM/PCM+ frame or shared-memory mailbox
+  -> SC14448 firmware
+  -> SC14448 GPIO/PWM/ADC pins
+  -> discrete LM324/BCP53-16 line/ring circuit
+  -> TAE/RJ11
+```
+
+This is a strong inference from the board inventory and the absence of any
+other digital controller, but it is **not yet proven**. The exact mailbox
+protocol and pin mapping are still unknown.
 
 ## 3. Kernel call graph
 
@@ -242,7 +269,7 @@ SLIC/POTS channels:  slots 4/5 (SLIC_LPCM variant uses slot 5)
 
 This is logical separation inside `pcmlink`: the FON path is the **SLIC**
 codec channel, not one of the four DECT channels. It does not prove which
-physical chip owns the SLIC codec.
+physical block or codec owns the FON channel.
 
 The SC14448 PCM+ interface has six channels and is I2S-compatible. A
 six-slot PCM bus can carry four DECT channels plus one FON/SLIC channel plus
@@ -250,11 +277,12 @@ one spare/control channel, which matches the boot log. Therefore the SC14448
 PCM+ interface is **not necessarily DECT-only**. The likely possibilities are:
 
 1. The SC14448's second audio codec is the FON codec; the same PCM+ bus carries
-   DECT and FON channels.
-2. The FON codec is a separate SLIC/codec on the same PCM bus; the SC14448 is
+   DECT and FON channels. This is now the most likely option because there is
+   no separate SLIC/codec IC in the board inventory.
+2. A separate codec (not an SLIC) sits on the same PCM bus; the SC14448 is
    only the DECT participant.
-3. The FON codec is inside a 14-pin SLIC module; the SC14448 is not in the FON
-   audio path at all.
+3. The discrete LM324/BCP53 network performs only analog line/ring functions;
+   the SC14448 or another codec digitizes the audio.
 
 The available software does not distinguish these. There is no kernel path
 that sends FON audio through `avm_dect` or the DECT firmware. If the SC14448
@@ -299,7 +327,7 @@ used as evidence either way.
   - UART `0xFF4900..0xFF4906`;
   - GPIO ports `0xFF4830..0xFF4868`;
   - interrupt controller `0xFF5400..0xFF540A`;
-  - PCM/DMA-related `0xFF6002/0xFF6006/0xFF600E`;
+  - PCM/DMA-related `0xFF6006/0xFF600E`;
   - radio/analog front-end `0xFF7052/0xFF7056`;
   - timer/clock and other DECT peripherals.
 - The code has DECT slot/frame handling and PCM setup. No clearly isolated
@@ -331,25 +359,28 @@ The FON control registers are logic-level, not high-voltage analog outputs:
 ```
 
 `slic_set_ring` sets bits 5/6. `Handle_Ints_FPGA` toggles both bits while the
-line is in the ringing state. This is consistent with a logic-controlled SLIC
-or a small H-bridge/ring-generator interface, not with a register that directly
-sets a 48 V/90 V analog level.
+line is in the ringing state. This is consistent with a logic-controlled
+discrete line interface (or a small H-bridge/ring-generator), not with a
+register that directly sets a 48 V/90 V analog level.
 
 The high-voltage generation must therefore be external:
 
-- LM324 is a low-voltage quad op-amp.
+- LM324 is a low-voltage quad op-amp. The 14-pin device near the DECT antenna
+  is this LM324, so it is not a separate SLIC or ringing module.
 - BCP53-16 is a 1.5 A PNP transistor, not a ringing generator by itself.
-- A 14-pin SLIC module with an integrated DC/DC converter and ring generator
-  (Ag1171/KS0835F class) is one candidate.
-- A discrete boost/ring converter using the PNP, op-amps, inductors and the
-  line transformer is another possibility.
+- The remaining possibilities are a discrete boost/ring converter using the
+  PNP, op-amps, inductors/capacitors and the line transformer, or a separate
+  high-voltage module that is not in the public chip inventory.
+- The exact discrete topology is unresolved. No software-visible regulator,
+  reset GPIO or ring-enable GPIO is present in `isdn_fbox_fon5`; the control
+  must therefore come from the SC14448 side or the TDM/PCM control stream.
 
-The exact part and topology are unresolved. No software-visible regulator,
-reset GPIO or ring-enable GPIO is present in `isdn_fbox_fon5`.
+The 14-pin device is the LM324, so there is no separate 14-pin SLIC module.
+The FON line interface is a discrete design.
 
 ## 8. What is proven, likely, and unknown
 
-### Proven by static analysis
+### Proven by static analysis / board inspection
 
 - `isdn_fbox_fon5` controls FON through `pcmlink` virtual registers
   0x40/0x44/0x48/0x4c/0x50.
@@ -362,22 +393,29 @@ reset GPIO or ring-enable GPIO is present in `isdn_fbox_fon5`.
   generic UART transport.
 - The first-level Dialog firmware is a UART bootstrap; the second-level image
   is DECT/PCM code, not a separately addressable FON driver.
+- The 14-pin device near the DECT antenna is the LM324; there is no separate
+  SLIC IC in the public board inventory.
 
 ### Likely
 
-- The FON PHY is a discrete/14-pin analog line interface (LM324, BCP53-16,
-  possibly an Ag1171/KS0835F-class SLIC module), not a standard SPI/I2C SLIC.
+- The FON PHY is a discrete analog line interface built around LM324 and
+  BCP53-16, not a standard SPI/I2C SLIC. The 14-pin device is the LM324, not
+  an SLIC module.
 - The SC14448 is involved in the FON audio path or line control, because it is
-  the only telephony IC with a codec, ADC, GPIO and PCM+ interface.
+  the only telephony IC with a codec, ADC, GPIO and PCM+ interface. With no
+  other identified digital controller, the likely chain is `pcmlink -> PCM+
+  mailbox -> SC14448 firmware -> GPIO/PWM/ADC -> discrete line interface`.
 - The six PCM+ channels carry four DECT channels and one FON/SLIC channel.
 
 ### Unknown
 
-- Exact 14-pin device / SLIC part number and its control pin mapping.
-- Whether the SC14448 firmware drives FON GPIO/ring/line control.
+- Exact discrete LM324/BCP53 line/ring topology and component values.
+- Which SC14448 GPIO/PWM/ADC pins control the discrete line interface.
+- The exact role/protocol of the SC14448 firmware in FON GPIO/ring/line
+  control (likely involved, not proven).
 - The transport between QCA/`pcmlink` and the FON PHY (TDM control slot,
   shared-memory mailbox, PCM+ mailbox, or something else).
-- Whether FON audio uses the SC14448 codec or a separate SLIC codec.
+- Whether FON audio uses the SC14448 codec or another codec on the PCM bus.
 - High-voltage battery/ring generation topology.
 - Safe ring voltage/cadence limits and reset/regulator wiring.
 
@@ -387,9 +425,9 @@ A small independent module would need one of these architectures:
 
 | Route | What is required | Verdict |
 |---|---|---|
-| Reimplement `pcmlink` + QCA TDM | QCA ADSS/TDM/DMA programming, `tdm_if_*` equivalent, SLIC control transport | hard, 3-6 months |
-| Talk to SC14448 over PCM+ mailbox | PCM+ protocol, firmware command set, SLIC/audio mapping | hard, firmware protocol unknown |
-| Bypass SC14448 | QCA GPIO/PCM directly to the 14-pin SLIC/line circuit | requires board wiring/schematic changes; not stock |
+| Reimplement `pcmlink` + QCA TDM | QCA ADSS/TDM/DMA programming, `tdm_if_*` equivalent, FON control transport | hard, 3-6 months |
+| Talk to SC14448 over PCM+ mailbox | PCM+ protocol, firmware command set, GPIO/audio mapping | most likely route; firmware protocol unknown |
+| Bypass SC14448 | QCA GPIO/PCM directly to the discrete LM324/BCP53 line circuit | requires board rework/schematic; not stock |
 | Keep AVM `pcmlink`/Dialog firmware | not independent; out of project scope | rejected |
 
 ALSA SoC is still the preferred audio framework once a QCA TDM/DMA backend
@@ -400,25 +438,31 @@ makes the condition stricter:
 
 1. Prove that FON control/audio can be driven without SC14448 firmware, **or**
    recover enough of the PCM+ mailbox protocol to drive the stock firmware.
-2. Identify the 14-pin SLIC/line interface and its high-voltage topology.
+2. Trace the discrete LM324/BCP53 line interface to the SC14448 GPIO/PWM/ADC
+   pins (or to the QCA TDM control stream) and recover the high-voltage/ring
+   topology.
 3. Recover the QCA TDM/ADSS/DMA programming.
 4. Validate hook/ring/line feed on a safe bench before connecting a telephone.
 
 If item 1 or 2 cannot be satisfied, a small independent module is **NO-GO**.
+With no separate SLIC IC identified, the SC14448 firmware dependency is now
+the central risk: the Linux side may have no direct pin-level access to the
+line interface.
 
 ## 10. Next evidence to collect
 
-1. Board schematic or continuity check of the 14-pin device, LM324 and
-   BCP53-16; do not power the line for this.
+1. Board schematic or continuity check of the LM324, BCP53-16, the line
+   transformer and the SC14448 GPIO/PWM/ADC pins; do not power the line for
+   this.
 2. AVM GPL source for FRITZ!OS 08.25: `pcmlink_ll.c`, `tdm_if_*`,
-   `ipq40xxtdm_*`, `isdn_fon5` SLIC code.
+   `ipq40xxtdm_*`, `isdn_fon5` SLIC/FON code.
 3. A read-only trace of `pcmlink_ul_writeregister(0x40/0x44/0x48/0x4c/0x50)`
    during hook/ring transitions on a stock box.
 4. A read-only trace of the QCA TDM shared-memory descriptor and any PCM+
    control slots during the same transitions.
 5. A CR16C/Ghidra analysis of the second-level firmware with the SC14448
    peripheral map, focused on the PCM+ interrupt handler and GPIO writes.
-6. A safe dummy-load bench test of the 14-pin SLIC (if identified) before any
+6. A safe dummy-load bench test of the discrete line/ring circuit before any
    telephone is connected.
 
 ## 11. Sources
@@ -445,15 +489,13 @@ BoxMatrix FON chip lists:
 https://boxmatrix.info/wiki/Property:LM324
 https://boxmatrix.info/wiki/Property:BCP53-16
 
-IP-Phone-Forum 7530 teardown thread (14-pin device near DECT antenna):
+IP-Phone-Forum 7530 teardown thread (photo/location of the 14-pin device):
 https://www.ip-phone-forum.de/threads/sammelthema-zur-avm-fritz-box-7530-sowie-7520-und-7530-ax.299746/page-2
+Board-owner inspection (2026-11-01): the 14-pin device is the LM324.
 
 Renesas SC14448 / SC14441 family short datasheets:
 https://www.renesas.com/en/products/sc14448
 https://www.renesas.com/en/document/sds/sc14441abc-sc14442a-short-form-datasheet
 RTX1040 SC14441 module specification (line-interface pin example):
 https://www.mikrocontroller.net/attachment/205108/RTX1040ProductSpecification_v2.5.pdf
-
-Silvertel Ag1171 14-pin SLIC (candidate only, not identified on the 7530):
-https://silvertel.com/images/datasheets/Ag1171-datasheet-Low-cost-ringing-SLIC-with-single-supply.pdf
 ```

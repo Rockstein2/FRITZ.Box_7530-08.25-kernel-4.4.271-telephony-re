@@ -32,7 +32,8 @@ Set_POTS_Line_FPGA   0x419c4
 ```
 
 A clean driver can reimplement that policy if the virtual-register transport
-and the SLIC part are known. They are not fully known today.
+and the discrete line-interface topology are known. They are not fully known
+today.
 
 ### 2. Are the necessary hardware interfaces available in Linux 6.12?
 
@@ -52,7 +53,7 @@ Not available:
 ```text
 QCA IPQ4019 TDM/PCM + ADSS driver
 vendor tdm_if_config_init / tdm_if_dma_init / tdm_if_dma_start
-vendor SLIC virtual-register transport
+vendor FON/SLIC virtual-register transport
 ```
 
 The 2016 QCA IPQ4019 ASoC driver series (`ipq4019-adss.c`,
@@ -126,41 +127,47 @@ QCA ADSS/TDM register documentation
 ```
 
 No AVM source code or binary module needs to be linked. The unresolved part is
-technical (SLIC part/TDM programming), not licensing.
+technical (discrete line-interface topology/TDM programming), not licensing.
 
 ## 1.1 Stage 4 update: the Dialog SC14448 hypothesis
 
 `docs/fon-control-path.md` investigates whether FON is an LM324 analog path
 plus the SC14448 codec.
 
-Result: **partly supported, with a new hard condition for the project**.
+Result: **largely supported at board level, with a new hard condition for the
+project** (the control/audio transport remains unproven).
 
-- Public board data lists LM324 and BCP53-16 as FON components, the SC14448 as
-  the DECT chip, and an unidentified 14-pin device near the DECT antenna. A
-  discrete/14-pin SLIC or ring interface is likely. A standard SPI/I2C SLIC
-  controlled directly by Linux is not present.
+- Public board data lists LM324 and BCP53-16 as FON components, and the
+  SC14448 as the DECT chip. The 14-pin device near the DECT antenna is the
+  LM324; no separate SLIC IC is listed or identified. The FON PHY is a
+  discrete LM324/BCP53-16 line interface. A standard SPI/I2C SLIC controlled
+  directly by Linux is not present.
 - FON control is still the `pcmlink` virtual-register bank. It is **not** a
   FON UART protocol: `Piglet_noemif` owns the Dialog UART but exports no FON
   API; `avm_dect` and `pcmlink` import no UART.
 - The SC14448 has dual codec, 6-channel PCM+, ADC/opamps and GPIO, so it is a
   plausible FON codec/line controller. The 6 codec slots match 4 DECT + 1
-  SLIC + 1 spare.
-- The exact transport from `pcmlink` to the FON PHY is still missing. It may be
-  a QCA TDM control slot, a shared-memory mailbox, or a PCM+ mailbox to the
-  SC14448. If the SC14448 firmware is in the loop, a standalone Linux module
-  must implement that mailbox protocol or bypass the SC14448 in hardware.
+  SLIC + 1 spare. With no separate SLIC IC identified, its codec/GPIO is now
+  the most likely FON audio/control target.
+- The exact transport from `pcmlink` to the discrete FON PHY is still missing.
+  It may be a QCA TDM control slot, a shared-memory mailbox, or a PCM+ mailbox
+  to the SC14448. If the SC14448 firmware is in the loop, a standalone Linux
+  module must implement that mailbox protocol or bypass the SC14448 in
+  hardware.
 
 This does not turn the project into GO. It makes the "small independent
-module" harder to justify until the firmware dependency is resolved.
+module" harder to justify until the firmware dependency is resolved: with no
+separate SLIC identified, the SC14448 is the only known plausible digital
+controller.
 
 ## 2. Risk table
 
 | Risk | Status | Why |
 |---|---|---|
-| Exact SLIC part number | **UNKNOWN** | no chip name in modules/rootfs/DTS; board inspection or AVM source needed |
-| SLIC register bit map | **LIKELY** | hook/ring/line registers and bits recovered; full map incomplete |
-| SLIC reset/regulator/clock wiring | **UNKNOWN** | no direct GPIO/regulator references in `isdn_fbox_fon5` |
-| Ring voltage/cadence safety | **UNKNOWN** | no SLIC datasheet; ringing can use elevated voltage |
+| Discrete line-interface topology | **UNKNOWN** | LM324/BCP53-16 circuit and SC14448 pin mapping not traced; no separate SLIC IC |
+| FON virtual-register bit map | **LIKELY** | hook/ring/line registers and bits recovered; full map incomplete |
+| FON line reset/regulator/clock wiring | **UNKNOWN** | no direct GPIO/regulator references in `isdn_fbox_fon5` |
+| Ring voltage/cadence safety | **UNKNOWN** | no discrete line schematic; ringing can use elevated voltage |
 | QCA TDM/PCM driver in 6.12 | **BLOCKED** | 2016 RFC only, not mainline/OpenWrt |
 | `tdm_if_*` vendor API | **BLOCKED** | implementation absent; only call sites recovered |
 | Basic 8 kHz PCM without DSP | **LIKELY** | `DSP-EC: 0`; standard 16-bit TDM |
@@ -172,19 +179,19 @@ module" harder to justify until the firmware dependency is resolved.
 | GPL-compatible clean implementation | **CONFIRMED** | no proprietary code required |
 | DECT/ISDN/CAPI exclusion | **CONFIRMED** | not needed for one FXS port |
 | Actual FON control transport | **UNKNOWN** | QCA backend has no `set_status`; transport is in missing `tdm_if_*`/shared memory |
-| SC14448 firmware dependency | **UNKNOWN** | firmware may handle FON line/ring control over PCM+; not proven |
-| FON PHY topology | **UNKNOWN** | LM324/BCP53-16 plus unidentified 14-pin device; high-voltage/ring topology not known |
+| SC14448 firmware dependency | **LIKELY / HIGH RISK** | with no separate SLIC or CPLD identified, the SC14448 is the only known plausible digital controller; PCM+ mailbox protocol not proven |
+| FON PHY topology | **UNKNOWN** | discrete LM324/BCP53-16; the 14-pin device is LM324, no separate SLIC identified; high-voltage/ring topology not known |
 | FON UART protocol | **RULED OUT** | no UART imports in `pcmlink`/`isdn_fbox_fon5`/`avm_dect`; `Piglet` has no FON API |
 
 ## 3. Effort estimate
 
-Assumes the SLIC datasheet/board wiring and a usable QCA TDM/DMA reference are
-obtained.
+Assumes the discrete line-interface schematic/board wiring and a usable QCA
+TDM/DMA reference are obtained.
 
 | Work item | Estimate | Notes |
 |---|---:|---|
-| SLIC identification and safe line/ring sequence | 1–2 weeks | includes datasheet review and bench safety |
-| Minimal control driver (hook/line/ring) | 2–4 weeks | virtual-register or direct SLIC bus |
+| Discrete FON line-interface tracing and safe line/ring sequence | 1–2 weeks | LM324/BCP53-16 topology and SC14448 pin mapping; includes bench safety |
+| Minimal control driver (hook/line/ring) | 2–4 weeks | virtual-register or direct control path |
 | QCA TDM/PCM + DMA backend | 6–12 weeks | port 2016 ADSS or write minimal DAI/DMA |
 | SC14448 PCM+ mailbox / firmware protocol | 4–12 weeks | only if the Dialog firmware is in the FON path; unknown |
 | ALSA SoC integration / PCM device | 2–4 weeks | depends on backend |
@@ -192,8 +199,9 @@ obtained.
 | Hardware validation | 2–4 weeks | ring/line feed/PCM loopback |
 | **Total** | **4–7 months** | one experienced kernel/telephony engineer, assuming no firmware dead end |
 
-Without the SLIC datasheet or QCA TDM reference, the estimate is not
-meaningful; the project is blocked at hardware identification.
+Without the discrete line-interface schematic or QCA TDM reference, the
+estimate is not meaningful; the project is blocked at hardware identification
+and the SC14448 firmware dependency.
 
 ## 4. Recommended architecture
 
@@ -203,7 +211,7 @@ If the conditions are met:
 ALSA SoC
   - CPU DAI: QCA IPQ4019 TDM/PCM
   - DMA: 16-descriptor TDM DMA
-  - codec DAI: minimal SLIC PCM DAI (16-bit, 8 kHz)
+  - codec DAI: minimal FON PCM DAI (16-bit, 8 kHz)
   - machine driver: FRITZ!Box 7530 FON
 
 Control driver
@@ -211,7 +219,7 @@ Control driver
   - hook/on-hook/off-hook
   - line feed
   - ring cadence
-  - SLIC reset/error
+  - FON line reset/error
 
 Userspace
   - Asterisk via ALSA PCM or a small DAHDI shim
@@ -227,9 +235,10 @@ for the IPQ4019 audio block.
 
 The project is technically realistic, but only after these conditions are met:
 
-1. Identify the exact 14-pin SLIC/line-interface part and its high-voltage
-   topology, **or** obtain the AVM GPL `pcmlink_ll.c`/`tdm_if_*`/`isdn_fon5`
-   source that contains the virtual-register transport and SLIC model.
+1. Trace the discrete LM324/BCP53-16 line interface to the SC14448
+   GPIO/PWM/ADC pins and recover the high-voltage/ring topology, **or** obtain
+   the AVM GPL `pcmlink_ll.c`/`tdm_if_*`/`isdn_fon5` source that contains the
+   virtual-register transport and discrete-line model.
 2. Prove whether the SC14448 firmware participates in FON control/audio. If
    it does, either recover the PCM+ mailbox protocol or show that the stock
    board can be driven without that firmware.
@@ -240,13 +249,14 @@ The project is technically realistic, but only after these conditions are met:
    required for the basic PCM path.
 
 If item 1, 2 or 3 cannot be satisfied, the correct conclusion becomes
-**NO-GO**: without the line-interface model, the firmware dependency answer, or
+**NO-GO**: without the discrete-line model, the firmware dependency answer, or
 the TDM/DMA backend there is no safe, independent FXS driver.
 
 ## 6. Next actions
 
-1. Inspect the 7530 PCB/service manual or community board data for the 14-pin
-   device, LM324, BCP53-16 and the high-voltage/ring network.
+1. Trace the discrete LM324/BCP53-16 line interface on the 7530 PCB/service
+   manual: audio in/out, hook sense, line feed, ring drive and the SC14448
+   GPIO/PWM/ADC connections.
 2. Request the AVM GPL source package for FRITZ!OS 08.25 and search for
    `pcmlink_ll.c`, `slic*.c`, `tdm_if_*`, `ipq40xxtdm_*`, and any SC14448
    mailbox/PCM+ code.
