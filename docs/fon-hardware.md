@@ -1,6 +1,14 @@
 # FON hardware architecture — FRITZ!Box 7530
 
-Status: stage 1 static analysis. No router was accessed, no module was loaded.
+Status: stage 1 static analysis, updated by stage 4. No router was accessed, no
+module was loaded.
+
+> Stage 4 update: `docs/fon-control-path.md` adds the Dialog SC14448
+> hypothesis, public board evidence (`LM324`, `BCP53-16`, an unidentified
+> 14-pin device) and a CR16C firmware inspection. It does not change the
+> control-register facts below, but it rules out a separate FON UART protocol
+> and corrects the assumption that the QCA backend implements
+> `pcmlink_ll_set_status`.
 
 ## 1. Scope and method
 
@@ -114,8 +122,10 @@ no DSP echo canceller
   numbers up to `0x64`. `isdn_fbox_fon5` uses registers `0x40`, `0x44`, `0x48`,
   `0x4c` and `0x50` for line/ring/hook/status.
 - The hardware transport for those virtual registers is inside the selected
-  `pcmlink` link backend (`pcmlink_ll_set_status`, vtable `+0x3c`) and the
-  vendor `tdm_if_*` layer. It is not exposed as a standard Linux bus.
+  `pcmlink` link backend and the missing vendor `tdm_if_*` layer. It is not
+  exposed as a standard Linux bus. The QCA backend does **not** implement
+  `pcmlink_ll_set_status` at vtable `+0x3c`; that earlier assumption was wrong
+  (see §6.1).
 
 ### Not confirmed
 
@@ -139,13 +149,22 @@ source.
 What can be said safely:
 
 ```text
-The SLIC is a programmable single-channel FXS interface.
+The FON PHY is a single-channel analog FXS line interface.
 Its host-visible model is an AVM 16-bit control/status register bank
 at virtual registers 0x40..0x50.
 ```
 
-The register map and the 16-bit control word are consistent with a
-programmable SLIC/ProSLIC class device, but a datasheet match is not proven.
+Public board inventories list the FON components as **LM324** and
+**BCP53-16**, with the DECT SC14448 nearby; a 14-pin device near the DECT
+antenna was reported but not identified. This points to a discrete/14-pin
+analog line interface, not a standard SPI/I2C SLIC. The register map and the
+16-bit control word are consistent with a logic-controlled SLIC/ring-generator
+interface, but neither a ProSLIC nor an Ag1171/KS0835F-class module is proven.
+See `docs/fon-control-path.md` §2 and §7.
+
+The 16-bit control word and the two software-toggled ring bits do **not** by
+themselves prove a programmable SLIC register model. They may be a small set
+of logic-level line/ring control bits.
 
 ## 5. Block diagram
 
@@ -173,8 +192,10 @@ programmable SLIC/ProSLIC class device, but a datasheet match is not proven.
                      analog telephone
 ```
 
-The DECT Dialog SC14448 also shares the PCM/TDM/codec-slot infrastructure,
-but it is outside this project.
+The DECT Dialog SC14448 also shares the PCM/TDM/codec-slot infrastructure.
+Stage 4 leaves open whether its codec/GPIO is part of the FON box or only the
+DECT side; see `docs/fon-control-path.md` §2 and §5. The discrete LM324 /
+BCP53-16 / 14-pin device is the likely high-voltage/analog part.
 
 ## 6. Control plane
 
@@ -188,8 +209,14 @@ pcmlink_ul_writeregister(reg,val,mask) 0x3b60
 ```
 
 Register numbers above `0x64` are rejected. The bank is held in
-`pcmlink_ul_manager`; the link backend turns it into the hardware-specific
-status/control stream.
+`pcmlink_ul_manager`; the outgoing transport is inside the selected
+`pcmlink` link backend and the missing `tdm_if_*` layer.
+
+Stage 4 correction: the QCA backend's operation table has 14 entries and no
+`set_status` slot at `+0x3c`. `pcmlink_ll_set_status()` therefore returns
+`-1` on this backend. The earlier assumption that the virtual registers are
+transported by `pcmlink_ll_set_status()` is **not valid for QCA**. The actual
+transport is still unknown; see `docs/fon-control-path.md` §3.2.
 
 ### 6.2 Hook detection
 
@@ -395,12 +422,22 @@ clean TDM/DMA backend.
 - PCM is 16-bit TDM with 16 DMA descriptors and six codec slots.
 - The QCA TDM/PCM block is at `0x7709000`.
 - The vendor `tdm_if_*` API is not in Linux 6.12.
+- The QCA backend has no `set_status` operation at vtable `+0x3c`.
+- FON control has no UART path in `isdn_fbox_fon5`, `pcmlink` or `avm_dect`.
+- `Piglet_noemif` owns the Dialog UART but exposes no FON/SLIC API; its UART
+  is used for DECT firmware loading.
+- Public board data lists LM324 and BCP53-16 as FON chips and an unidentified
+  14-pin device near the DECT antenna.
 
 ### Unconfirmed / unknown
 
-- Exact SLIC part number and datasheet.
-- Exact SLIC reset GPIO/regulator/clock wiring.
+- Exact SLIC/14-pin device part number and datasheet.
+- Exact high-voltage line-feed/ring topology and reset/regulator wiring.
 - Complete virtual-register bit meanings.
+- Whether the SC14448 firmware participates in FON control.
+- Whether the FON audio path uses the SC14448 codec or a separate SLIC codec.
+- The transport from `pcmlink` to the FON PHY (TDM control slot/shared-memory
+  mailbox/PCM+ mailbox).
 - Whether the QCA TDM/ADSS driver can be ported cleanly to 6.12.
 - Real 7530 TDM GPIO numbers.
 - Whether any closed DSP firmware is needed for basic 8 kHz PCM (the stock log
@@ -418,7 +455,11 @@ reports/functions/isdn_fbox_fon5.txt
 notes/pcmlink.md
 notes/avm_dect.md
 notes/pcmlink-sharedmem.md
+docs/fon-control-path.md
+reports/fon-dialog-firmware.txt
 OpenWrt FRITZ!Box 7530 device page (stock dmesg line)
 QCA IPQ4019 product brief (TDM/PCM/I2S/SPDIF)
 linux-arm-kernel 2016-07 IPQ4019 ASoC RFC (qca,ipq4019-pcm-tdm)
+BoxMatrix FRITZ!Box 7530 board inventory (community data)
+Renesas SC14448/SC14441 short datasheets
 ```

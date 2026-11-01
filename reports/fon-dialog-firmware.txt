@@ -1,0 +1,151 @@
+# Dialog SC14448 firmware static inspection
+
+Status: local static inspection only. No firmware was executed and no router
+was accessed.
+
+## Files
+
+```text
+firmware/dectfw_firstlevel_441_slow.hex
+  sha256 0d855b5929f8b2ad0b8d8fb38065b32e27f9357cd44a2b4e60573b1b5b6da895
+firmware/dectfw_secondlevel_441.hex
+  sha256 7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31
+firmware/dectfw_secondlevel_441p2test.hex
+  sha256 6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860
+```
+
+The images are AVM DECT firmware, not an SDK and not a SC14448 register-map
+document.
+
+## Method
+
+1. Parse the Intel HEX with `src/mock/piglet_image.py`.
+2. Emit contiguous blocks with `0xff` gaps preserved.
+3. Build binutils 2.42 with `--target=cr16-elf`.
+4. Disassemble each block with:
+
+   ```text
+   objdump -D -b binary -m cr16 --adjust-vma=<block-address> <block.bin>
+   ```
+
+5. Search for peripheral addresses, calls, GPIO/PCM/UART initialization and
+   line/ring/hook-like code. ASCII strings are absent, so string names were not
+   used as evidence.
+
+## Block layout and entropy
+
+```text
+first-level dectfw_firstlevel_441_slow.hex
+  address    length  entropy
+  0x010080      618     5.91
+
+second-level dectfw_secondlevel_441.hex
+  address    length  entropy
+  0x000000      213     3.00
+  0x0000d6      477     4.78
+  0x0002b4     6138     6.01
+  0x0024f8     6150     6.61
+  0x009000      875     5.10
+  0x009c5e      930     6.41
+  0x017300     2938     5.77
+  0x017fe0       24     2.65
+  0x020000    36302     6.77
+
+second-level dectfw_secondlevel_441p2test.hex
+  address    length  entropy
+  0x000000      213     3.65
+  0x0000d6     5134     5.95
+  0x001d56     8106     6.62
+  0x009000     1187     5.15
+  0x009b44     1212     6.45
+  0x017300     1786     5.63
+  0x017fe0       24     2.65
+  0x020000    32074     6.71
+```
+
+The entropy and coherent CR16C disassembly indicate code/data, not an
+encrypted blob. There is no ASCII symbol or string table.
+
+## First-level image: UART bootstrap
+
+Representative disassembly:
+
+```text
+00010080: 14 00 80 20  spr      cfg,r0
+00010084: b0 22 ff fe  andw     $0xfeff:m,r0
+00010088: 14 00 80 00  lpr      r0,cfg
+0001008c: 14 00 90 20  spr      psr,r0
+00010090: b0 22 ff f5  andw     $0xf5ff:m,r0
+00010094: 14 00 90 00  lpr      r0,psr
+00010098: b0 58 30 00  movb     $0x30:m,r0
+0001009c: 0f c8 20 40  storb    r0,0xf4020:m
+000100a0: 0f 89 0e 40  loadw    0xf400e:m,r0
+000100a4: b0 22 f8 ff  andw     $0xfff8:m,r0
+000100a8: 10 26        orw      $0x1:s,r0
+000100aa: 0f c9 0e 40  storw    r0,0xf400e:m
+...
+```
+
+The code initializes and polls the SC14448 UART block
+(`0xFF4900/02/04/06`), configures GPIO direction (`0xFF4836`), and implements
+a byte/checksum upload loop. This is consistent with `Piglet_noemif` loading
+the first/second-level DECT firmware over UART.
+
+No FON line/ring/hook routine is present in the first-level image.
+
+## Second-level image: DECT/PCM code
+
+Peripheral address clusters observed in the disassembly:
+
+| Address range | Likely block | Evidence |
+|---|---|---|
+| `0xFF4900..0xFF4906` | UART | control/data/clear registers, same as first-level |
+| `0xFF4830..0xFF4868` | GPIO ports P0-P3 | data/set/reset/dir/mode registers |
+| `0xFF5400..0xFF540A` | interrupt controller | set/reset pending and priority registers |
+| `0xFF6006/0xFF600E` | PCM/DMA-related | writes `0x80`/`0x00`, channel setup |
+| `0xFF7052/0xFF7056` | radio/analog front-end | DECT radio control accesses |
+| `0xFF4000..0xFF4C00` | timers/clock/other | DECT platform setup |
+
+Representative PCM setup:
+
+```text
+002582: 70 00 ff 00  movd     $0xff6006:l,(r1,r0)
+002586: 06 60
+002588: b2 5a 80 00  movw     $0x80:m,r2
+00258c: 20 d0        storw    r2,0x0:s(r1,r0)
+00258e: 14 00 92 30  sprd     psr,(r3,r2)
+002592: 04 00        di
+...
+0025b0: 2f c9 02 54  storw    r2,0xf5402:m
+```
+
+The second-level code is a DECT application with radio, UART, GPIO, interrupt
+and PCM/DMA setup. It contains slot/frame handling and audio-path setup, but
+no separately identifiable FXS hook/ring/line-feed routine was found. The
+SC14448 full register map is not available in the short datasheet, so this is
+not proof of absence.
+
+## Relevant negative evidence
+
+- No ASCII strings matching `SLIC`, `POTS`, `FXO`, `FXS`, `HOOK`, `RING`,
+  `LINE`, `LM324`, `CODEC`, `ADC`, `UART` or `GPIO` exist in the images.
+  This is expected for a stripped firmware and is not used as a conclusion.
+- No kernel module exports a FON/SLIC API from `Piglet_noemif` or `avm_dect`.
+- `Piglet_noemif` exports only DECT/loader entry points. Its UART symbols are
+  imports used for firmware transfer.
+- `pcmlink`, `isdn_fbox_fon5` and `avm_dect` import no UART symbols.
+
+## Interpretation
+
+The firmware is a DECT firmware loaded by `Piglet`. The kernel call graph gives
+no path by which FON hook/ring/line commands are sent to this firmware over
+UART. The only plausible interactions are:
+
+1. transparent FON PCM through the SC14448 PCM+ interface, with no firmware
+   control role; or
+2. an undocumented PCM+ control mailbox that the firmware handles.
+
+Case 2 would make the SC14448 firmware part of the FON control path and would
+be a hard dependency for an independent Linux driver. This is not proven by
+the current static evidence and requires a register map, runtime trace, or AVM
+GPL source.

@@ -1,7 +1,10 @@
 # AVM FON kernel-module analysis
 
-Status: stage 2 static analysis. No router was accessed, no module was loaded.
-Addresses are module-relative ELF offsets.
+Status: stage 2 static analysis, updated by stage 4. No router was accessed,
+no module was loaded. Addresses are module-relative ELF offsets.
+
+> Stage 4 update: see `docs/fon-control-path.md` for the Dialog SC14448
+> hypothesis, the no-UART finding and the corrected QCA transport analysis.
 
 ## 1. Modules in scope
 
@@ -50,6 +53,37 @@ QCA IPQ4019 TDM/PCM + DMA + ADCC
         v
 single SLIC (part unknown) + DECT codec slots
 ```
+
+### 2.1 Stage 4: Dialog SC14448 and module interaction
+
+The DECT and FON modules are much more separate than the shared PCM/TDM block
+might suggest:
+
+| Module | Dialog UART | FON/SLIC API | PCM/TDM | Verdict |
+|---|---|---|---|---|
+| `Piglet_noemif.ko` | imports `msm_dectuart_*` | none | DECT firmware loader | UART is firmware-load only |
+| `avm_dect.ko` | none | none | `pcmlink_ul_*dectcontrol*`, DECT slots | DECT stack only |
+| `pcmlink.ko` | none | virtual SLIC registers | QCA TDM + slots | shared transport, no UART |
+| `isdn_fbox_fon5.ko` | none | SLIC policy | PCMRoute/slots | FON policy only |
+
+Key facts:
+
+- `Piglet_noemif` exports only DECT/loader entry points
+  (`dect_file_process`, `dect_requestinit`, `dect_requestrelease`,
+  `piglet_request*`, `piglet_reset`, sniffer/LED helpers). It exports no
+  generic UART send/receive API and no FON/SLIC API.
+- `avm_dect` imports `pcmlink_ul_config_dectcontrol`,
+  `pcmlink_ul_register_dectcontrol`, `pcmlink_ul_release_dectcontrol`,
+  `pcmlink_ul_openslots`, `pcmlink_ul_closeslots` and `pcmlink_ul_activity`.
+  It has no SLIC/POTS/analog imports.
+- `pcmlink`, `isdn_fbox_fon5` and `avm_dect` import no UART symbols.
+- `Piglet` has optional `piglet_potsbitfile`/`te_pots_mode` parameters, but
+  the 7530 uses `abmode=1` with `Pots=0` and no FPGA/POTS path. They are not
+  the 7530 FON control path.
+
+Therefore there are **no separate FON control messages over the Dialog UART**.
+The only runtime interaction left is transparent PCM or an undocumented PCM+
+mailbox. See `docs/fon-control-path.md` §4-§6.
 
 ## 3. Hardware-significant functions
 
@@ -136,8 +170,11 @@ FON state machine
             -> register bank
   -> pcmlink set_slic_ring_state / set_slic_ringfreq
        -> ring bitmask / half-period count
-  -> link backend status/control stream
+  -> link backend / missing tdm_if_* transport
 ```
+
+The QCA backend has no `set_status` slot at vtable `+0x3c`; the old
+`pcmlink_ll_set_status` explanation is not valid on this target.
 
 For SLIC0: bits 5/6 of register `0x48`. For SLIC1: bits 9/10. For SLIC2:
 bits 13/14.
@@ -253,12 +290,19 @@ PCMRoute routing logic
 
 ## 10. Open questions
 
-1. Exact SLIC part and datasheet.
-2. Exact SLIC reset GPIO/regulator/clock wiring.
+1. Exact SLIC/14-pin device part and datasheet.
+2. Exact high-voltage line-feed/ring topology and reset/regulator wiring.
 3. Complete virtual-register bit map beyond hook/ring.
 4. Exact `tdm_if_*` implementation and QCA ADSS register programming.
 5. Real 7530 TDM GPIO numbers.
-6. Whether basic 8 kHz PCM needs any closed DSP firmware.
+6. Whether SC14448 firmware participates in FON control.
+7. Whether FON audio uses the SC14448 codec or a separate SLIC codec.
+8. Which transport carries the FON virtual registers (TDM control slot,
+   shared-memory mailbox, PCM+ mailbox, or a separate device).
+9. Whether `pcmlink` virtual registers 0x40/0x44/0x48 are the same logical
+   bank used by the DECT path (`pcmlink_ul_regnoemif_workaround`) or a
+   separate SLIC bank.
+10. Whether basic 8 kHz PCM needs any closed DSP firmware.
 
 ## 11. Sources
 

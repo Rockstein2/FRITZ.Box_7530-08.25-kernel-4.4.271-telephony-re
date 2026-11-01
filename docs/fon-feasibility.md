@@ -1,7 +1,11 @@
 # FON standalone-driver feasibility
 
-Status: stage 3 assessment. This is a static/architectural conclusion, not a
-tested driver.
+Status: stage 3 assessment, updated by stage 4. This is a
+static/architectural conclusion, not a tested driver.
+
+> Stage 4 update: `docs/fon-control-path.md` adds the Dialog SC14448
+> hypothesis and the firmware/UART/PCM evidence. The conclusion remains
+> **CONDITIONAL GO**, with a new firmware-dependency condition.
 
 ## 1. Direct answers
 
@@ -124,6 +128,31 @@ QCA ADSS/TDM register documentation
 No AVM source code or binary module needs to be linked. The unresolved part is
 technical (SLIC part/TDM programming), not licensing.
 
+## 1.1 Stage 4 update: the Dialog SC14448 hypothesis
+
+`docs/fon-control-path.md` investigates whether FON is an LM324 analog path
+plus the SC14448 codec.
+
+Result: **partly supported, with a new hard condition for the project**.
+
+- Public board data lists LM324 and BCP53-16 as FON components, the SC14448 as
+  the DECT chip, and an unidentified 14-pin device near the DECT antenna. A
+  discrete/14-pin SLIC or ring interface is likely. A standard SPI/I2C SLIC
+  controlled directly by Linux is not present.
+- FON control is still the `pcmlink` virtual-register bank. It is **not** a
+  FON UART protocol: `Piglet_noemif` owns the Dialog UART but exports no FON
+  API; `avm_dect` and `pcmlink` import no UART.
+- The SC14448 has dual codec, 6-channel PCM+, ADC/opamps and GPIO, so it is a
+  plausible FON codec/line controller. The 6 codec slots match 4 DECT + 1
+  SLIC + 1 spare.
+- The exact transport from `pcmlink` to the FON PHY is still missing. It may be
+  a QCA TDM control slot, a shared-memory mailbox, or a PCM+ mailbox to the
+  SC14448. If the SC14448 firmware is in the loop, a standalone Linux module
+  must implement that mailbox protocol or bypass the SC14448 in hardware.
+
+This does not turn the project into GO. It makes the "small independent
+module" harder to justify until the firmware dependency is resolved.
+
 ## 2. Risk table
 
 | Risk | Status | Why |
@@ -142,6 +171,10 @@ technical (SLIC part/TDM programming), not licensing.
 | Userspace/Asterisk integration | **LIKELY** | ALSA PCM + small control interface |
 | GPL-compatible clean implementation | **CONFIRMED** | no proprietary code required |
 | DECT/ISDN/CAPI exclusion | **CONFIRMED** | not needed for one FXS port |
+| Actual FON control transport | **UNKNOWN** | QCA backend has no `set_status`; transport is in missing `tdm_if_*`/shared memory |
+| SC14448 firmware dependency | **UNKNOWN** | firmware may handle FON line/ring control over PCM+; not proven |
+| FON PHY topology | **UNKNOWN** | LM324/BCP53-16 plus unidentified 14-pin device; high-voltage/ring topology not known |
+| FON UART protocol | **RULED OUT** | no UART imports in `pcmlink`/`isdn_fbox_fon5`/`avm_dect`; `Piglet` has no FON API |
 
 ## 3. Effort estimate
 
@@ -153,10 +186,11 @@ obtained.
 | SLIC identification and safe line/ring sequence | 1–2 weeks | includes datasheet review and bench safety |
 | Minimal control driver (hook/line/ring) | 2–4 weeks | virtual-register or direct SLIC bus |
 | QCA TDM/PCM + DMA backend | 6–12 weeks | port 2016 ADSS or write minimal DAI/DMA |
+| SC14448 PCM+ mailbox / firmware protocol | 4–12 weeks | only if the Dialog firmware is in the FON path; unknown |
 | ALSA SoC integration / PCM device | 2–4 weeks | depends on backend |
 | Asterisk/DAHDI integration | 1–2 weeks | after stable PCM |
 | Hardware validation | 2–4 weeks | ring/line feed/PCM loopback |
-| **Total** | **3–5 months** | one experienced kernel/telephony engineer |
+| **Total** | **4–7 months** | one experienced kernel/telephony engineer, assuming no firmware dead end |
 
 Without the SLIC datasheet or QCA TDM reference, the estimate is not
 meaningful; the project is blocked at hardware identification.
@@ -193,25 +227,34 @@ for the IPQ4019 audio block.
 
 The project is technically realistic, but only after these conditions are met:
 
-1. Identify the exact SLIC part and obtain its datasheet/board wiring, **or**
-   obtain the AVM GPL `pcmlink_ll.c`/`isdn_fon5` source that contains the
-   virtual-register transport and SLIC model.
-2. Recover or port the QCA IPQ4019 TDM/PCM + ADSS/DMA programming
+1. Identify the exact 14-pin SLIC/line-interface part and its high-voltage
+   topology, **or** obtain the AVM GPL `pcmlink_ll.c`/`tdm_if_*`/`isdn_fon5`
+   source that contains the virtual-register transport and SLIC model.
+2. Prove whether the SC14448 firmware participates in FON control/audio. If
+   it does, either recover the PCM+ mailbox protocol or show that the stock
+   board can be driven without that firmware.
+3. Recover or port the QCA IPQ4019 TDM/PCM + ADSS/DMA programming
    (`tdm_if_*` equivalent).
-3. Validate the SLIC register sequence and ring/line-feed voltages on a safe
-   bench setup before connecting a telephone.
-4. Confirm that basic 8 kHz PCM needs no closed DSP firmware.
+4. Validate hook/ring/line-feed and basic 8 kHz PCM on a safe bench setup
+   before connecting a telephone. Confirm that no closed DSP firmware is
+   required for the basic PCM path.
 
-If item 1 or 2 cannot be satisfied, the correct conclusion becomes **NO-GO**:
-without the SLIC model or the TDM/DMA backend there is no safe, independent
-FXS driver.
+If item 1, 2 or 3 cannot be satisfied, the correct conclusion becomes
+**NO-GO**: without the line-interface model, the firmware dependency answer, or
+the TDM/DMA backend there is no safe, independent FXS driver.
 
 ## 6. Next actions
 
-1. Inspect the 7530 PCB / service manual for the SLIC part.
+1. Inspect the 7530 PCB/service manual or community board data for the 14-pin
+   device, LM324, BCP53-16 and the high-voltage/ring network.
 2. Request the AVM GPL source package for FRITZ!OS 08.25 and search for
-   `pcmlink_ll.c`, `slic*.c`, `tdm_if_*`, `ipq40xxtdm_*`.
+   `pcmlink_ll.c`, `slic*.c`, `tdm_if_*`, `ipq40xxtdm_*`, and any SC14448
+   mailbox/PCM+ code.
 3. Recover the QCA ADSS/TDM register map from the IPQ4019 datasheet or QSDK.
 4. If a stock 7530 is available, capture the `pcmlink` virtual-register writes
    during hook/ring/line-feed transitions (read-only trace, no flash changes).
-5. Only then start `src/fon-driver/`.
+5. Trace whether any PCM+ control slot or shared-memory mailbox reaches the
+   SC14448 during the same transitions.
+6. Disassemble the SC14448 second-level firmware with the peripheral map and
+   look for the PCM+ interrupt handler/GPIO writes; do not rely on strings.
+7. Only then start `src/fon-driver/`.
