@@ -12,6 +12,9 @@
 #include <linux/platform_device.h>
 #include <linux/reset.h>
 #include <linux/types.h>
+#include <linux/mutex.h>
+
+#include "fon_dma.h"
 
 /*
  * IPQ4019 ADSS/MBOX register offsets.  Addresses come exclusively from
@@ -54,29 +57,10 @@
 #define FON_MBOX_DMA_TX_CONTROL_RESUME    BIT(2)
 
 /*
- * AVM's struct _mbox_desc.  The 36-word vuc_dword tail is reserved in the
- * vendor source; keep the same size/layout.  The descriptor stride is
- * cache-line aligned at runtime.
+ * The hardware descriptor format is defined in fon_dma.h.  The hardware
+ * descriptor stride is the cache-aligned sizeof(struct fon_mbox_desc), as in
+ * AVM's mbox_get_desc_size().
  */
-struct fon_mbox_desc {
-	u32 ctrl;
-	u32 buf_ptr;
-	u32 next_ptr;
-	u32 reserved[36];
-} __packed;
-
-#define FON_DESC_LENGTH_MASK      0x00000fff
-#define FON_DESC_SIZE_MASK        0x00fff000
-#define FON_DESC_SIZE(v)          (((v) & 0xfff) << 12)
-#define FON_DESC_LENGTH(v)        ((v) & 0xfff)
-#define FON_DESC_VUC              BIT(24)
-#define FON_DESC_EI               BIT(25)
-#define FON_DESC_EOM              BIT(30)
-#define FON_DESC_OWN              BIT(31)
-#define FON_DMA_ADDR_MASK         0x0fffffffu
-
-#define FON_DMA_FRAMES_PER_BUFFER 32
-#define FON_DMA_DESC_COUNT        16
 #define FON_DMA_DESC_STRIDE       ALIGN(sizeof(struct fon_mbox_desc), L1_CACHE_BYTES)
 
 enum fon_tdm_stage {
@@ -111,11 +95,15 @@ struct fon_tdm_dev {
 	struct pinctrl *pinctrl;
 	int irq;
 
+	struct mutex lock;
+	enum fon_tdm_state state;
+	bool removing;
+	bool diag_valid;
+
 	unsigned int slots;
 	unsigned int adss_tx_slots;
 	unsigned int adss_rx_slots;
 	unsigned int stage;
-	bool dma_prepared;
 
 	struct fon_dma_ring tx;
 	struct fon_dma_ring rx;

@@ -4,7 +4,7 @@
  *
  * This driver intentionally stops before telephony:
  *   - it maps ADSS/PCM/MBOX resources from DT;
- *   - it reads safe, read-only identification/configuration registers;
+ *   - it does not read or write MMIO during probe;
  *   - it can allocate and fill TX/RX MBOX DMA rings;
  *   - it never starts DMA automatically;
  *   - it never drives ring/line voltages;
@@ -35,6 +35,8 @@
 #include "fon_hw.h"
 #include "fon_tdm.h"
 
+static int fon_tdm_read_diagnostics(struct fon_tdm_dev *tdm);
+
 static bool allow_dma;
 module_param(allow_dma, bool, 0444);
 MODULE_PARM_DESC(allow_dma,
@@ -44,6 +46,11 @@ static bool allow_hw_writes;
 module_param(allow_hw_writes, bool, 0444);
 MODULE_PARM_DESC(allow_hw_writes,
 		 "Allow ADSS/MBOX hardware writes and DMA start (default: false)");
+
+static bool allow_mmio_reads;
+module_param(allow_mmio_reads, bool, 0444);
+MODULE_PARM_DESC(allow_mmio_reads,
+		 "Allow explicit read-only MMIO diagnostics after the caller has proven the ADSS clock/reset state (default: false)");
 
 static void fon_dma_ring_free(struct device *dev, struct fon_dma_ring *ring)
 {
@@ -67,6 +74,7 @@ static void fon_dma_ring_free(struct device *dev, struct fon_dma_ring *ring)
 static int fon_dma_ring_prepare(struct device *dev, struct fon_dma_ring *ring,
 				size_t buf_size)
 {
+	u32 buf_addrs[2];
 	unsigned int i;
 	int ret = 0;
 
@@ -96,22 +104,33 @@ static int fon_dma_ring_prepare(struct device *dev, struct fon_dma_ring *ring,
 		ret = -ERANGE;
 		goto err;
 	}
-
-	for (i = 0; i < ring->desc_count; i++) {
-		struct fon_mbox_desc *d;
-		unsigned int next = (i + 1) % ring->desc_count;
-
-		d = (struct fon_mbox_desc *)((u8 *)ring->desc +
-					    i * FON_DMA_DESC_STRIDE);
-		memset(d, 0, sizeof(*d));
-		d->ctrl = FON_DESC_SIZE(buf_size) |
-			  FON_DESC_LENGTH(buf_size) |
-			  FON_DESC_EI | FON_DESC_OWN;
-		d->buf_ptr = (u32)(ring->buf_dma[i & 1] & FON_DMA_ADDR_MASK);
-		d->next_ptr = (u32)((ring->desc_dma +
-				    next * FON_DMA_DESC_STRIDE) &
-				   FON_DMA_ADDR_MASK);
+	if (ring->desc_dma & 3) {
+		dev_err(dev, "descriptor ring is not 4-byte aligned: %pad\n",
+			&ring->desc_dma);
+		ret = -EINVAL;
+		goto err;
 	}
+	for (i = 0; i < 2; i++) {
+		if (ring->buf_dma[i] & (L1_CACHE_BYTES - 1)) {
+			dev_err(dev,
+				"DMA buffer is not cache-line aligned: buf=%pad line=%u\n",
+				&ring->buf_dma[i], L1_CACHE_BYTES);
+			ret = -EINVAL;
+			goto err;
+		}
+	}
+
+	buf_addrs[0] = (u32)ring->buf_dma[0];
+	buf_addrs[1] = (u32)ring->buf_dma[1];
+	ret = fon_dma_build_ring(ring->desc,
+				 ring->desc_count * FON_DMA_DESC_STRIDE,
+				 FON_DMA_DESC_STRIDE,
+				 ring->desc_count,
+				 (u32)ring->desc_dma,
+				 buf_addrs,
+				 (u32)buf_size);
+	if (ret)
+		goto err;
 	dma_wmb();
 	return 0;
 
@@ -126,8 +145,10 @@ static int fon_tdm_dma_prepare(struct fon_tdm_dev *tdm)
 	size_t buf_size;
 	int ret;
 
-	if (tdm->dma_prepared)
+	if (tdm->state == FON_STATE_DMA_PREPARED)
 		return 0;
+	if (tdm->state != FON_STATE_RESOURCES_READY)
+		return -ENODEV;
 
 	if (tdm->slots < 2 || tdm->slots > FON_TDM_MAX_SLOTS)
 		return -EINVAL;
@@ -153,7 +174,7 @@ static int fon_tdm_dma_prepare(struct fon_tdm_dev *tdm)
 		return ret;
 	}
 
-	tdm->dma_prepared = true;
+	tdm->state = FON_STATE_DMA_PREPARED;
 	tdm->stage |= FON_STAGE_DMA_READY;
 	dev_info(tdm->dev,
 		 "DMA rings prepared: slots=%u frame_bytes=%u frames=%u desc=%u\n",
@@ -164,9 +185,12 @@ static int fon_tdm_dma_prepare(struct fon_tdm_dev *tdm)
 
 static void fon_tdm_dma_release(struct fon_tdm_dev *tdm)
 {
+	if (tdm->state != FON_STATE_DMA_PREPARED)
+		return;
+
 	fon_dma_ring_free(tdm->dev, &tdm->tx);
 	fon_dma_ring_free(tdm->dev, &tdm->rx);
-	tdm->dma_prepared = false;
+	tdm->state = FON_STATE_RESOURCES_READY;
 	tdm->stage &= ~FON_STAGE_DMA_READY;
 }
 
@@ -174,8 +198,14 @@ static ssize_t stage_show(struct device *dev, struct device_attribute *attr,
 			  char *buf)
 {
 	struct fon_tdm_dev *tdm = dev_get_drvdata(dev);
+	ssize_t ret;
 
-	return sysfs_emit(buf, "0x%x\n", tdm->stage);
+	if (!tdm)
+		return -ENODEV;
+	mutex_lock(&tdm->lock);
+	ret = sysfs_emit(buf, "0x%x\n", tdm->stage);
+	mutex_unlock(&tdm->lock);
+	return ret;
 }
 
 static ssize_t diagnostics_show(struct device *dev, struct device_attribute *attr,
@@ -184,11 +214,22 @@ static ssize_t diagnostics_show(struct device *dev, struct device_attribute *att
 	struct fon_tdm_dev *tdm = dev_get_drvdata(dev);
 	int n = 0;
 
+	if (!tdm)
+		return -ENODEV;
+	mutex_lock(&tdm->lock);
+	n += sysfs_emit_at(buf, n, "state=%u\n", tdm->state);
+	n += sysfs_emit_at(buf, n, "diag_valid=%u\n", tdm->diag_valid);
 	n += sysfs_emit_at(buf, n, "stage=0x%x\n", tdm->stage);
 	n += sysfs_emit_at(buf, n, "slots=%u\n", tdm->slots);
 	n += sysfs_emit_at(buf, n, "adss_tx_slots=%u\n", tdm->adss_tx_slots);
 	n += sysfs_emit_at(buf, n, "adss_rx_slots=%u\n", tdm->adss_rx_slots);
 	n += sysfs_emit_at(buf, n, "irq=%d\n", tdm->irq);
+	n += sysfs_emit_at(buf, n, "clk_present=%u\n",
+			   (tdm->clks[0] != NULL) + (tdm->clks[1] != NULL) +
+			   (tdm->clks[2] != NULL) + (tdm->clks[3] != NULL));
+	n += sysfs_emit_at(buf, n, "reset_present=%u\n", tdm->rst != NULL);
+	n += sysfs_emit_at(buf, n, "pinctrl_present=%u\n",
+			   tdm->pinctrl != NULL);
 	n += sysfs_emit_at(buf, n, "audio_mode=0x%08x\n", tdm->audio_mode);
 	n += sysfs_emit_at(buf, n, "tdm_ctrl=0x%08x\n", tdm->tdm_ctrl);
 	n += sysfs_emit_at(buf, n, "clk_ctrl=0x%08x\n", tdm->clk_ctrl);
@@ -200,9 +241,50 @@ static ssize_t diagnostics_show(struct device *dev, struct device_attribute *att
 	n += sysfs_emit_at(buf, n, "fon_ctrl_slot=%u\n", FON_TDM_CONTROL_SLOT);
 	n += sysfs_emit_at(buf, n, "fon_ctrl_offset=0x%x\n",
 			   FON_TDM_CONTROL_OFFSET);
-	n += sysfs_emit_at(buf, n, "dma_prepared=%u\n", tdm->dma_prepared);
+	n += sysfs_emit_at(buf, n, "dma_prepared=%u\n",
+			   tdm->state == FON_STATE_DMA_PREPARED);
 	n += sysfs_emit_at(buf, n, "dma_started=0\n");
+	mutex_unlock(&tdm->lock);
 	return n;
+}
+
+static ssize_t diag_refresh_store(struct device *dev,
+				  struct device_attribute *attr,
+				  const char *buf, size_t count)
+{
+	struct fon_tdm_dev *tdm = dev_get_drvdata(dev);
+	bool enable;
+	int ret;
+
+	if (!tdm)
+		return -ENODEV;
+	ret = kstrtobool(buf, &enable);
+	if (ret)
+		return ret;
+	if (!enable)
+		return count;
+
+	mutex_lock(&tdm->lock);
+	if (tdm->removing) {
+		ret = -ENODEV;
+		goto out;
+	}
+	if (!allow_mmio_reads) {
+		dev_warn(dev,
+			 "MMIO diagnostics refused: load with allow_mmio_reads=1 only after ADSS clock/reset is proven safe\n");
+		ret = -EPERM;
+		goto out;
+	}
+	if (tdm->state < FON_STATE_RESOURCES_READY) {
+		ret = -ENODEV;
+		goto out;
+	}
+	ret = fon_tdm_read_diagnostics(tdm);
+	if (!ret)
+		tdm->diag_valid = true;
+out:
+	mutex_unlock(&tdm->lock);
+	return ret ? ret : count;
 }
 
 static ssize_t dma_prepare_store(struct device *dev,
@@ -213,16 +295,25 @@ static ssize_t dma_prepare_store(struct device *dev,
 	bool enable;
 	int ret;
 
+	if (!tdm)
+		return -ENODEV;
 	ret = kstrtobool(buf, &enable);
 	if (ret)
 		return ret;
 
+	mutex_lock(&tdm->lock);
+	if (tdm->removing) {
+		ret = -ENODEV;
+		goto out;
+	}
 	if (!enable) {
 		fon_tdm_dma_release(tdm);
-		return count;
+		ret = 0;
+		goto out;
 	}
-
 	ret = fon_tdm_dma_prepare(tdm);
+out:
+	mutex_unlock(&tdm->lock);
 	return ret ? ret : count;
 }
 
@@ -234,12 +325,23 @@ static ssize_t dma_release_store(struct device *dev,
 	bool enable;
 	int ret;
 
+	if (!tdm)
+		return -ENODEV;
 	ret = kstrtobool(buf, &enable);
 	if (ret)
 		return ret;
-	if (enable)
+	if (!enable)
+		return count;
+
+	mutex_lock(&tdm->lock);
+	if (tdm->removing)
+		ret = -ENODEV;
+	else {
 		fon_tdm_dma_release(tdm);
-	return count;
+		ret = 0;
+	}
+	mutex_unlock(&tdm->lock);
+	return ret ? ret : count;
 }
 
 static ssize_t dma_start_store(struct device *dev,
@@ -250,18 +352,28 @@ static ssize_t dma_start_store(struct device *dev,
 	bool enable;
 	int ret;
 
+	if (!tdm)
+		return -ENODEV;
 	ret = kstrtobool(buf, &enable);
 	if (ret)
 		return ret;
 	if (!enable)
 		return count;
 
-	if (!tdm->dma_prepared)
-		return -EINVAL;
+	mutex_lock(&tdm->lock);
+	if (tdm->removing) {
+		ret = -ENODEV;
+		goto out;
+	}
+	if (tdm->state != FON_STATE_DMA_PREPARED) {
+		ret = -EINVAL;
+		goto out;
+	}
 	if (!allow_dma || !allow_hw_writes) {
 		dev_warn(dev,
 			 "DMA start refused: require allow_dma=1 and allow_hw_writes=1\n");
-		return -EPERM;
+		ret = -EPERM;
+		goto out;
 	}
 
 	/*
@@ -271,11 +383,15 @@ static ssize_t dma_start_store(struct device *dev,
 	 */
 	dev_warn(dev,
 		 "DMA start is not implemented: TDM/MBOX and SC14448 semantics are not hardware-validated\n");
-	return -EOPNOTSUPP;
+	ret = -EOPNOTSUPP;
+out:
+	mutex_unlock(&tdm->lock);
+	return ret ? ret : count;
 }
 
 static DEVICE_ATTR_RO(stage);
 static DEVICE_ATTR_RO(diagnostics);
+static DEVICE_ATTR_WO(diag_refresh);
 static DEVICE_ATTR_WO(dma_prepare);
 static DEVICE_ATTR_WO(dma_release);
 static DEVICE_ATTR_WO(dma_start);
@@ -283,6 +399,7 @@ static DEVICE_ATTR_WO(dma_start);
 static struct attribute *fon_tdm_attrs[] = {
 	&dev_attr_stage.attr,
 	&dev_attr_diagnostics.attr,
+	&dev_attr_diag_refresh.attr,
 	&dev_attr_dma_prepare.attr,
 	&dev_attr_dma_release.attr,
 	&dev_attr_dma_start.attr,
@@ -359,6 +476,8 @@ static int fon_tdm_probe(struct platform_device *pdev)
 
 	tdm->dev = &pdev->dev;
 	tdm->stage = FON_STAGE_PLATFORM;
+	tdm->state = FON_STATE_UNINITIALIZED;
+	mutex_init(&tdm->lock);
 	platform_set_drvdata(pdev, tdm);
 
 	device_property_read_u32(&pdev->dev, "qcom,tdm-slots", &slots);
@@ -419,6 +538,7 @@ static int fon_tdm_probe(struct platform_device *pdev)
 		return tdm->irq;
 
 	tdm->stage |= FON_STAGE_RESOURCES;
+	tdm->state = FON_STATE_RESOURCES_READY;
 	dev_info(&pdev->dev,
 		 "resources: adss=%s pcm=%s mbox_tx=%s mbox_rx=%s stereo_tx=%s stereo_rx=%s irq=%d\n",
 		 tdm->adss ? "yes" : "no", tdm->pcm ? "yes" : "no",
@@ -426,8 +546,7 @@ static int fon_tdm_probe(struct platform_device *pdev)
 		 tdm->stereo_tx ? "yes" : "no", tdm->stereo_rx ? "yes" : "no",
 		 tdm->irq);
 
-	fon_tdm_read_diagnostics(tdm);
-
+	/* No MMIO reads during probe; use diag_refresh explicitly. */
 	ret = devm_device_add_group(&pdev->dev, &fon_tdm_group);
 	if (ret)
 		return ret;
@@ -445,8 +564,14 @@ static int fon_tdm_remove(struct platform_device *pdev)
 {
 	struct fon_tdm_dev *tdm = platform_get_drvdata(pdev);
 
-	if (tdm)
+	if (tdm) {
+		mutex_lock(&tdm->lock);
+		tdm->removing = true;
 		fon_tdm_dma_release(tdm);
+		tdm->state = FON_STATE_UNINITIALIZED;
+		mutex_unlock(&tdm->lock);
+		platform_set_drvdata(pdev, NULL);
+	}
 #if LINUX_VERSION_CODE < KERNEL_VERSION(6, 11, 0)
 	return 0;
 #endif

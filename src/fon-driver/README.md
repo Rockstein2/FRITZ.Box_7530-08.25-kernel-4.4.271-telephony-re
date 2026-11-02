@@ -9,10 +9,25 @@ fon_hw.h/.c    platform driver, DT resources, safe diagnostics, DMA ring prep
 tests/         host-side tests for the pure helpers
 ```
 
+## State machine
+
+```text
+UNINITIALIZED
+    -> RESOURCES_READY      probe mapped all DT resources
+    -> DMA_PREPARED         explicit dma_prepare sysfs action
+```
+
+The diagnostic driver has no user-accessible `DMA_RUNNING` or `TDM_ACTIVE`
+state.  Repeated prepare is idempotent; repeated release is a no-op; removal
+sets a `removing` flag under the same mutex and releases rings before the
+device is unbound.
+
 ## Safety defaults
 
 - No clock or reset is enabled during probe.
-- No MMIO write occurs during probe.
+- No MMIO is read or written during probe.
+- `diag_refresh` is the only MMIO read path and requires
+  `allow_mmio_reads=1`; the caller must first prove the ADSS clock/reset state.
 - No DMA is started automatically.
 - `dma_prepare` only allocates and fills descriptor/buffer memory.
 - `dma_start` requires `allow_dma=1` and `allow_hw_writes=1`, and currently
@@ -57,7 +72,8 @@ With the node instantiated, the platform device exposes:
 
 ```text
 stage          bitmask of reached diagnostic stages
-diagnostics    read-only ADSS/stereo register snapshot
+diagnostics    cached state and last explicitly refreshed register snapshot
+diag_refresh   1 = perform read-only MMIO refresh (requires allow_mmio_reads=1)
 dma_prepare    1 = allocate/fill rings; 0 = release
 dma_release    1 = release rings
 dma_start      1 = explicit start request; gated and currently unsupported

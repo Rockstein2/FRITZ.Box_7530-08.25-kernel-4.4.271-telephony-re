@@ -77,7 +77,7 @@ driver exposes named resources so the integrator makes that choice explicit.
 | DMA frames per buffer | 32 frames = 4 ms | `fs_per_dma=32`; `tdm_if_adss_dma_init()` comment. High. |
 | DMA buffer size | 512 bytes per ping-pong buffer | `8 slots × 2 bytes × 32 = 512`. High. |
 | DMA descriptors | 16 | `ipq40xxtdm_linkinit` stores 16 on the stack for `tdm_if_dma_init`. High. |
-| DMA descriptor size | 156 bytes (`0x9c`) on IPQ4019, cache-line aligned | `struct _mbox_desc` includes `vuc_dword[36]`; `mbox_get_desc_size()` uses `sizeof` on IPQ4019. Stride with 64-byte cache lines is 192 bytes (`0xc0`). Medium-high. |
+| DMA descriptor size | 156 bytes (`0x9c`) on IPQ4019; stride is `L1_CACHE_ALIGN(156)` (192 bytes with 64-byte cache lines) | `struct _mbox_desc` includes `vuc_dword[36]`; `mbox_get_desc_size()` returns `L1_CACHE_ALIGN(sizeof(desc[0]))` on IPQ4019. High. |
 | DMA address width | 28 bits | `mbox_get_mask()` returns `DMA_BIT_MASK(28)` on IPQ4019; descriptor and buffer addresses are masked. High. |
 
 ### 2.1 Why eight physical slots, despite six codec slots
@@ -288,10 +288,29 @@ AlignedBufferSize  = L1_CACHE_ALIGN(512) = 512
 DMAPoolSize        = 3072 + 2 * 512 = 4096
 ```
 
+There are two distinct sizes:
+
+- `sizeof(struct _mbox_desc)` = **156 bytes**; the `vuc_dword[36]` tail is
+  part of the IPQ4019 descriptor, not removable padding.
+- `mbox_get_desc_size()` = `L1_CACHE_ALIGN(156)` = **192 bytes** with the
+  64-byte A7 cache line.  `ipq_desc_ptr()` and `NextPtr` use this stride;
+  bytes 156..191 are alignment padding between descriptors.
+
+The diagnostic driver enforces this with `_Static_assert` for the 156-byte
+structure and `FON_DMA_DESC_STRIDE = ALIGN(sizeof(...), L1_CACHE_BYTES)`.
+It does not hard-code 192 as a universal hardware constant; the target cache
+line determines the stride.
+
 The vendor places descriptors and both ping-pong buffers in one coherent
-pool; the diagnostic driver uses separate coherent allocations and checks
-that every address fits the 28-bit ADSS mask.  That is layout-equivalent for
-the descriptor pointers but is not yet a hardware-validated replacement.
+pool; the diagnostic driver uses separate coherent allocations, checks that
+every address fits the 28-bit ADSS mask, and checks buffer cache-line
+alignment.  Descriptors and buffers are obtained with
+`dma_alloc_coherent()`; the physical handles are programmed directly, never
+ordinary virtual addresses.  After filling the ring the driver issues
+`dma_wmb()`; there is no explicit cache flush because the coherent allocation
+is already DMA-coherent.  This is a deliberate 6.12 replacement for the
+vendor's `kzalloc`/`virt_to_phys` + `dmac_flush_range` pattern and still needs
+hardware validation.
 
 ---
 
@@ -374,6 +393,39 @@ completion bits are TX bit 6 and RX bit 10 in `MBOX_INT_STATUS`.  The
 diagnostic driver records the optional IRQ but does not request it and does
 not start DMA.
 
+### 6.5 MMIO-read prerequisite
+
+The known AVM audio probe order is:
+
+```text
+map ADSS global region
+get/reset AUDIO_BLK_ARES
+assert reset
+usleep(20000..24000)
+deassert reset
+enable I2S interface (0x10 bit 0)
+set B1K (0x30 bit 28)
+```
+
+The TDM node separately owns the four ADCC BCLK/MCLK clocks.  The AVM source
+does **not** prove that a read of the ADSS global registers is safe while the
+AHB/peripheral clock is gated.  Mainline/OpenWrt 6.12 also lacks the AVM ADCC
+provider, so this driver deliberately does not toggle the reset or enable any
+clock during probe.
+
+The diagnostic driver therefore:
+
+- does not read MMIO during probe;
+- leaves `diag_refresh` disabled unless `allow_mmio_reads=1`;
+- requires the operator to prove the AHB/peripheral clock and reset state
+  before the explicit refresh;
+- never enables clocks, asserts reset, or starts TDM as a side effect of a
+  read.
+
+This is a safety limitation, not missing register knowledge.  The first
+hardware test must establish the clock/reset state independently, preferably
+with the same owner that enabled the register block in the stock system.
+
 ---
 
 ## 7. What the GPL source does not provide
@@ -443,9 +495,11 @@ flag remains zero and the ADSS is configured as a slave.
 1. platform device probe;
 2. DT named MMIO resources (`adss`, `pcm`, `mbox_tx`, `mbox_rx`,
    `stereo_tx`, `stereo_rx`), optional clocks/reset/pinctrl/IRQ;
-3. read-only reads of the global ADSS and stereo configuration registers;
+3. **no MMIO access during probe**; cached diagnostics are filled only by an
+   explicit `diag_refresh` after `allow_mmio_reads=1` and an independent
+   clock/reset check;
 4. comparison of the DT slot count with the TX/RX channel fields in
-   `ADSS_GLB_TDM_CTRL_REG`;
+   `ADSS_GLB_TDM_CTRL_REG` after that refresh;
 5. explicit `dma_prepare` sysfs action that allocates and fills the ring but
    does not write any hardware register;
 6. `dma_start` refuses to run unless both module parameters are explicitly
