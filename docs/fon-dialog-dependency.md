@@ -2,6 +2,12 @@
 
 Status: **static analysis complete; no firmware was executed on the router**
 
+> Boot-side detail is now in `docs/fon-dialog-boot.md`.  The 7530 board table
+> uses reset GPIO40 (not the fallback profile's GPIO18), and the DECT UART is
+> the shared MSM UART at `0x078af000` (GPIO16/17).  The clean-room image
+> parser in `src/fon-firmware/` was tested against the local images; the
+> firmware itself was not uploaded.
+
 This document answers whether the analog FON port can work without the
 original Dialog SC14448 firmware, and what the minimum separate dependency
 would be if it cannot.
