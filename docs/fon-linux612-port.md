@@ -1,7 +1,7 @@
 # Porting the FON transport to Linux 6.12 / OpenWrt 25.12
 
-Status: **mainline/OpenWrt inventory checked; target build not available in
-this workspace; the diagnostic module is not hardware-tested**
+Status: **target OpenWrt SDK module built; full OpenWrt image and hardware
+test not performed**
 
 This document answers what exists in Linux 6.12, what must be ported, and how
 the minimal FON transport avoids fighting existing audio/DMA drivers.
@@ -37,9 +37,10 @@ CONFIG_OF=y
 It contains **no** `CONFIG_SND*` setting, no QCA ADSS, no IPQ4019 PCM/TDM
 audio driver, and no `qca,ipq4019-mbox` audio driver.
 
-A full OpenWrt build tree was not present in this workspace.  The statements
-above are based on the published v25.12.6 target Makefile and config; they are
-not a substitute for building the final image.
+A full OpenWrt image build tree was not used; the official target SDK was
+used for the module/package build.  The statements above are based on the
+published v25.12.6 target Makefile/config and the SDK kernel tree; they are
+not a substitute for a complete image build.
 
 ---
 
@@ -189,10 +190,10 @@ It does not match `qca,ipq4019-tdm`, `qca,ipq4019-pcm`, `qca,ipq4019-mbox`,
 or `qca,ipq4019-stereo`.  This prevents binding to an AVM/vendor driver and
 makes ownership explicit.
 
-Reference node (not yet tested on hardware):
+Reference node (the target 7530 patch keeps it disabled by default):
 
 ```dts
-fon_tdm: fon-tdm {
+fon_tdm: fon-tdm@7700000 {
     compatible = "avm,fon-tdm";
     qcom,tdm-slots = <8>;
 
@@ -205,20 +206,16 @@ fon_tdm: fon-tdm {
     reg-names = "adss", "pcm", "mbox_tx", "mbox_rx",
                 "stereo_tx", "stereo_rx";
 
-    clocks = <&adcc ADCC_TXB_CLK_SRC>,
-             <&adcc ADCC_TXM_CLK_SRC>,
-             <&adcc ADCC_RXB_CLK_SRC>,
-             <&adcc ADCC_RXM_CLK_SRC>;
-    clock-names = "audio_tx_bclk", "audio_tx_mclk",
-                  "audio_rx_bclk", "audio_rx_mclk";
-
-    resets = <&gcc AUDIO_BLK_ARES>;
-    reset-names = "blk_rst";
-
     interrupts = <0 156 0>, <0 159 0>;
     interrupt-names = "mbox0", "mbox3";
+    status = "disabled";
 };
 ```
+
+No `&adcc` phandle is used: mainline/OpenWrt 6.12 does not provide that
+provider.  The driver treats the four TDM clocks and the audio block reset as
+optional and never enables them.  Add real clock/reset phandles only after
+the providers exist and the reset/clock sequence has been validated.
 
 Important integration rules:
 
@@ -228,7 +225,9 @@ Important integration rules:
    maps only named resources and has no hardcoded addresses.
 3. If the ADCC provider is not ported, omit the clocks or mark them optional;
    do not replace them with fake clocks.
-4. The first test must leave `dma_prepare` and `dma_start` disabled.
+4. The first test must leave `dma_prepare` and `dma_start` disabled; leave
+   `diag_refresh` disabled until `allow_mmio_reads=1` and the clock/reset
+   prerequisites are proven.
 5. The node must not contain any ring/line voltage enable property.
 
 The driver's `adss` resource only needs the global registers (`0x34`); `pcm`
@@ -291,30 +290,23 @@ Covered:
 - RX status → register `0x44` 32-bit value and hook bit 7;
 - no write past the supplied frame.
 
-### 7.2 Compile against Linux 6.8 headers
+### 7.2 Target OpenWrt 25.12.6 build
 
-The full module links cleanly against the local 6.8 Ubuntu kernel headers:
+The actual target build is in `docs/fon-build-validation.md`:
 
 ```text
-CC [M] fon_tdm.o
-CC [M] fon_hw.o
-LD [M] fon_tdm_drv.ko
-MODPOST ...
+SDK: openwrt-sdk-25.12.6-ipq40xx-generic_gcc-14.3.0_musl_eabi
+Kernel: Linux 6.12.112, arm, ipq40xx/generic
 ```
 
-This is an API/compile check, not the target kernel.
+The package built a real target `fon_tdm_drv.ko` with clean `modpost` and
+produced `kmod-fon-tdm-6.12.112-r1.apk`.  ELF architecture, vermagic and
+undefined-symbol checks are recorded there.
 
-### 7.3 Compile against Linux 6.12.112 source
+### 7.3 Host compile check
 
-The objects `fon_tdm.o` and `fon_hw.o` compile against a prepared Linux
-6.12.112 source tree.  The final modpost step cannot be declared clean in this
-workspace because the prepared tree has no complete `Module.symvers` (a full
-kernel/module build was not performed).  Modpost consequently reports
-unresolved standard symbols.  This is an environment limitation, not a
-hardware or symbol-version validation.
-
-**No claim is made that the resulting `.ko` loads on OpenWrt 25.12.6.**
-A real target build with the OpenWrt toolchain and kernel is still required.
+The same sources also build cleanly against local Linux 6.8 headers for API
+regression checks.  This is not the target kernel.
 
 ---
 
@@ -327,12 +319,14 @@ Do not start with ring or line voltage.  Suggested order:
    audio drivers disabled.
 3. Boot with the module unloaded.  Verify the DT node exists and that no
    other driver owns the MMIO regions.
-4. Load `fon_tdm_drv.ko` with default parameters.  Check dmesg for the five
-   diagnostic stages and read:
+4. Load `fon_tdm_drv.ko` with default parameters.  Check dmesg and read:
    - `/sys/.../stage`
    - `/sys/.../diagnostics`
-5. Confirm `ADSS_GLB_TDM_CTRL_REG` reports 8 TX and 8 RX slots.  If not, stop
-   and update the DT/slot parameters; do not start DMA.
+   The default probe performs no MMIO reads and no DMA setup.
+5. Only after the ADSS clock/reset prerequisites are independently proven,
+   reload with `allow_mmio_reads=1` and write `1` to `diag_refresh`.  Confirm
+   `ADSS_GLB_TDM_CTRL_REG` reports 8 TX and 8 RX slots.  If not, stop and
+   update the DT/slot parameters; do not start DMA.
 6. Write `1` to `dma_prepare` only.  Confirm the 28-bit DMA addresses and
    descriptor allocation in dmesg.  Do not write `dma_start`.
 7. With a scope/logic analyzer on FSC/DCL (read-only), confirm the SC14448
@@ -356,4 +350,6 @@ The `dma_start` attribute is present but deliberately returns
   port if full ALSA/DAHDI support is desired.
 - The exact SC14448 slot-5 semantics and firmware dependency are unresolved.
 - The MBOX start/IRQ path has not been executed on hardware.
-- No full OpenWrt 25.12.6 build was performed in this workspace.
+- The module has not been loaded on a FRITZ!Box 7530.
+- A full OpenWrt firmware image was not built; only the target SDK module and
+  package were built.
