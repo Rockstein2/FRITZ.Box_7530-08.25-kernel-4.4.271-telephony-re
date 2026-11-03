@@ -8,6 +8,8 @@ package/kernel/fon-tdm/Makefile       OpenWrt KernelPackage
 package/kernel/fon-tdm/src -> ...     canonical src/fon-driver source symlink
 target/linux/ipq40xx/patches-6.12/
   900-arm-dts-ipq4019-fritzbox-7530-fon.patch
+test-patches/
+  901-arm-dts-ipq4019-fritzbox-7530-probe-only.patch
 dts/fon-tdm-7530-dtc-test.dts         standalone DTC syntax test
 ```
 
@@ -40,10 +42,11 @@ OpenWrt 25.12 uses `apk`, not `.ipk`.
 
 ## DTS patch
 
-The patch adds a board-specific `avm,fon-tdm` node to
+The normal patch adds a board-specific `avm,fon-tdm` node to
 `qcom-ipq4019-fritzbox-7530.dts` with `status = "disabled"`.  It does not
-change any other IPQ4019 board.  The target DTS can be enabled only for a
-bench test after the resource/clock review.
+change any other IPQ4019 board.  The optional `test-patches/901...` changes
+only that node to `status = "okay"` for a separate probe-only test image.
+Do not include `901` in the production image.
 
 The standalone DTC test is:
 

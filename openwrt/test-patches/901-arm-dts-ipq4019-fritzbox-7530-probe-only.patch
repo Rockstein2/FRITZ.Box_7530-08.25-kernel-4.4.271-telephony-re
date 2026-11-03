@@ -1,0 +1,11 @@
+--- a/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4019-fritzbox-7530.dts
++++ b/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4019-fritzbox-7530.dts
+@@ -44,7 +44,7 @@
+ 			interrupts = <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "mbox0", "mbox3";
+-			status = "disabled";
++			status = "okay";
+ 		};
+ 		tcsr@1949000 {
+ 			compatible = "qcom,tcsr";

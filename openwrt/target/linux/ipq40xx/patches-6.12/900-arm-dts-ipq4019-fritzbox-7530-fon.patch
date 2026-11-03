@@ -1,6 +1,6 @@
 --- a/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4019-fritzbox-7530.dts
 +++ b/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4019-fritzbox-7530.dts
-@@ -24,6 +24,27 @@
+@@ -24,6 +24,28 @@
  	};
  
  	soc {
@@ -21,7 +21,8 @@
 +			reg-names = "adss", "pcm", "mbox_tx", "mbox_rx",
 +				    "stereo_tx", "stereo_rx";
 +			qcom,tdm-slots = <8>;
-+			interrupts = <0 156 0>, <0 159 0>;
++			interrupts = <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>;
 +			interrupt-names = "mbox0", "mbox3";
 +			status = "disabled";
 +		};

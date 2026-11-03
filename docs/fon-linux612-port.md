@@ -206,7 +206,8 @@ fon_tdm: fon-tdm@7700000 {
     reg-names = "adss", "pcm", "mbox_tx", "mbox_rx",
                 "stereo_tx", "stereo_rx";
 
-    interrupts = <0 156 0>, <0 159 0>;
+    interrupts = <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>,
+                 <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>;
     interrupt-names = "mbox0", "mbox3";
     status = "disabled";
 };
