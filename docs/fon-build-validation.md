@@ -56,6 +56,10 @@ contiguous blocks, outer lengths, XOR checksums and boot helpers.  It also
 exercises the mockable slow/fast handshakes with an in-memory UART queue.
 The real image checks are skipped if the local firmware directory is absent.
 
+KUnit was not added for this iteration: the target SDK has no configured
+KUnit runner, and the testable frame/descriptor/state logic is deliberately
+kernel-independent.  The same functions are exercised by the userspace tests.
+
 ---
 
 ## 3. Target OpenWrt module build
@@ -168,7 +172,8 @@ fon-tdm@7700000
   reg = <0x07700000 0x34>, <0x07704000 0x2000>, ...
   reg-names = "adss", "pcm", "mbox_tx", "mbox_rx", "stereo_tx", "stereo_rx"
   qcom,tdm-slots = <8>
-  interrupts = <0 156 0>, <0 159 0>
+  interrupts = <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>,
+               <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>
   status = "disabled"
 ```
 
@@ -196,6 +201,77 @@ build.
 - No MBOX DMA start was executed.
 - No SC14448 firmware was uploaded.
 - No line/ring voltage or GPIO reset was applied.
+
+## 6. Probe-only mode and static analysis
+
+The current module defaults to `probe_only=1`.  In this mode it parses the DT
+resources, IRQ and clock/reset/pinctrl *references* without acquiring or
+mapping any of them.  It does not call `devm_ioremap_resource`,
+`devm_clk_get_optional`, `devm_reset_control_get_optional_exclusive`,
+`devm_pinctrl_get`, `dma_alloc_coherent`, `request_irq`, GPIO or firmware
+code.  See `docs/fon-resource-audit.md`.
+
+The target build was repeated after this change and remained clean:
+
+```text
+CC [M] fon_tdm.o
+CC [M] fon_dma.o
+CC [M] fon_hw.o
+LD [M] fon_tdm_drv.o
+MODPOST
+LD [M] fon_tdm_drv.ko
+```
+
+The target `.apk` is now 7.8 KiB.  The exact BuildID changes with the build
+timestamp and is not a functional identifier.
+
+### 6.1 checkpatch
+
+```text
+checkpatch.pl --no-tree -f src/fon-driver/*.c src/fon-driver/*.h
+```
+
+Result: 0 errors.  The only warnings are the deliberate
+`LINUX_VERSION_CODE` guard around the 6.8/6.12 `platform_driver.remove`
+signature.  The module is intended to compile in both API environments during
+development; the guard is not hiding a warning from the target build.
+
+### 6.2 sparse
+
+The module was checked with `sparse` through the host 6.8 build:
+
+```sh
+make -C /lib/modules/$(uname -r)/build      M=$PWD/src/fon-driver CONFIG_FON_TDM=m C=1      CHECK=/path/to/sparse modules
+```
+
+Result: `sparse` emitted no diagnostics for `fon_tdm.c`, `fon_dma.c` or
+`fon_hw.c`.  This is a host API check; the real target build is the SDK build
+above.
+
+### 6.3 Probe-only DTS
+
+The normal patch keeps `status = "disabled"`.  A separate optional patch:
+
+```text
+openwrt/test-patches/901-arm-dts-ipq4019-fritzbox-7530-probe-only.patch
+```
+
+changes only the FON node to `status = "okay"` for a dedicated test image.
+It was applied after `900` and compiled with the target DTC; the resulting DTB
+contains the six resources, IRQ 156/159 and `status = "okay"`.
+
+Do not include this optional patch in the production image.
+
+---
+
+## 7. Safety result
+
+```text
+probe-only module:        built, no hardware touched
+probe-only DT test DTB:   compiled
+full MMIO/DMA mode:       NOT READY
+hardware test:            not executed
+```
 
 The real target `.ko` and `.apk` prove that the code, target kernel headers,
 cross compiler, symbol table and packaging path are consistent.  They do not
