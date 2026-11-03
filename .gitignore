@@ -17,3 +17,6 @@ __pycache__/
 
 # Private session handoff (not for publication)
 HANDOFF.md
+
+# Local CodeGraph index (generated, not source)
+.codegraph/
