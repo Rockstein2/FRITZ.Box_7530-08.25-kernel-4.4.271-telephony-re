@@ -25,6 +25,7 @@
 #include <linux/kstrtox.h>
 #include <linux/module.h>
 #include <linux/of.h>
+#include <linux/of_address.h>
 #include <linux/of_device.h>
 #include <linux/pinctrl/consumer.h>
 #include <linux/platform_device.h>
@@ -51,6 +52,89 @@ static bool allow_mmio_reads;
 module_param(allow_mmio_reads, bool, 0444);
 MODULE_PARM_DESC(allow_mmio_reads,
 		 "Allow explicit read-only MMIO diagnostics after the caller has proven the ADSS clock/reset state (default: false)");
+
+/*
+ * probe_only is the default and intentionally acquires no MMIO, clock or
+ * reset resource.  It is the first hardware-test mode: it only reports what
+ * the DT describes and whether sibling DT reg ranges overlap.
+ */
+static bool probe_only = true;
+module_param(probe_only, bool, 0444);
+MODULE_PARM_DESC(probe_only,
+		 "Do not map MMIO or acquire clocks/reset/pinctrl (default: true)");
+
+static const char *const fon_resource_names[FON_RESOURCE_COUNT] = {
+	"adss", "pcm", "mbox_tx", "mbox_rx", "stereo_tx", "stereo_rx",
+};
+
+static unsigned int fon_dt_string_count(struct device_node *np,
+					  const char *name)
+{
+	int count = of_property_count_strings(np, name);
+
+	return count > 0 ? (unsigned int)count : 0;
+}
+
+static bool fon_resource_overlap(const struct resource *a,
+				 const struct resource *b)
+{
+	return a->start <= b->end && b->start <= a->end;
+}
+
+/*
+ * DT-level overlap check only.  It detects sibling nodes that describe
+ * overlapping reg ranges; it cannot prove which driver owns an iomem
+ * resource.  It performs no request_mem_region() and no MMIO access.
+ */
+static bool fon_dt_resource_overlaps(struct device_node *np,
+				     struct resource *res)
+{
+	struct device_node *sibling;
+	unsigned int index;
+
+	for_each_child_of_node(np->parent, sibling) {
+		struct resource other;
+
+		if (sibling == np)
+			continue;
+		for (index = 0; index < 16; index++) {
+			if (of_address_to_resource(sibling, index, &other))
+				break;
+			if (fon_resource_overlap(res, &other)) {
+				of_node_put(sibling);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+static void fon_report_resources(struct fon_tdm_dev *tdm)
+{
+	struct device_node *np = tdm->dev->of_node;
+	unsigned int i;
+
+	tdm->clock_refs = fon_dt_string_count(np, "clock-names");
+	tdm->reset_refs = fon_dt_string_count(np, "reset-names");
+	tdm->pinctrl_ref = of_find_property(np, "pinctrl-0", NULL) != NULL;
+
+	for (i = 0; i < FON_RESOURCE_COUNT; i++) {
+		struct resource *res = platform_get_resource_byname(
+			to_platform_device(tdm->dev), IORESOURCE_MEM,
+			fon_resource_names[i]);
+
+		if (!res)
+			continue;
+		tdm->resource_mask |= BIT(i);
+		tdm->dt_res[i] = res;
+		if (fon_dt_resource_overlaps(np, res)) {
+			tdm->dt_overlap = true;
+			dev_warn(tdm->dev,
+				 "DT reg overlap: %s %pa-%pa\n",
+				 fon_resource_names[i], &res->start, &res->end);
+		}
+	}
+}
 
 static void fon_dma_ring_free(struct device *dev, struct fon_dma_ring *ring)
 {
@@ -149,6 +233,9 @@ static int fon_tdm_dma_prepare(struct fon_tdm_dev *tdm)
 		return 0;
 	if (tdm->state != FON_STATE_RESOURCES_READY)
 		return -ENODEV;
+	if (!tdm->adss || !tdm->mbox_tx || !tdm->mbox_rx ||
+	    !tdm->stereo_tx || !tdm->stereo_rx)
+		return -ENODEV;
 
 	if (tdm->slots < 2 || tdm->slots > FON_TDM_MAX_SLOTS)
 		return -EINVAL;
@@ -217,10 +304,28 @@ static ssize_t diagnostics_show(struct device *dev, struct device_attribute *att
 	if (!tdm)
 		return -ENODEV;
 	mutex_lock(&tdm->lock);
+	n += sysfs_emit_at(buf, n, "mode=%s\n",
+			   tdm->probe_only ? "probe-only" : "full");
 	n += sysfs_emit_at(buf, n, "state=%u\n", tdm->state);
 	n += sysfs_emit_at(buf, n, "diag_valid=%u\n", tdm->diag_valid);
 	n += sysfs_emit_at(buf, n, "stage=0x%x\n", tdm->stage);
+	n += sysfs_emit_at(buf, n, "resource_mask=0x%x\n", tdm->resource_mask);
+	n += sysfs_emit_at(buf, n, "dt_overlap=%u\n", tdm->dt_overlap);
+	n += sysfs_emit_at(buf, n, "clock_refs=%u\n", tdm->clock_refs);
+	n += sysfs_emit_at(buf, n, "reset_refs=%u\n", tdm->reset_refs);
+	n += sysfs_emit_at(buf, n, "pinctrl_ref=%u\n", tdm->pinctrl_ref);
 	n += sysfs_emit_at(buf, n, "slots=%u\n", tdm->slots);
+	for (unsigned int i = 0; i < FON_RESOURCE_COUNT; i++) {
+		struct resource *res = tdm->dt_res[i];
+
+		if (!res)
+			continue;
+		n += sysfs_emit_at(buf, n,
+				   "resource[%u]=%s start=0x%llx end=0x%llx\n",
+				   i, fon_resource_names[i],
+				   (unsigned long long)res->start,
+				   (unsigned long long)res->end);
+	}
 	n += sysfs_emit_at(buf, n, "adss_tx_slots=%u\n", tdm->adss_tx_slots);
 	n += sysfs_emit_at(buf, n, "adss_rx_slots=%u\n", tdm->adss_rx_slots);
 	n += sysfs_emit_at(buf, n, "irq=%d\n", tdm->irq);
@@ -269,13 +374,19 @@ static ssize_t diag_refresh_store(struct device *dev,
 		ret = -ENODEV;
 		goto out;
 	}
+	if (tdm->probe_only) {
+		dev_warn(dev, "MMIO diagnostics refused in probe-only mode\n");
+		ret = -EPERM;
+		goto out;
+	}
 	if (!allow_mmio_reads) {
 		dev_warn(dev,
 			 "MMIO diagnostics refused: load with allow_mmio_reads=1 only after ADSS clock/reset is proven safe\n");
 		ret = -EPERM;
 		goto out;
 	}
-	if (tdm->state < FON_STATE_RESOURCES_READY) {
+	if (tdm->state < FON_STATE_RESOURCES_READY ||
+	    (!tdm->adss && !tdm->stereo_tx && !tdm->stereo_rx)) {
 		ret = -ENODEV;
 		goto out;
 	}
@@ -304,6 +415,11 @@ static ssize_t dma_prepare_store(struct device *dev,
 	mutex_lock(&tdm->lock);
 	if (tdm->removing) {
 		ret = -ENODEV;
+		goto out;
+	}
+	if (tdm->probe_only) {
+		dev_warn(dev, "DMA prepare refused in probe-only mode\n");
+		ret = -EPERM;
 		goto out;
 	}
 	if (!enable) {
@@ -490,6 +606,38 @@ static int fon_tdm_probe(struct platform_device *pdev)
 		dev_warn(&pdev->dev,
 			 "qcom,tdm-slots=%u: only the recovered 8-slot FON geometry is validated\n",
 			 slots);
+	tdm->probe_only = probe_only;
+	fon_report_resources(tdm);
+	if (!tdm->resource_mask) {
+		dev_err(&pdev->dev, "no ADSS/PCM/MBOX resources in DT\n");
+		return -ENODEV;
+	}
+
+	tdm->irq = platform_get_irq_optional(pdev, 0);
+	if (tdm->irq == -ENXIO)
+		tdm->irq = -1;
+	else if (tdm->irq == -EPROBE_DEFER)
+		return -EPROBE_DEFER;
+	else if (tdm->irq < 0) {
+		dev_warn(&pdev->dev, "optional IRQ unavailable: %d\n", tdm->irq);
+		tdm->irq = -1;
+	}
+
+	if (tdm->probe_only) {
+		tdm->stage |= FON_STAGE_RESOURCES | FON_STAGE_PROBE_ONLY;
+		tdm->state = FON_STATE_RESOURCES_READY;
+		dev_info(&pdev->dev,
+			 "probe-only: resources=0x%x irq=%d clock_refs=%u reset_refs=%u pinctrl_ref=%u dt_overlap=%u\n",
+			 tdm->resource_mask, tdm->irq, tdm->clock_refs,
+			 tdm->reset_refs, tdm->pinctrl_ref, tdm->dt_overlap);
+		ret = devm_device_add_group(&pdev->dev, &fon_tdm_group);
+		if (ret)
+			return ret;
+		dev_info(&pdev->dev,
+			 "FON probe-only ready; no MMIO/clock/reset/DMA access\n");
+		return 0;
+	}
+
 	tdm->adss = fon_map_resource(pdev, "adss");
 	if (IS_ERR(tdm->adss))
 		return PTR_ERR(tdm->adss);
@@ -509,11 +657,6 @@ static int fon_tdm_probe(struct platform_device *pdev)
 	if (IS_ERR(tdm->stereo_rx))
 		return PTR_ERR(tdm->stereo_rx);
 
-	if (!tdm->adss && !tdm->pcm && !tdm->mbox_tx && !tdm->mbox_rx) {
-		dev_err(&pdev->dev, "no ADSS/PCM/MBOX resources in DT\n");
-		return -ENODEV;
-	}
-
 	for (i = 0; i < ARRAY_SIZE(tdm->clks); i++) {
 		tdm->clks[i] = devm_clk_get_optional(&pdev->dev, clk_names[i]);
 		if (IS_ERR(tdm->clks[i]))
@@ -531,16 +674,10 @@ static int fon_tdm_probe(struct platform_device *pdev)
 	if (IS_ERR(tdm->pinctrl))
 		tdm->pinctrl = NULL;
 
-	tdm->irq = platform_get_irq_optional(pdev, 0);
-	if (tdm->irq == -ENXIO)
-		tdm->irq = -1;
-	else if (tdm->irq < 0)
-		return tdm->irq;
-
 	tdm->stage |= FON_STAGE_RESOURCES;
 	tdm->state = FON_STATE_RESOURCES_READY;
 	dev_info(&pdev->dev,
-		 "resources: adss=%s pcm=%s mbox_tx=%s mbox_rx=%s stereo_tx=%s stereo_rx=%s irq=%d\n",
+		 "full resources: adss=%s pcm=%s mbox_tx=%s mbox_rx=%s stereo_tx=%s stereo_rx=%s irq=%d\n",
 		 tdm->adss ? "yes" : "no", tdm->pcm ? "yes" : "no",
 		 tdm->mbox_tx ? "yes" : "no", tdm->mbox_rx ? "yes" : "no",
 		 tdm->stereo_tx ? "yes" : "no", tdm->stereo_rx ? "yes" : "no",

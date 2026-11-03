@@ -490,7 +490,8 @@ flag remains zero and the ADSS is configured as a slave.
 
 ## 9. Driver diagnostic path
 
-`src/fon-driver/fon_hw.c` implements only the safe part of this document:
+`src/fon-driver/fon_hw.c` implements only the safe part of this document.
+The default `probe_only=1` mode does not map or acquire any hardware resource:
 
 1. platform device probe;
 2. DT named MMIO resources (`adss`, `pcm`, `mbox_tx`, `mbox_rx`,

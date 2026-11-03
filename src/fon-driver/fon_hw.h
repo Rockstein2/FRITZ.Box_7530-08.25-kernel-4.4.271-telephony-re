@@ -8,6 +8,7 @@
 #include <linux/dma-mapping.h>
 #include <linux/kernel.h>
 #include <linux/io.h>
+#include <linux/ioport.h>
 #include <linux/pinctrl/consumer.h>
 #include <linux/platform_device.h>
 #include <linux/reset.h>
@@ -69,7 +70,10 @@ enum fon_tdm_stage {
 	FON_STAGE_REGS       = BIT(2),
 	FON_STAGE_TDM        = BIT(3),
 	FON_STAGE_DMA_READY  = BIT(4),
+	FON_STAGE_PROBE_ONLY = BIT(5),
 };
+
+#define FON_RESOURCE_COUNT 6
 
 struct fon_dma_ring {
 	struct fon_mbox_desc *desc;
@@ -82,6 +86,13 @@ struct fon_dma_ring {
 
 struct fon_tdm_dev {
 	struct device *dev;
+	bool probe_only;
+	bool dt_overlap;
+	unsigned int resource_mask;
+	unsigned int clock_refs;
+	unsigned int reset_refs;
+	bool pinctrl_ref;
+	struct resource *dt_res[FON_RESOURCE_COUNT];
 
 	void __iomem *adss;
 	void __iomem *pcm;

@@ -9,6 +9,16 @@ fon_hw.h/.c    platform driver, DT resources, safe diagnostics, DMA ring prep
 tests/         host-side tests for the pure helpers
 ```
 
+## Modes
+
+```text
+probe_only=1  (default)  report DT resources only; no MMIO/clock/reset/DMA
+probe_only=0            map resources and obtain optional clock/reset/pinctrl
+                        handles, but still no read/write/clock enable/DMA
+```
+
+The first hardware test uses `probe_only=1`.
+
 ## State machine
 
 ```text
