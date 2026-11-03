@@ -19,10 +19,20 @@ gpio_avm_dect_rd    = GPIO16
 gpio_avm_dect_tx    = absent on the 7530 board table
 ```
 
+Verified against the local AVM GPL 08.25 source tarball:
+
+```text
+source-files-FRITZ.Box_7530-cortexa9-08.25.tar.gz
+SHA-256 8fe167fe849108d0f4fa99ee8c78c34bb8893993780387fe500c3e68fa66bcf0
+sources/kernel/linux/arch/arm/boot/dts/Fritz_Box_HW236.dtsi:336-339
+```
+
 The static Piglet fallback profile contains GPIO18, but the production HW236
 board table is the authoritative value for this board file.  The difference
 is a real finding: **do not use GPIO18 from the fallback profile without
-checking the actual board revision and GPIO ownership**.
+checking the actual board revision and GPIO ownership**.  GPIO40 is statically
+confirmed; the physical connection to the SC14448 reset pin is still
+unverified.
 
 The reset is active-high according to the board table.  The loader sequence
 observed in `Piglet_noemif.ko` is:

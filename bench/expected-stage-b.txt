@@ -1,0 +1,46 @@
+Probe-only Stage B expected subset
+=================================
+
+dmesg contains:
+  probe-only: resources=0x3f irq=188 clock_refs=0 reset_refs=0 pinctrl_ref=0 dt_overlap=0
+  FON probe-only ready; no MMIO/clock/reset/DMA access
+
+stage:
+  0x23
+
+diagnostics:
+  mode=probe-only
+  state=1
+  diag_valid=0
+  stage=0x23
+  resource_mask=0x3f
+  dt_overlap=0
+  clock_refs=0
+  reset_refs=0
+  pinctrl_ref=0
+  slots=8
+  resource[0]=adss start=0x7700000 end=0x7700033
+  resource[1]=pcm start=0x7704000 end=0x7705fff
+  resource[2]=mbox_tx start=0x7708000 end=0x7708fff
+  resource[3]=mbox_rx start=0x770e000 end=0x770efff
+  resource[4]=stereo_tx start=0x7709000 end=0x7709fff
+  resource[5]=stereo_rx start=0x770f000 end=0x770ffff
+  adss_tx_slots=0
+  adss_rx_slots=0
+  irq=188
+  clk_present=0
+  reset_present=0
+  pinctrl_present=0
+  audio_mode=0x00000000
+  tdm_ctrl=0x00000000
+  clk_ctrl=0x00000000
+  i2s_rst=0x00000000
+  stereo_tx_cfg=0x00000000
+  stereo_rx_cfg=0x00000000
+  fon_ctrl_slot=5
+  fon_ctrl_offset=0xa
+  dma_prepared=0
+  dma_started=0
+
+Raw DT GIC_SPI 156 maps to Linux virq 188. Always compare actual dmesg and
+/proc/interrupts, not a hard-coded number.

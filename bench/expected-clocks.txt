@@ -1,0 +1,10 @@
+Passive TDM clock expectations (measure, do not assume)
+=======================================================
+
+FSC/FS   ~8 kHz
+DCL/BCLK ~1.024 MHz for 8 x 16-bit slots
+MCL      ~4.096 MHz if present
+
+These are nominal values from the recovered 8-slot geometry.  Actual
+frequency, duty cycle, polarity and driver direction must be measured with a
+scope/logic analyzer.  These files are not evidence that SC14448 is running.

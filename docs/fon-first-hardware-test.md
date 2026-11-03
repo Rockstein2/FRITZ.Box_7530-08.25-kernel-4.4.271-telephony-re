@@ -6,7 +6,11 @@ This test loads the module with `probe_only=1` (the default), verifies the
 platform device and driver lifecycle, and performs no MMIO, clock, reset, DMA,
 GPIO40, firmware or line/ring operation.
 
-Read `docs/fon-resource-audit.md` first.  The expected verdict is:
+The self-contained bench kit is in `bench/` and is the preferred way to run
+this test.  Copy the exact `.ko` plus `bench/*.sh` to the test router; the
+collector is read-only and the load/unload tools refuse without `--yes`.
+Read `docs/fon-resource-audit.md` and `docs/fon-recovery-plan.md` first.  The
+expected verdict is:
 
 ```text
 probe-only: GO
@@ -207,7 +211,14 @@ modinfo /tmp/fon_tdm_drv.ko
 file /tmp/fon_tdm_drv.ko
 ```
 
-Expected:
+Expected hash for this build:
+
+```text
+b2a5679c45f68bab0ea7d68109dd0b9952a208937554742cf1d537876b6181c5
+```
+
+The hash must be regenerated and re-recorded whenever the source changes.
+Expected metadata:
 
 ```text
 vermagic=6.12.112 SMP mod_unload ARMv7 p2v8
@@ -229,12 +240,13 @@ dmesg -T | tail -n 100
 Expected dmesg contains:
 
 ```text
-probe-only: resources=0x3f irq=156 clock_refs=0 reset_refs=0 pinctrl_ref=0 dt_overlap=0
+probe-only: resources=0x3f irq=188 clock_refs=0 reset_refs=0 pinctrl_ref=0 dt_overlap=0
 FON probe-only ready; no MMIO/clock/reset/DMA access
 ```
 
 `resources=0x3f` means all six named resources (bits 0–5) are described by
-the test DTS.  The exact IRQ value must be read from dmesg, not assumed.
+the test DTS.  `irq=188` is the expected Linux virq for raw DT `GIC_SPI 156`;
+the exact value must be read from dmesg, not assumed.
 
 If the normal disabled image is used, no `probe-only` probe message appears;
 that is expected because the device is disabled.  In that image, only module
@@ -275,17 +287,31 @@ resource[2]=mbox_tx start=0x7708000 end=0x7708fff
 resource[3]=mbox_rx start=0x770e000 end=0x770efff
 resource[4]=stereo_tx start=0x7709000 end=0x7709fff
 resource[5]=stereo_rx start=0x770f000 end=0x770ffff
-irq=156
+adss_tx_slots=0
+adss_rx_slots=0
+irq=188
 clk_present=0
 reset_present=0
 pinctrl_present=0
+audio_mode=0x00000000
+tdm_ctrl=0x00000000
+clk_ctrl=0x00000000
+i2s_rst=0x00000000
+stereo_tx_cfg=0x00000000
+stereo_rx_cfg=0x00000000
+fon_ctrl_slot=5
+fon_ctrl_offset=0xa
 dma_prepared=0
 dma_started=0
 ```
 
-The register fields after `dma_started` remain zero because no
-`diag_refresh` was issued.  Do not write to `diag_refresh`, `dma_prepare` or
-`dma_start` in this test.
+`irq=188` is the Linux virq for raw DT `GIC_SPI 156` (SPI + 32).  The raw
+DT value is 156; the driver prints the Linux virq returned by
+`platform_get_irq_optional()`.  Always verify the value in dmesg and
+`/proc/interrupts`; never hard-code either number in a safety decision.
+
+The register fields remain zero because no `diag_refresh` was issued.  Do not
+write to `diag_refresh`, `dma_prepare` or `dma_start` in this test.
 
 ### B.4 Confirm no memory claim or hardware access
 

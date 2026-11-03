@@ -39,6 +39,7 @@ make -C src/fon-firmware/tests run
 Result:
 
 ```text
+python mock suite: Ran 40 tests, OK
 fon_tdm_test: all tests passed
 fon_dma_test: all tests passed
 fon_dialog_test: all tests passed
@@ -112,7 +113,14 @@ bin/targets/ipq40xx/generic/packages/
 
 The package manager is `apk`, so the package is `.apk`, not `.ipk`.
 
-### 3.2 ELF and module metadata
+### 3.2 ELF, hash and module metadata
+
+Artifact hash for the runbook:
+
+```text
+sha256: b2a5679c45f68bab0ea7d68109dd0b9952a208937554742cf1d537876b6181c5
+size:   72768 bytes
+```
 
 ```text
 ELF 32-bit LSB relocatable, ARM, EABI5 version 1 (SYSV)
@@ -120,10 +128,14 @@ BuildID[sha1] present (value depends on the build timestamp)
 ```
 
 ```text
-license=GPL
-depends=
-name=fon_tdm_drv
-vermagic=6.12.112 SMP mod_unload ARMv7 p2v8
+license:        GPL
+depends:
+name:           fon_tdm_drv
+vermagic:       6.12.112 SMP mod_unload ARMv7 p2v8
+parm:           allow_dma:bool
+parm:           allow_hw_writes:bool
+parm:           allow_mmio_reads:bool
+parm:           probe_only:bool
 ```
 
 `depends=` is empty.  The unresolved symbol list consists of standard kernel
@@ -149,12 +161,23 @@ It applies to the OpenWrt 25.12.6 `qcom-ipq4019-fritzbox-7530.dts` and adds a
 `status = "disabled"` node, so the module is not activated merely by booting
 the DT.
 
+The optional `901` patch was checked after `900` in a pristine OpenWrt DTS
+git tree:
+
+```text
+900 apply:        rc=0
+901 apply --check: rc=0
+```
+
+See `openwrt/test-patches/README.md` for the order and production warning.
+
 The patch was tested with GNU patch and the DTS tree was compiled with the
 target `dtc` after applying the relevant OpenWrt ipq40xx DTS patches
 (`100`, `705`, `707`, `710`, `712`):
 
 ```sh
-patch -p5 < openwrt/target/linux/ipq40xx/patches-6.12/900-arm-dts-ipq4019-fritzbox-7530-fon.patch
+# from the OpenWrt source root, where the patch path begins with target/
+patch -p1 < /path/to/repo/openwrt/target/linux/ipq40xx/patches-6.12/900-arm-dts-ipq4019-fritzbox-7530-fon.patch
 
 cpp -x assembler-with-cpp -D__DTS__ -nostdinc \
     -I<target-kernel>/include -I<dts-dir> \

@@ -1,0 +1,19 @@
+Read-only Stage A expected evidence
+==================================
+
+Required:
+  uname -a                     -> target kernel 6.12.112
+  /etc/openwrt_release         -> OpenWrt 25.12.6 / ipq40xx/generic
+  /proc/cmdline                -> current boot args
+  /proc/iomem                  -> baseline; no 0x0770xxxx owner expected
+  /proc/interrupts             -> baseline; raw GIC SPI 156/159 may not appear
+  /proc/consoles               -> console ownership
+  /sys/firmware/devicetree/base/model -> avm,fritzbox-7530
+  FON status                   -> "disabled" on normal image, "okay" on test image
+  dmesg                        -> baseline before load
+  lsmod                        -> baseline modules
+
+After probe-only, the iomem snapshot must not change.
+
+UNVERIFIED at Stage A: actual runtime ownership, hidden secure mappings,
+actual UART console device name, debugfs availability.

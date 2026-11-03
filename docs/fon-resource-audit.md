@@ -72,11 +72,16 @@ probe-only DTS patch uses:
 <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>
 ```
 
+The raw DT numbers are 156 and 159.  Linux GIC translation adds 32 for
+`GIC_SPI`, so the Linux virq returned by `platform_get_irq_optional()` is
+expected to be **188** and **191**, not 156/159.  The runbook must use the
+virq printed by the driver; the raw DT value remains 156/159.
+
 The probe-only path calls `platform_get_irq_optional()` only.  It does **not**
 call `request_irq()`, enable the interrupt, or touch the MBOX interrupt
 status/enable registers.
 
-The exact runtime trigger configuration should still be checked from
+The exact runtime trigger configuration and virq should still be checked from
 `/proc/interrupts` after the test image boots.  The first test does not rely
 on the IRQ.
 
