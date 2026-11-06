@@ -62,12 +62,16 @@ map, and the real 7530 hardware configuration.
 ## FON standalone-driver track
 
 The `feature/fon-standalone-driver` branch investigates a minimal independent
-FXS driver for the 7530 analog port. Stage 1–3 documents:
+FXS driver for the 7530 analog port.
+
+Documentation is split into three layers (see `docs/README.md`):
 
 ```text
-docs/fon-hardware.md       hardware architecture, SLIC boundary, PCM/TDM
-docs/fon-avm-analysis.md   AVM module call chains and reimplementation set
-docs/fon-feasibility.md    risk table and CONDITIONAL GO / NO-GO decision
+docs/fon-known-facts.md          confirmed facts, each with its evidence class
+docs/fon-open-questions.md       every unresolved item and what closes it
+docs/fon-go-no-go.md             gates for each hardware stage
+docs/runbook/                    procedures and build records
+docs/history/                    analysis trail (historical, kept for provenance)
 ```
 
 Current conclusion: **CONDITIONAL GO**. The exact SLIC part and the QCA
@@ -189,7 +193,7 @@ PYTHONPATH=src/mock python3 -m unittest discover -s src/mock/tests -v
 - `reference/init.d/`: **local only after extraction**, vendor init scripts.
 - `include/`: reconstructed ABI, protocol and shared-memory layout headers.
 - `docs/`: FON hardware, AVM module and feasibility analyses.
-- `notes/`: per-module static analysis, including `pcmlink-sharedmem.md`.
+- `notes/`: per-module static analysis, including `notes/pcmlink-sharedmem.md`.
 - `src/mock/`: userspace-only models and tests; no kernel modules are loaded.
 - `src/tools/`: disassembly, xref and HEX inspection helpers.
 - `reports/imports/`: undefined symbols required by each module.

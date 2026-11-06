@@ -72,7 +72,7 @@ The driver binds only to:
 compatible = "avm,fon-tdm";
 ```
 
-See `docs/fon-linux612-port.md` for named MMIO resources and the example node.
+See `../../docs/history/fon-linux612-port.md` for named MMIO resources and the example node.
 The node must not overlap an enabled `qca,ipq4019-tdm`/`qca,ipq4019-pcm`
 driver.
 
@@ -90,4 +90,4 @@ dma_start      1 = explicit start request; gated and currently unsupported
 ```
 
 The first safe test is read-only and does not write `dma_prepare` or
-`dma_start`.  See the final report and `docs/fon-linux612-port.md`.
+`dma_start`.  See the final report and `../../docs/history/fon-linux612-port.md`.

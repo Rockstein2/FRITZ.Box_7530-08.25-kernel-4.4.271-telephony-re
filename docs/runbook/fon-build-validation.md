@@ -1,5 +1,9 @@
 # FON build validation
 
+> **Status: operational document.**
+> This is a runbook, not an evidence record.  Hardware facts are maintained in
+> `../fon-known-facts.md`; unresolved items in `../fon-open-questions.md`.
+
 Status: **target kernel module and OpenWrt package built; no hardware load**
 
 This is the validation record for the diagnostic FON TDM module.  The build
@@ -118,9 +122,17 @@ The package manager is `apk`, so the package is `.apk`, not `.ipk`.
 Artifact hash for the runbook:
 
 ```text
-sha256: b2a5679c45f68bab0ea7d68109dd0b9952a208937554742cf1d537876b6181c5
-size:   72768 bytes
+module sha256:  b867b8c5e362c397bc2ce5f8120cfc069d9eacd09dae2534e6343dc5dcdad870
+module size:    73980 bytes
+package sha256: 69373c99c93490f5baea6622e716cf62e35ad892104701acfc610450ad49c09b
+package size:   8198 bytes
 ```
+
+The package contains a **stripped** `.ko` (17976 bytes, different SHA-256)
+because OpenWrt runs `scripts/strip-kmod.sh` before packaging.  The bench
+manifest records the unstripped staging artifact, which is what must be copied
+to `/tmp/fon_tdm_drv.ko`.  Do not compare the package member hash with the
+manifest hash.
 
 ```text
 ELF 32-bit LSB relocatable, ARM, EABI5 version 1 (SYSV)
@@ -169,7 +181,7 @@ git tree:
 901 apply --check: rc=0
 ```
 
-See `openwrt/test-patches/README.md` for the order and production warning.
+See `../../openwrt/test-patches/README.md` for the order and production warning.
 
 The patch was tested with GNU patch and the DTS tree was compiled with the
 target `dtc` after applying the relevant OpenWrt ipq40xx DTS patches
@@ -214,13 +226,125 @@ build.
 
 ---
 
+## 4a. Full-image build (stock initramfs)
+
+A complete OpenWrt 25.12.6 tree was built on this workstation:
+
+```text
+tree:    openwrt-25.12.6-source (88 MiB unpacked)
+profile: ipq40xx / generic / avm_fritzbox-7530
+config:  CONFIG_ALL / CONFIG_ALL_KMODS disabled,
+         CONFIG_TARGET_ROOTFS_INITRAMFS=y
+command: make -j4 world V=s
+result:  EXIT=0
+version: r33311-981c978eff
+packages in manifest: 148
+```
+
+Artifacts (`bin/targets/ipq40xx/generic/`):
+
+| Artifact | Size | SHA-256 |
+|---|---|---|
+| `openwrt-ipq40xx-generic-avm_fritzbox-7530-initramfs-uImage.itb` | 8 335 848 | `c570f7284c647a50dddd6f10852ae4c857ef01dc3eeeaf72ecd6b9309e832e4f` |
+| `openwrt-ipq40xx-generic-avm_fritzbox-7530-squashfs-sysupgrade.bin` | — | see `sha256sums` |
+| `u-boot-fritz7530/uboot-fritz7530.bin` | 524 288 | `37faab9c…cffdd1e` (matches upstream) |
+
+FIT contents (parsed from the image itself):
+
+```text
+kernel-1   8 316 845 B  lzma   ARM OpenWrt Linux-6.12.112
+fdt-1         17 618 B  DTB    model "AVM FRITZ!Box 7530"
+                              compatible "avm,fritzbox-7530"
+                              fon-tdm node: absent (stock tree)
+```
+
+The stock image is smaller than the official release (8 335 848 vs
+8 713 764 bytes) because `CONFIG_ALL*` is disabled.
+
+Build-note: the log contains `install-bin-u-boot-fritz75{20,30}] Error 1
+(ignored)` entries, yet the resulting `uboot-fritz7530.bin` matches the
+upstream hash.  The ignored error concerns re-copying to `bin/`, not the
+artifact itself.
+
+## 4b. Full-image build (probe-only test image)
+
+Same tree and toolchain, with the FON package and DT patches `900` + `901`:
+
+```text
+config additions:
+  CONFIG_PACKAGE_kmod-fon-tdm=y
+  CONFIG_PACKAGE_kmod-usb-dwc3 / -qcom / -usb-xhci-hcd =y
+  CONFIG_PACKAGE_kmod-usb-storage / -uas =y
+  CONFIG_PACKAGE_kmod-fs-ext4, kmod-nls-cp437, kmod-nls-iso8859-1 =y
+  CONFIG_PACKAGE_block-mount, blkid, e2fsprogs =y
+patches:  900 (FON node, disabled) then 901 (status okay, test image only)
+command:  make -j4 world V=s
+result:   EXIT=0
+```
+
+Artifacts:
+
+| Artifact | Size | SHA-256 |
+|---|---|---|
+| `openwrt-ipq40xx-generic-avm_fritzbox-7530-initramfs-uImage.itb` | 9 129 136 | `7b06c830c4d34e261e3fd81a8674658ef9f4f54699165c3b5457ec20a24162f4` |
+| `openwrt-ipq40xx-generic-avm_fritzbox-7530-squashfs-sysupgrade.bin` | — | `29ff7e2a…` |
+| `packages/kmod-fon-tdm-6.12.112-r1.apk` | 8 192 | — |
+
+FIT contents verified by extraction:
+
+```text
+kernel-1  9 109 854 B  (lzma)
+fdt-1        17 897 B
+```
+
+The embedded DTB is byte-identical to the built board DTB:
+
+```text
+33398b584c385536349362cd75cb21d3bc554e9cb69d270f39641593f84a6f04
+  build_dir/.../image-qcom-ipq4019-fritzbox-7530.dtb
+  == extracted FIT fdt-1
+```
+
+Decompiled FON node inside the image:
+
+```text
+fon-tdm@7700000 {
+    compatible = "avm,fon-tdm";
+    reg = <0x7700000 0x34 0x7704000 0x2000 0x7708000 0x1000
+           0x770e000 0x1000 0x7709000 0x1000 0x770f000 0x1000>;
+    reg-names = "adss", "pcm", "mbox_tx", "mbox_rx", "stereo_tx", "stereo_rx";
+    qcom,tdm-slots = <0x08>;
+    interrupts = <0x00 0x9c 0x04 0x00 0x9f 0x04>;   /* SPI 156, 159 */
+    interrupt-names = "mbox0", "mbox3";
+    status = "okay";
+};
+```
+
+Driver and USB support present in the initramfs (`initramfs_data.cpio`):
+
+```text
+lib/modules/6.12.112/fon_tdm_drv.ko
+etc/modules.d/30-fs-ext4
+etc/modules.d/53-usb-dwc3-qcom
+etc/modules.d/54-usb-dwc3
+etc/modules.d/54-usb-xhci-hcd
+etc/modules.d/usb-storage
+etc/modules.d/usb-storage-uas
+```
+
+The driver ships as a **loadable module**, so `bench/load-probe-only.sh` and
+`bench/unload.sh` apply unchanged.
+
+Note: the embedded kernel's build timestamp is inherited from the stock build
+(`Wed Oct 17 23:45:38 2026`) because the DTS change only rebuilds the DTB and
+relinks the FIT; the kernel binary itself is unchanged.
+
 ## 5. What was not validated
 
 - The module was **not loaded** on a FRITZ!Box 7530.
 - No `probe`, sysfs or MMIO behavior was observed on hardware.
-- No full OpenWrt firmware image was built in this workspace.
-- The target DTS was compiled as a standalone DTS with OpenWrt DTS patches;
-  it was not injected into a complete image build.
+- The stock image was **built but never booted**; boot behaviour on the bench
+  remains `UNVERIFIED`.
 - No MBOX DMA start was executed.
 - No SC14448 firmware was uploaded.
 - No line/ring voltage or GPIO reset was applied.
@@ -232,7 +356,7 @@ resources, IRQ and clock/reset/pinctrl *references* without acquiring or
 mapping any of them.  It does not call `devm_ioremap_resource`,
 `devm_clk_get_optional`, `devm_reset_control_get_optional_exclusive`,
 `devm_pinctrl_get`, `dma_alloc_coherent`, `request_irq`, GPIO or firmware
-code.  See `docs/fon-resource-audit.md`.
+code.  See `../history/fon-resource-audit.md`.
 
 The target build was repeated after this change and remained clean:
 
@@ -247,6 +371,22 @@ LD [M] fon_tdm_drv.ko
 
 The target `.apk` is now 7.8 KiB.  The exact BuildID changes with the build
 timestamp and is not a functional identifier.
+
+### 6.0 Probe-only IRQ handling
+
+Probe-only no longer calls `platform_get_irq_optional()`.  On Linux 6.12,
+`of_irq_get()` → `irq_create_of_mapping()` → `irq_create_fwspec_mapping()`
+can allocate a Linux virq mapping and store the DT trigger type in the irq
+domain.  Probe-only parses the raw specifier with `of_irq_parse_one()` and
+reports:
+
+```text
+irq_spi=156/159   raw DT GIC SPI
+irq_intid=188/191 GIC INTID (SPI + 32)
+irq=-1            no Linux virq requested
+```
+
+Full mode keeps `platform_get_irq_optional()`.
 
 ### 6.1 checkpatch
 
@@ -271,6 +411,46 @@ Result: `sparse` emitted no diagnostics for `fon_tdm.c`, `fon_dma.c` or
 `fon_hw.c`.  This is a host API check; the real target build is the SDK build
 above.
 
+### 6.2b Bench-script tests
+
+`sh bench/tests/run.sh` runs the loader/unload scripts against a fake root
+and stub commands (`insmod`, `rmmod`, `modinfo`, `lsmod`, ...).  No real
+module operation is possible.  Last result:
+
+```text
+29 passed, 0 failed
+```
+
+Covers no `--yes`, wrong SHA, wrong board/compatible/kernel/module, missing or
+disabled FON node, already loaded, insmod failure, bind failure, wrong stage,
+changed `/proc/iomem`, output-dir reuse, unload failure, leftover sysfs, and
+cleanup after failed verification.  Every pre-load refusal proves the
+`insmod` stub was not invoked.
+
+`sh tools/tests/prepare-fon-tree.sh` runs the DT preparation script against
+temporary OpenWrt-like trees.  Last result:
+
+```text
+13 passed, 0 failed
+```
+
+Covers disabled/okay states, symlink correctness, no extra DTS changes,
+idempotent re-runs, invalid `FON_PROBE_ONLY`, and refusal to reverse an
+already-probe tree.  `PRISTINE_DTS=` must point at an unpatched board DTS so
+the test is independent of the state of the host OpenWrt tree.
+
+`sh tools/tests/prepare-fon-image.sh` tests the DTB preparation script against
+isolated temporary trees with a real prepared kernel include tree and `dtc`.
+It requires `PRISTINE_DTS`, `KERNEL_INCLUDE` and `DTC`.  Last result:
+
+```text
+10 passed, 0 failed
+```
+
+Covers normal/probe DTB generation, the exact `status` value in each, the
+recorded SHA-256 file, the normal-vs-probe node diff being only the status
+line, refusal of an invalid `FON_PROBE_ONLY`, and refusal of a missing `dtc`.
+
 ### 6.3 Probe-only DTS
 
 The normal patch keeps `status = "disabled"`.  A separate optional patch:
@@ -280,8 +460,17 @@ openwrt/test-patches/901-arm-dts-ipq4019-fritzbox-7530-probe-only.patch
 ```
 
 changes only the FON node to `status = "okay"` for a dedicated test image.
-It was applied after `900` and compiled with the target DTC; the resulting DTB
-contains the six resources, IRQ 156/159 and `status = "okay"`.
+Both patches were regenerated against the pristine board DTS and applied in
+order to the full OpenWrt 25.12.6 tree; the target DTC then compiled the board
+DTS.  Resulting DTBs (`tools/prepare-fon-image.sh`, SHA-256):
+
+```text
+normal  qcom-ipq4019-fritzbox-7530-normal.dtb  9023d18e6a50c65faa5a2c3424f07a861154c651268da12a30663b7406d986c2
+probe   qcom-ipq4019-fritzbox-7530-probe.dtb   e2223064178199c19bd4dec918d22d4d203d85e6e15bdeee202aac3f4df0428b
+```
+
+Both contain the six resources and `interrupts = <GIC_SPI 156 ...>, <GIC_SPI
+159 ...>`; the decompiled FON nodes differ only in the `status` line.
 
 Do not include this optional patch in the production image.
 

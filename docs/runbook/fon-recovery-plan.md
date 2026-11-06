@@ -1,5 +1,9 @@
 # FON test recovery and rollback plan
 
+> **Status: operational document.**
+> This is a runbook, not an evidence record.  Hardware facts are maintained in
+> `../fon-known-facts.md`; unresolved items in `../fon-open-questions.md`.
+
 Status: **prepared, not executed**
 
 This plan is for a separate bench/test image only.  The production router
@@ -43,6 +47,13 @@ Before Stage B, the operator must have a tested, documented procedure to
 return to the known-good production image, including any required bootloader
 or recovery-tool steps.  The procedure is outside this repository until it
 has been verified on the bench.
+
+### C. RAM-only boot (recommended first contact)
+
+A third arrangement boots a test initramfs over TFTP and never writes NAND.
+See `fon-recovery-ram-boot.md`.  Its rollback is "remove power", which
+makes it the only arrangement usable before a flash rollback has been
+verified on the bench.
 
 ## 2. Serial console / recovery observations
 

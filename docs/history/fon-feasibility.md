@@ -1,13 +1,21 @@
 # FON standalone-driver feasibility
 
+> **Status: historical analysis.**
+> This document records the reasoning and evidence as of the date it was
+> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
+> answered.
+> - Current confirmed facts: `../fon-known-facts.md`
+> - Current open questions: `../fon-open-questions.md`
+> - This file is kept for the reasoning trail, not as a status report.
+
 Status: stage 3 assessment, updated by stages 4–6. This is a
 static/architectural conclusion, not a tested driver.
 
-> Stage 4 update: `docs/fon-control-path.md` adds the Dialog SC14448
+> Stage 4 update: `fon-control-path.md` adds the Dialog SC14448
 > hypothesis and the firmware/UART/PCM evidence. The conclusion remains
 > **CONDITIONAL GO**, with a new firmware-dependency condition.
 >
-> Stage 5 update: `docs/fon-pcmlink-register-path.md` recovers the actual
+> Stage 5 update: `fon-pcmlink-register-path.md` recovers the actual
 > transport. FON registers are consumed by `TxDMA` and become a 16-bit control
 > word in **TDM/MBOX slot 5**; hook status is read from RX slot 5 by
 > `PutRxDMA`. The old “missing transport” risk is removed, but the QCA ADSS
@@ -18,8 +26,8 @@ static/architectural conclusion, not a tested driver.
 > objects, passes offline frame/control tests, prepares TX/RX MBOX rings, and
 > keeps DMA start/line control disabled. The actual MBOX start path, the
 > SC14448 firmware dependency and the high-voltage line topology remain
-> blockers. See `docs/fon-tdm-hardware.md`, `docs/fon-linux612-port.md` and
-> `docs/fon-dialog-dependency.md`.
+> blockers. See `fon-tdm-hardware.md`, `fon-linux612-port.md` and
+> `fon-dialog-dependency.md`.
 
 ## 1. Direct answers
 
@@ -157,7 +165,7 @@ semantics and discrete line-interface topology), not licensing.
 
 ## 1.1 Stage 4 update: the Dialog SC14448 hypothesis
 
-`docs/fon-control-path.md` investigates whether FON is an LM324 analog path
+`fon-control-path.md` investigates whether FON is an LM324 analog path
 plus the SC14448 codec.
 
 Result at stage 4: **largely supported at board level, with a new hard
@@ -188,7 +196,7 @@ controller.
 
 ## 1.2 Stage 5 update: actual transport recovered
 
-`docs/fon-pcmlink-register-path.md` reconstructs the complete Linux-side path:
+`fon-pcmlink-register-path.md` reconstructs the complete Linux-side path:
 
 ```text
 slic_set_ring / Set_POTS_Line_FPGA
@@ -252,7 +260,7 @@ Consequences:
 | Userspace/Asterisk integration | **LIKELY** | ALSA PCM + small control interface |
 | GPL-compatible clean implementation | **CONFIRMED** | no proprietary code required |
 | DECT/ISDN/CAPI exclusion | **CONFIRMED** | not needed for one FXS port |
-| Actual FON control transport | **CONFIRMED** | `TxDMA`/`PutRxDMA` use TDM/MBOX frame slot 5; QCA ADSS MBOX DMA; see `docs/fon-pcmlink-register-path.md` |
+| Actual FON control transport | **CONFIRMED** | `TxDMA`/`PutRxDMA` use TDM/MBOX frame slot 5; QCA ADSS MBOX DMA; see `fon-pcmlink-register-path.md` |
 | SC14448 control-word semantics | **UNKNOWN / HIGH RISK** | 16-bit control/status slot is confirmed; exact SC14448 parsing/pins/firmware not proven |
 | SC14448 firmware dependency | **UNKNOWN / HIGH RISK** | with no separate SLIC or CPLD identified, the SC14448 is the only known plausible digital controller; firmware role not proven |
 | FON PHY topology | **UNKNOWN** | discrete LM324/BCP53-16; the 14-pin device is LM324, no separate SLIC identified; high-voltage/ring topology not known |

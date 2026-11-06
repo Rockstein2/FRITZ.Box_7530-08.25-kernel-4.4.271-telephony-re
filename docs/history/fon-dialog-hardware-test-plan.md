@@ -1,9 +1,17 @@
 # SC14448 / Dialog hardware test plan
 
+> **Status: historical analysis.**
+> This document records the reasoning and evidence as of the date it was
+> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
+> answered.
+> - Current confirmed facts: `../fon-known-facts.md`
+> - Current open questions: `../fon-open-questions.md`
+> - This file is kept for the reasoning trail, not as a status report.
+
 Status: **research and bench-plan only; no reset, UART upload, firmware or
 line test was performed**
 
-This is deliberately separate from `docs/fon-first-hardware-test.md`.  The
+This is deliberately separate from `../runbook/fon-first-hardware-test.md`.  The
 first FON module test must not touch the Dialog reset, UART ownership, audio
 clocks or line circuit.
 
@@ -34,17 +42,33 @@ checking the actual board revision and GPIO ownership**.  GPIO40 is statically
 confirmed; the physical connection to the SC14448 reset pin is still
 unverified.
 
-The reset is active-high according to the board table.  The loader sequence
-observed in `Piglet_noemif.ko` is:
+Cross-check against `wiki-fritzos-oem-bootlog-reference.txt`: the log lists `gpio_avm_led_fon` on
+**GPIO35**, not GPIO40.  GPIO40 is a different signal (DECT reset, per the
+HW236 board table) and must not be conflated with the FON LED.  See
+`fon-oem-bootlog-crosscheck.md` section 3.5.
+
+`AVM_DEF_HW_PARAM_GPIO_OUT_ACTIVE_HIGH` is an **AVM software/GPIO-subsystem
+convention**, not proof of the electrical polarity at the SC14448 reset pin.
+It says how the AVM GPIO helper interprets a logical 1/0; it does not prove
+whether the SoC pin or an external inverter drives the chip reset high or
+low.  The electrical polarity and the actual reset net remain **UNVERIFIED**
+until measured/schematic-confirmed.
+
+The loader sequence observed in `Piglet_noemif.ko` is:
 
 ```text
 configure GPIO output
-drive low (assert reset)
+drive the AVM logical "assert" level
 delay
 initialize/configure the DECT UART
-drive high (release reset)
+drive the AVM logical "release" level
 delay
 ```
+
+Do not describe that first level as "electrical reset low" without hardware
+evidence.  Also note the firmware is uploaded **after** reset release, never
+while reset is held: the loader opens the UART and starts the handshake only
+after the release step.
 
 A future loader must first prove:
 
@@ -224,6 +248,29 @@ No stage above authorizes DMA, ringing, line feed or a production image
 change.
 
 ---
+
+## 6a. Reference values from the OEM bootlog
+
+These values were observed on a working FRITZ!OS 4.4.60 boot.  They are
+**reference points for comparison**, not settings to copy blindly; see
+`fon-oem-bootlog-crosscheck.md` for the full analysis.
+
+| Quantity | OEM value | Note |
+|---|---|---|
+| TDM frame sync | 8000 Hz | confirmed |
+| TDM clock | ~1 025 720 Hz | measured; near but not equal to 8x16x8 kHz |
+| MBOX3 interrupt | INTID 191 | `159 + 32`, matches our DT |
+| mbox3 virq at that boot | 107 | runtime only, not portable |
+| DMA tx channel | 0 (MBOX0) | AVM DT |
+| DMA rx channel | 7 (MBOX3) | AVM DT |
+| stereo tx port | 0 | AVM DT |
+| stereo rx port | 3 | AVM DT |
+| PCMLINK slots | Codecslots=6, DECT=4 | different quantity from `qcom,tdm-slots` |
+| Firmware upload time | 17.8 s, before PCMLINK | Dialog runs before TDM users appear |
+
+The `Codecslots=6` value does **not** contradict `qcom,tdm-slots = <8>`
+(see section 4 of the cross-check document), but the 8-slot frame layout
+remains `UNVERIFIED`.
 
 ## 7. Open questions
 

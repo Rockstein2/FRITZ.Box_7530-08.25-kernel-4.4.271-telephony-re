@@ -1,8 +1,16 @@
 # Dialog SC14448 dependency for the FRITZ!Box 7530 FON port
 
+> **Status: historical analysis.**
+> This document records the reasoning and evidence as of the date it was
+> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
+> answered.
+> - Current confirmed facts: `../fon-known-facts.md`
+> - Current open questions: `../fon-open-questions.md`
+> - This file is kept for the reasoning trail, not as a status report.
+
 Status: **static analysis complete; no firmware was executed on the router**
 
-> Boot-side detail is now in `docs/fon-dialog-boot.md`.  The 7530 board table
+> Boot-side detail is now in `fon-dialog-boot.md`.  The 7530 board table
 > uses reset GPIO40 (not the fallback profile's GPIO18), and the DECT UART is
 > the shared MSM UART at `0x078af000` (GPIO16/17).  The clean-room image
 > parser in `src/fon-firmware/` was tested against the local images; the
@@ -12,9 +20,9 @@ This document answers whether the analog FON port can work without the
 original Dialog SC14448 firmware, and what the minimum separate dependency
 would be if it cannot.
 
-The TDM hardware parameters are in `docs/fon-tdm-hardware.md`.  The
-`Piglet_noemif.ko` loader analysis is in `notes/piglet.md` and the raw
-evidence in `reports/piglet*.txt`.
+The TDM hardware parameters are in `fon-tdm-hardware.md`.  The
+`Piglet_noemif.ko` loader analysis is in `../../notes/piglet.md` and the raw
+evidence in `../../reports/piglet*.txt`.
 
 ---
 
@@ -102,7 +110,7 @@ FON data:  IPQ4019 MBOX0/MBOX3 <-> SC14448 PCM/TDM
 
 The loader's own handshake is **not** the `0xfefe`/`0x5555` TDM header.
 
-From `notes/piglet.md` and `reports/piglet.annotated.txt`:
+From `../../notes/piglet.md` and `../../reports/piglet.annotated.txt`:
 
 ```text
 slow/normal path:

@@ -1,5 +1,9 @@
 # First safe hardware test — FRITZ!Box 7530 FON probe-only
 
+> **Status: operational document.**
+> This is a runbook, not an evidence record.  Hardware facts are maintained in
+> `../fon-known-facts.md`; unresolved items in `../fon-open-questions.md`.
+
 Status: **prepared, not executed**
 
 This test loads the module with `probe_only=1` (the default), verifies the
@@ -9,7 +13,7 @@ GPIO40, firmware or line/ring operation.
 The self-contained bench kit is in `bench/` and is the preferred way to run
 this test.  Copy the exact `.ko` plus `bench/*.sh` to the test router; the
 collector is read-only and the load/unload tools refuse without `--yes`.
-Read `docs/fon-resource-audit.md` and `docs/fon-recovery-plan.md` first.  The
+Read `../history/fon-resource-audit.md` and `fon-recovery-plan.md` first.  The
 expected verdict is:
 
 ```text
@@ -97,13 +101,13 @@ The test DTS is deliberately independent of the full image build.
 
 Run as root, but only use read-only commands.  Save the output:
 
+Use the portable collector; busybox ash has no process substitution:
+
 ```sh
-mkdir -p /tmp/fon-test
-exec > >(tee /tmp/fon-test/stage-a.txt) 2>&1
+sh bench/collect-stage-a.sh /tmp/fon-stage-a
 ```
 
-If process substitution is unavailable in the target shell, run the commands
-individually and copy the output manually.
+It writes a snapshot directory and tarball without changing hardware state.
 
 ### A.1 System and kernel
 
@@ -214,7 +218,7 @@ file /tmp/fon_tdm_drv.ko
 Expected hash for this build:
 
 ```text
-b2a5679c45f68bab0ea7d68109dd0b9952a208937554742cf1d537876b6181c5
+b867b8c5e362c397bc2ce5f8120cfc069d9eacd09dae2534e6343dc5dcdad870
 ```
 
 The hash must be regenerated and re-recorded whenever the source changes.
@@ -240,13 +244,15 @@ dmesg -T | tail -n 100
 Expected dmesg contains:
 
 ```text
-probe-only: resources=0x3f irq=188 clock_refs=0 reset_refs=0 pinctrl_ref=0 dt_overlap=0
-FON probe-only ready; no MMIO/clock/reset/DMA access
+probe-only: resources=0x3f irq_spi=156/159 irq_intid=188/191 clock_refs=0 reset_refs=0 pinctrl_ref=0 dt_overlap=0
+FON probe-only ready; no MMIO/clock/reset/IRQ/DMA access
 ```
 
 `resources=0x3f` means all six named resources (bits 0–5) are described by
-the test DTS.  `irq=188` is the expected Linux virq for raw DT `GIC_SPI 156`;
-the exact value must be read from dmesg, not assumed.
+the test DTS.  `irq_spi=156/159` is the raw DT specifier;
+`irq_intid=188/191` is GIC INTID (SPI + 32).  **Probe-only does not request a
+Linux virq**, so `diagnostics` prints `irq=-1`.  Do not substitute 188 for an
+unknown runtime virq.
 
 If the normal disabled image is used, no `probe-only` probe message appears;
 that is expected because the device is disabled.  In that image, only module
@@ -289,7 +295,9 @@ resource[4]=stereo_tx start=0x7709000 end=0x7709fff
 resource[5]=stereo_rx start=0x770f000 end=0x770ffff
 adss_tx_slots=0
 adss_rx_slots=0
-irq=188
+irq_spi=156/159
+irq_intid=188/191
+irq=-1
 clk_present=0
 reset_present=0
 pinctrl_present=0
@@ -305,10 +313,11 @@ dma_prepared=0
 dma_started=0
 ```
 
-`irq=188` is the Linux virq for raw DT `GIC_SPI 156` (SPI + 32).  The raw
-DT value is 156; the driver prints the Linux virq returned by
-`platform_get_irq_optional()`.  Always verify the value in dmesg and
-`/proc/interrupts`; never hard-code either number in a safety decision.
+`irq=-1` is intentional: probe-only parses the raw DT specifier with
+`of_irq_parse_one()` and never calls `platform_get_irq_optional()`.  That
+call would create a Linux IRQ mapping and could set the domain trigger type.
+The Linux virq exists only in full mode and must be read at runtime; it may
+not exist at all in probe-only.
 
 The register fields remain zero because no `diag_refresh` was issued.  Do not
 write to `diag_refresh`, `dma_prepare` or `dma_start` in this test.

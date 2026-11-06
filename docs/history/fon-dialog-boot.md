@@ -1,9 +1,17 @@
 # Dialog SC14448 boot / firmware path
 
+> **Status: historical analysis.**
+> This document records the reasoning and evidence as of the date it was
+> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
+> answered.
+> - Current confirmed facts: `../fon-known-facts.md`
+> - Current open questions: `../fon-open-questions.md`
+> - This file is kept for the reasoning trail, not as a status report.
+
 Status: **protocol and parser recovered; no firmware upload was attempted**
 
 This document is the boot-side companion to
-`docs/fon-dialog-dependency.md` and `docs/fon-tdm-hardware.md`.
+`fon-dialog-dependency.md` and `fon-tdm-hardware.md`.
 
 The implemented part is the clean-room parser and a mockable handshake
 transport in `src/fon-firmware/`.  It was tested against the local AVM images
@@ -82,7 +90,7 @@ performed here, so this document does not invent a single fixed rate.
 
 ## 2. Reset and boot sequence
 
-From `Piglet_noemif.ko` state 0 and `notes/piglet.md`:
+From `Piglet_noemif.ko` state 0 and `../../notes/piglet.md`:
 
 ```text
 assert DECT reset (configure GPIO output, drive low)
@@ -144,7 +152,7 @@ dependent; the stock 7530 profile uses the slow image.
 `0xfefe` and `0x5555` are fixed 16-bit words in the TDM TX frame
 (`TxDMA`), not UART boot bytes.  They are not the STX/SOH/ACK handshake and
 not a firmware upload sync sequence.  Their SC14448 semantic meaning remains
-unknown; see `docs/fon-tdm-hardware.md`.
+unknown; see `fon-tdm-hardware.md`.
 
 ---
 

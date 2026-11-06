@@ -1,12 +1,20 @@
 # AVM FON kernel-module analysis
 
+> **Status: historical analysis.**
+> This document records the reasoning and evidence as of the date it was
+> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
+> answered.
+> - Current confirmed facts: `../fon-known-facts.md`
+> - Current open questions: `../fon-open-questions.md`
+> - This file is kept for the reasoning trail, not as a status report.
+
 Status: stage 2 static analysis, updated by stages 4 and 5. No router was
 accessed, no module was loaded. Addresses are module-relative ELF offsets.
 
-> Stage 4 update: see `docs/fon-control-path.md` for the Dialog SC14448
+> Stage 4 update: see `fon-control-path.md` for the Dialog SC14448
 > hypothesis, the no-UART finding and the corrected QCA transport analysis.
 >
-> Stage 5 update: `docs/fon-pcmlink-register-path.md` recovers the actual
+> Stage 5 update: `fon-pcmlink-register-path.md` recovers the actual
 > register transport: a command ring consumed by `TxDMA`, a 16-bit control
 > word in TDM/MBOX slot 5, and `PutRxDMA` for hook status.
 
@@ -90,7 +98,7 @@ Key facts:
 
 Therefore there are **no separate FON control messages over the Dialog UART**.
 The only runtime interaction left is transparent PCM or an undocumented PCM+
-mailbox. See `docs/fon-control-path.md` §4-§6.
+mailbox. See `fon-control-path.md` §4-§6.
 
 ### 2.2 Stage 5: the actual PCMLINK register transport
 
@@ -118,7 +126,7 @@ RX TDM/MBOX frame offset 0x0a (status)
 
 `pcmlink_ll_set_status` exists (`FPGALink_Set_Status` at vtable `+0x3c`), but
 it is **not** the FON-register transport. The register path uses the
-ring/TxDMA/PutRxDMA route. See `docs/fon-pcmlink-register-path.md`.
+ring/TxDMA/PutRxDMA route. See `fon-pcmlink-register-path.md`.
 
 ## 3. Hardware-significant functions
 
@@ -353,7 +361,7 @@ reports/symbols/pcmlink.txt
 notes/pcmlink.md
 notes/pcmlink-sharedmem.md
 notes/avm_dect.md
-docs/fon-hardware.md
-docs/fon-pcmlink-register-path.md
+fon-hardware.md
+fon-pcmlink-register-path.md
 tools/pcmlink_regs.py
 ```

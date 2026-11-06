@@ -48,4 +48,4 @@ Not implemented:
 - automatic firmware upload.
 
 Those operations require a separate, explicitly invoked loader after the
-reset and UART ownership rules are validated.  See `docs/fon-dialog-boot.md`.
+reset and UART ownership rules are validated.  See `../../docs/history/fon-dialog-boot.md`.

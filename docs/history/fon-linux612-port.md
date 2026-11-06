@@ -1,12 +1,20 @@
 # Porting the FON transport to Linux 6.12 / OpenWrt 25.12
 
+> **Status: historical analysis.**
+> This document records the reasoning and evidence as of the date it was
+> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
+> answered.
+> - Current confirmed facts: `../fon-known-facts.md`
+> - Current open questions: `../fon-open-questions.md`
+> - This file is kept for the reasoning trail, not as a status report.
+
 Status: **target OpenWrt SDK module built; full OpenWrt image and hardware
 test not performed**
 
 This document answers what exists in Linux 6.12, what must be ported, and how
 the minimal FON transport avoids fighting existing audio/DMA drivers.
 
-The exact hardware parameters are in `docs/fon-tdm-hardware.md`.
+The exact hardware parameters are in `fon-tdm-hardware.md`.
 
 ---
 
@@ -293,7 +301,7 @@ Covered:
 
 ### 7.2 Target OpenWrt 25.12.6 build
 
-The actual target build is in `docs/fon-build-validation.md`:
+The actual target build is in `../runbook/fon-build-validation.md`:
 
 ```text
 SDK: openwrt-sdk-25.12.6-ipq40xx-generic_gcc-14.3.0_musl_eabi

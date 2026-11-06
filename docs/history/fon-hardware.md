@@ -1,15 +1,23 @@
 # FON hardware architecture — FRITZ!Box 7530
 
+> **Status: historical analysis.**
+> This document records the reasoning and evidence as of the date it was
+> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
+> answered.
+> - Current confirmed facts: `../fon-known-facts.md`
+> - Current open questions: `../fon-open-questions.md`
+> - This file is kept for the reasoning trail, not as a status report.
+
 Status: stage 1 static analysis, updated by stages 4 and 5. No router was
 accessed, no module was loaded.
 
-> Stage 4 update: `docs/fon-control-path.md` adds the Dialog SC14448
+> Stage 4 update: `fon-control-path.md` adds the Dialog SC14448
 > hypothesis, public board evidence (`LM324`, `BCP53-16`) and a CR16C firmware
 > inspection. The 14-pin device near the DECT antenna is the LM324; no
 > separate SLIC IC is listed or identified. It rules out a separate FON UART
 > protocol.
 >
-> Stage 5 update: `docs/fon-pcmlink-register-path.md` recovers the actual
+> Stage 5 update: `fon-pcmlink-register-path.md` recovers the actual
 > transport. The selected link table is `FPGALink` at `.rodata+0xa8`
 > (platform `QCA-ADSS`), not the 14-entry `ipq40xxtdm_hw` table.
 > `FPGALink_Set_Status` and `FPGALink_SharedMemory` exist. The FON register
@@ -130,7 +138,7 @@ no DSP echo canceller
   word is a 16-bit value in TX TDM/MBOX slot 5. Hook status returns in RX slot
   5 and is decoded by `PutRxDMA`. The selected link table is
   `FPGALink`/`QCA-ADSS`; `Set_Status` exists but is not the FON-register
-  transport. See `docs/fon-pcmlink-register-path.md`.
+  transport. See `fon-pcmlink-register-path.md`.
 
 ### What the "SLIC" is not
 
@@ -168,7 +176,7 @@ at virtual registers 0x40..0x50.
 The register map and the 16-bit control word are consistent with a small set
 of logic-level line/ring control signals driving the discrete circuit, not
 with a programmable ProSLIC register model. See
-`docs/fon-control-path.md` §2 and §7.
+`fon-control-path.md` §2 and §7.
 
 The 16-bit control word and the two software-toggled ring bits do **not** by
 themselves prove a programmable SLIC register model. They may be a small set
@@ -202,7 +210,7 @@ of logic-level line/ring control bits.
 
 The DECT Dialog SC14448 also shares the PCM/TDM/codec-slot infrastructure.
 Stage 4 leaves open whether its codec/GPIO is part of the FON box or only the
-DECT side; see `docs/fon-control-path.md` §2 and §5. The FON PHY is the
+DECT side; see `fon-control-path.md` §2 and §5. The FON PHY is the
 discrete **LM324 + BCP53-16** line interface; the 14-pin device is the LM324,
 not a separate SLIC IC.
 
@@ -228,7 +236,7 @@ based on the wrong table. The selected `FPGALink` table has
 `FPGALink_Set_Status` at `+0x3c` and `FPGALink_SharedMemory` at `+0x40`.
 However, the FON register path **does not use `Set_Status`**. It serializes a
 16-bit control word into TX TDM/MBOX slot 5; `PutRxDMA` reads the RX slot 5
-status word. See `docs/fon-pcmlink-register-path.md` §3-§5.
+status word. See `fon-pcmlink-register-path.md` §3-§5.
 
 ### 6.2 Hook detection
 
@@ -486,8 +494,8 @@ reports/functions/isdn_fbox_fon5.txt
 notes/pcmlink.md
 notes/avm_dect.md
 notes/pcmlink-sharedmem.md
-docs/fon-control-path.md
-docs/fon-pcmlink-register-path.md
+fon-control-path.md
+fon-pcmlink-register-path.md
 reports/fon-dialog-firmware.txt
 reports/fon-pcmlink-register-path.txt
 OpenWrt FRITZ!Box 7530 device page (stock dmesg line)

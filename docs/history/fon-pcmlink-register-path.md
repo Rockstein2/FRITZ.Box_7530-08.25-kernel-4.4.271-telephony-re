@@ -1,5 +1,13 @@
 # FON PCMLINK register path — recovered
 
+> **Status: historical analysis.**
+> This document records the reasoning and evidence as of the date it was
+> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
+> answered.
+> - Current confirmed facts: `../fon-known-facts.md`
+> - Current open questions: `../fon-open-questions.md`
+> - This file is kept for the reasoning trail, not as a status report.
+
 Status: stage 5 static analysis. No router was accessed, no AVM module was
 loaded, and no hardware test was performed. Addresses are module-relative ELF
 offsets unless stated otherwise.

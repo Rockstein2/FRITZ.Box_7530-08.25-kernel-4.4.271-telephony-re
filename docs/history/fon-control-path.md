@@ -1,9 +1,17 @@
 # FON control path and the Dialog SC14448 hypothesis
 
+> **Status: historical analysis.**
+> This document records the reasoning and evidence as of the date it was
+> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
+> answered.
+> - Current confirmed facts: `../fon-known-facts.md`
+> - Current open questions: `../fon-open-questions.md`
+> - This file is kept for the reasoning trail, not as a status report.
+
 Status: stage 4 static/board-evidence analysis, updated by stage 5. No router
 was accessed, no AVM module was loaded, and no driver code was written.
 
-> Stage 5 correction: `docs/fon-pcmlink-register-path.md` recovers the actual
+> Stage 5 correction: `fon-pcmlink-register-path.md` recovers the actual
 > transport. The selected link table is `FPGALink` at `.rodata+0xa8`
 > (platform `QCA-ADSS`), not the 14-entry `ipq40xxtdm_hw` table. The FON
 > register path is ring -> `TxDMA` -> 16-bit word in TDM/MBOX slot 5; `Set_Status`
@@ -118,7 +126,7 @@ pcmlink virtual registers 0x40/0x44/0x48/0x4c/0x50
 
 The Linux-side slot-5 transport is **confirmed**; the SC14448 direction of
 that slot is **inferred, high confidence**. See
-`docs/fon-pcmlink-register-path.md`.
+`fon-pcmlink-register-path.md`.
 
 ## 3. Kernel call graph
 
@@ -218,7 +226,7 @@ claim that it returned `-1` was based on the wrong table. However, the FON
 register path does **not** use `Set_Status`: `pcmlink_ul_writeregister`
 enqueues into `TDMPriv+0x4a0+0x68`; `TxDMA` consumes the ring and writes a
 16-bit control word to TX TDM/MBOX slot 5. Hook status comes back through
-`PutRxDMA`. See `docs/fon-pcmlink-register-path.md` §3-§5.
+`PutRxDMA`. See `fon-pcmlink-register-path.md` §3-§5.
 
 `ipq40xxtdm_checkhw` only looks up the six `gpio_avm_pcmlink_*` TDM pins and
 uses `dakota_gpio_ctrl` on those pins. There is no QCA GPIO path for a SLIC
@@ -503,10 +511,10 @@ reports/functions/isdn_fbox_fon5.txt
 firmware/dectfw_firstlevel_441_slow.hex
 firmware/dectfw_secondlevel_441.hex
 firmware/dectfw_secondlevel_441p2test.hex
-docs/fon-hardware.md
-docs/fon-avm-analysis.md
-docs/fon-feasibility.md
-docs/fon-pcmlink-register-path.md
+fon-hardware.md
+fon-avm-analysis.md
+fon-feasibility.md
+fon-pcmlink-register-path.md
 reports/fon-pcmlink-register-path.txt
 tools/pcmlink_regs.py
 

@@ -1,5 +1,9 @@
 # FON test-image safety
 
+> **Status: operational document.**
+> This is a runbook, not an evidence record.  Hardware facts are maintained in
+> `../fon-known-facts.md`; unresolved items in `../fon-open-questions.md`.
+
 Status: **static analysis only; no test image was built or deployed**
 
 This document separates what is known about the optional probe-only test

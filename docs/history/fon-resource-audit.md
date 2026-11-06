@@ -1,5 +1,13 @@
 # FON resource and probe-safety audit
 
+> **Status: historical analysis.**
+> This document records the reasoning and evidence as of the date it was
+> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
+> answered.
+> - Current confirmed facts: `../fon-known-facts.md`
+> - Current open questions: `../fon-open-questions.md`
+> - This file is kept for the reasoning trail, not as a status report.
+
 Status: **probe-only design is statically safe; full MMIO/DMA mode is NOT
 READY for hardware**
 
@@ -72,18 +80,26 @@ probe-only DTS patch uses:
 <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>
 ```
 
-The raw DT numbers are 156 and 159.  Linux GIC translation adds 32 for
-`GIC_SPI`, so the Linux virq returned by `platform_get_irq_optional()` is
-expected to be **188** and **191**, not 156/159.  The runbook must use the
-virq printed by the driver; the raw DT value remains 156/159.
+Three different numbers must not be conflated:
 
-The probe-only path calls `platform_get_irq_optional()` only.  It does **not**
-call `request_irq()`, enable the interrupt, or touch the MBOX interrupt
-status/enable registers.
+```text
+raw DT GIC SPI   156 / 159      what the DTS node contains
+GIC INTID        188 / 191      SPI + 32 (gic_irq_domain_translate)
+Linux virq       runtime only   created by of_irq_get()/platform_get_irq_optional()
+```
 
-The exact runtime trigger configuration and virq should still be checked from
-`/proc/interrupts` after the test image boots.  The first test does not rely
-on the IRQ.
+`platform_get_irq_optional()` is not side-effect free: `of_irq_get()` →
+`irq_create_of_mapping()` → `irq_create_fwspec_mapping()` can allocate a
+Linux virq mapping and, on first mapping, store the DT trigger type in the
+irq domain.  **Probe-only therefore does not call it.**  It uses
+`of_irq_parse_one()` directly and reports `irq_spi=156/159`,
+`irq_intid=188/191`, `irq=-1`.
+
+Full mode still uses `platform_get_irq_optional()` and prints the runtime
+virq.  It does not call `request_irq()`, enable the interrupt, or touch the
+MBOX interrupt status/enable registers.  The actual virq and trigger must be
+checked in `/proc/interrupts` on hardware.  The first test does not rely on
+the IRQ.
 
 ---
 
@@ -129,7 +145,8 @@ The probe performs only:
 3. parse `qcom,tdm-slots`;
 4. `platform_get_resource_byname` for six named MEM resources **without
    requesting or mapping them**;
-5. `platform_get_irq_optional` **without requesting**;
+5. raw DT IRQ parse via `of_irq_parse_one` for MBOX0/MBOX3 — **no
+   `platform_get_irq_optional`, no `of_irq_get`, no irqdomain mapping**;
 6. count `clock-names`/`reset-names` strings and check for `pinctrl-0`
    **without acquiring clocks/reset/pinctrl**;
 7. sibling DT `reg` overlap scan using `of_address_to_resource`;
@@ -139,8 +156,39 @@ It does **not** call `devm_ioremap_resource`, `ioremap`, `readl`, `writel`,
 `devm_clk_get`, `devm_reset_control_get`, `devm_pinctrl_get`,
 `dma_alloc_coherent`, `request_irq`, GPIO reset, or firmware upload.
 
-`of_address_to_resource` is an OF translation operation; it does not access
-device MMIO or claim an iomem region.
+`of_address_to_resource` and `of_irq_parse_one` are OF parsing operations.
+Neither claims an iomem region nor programs an interrupt controller.
+
+The `of_irq_parse_one` node reference is released with `of_node_put()` on all
+paths.
+
+### 4.1.1 What the kernel does before `fon_tdm_probe()`
+
+`probe-only` is not a proof that nothing happened to the hardware before the
+driver's own code runs.  The driver core performs these steps in
+`really_probe()` before `call_driver_probe()`:
+
+1. `device_links_check_suppliers()`;
+2. `pinctrl_bind_pins(dev)` — for a device with `pinctrl-0` this can select
+   the default state and program the pin controller; the driver's
+   `probe()` runs **after** this;
+3. `dma_configure()` if the bus provides it;
+4. `driver_sysfs_add()`;
+5. `pm_domain->activate()`.
+
+After the driver probe returns, `pinctrl_init_done()` may switch from the
+`init` to the `default` state.
+
+Likewise, `of_clk_set_defaults()`/`assigned-clocks` handling for a device can
+set clock parents/rates **before** the driver binds.
+
+The current FON DTS node has no `pinctrl-0`, no `clocks`, no `assigned-clocks`
+and no `resets`, so those paths are not exercised for this node.  This is a
+property of this specific DT, not a guarantee provided by the driver's probe
+checks.  Any future DT addition of those properties must be re-audited.
+
+Reading debugfs (`clk_summary`, `pinctrl`) can itself issue register reads;
+"read-only script" is not the same as "no hardware access".
 
 ### 4.2 Full `probe_only=0`
 
@@ -224,4 +272,4 @@ line/ring/firmware: NOT READY
 The first hardware experiment must use the optional probe-only DTS
 configuration and the default `probe_only=1`, with no `diag_refresh`,
 `dma_prepare`, or `dma_start` writes.  See
-`docs/fon-first-hardware-test.md`.
+`../runbook/fon-first-hardware-test.md`.

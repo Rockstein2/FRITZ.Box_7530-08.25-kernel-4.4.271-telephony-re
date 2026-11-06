@@ -1,5 +1,13 @@
 # FON TDM/ADSS hardware parameters
 
+> **Status: historical analysis.**
+> This document records the reasoning and evidence as of the date it was
+> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
+> answered.
+> - Current confirmed facts: `../fon-known-facts.md`
+> - Current open questions: `../fon-open-questions.md`
+> - This file is kept for the reasoning trail, not as a status report.
+
 Status: **transport recovered and documented; not hardware-validated**
 
 This document reconstructs the QCA IPQ4019 ADSS/TDM/MBOX side of the
@@ -13,7 +21,7 @@ Evidence is taken from:
 - AVM board DTS `Fritz_Box_HW236.dtsi` and
   `qcom-ipq4019-audio.dtsi`;
 - static disassembly of the local `modules/ubik2/pcmlink.ko`
-  (`reports/pcmlink.disasm.txt`, `reports/pcmlink-sharedmem.txt`);
+  (`../../reports/pcmlink.disasm.txt`, `../../reports/pcmlink-sharedmem.txt`);
 - the stock init script `reference/init.d/E41-capi`.
 
 No hardware test was performed.  Registers marked "read-only" in the driver
@@ -158,7 +166,7 @@ If a future board variant uses 16 physical slots, byte `0x0a` is still
 These are **TDM frame/idle markers**, not the SC14448 UART boot handshake.
 The UART loader uses completely different values and a different transport
 (STX `0x02`, SOH `0x01`, ACK `0x06`, NACK `0x15`, `HELLO DCX81`; see
-`docs/fon-dialog-dependency.md`).
+`fon-dialog-dependency.md`).
 
 The precise SC14448 semantic meaning of `0xfefe`/`0x5555` is **not proven**.
 The driver preserves the proven Linux-side layout but does not claim to
@@ -167,7 +175,7 @@ interpret them.
 `build_slic_ctrl` (`@0x8f68`) may overwrite the control slot after the fixed
 header is written.  The `0x4000` marker is present for normal line control;
 `0x8000 | half_period` selects the ring path.  See
-`docs/fon-pcmlink-register-path.md` for the call chain.
+`fon-pcmlink-register-path.md` for the call chain.
 
 ---
 
@@ -437,7 +445,7 @@ real FON driver:
    which bits select hook/ring/line-feed/ADC/PWM inside the SC14448 is not
    documented.
 2. **SC14448 firmware dependence.**  See
-   `docs/fon-dialog-dependency.md`.  The GPL TDM code assumes the external
+   `fon-dialog-dependency.md`.  The GPL TDM code assumes the external
    device is already generating clocks and responding.
 3. **Exact bit order and framing on the wire.**  The ADSS side is 16-bit TDM,
    but the SC14448 PCM+ configuration is firmware-controlled.
@@ -479,7 +487,7 @@ The following line numbers refer to the AVM GPL 08.25 source tree
 | `TxDMA` header/stride/slot-5 write | `pcmlink.ko @0x9710`, disassembly lines around `0x98b8-0x98e0` |
 | `PutRxDMA` slot-5 read and stride | `pcmlink.ko @0x9a60`, disassembly around `0x9b38-0x9b98` |
 | `ipq40xxtdm_linkinit` slot count/master/delays | `pcmlink.ko @0x9e40`, disassembly `0x9e90-0xa008` |
-| `tdm_dma` defaults `.data+0xb0`: `+0=0xc0`, `+4=1`, `+8=6`, `+0xc=PutRxDMA`, `+0x10=TxDMA`, `+0x18=0` | ELF `.data` dump and `.rel.data` / `reports/pcmlink.disasm.txt` |
+| `tdm_dma` defaults `.data+0xb0`: `+0=0xc0`, `+4=1`, `+8=6`, `+0xc=PutRxDMA`, `+0x10=TxDMA`, `+0x18=0` | ELF `.data` dump and `.rel.data` / `../../reports/pcmlink.disasm.txt` |
 | stock `abmode=1` | `reference/init.d/E41-capi:5` |
 
 `tdm_dma+0x18` is the master flag read by `ipq40xxtdm_linkinit`.  With the
@@ -508,7 +516,7 @@ The default `probe_only=1` mode does not map or acquire any hardware resource:
    hardware semantics are not validated.
 
 The first safe hardware test is described in
-`docs/fon-linux612-port.md` and the final report.  It is read-only: boot the
+`fon-linux612-port.md` and the final report.  It is read-only: boot the
 driver without `dma_prepare`/`dma_start`, inspect the diagnostics, and only
 then decide whether to proceed.
 
