@@ -1,19 +1,43 @@
-Read-only Stage A expected evidence
-==================================
+Stage A expected evidence (read-only)
+=====================================
 
-Required:
-  uname -a                     -> target kernel 6.12.112
-  /etc/openwrt_release         -> OpenWrt 25.12.6 / ipq40xx/generic
-  /proc/cmdline                -> current boot args
-  /proc/iomem                  -> baseline; no 0x0770xxxx owner expected
-  /proc/interrupts             -> baseline; raw GIC SPI 156/159 may not appear
-  /proc/consoles               -> console ownership
-  /sys/firmware/devicetree/base/model -> avm,fritzbox-7530
-  FON status                   -> "disabled" on normal image, "okay" on test image
-  dmesg                        -> baseline before load
-  lsmod                        -> baseline modules
+Collect with:  sh bench/collect-stage-a.sh [OUTDIR]
+Nothing in Stage A writes hardware state.
 
-After probe-only, the iomem snapshot must not change.
+Required observations
+---------------------
+uname -r                 : 6.12.112 (target kernel)
+/etc/openwrt_release     : OpenWrt 25.12.6, ipq40xx/generic
+/proc/cmdline            : record exactly
+/sys/firmware/devicetree/base/model      -> "AVM FRITZ.Box 7530"
+/sys/firmware/devicetree/base/compatible -> "avm,fritzbox-7530"
+FON status               -> "disabled" on the production image
+                            "okay"     on the probe-only test image
+/proc/iomem              : baseline snapshot; expected owner-free ranges
+                            0x07700000  ADSS
+                            0x07704000  PCM
+                            0x07708000  MBOX TX
+                            0x07709000  STEREO TX
+                            0x0770e000  MBOX RX
+                            0x0770f000  STEREO RX
+/proc/interrupts         : baseline; raw GIC SPI 156/159 need not appear
+/proc/consoles           : console owner
+dmesg                    : baseline before loading anything
+lsmod                    : baseline modules
 
-UNVERIFIED at Stage A: actual runtime ownership, hidden secure mappings,
-actual UART console device name, debugfs availability.
+Notes
+-----
+- `model` and `compatible` are separate DT strings.  "AVM FRITZ.Box 7530"
+  belongs to `model`; `avm,fritzbox-7530` belongs to `compatible`.
+- A matching /proc/iomem only means no new region claim was observed.  It is
+  not proof that nothing was mapped, that no hidden/secure mapping exists, or
+  that other drivers do not exist.
+- Reading debugfs (clocks/pinctrl) can itself issue register reads.  Stage A
+  only reports availability; it does not prove the read is side-effect free.
+
+UNVERIFIED at Stage A
+---------------------
+- actual runtime ownership of the 0x77xxxxxx ranges
+- hidden secure/firmware mappings
+- actual console device name and baud
+- debugfs availability
