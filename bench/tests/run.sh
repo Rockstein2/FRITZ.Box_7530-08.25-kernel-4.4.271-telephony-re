@@ -93,6 +93,27 @@ printf '%s\0' "Some Other Board" >"$FAKE_ROOT/sys/firmware/devicetree/base/model
 expect "wrong board model" 1 "unexpected DT model" "$L" --yes --module "$FAKE_ROOT/state/module" --manifest "$WORK/manifest" --output "$WORK/o3"
 no_insmod
 
+# 3a: the near-miss spelling used to be accepted by mistake.  "FRITZ.Box" is
+# not the DT string; the board DTB says "FRITZ!Box".  This must be refused.
+fresh
+printf '%s\0' "AVM FRITZ.Box 7530" >"$FAKE_ROOT/sys/firmware/devicetree/base/model"
+expect "model with dot instead of bang is refused" 1 "unexpected DT model" "$L" --yes --module "$FAKE_ROOT/state/module" --manifest "$WORK/manifest" --output "$WORK/o3a"
+no_insmod
+
+# 3b: the real DT string from the built board DTB must be accepted, i.e. it
+# must NOT be rejected by the model check.  The run then fails later on the
+# missing FON node, which proves the model gate itself passed.
+fresh
+printf '%s\0' "AVM FRITZ!Box 7530" >"$FAKE_ROOT/sys/firmware/devicetree/base/model"
+out3b=$(sh "$L" --yes --module "$FAKE_ROOT/state/module" --manifest "$WORK/manifest" --output "$WORK/o3b" 2>&1)
+if printf '%s\n' "$out3b" | grep -q "unexpected DT model"; then
+	FAILS=$((FAILS + 1))
+	printf 'FAIL model with bang rejected by the model gate\n'
+else
+	PASSES=$((PASSES + 1))
+	printf 'PASS model with bang (real DTB) passes the model gate\n'
+fi
+
 # 4
 fresh
 printf '%s\0' "other,board" >"$FAKE_ROOT/sys/firmware/devicetree/base/compatible"

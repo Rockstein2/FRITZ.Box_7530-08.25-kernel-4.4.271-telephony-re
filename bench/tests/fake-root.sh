@@ -20,7 +20,7 @@ fake_reset() {
 	: >"$FAKE_ROOT/state/calls"
 	: >"$FAKE_ROOT/state/loaded"
 	: >"$FAKE_ROOT/state/dmesg"
-	printf '%s\0' "AVM FRITZ.Box 7530" >"$FAKE_ROOT/sys/firmware/devicetree/base/model"
+	printf '%s\0' "AVM FRITZ!Box 7530" >"$FAKE_ROOT/sys/firmware/devicetree/base/model"
 	printf '%s\0' "avm,fritzbox-7530" >"$FAKE_ROOT/sys/firmware/devicetree/base/compatible"
 	printf '%s\0' "okay" >"$FAKE_ROOT/sys/firmware/devicetree/base/soc/fon-tdm@7700000/status"
 	printf '00000000-0000-0000-0000-000000000000-00000000 : System RAM\n' >"$FAKE_ROOT/proc/iomem"

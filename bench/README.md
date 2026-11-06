@@ -54,7 +54,7 @@ The loader enforces, before any `insmod`:
 - `name=fon_tdm_drv`, `license=GPL`, `vermagic=6.12.x`,
   `parm=probe_only:bool`, empty `depends`;
 - kernel `6.12.x`;
-- DT `model = "AVM FRITZ.Box 7530"`;
+- DT `model = "AVM FRITZ!Box 7530"`;  (exact string, including the `!`)
 - DT `compatible = "avm,fritzbox-7530"`;
 - FON node exists and `status = "okay"`;
 - module not already loaded;

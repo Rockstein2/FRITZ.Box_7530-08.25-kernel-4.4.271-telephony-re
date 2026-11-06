@@ -418,10 +418,12 @@ and stub commands (`insmod`, `rmmod`, `modinfo`, `lsmod`, ...).  No real
 module operation is possible.  Last result:
 
 ```text
-29 passed, 0 failed
+32 passed, 0 failed
 ```
 
-Covers no `--yes`, wrong SHA, wrong board/compatible/kernel/module, missing or
+Covers no `--yes`, wrong SHA, wrong board/compatible/kernel/module, the exact
+DT model string (`AVM FRITZ!Box 7530`, with `!`, and the near-miss
+`FRITZ.Box` spelling must be refused), missing or
 disabled FON node, already loaded, insmod failure, bind failure, wrong stage,
 changed `/proc/iomem`, output-dir reuse, unload failure, leftover sysfs, and
 cleanup after failed verification.  Every pre-load refusal proves the
