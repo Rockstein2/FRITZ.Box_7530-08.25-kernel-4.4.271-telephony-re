@@ -26,6 +26,6 @@
 +			interrupt-names = "mbox0", "mbox3";
 +			status = "disabled";
 +		};
+ 
  		tcsr@1949000 {
  			compatible = "qcom,tcsr";
- 			reg = <0x1949000 0x100>;

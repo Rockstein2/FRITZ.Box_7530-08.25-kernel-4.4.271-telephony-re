@@ -7,5 +7,5 @@
 -			status = "disabled";
 +			status = "okay";
  		};
+ 
  		tcsr@1949000 {
- 			compatible = "qcom,tcsr";
