@@ -1,5 +1,20 @@
 # Analysis tools
 
+| Script | Purpose |
+|---|---|
+| `pcmlink_regs.py` | ELF/register analysis for `pcmlink.ko` (read-only) |
+| `build-fon-openwrt.sh` | Clean package rebuild in the target SDK |
+| `build-fon-dts-test.sh` | Compile the standalone FON DTS |
+| `prepare-fon-openwrt-tree.sh` | Install the package and apply DT patches 900/901 |
+| `prepare-fon-image.sh` | Prepare a tree and compile the board DTB (no image) |
+| `record-fon-artifact.sh` | Record `.ko`/`.apk` hashes into the bench kit |
+| `docs-restructure.sh` | Move `docs/` into known-facts / runbook / history |
+| `docs-rewrite-links.sh` | Fix cross-document links after a move |
+| `docs-add-historical-banner.sh` | Add layer banners to documents |
+
+All scripts are idempotent unless stated otherwise, and none of them touches a
+router.
+
 `pcmlink_regs.py` is an analysis-only ELF helper. It never loads or executes a
 kernel module. It prints symbols, relocations, PC-relative literals and ARM
 instructions for `modules/ubik2/pcmlink.ko`.
@@ -30,5 +45,5 @@ Examples:
   --module modules/ubik2/pcmlink.ko --xrefs FPGALink_SharedMemory
 ```
 
-See `docs/fon-pcmlink-register-path.md` for the recovered call graph and the
+See `../docs/history/fon-pcmlink-register-path.md` for the recovered call graph and the
 confidence labels.
