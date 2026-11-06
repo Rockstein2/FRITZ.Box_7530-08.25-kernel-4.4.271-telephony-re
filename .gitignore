@@ -20,3 +20,8 @@ HANDOFF.md
 
 # Local CodeGraph index (generated, not source)
 .codegraph/
+
+# Private working task files (not for publication)
+AGENT_TASK*.md
+*HANDOFF-private.md
+RckBox-OpenWrt-context-private.md
