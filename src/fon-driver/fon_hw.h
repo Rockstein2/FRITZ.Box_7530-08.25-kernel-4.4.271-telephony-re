@@ -105,6 +105,8 @@ struct fon_tdm_dev {
 	struct reset_control *rst;
 	struct pinctrl *pinctrl;
 	int irq;
+	u32 irq_spi[2];
+	u32 irq_intid[2];
 
 	struct mutex lock;
 	enum fon_tdm_state state;

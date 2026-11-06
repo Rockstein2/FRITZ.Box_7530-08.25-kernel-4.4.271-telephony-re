@@ -27,6 +27,8 @@
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <linux/of_device.h>
+#include <linux/of_irq.h>
+#include <linux/irq.h>
 #include <linux/pinctrl/consumer.h>
 #include <linux/platform_device.h>
 #include <linux/reset.h>
@@ -66,6 +68,35 @@ MODULE_PARM_DESC(probe_only,
 static const char *const fon_resource_names[FON_RESOURCE_COUNT] = {
 	"adss", "pcm", "mbox_tx", "mbox_rx", "stereo_tx", "stereo_rx",
 };
+
+/*
+ * Raw DT interrupt specifiers.  These are NOT Linux virqs and do not create
+ * any IRQ mapping.  A raw GIC SPI value of 156 has GIC INTID 188; the Linux
+ * virq may not exist at all and is only obtained in full mode through
+ * platform_get_irq_optional().
+ */
+static int fon_parse_dt_irq(struct device *dev, unsigned int index,
+			    u32 *spi, u32 *intid)
+{
+	struct of_phandle_args args;
+	int ret;
+
+	ret = of_irq_parse_one(dev->of_node, index, &args);
+	if (ret)
+		return ret;
+	if (args.args_count < 2) {
+		of_node_put(args.np);
+		return -EINVAL;
+	}
+	if (args.args[0] != 0) {	/* GIC_SPI only */
+		of_node_put(args.np);
+		return -EINVAL;
+	}
+	*spi = args.args[1];
+	*intid = args.args[1] + 32;
+	of_node_put(args.np);
+	return 0;
+}
 
 static unsigned int fon_dt_string_count(struct device_node *np,
 					  const char *name)
@@ -328,6 +359,10 @@ static ssize_t diagnostics_show(struct device *dev, struct device_attribute *att
 	}
 	n += sysfs_emit_at(buf, n, "adss_tx_slots=%u\n", tdm->adss_tx_slots);
 	n += sysfs_emit_at(buf, n, "adss_rx_slots=%u\n", tdm->adss_rx_slots);
+	n += sysfs_emit_at(buf, n, "irq_spi=%u/%u\n",
+			   tdm->irq_spi[0], tdm->irq_spi[1]);
+	n += sysfs_emit_at(buf, n, "irq_intid=%u/%u\n",
+			   tdm->irq_intid[0], tdm->irq_intid[1]);
 	n += sysfs_emit_at(buf, n, "irq=%d\n", tdm->irq);
 	n += sysfs_emit_at(buf, n, "clk_present=%u\n",
 			   (tdm->clks[0] != NULL) + (tdm->clks[1] != NULL) +
@@ -613,6 +648,44 @@ static int fon_tdm_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
+	/*
+	 * Probe-only parses the raw DT interrupt specifiers; it must not call
+	 * platform_get_irq_optional()/of_irq_get(), because that creates a
+	 * Linux IRQ mapping and may set the trigger type in the GIC domain.
+	 */
+	tdm->irq_spi[0] = tdm->irq_spi[1] = 0;
+	tdm->irq_intid[0] = tdm->irq_intid[1] = 0;
+	for (i = 0; i < 2; i++) {
+		u32 spi, intid;
+		int rc = fon_parse_dt_irq(&pdev->dev, i, &spi, &intid);
+
+		if (rc) {
+			dev_warn(&pdev->dev,
+				 "DT IRQ[%u] parse failed: %d\n", i, rc);
+			continue;
+		}
+		tdm->irq_spi[i] = spi;
+		tdm->irq_intid[i] = intid;
+	}
+
+	if (tdm->probe_only) {
+		tdm->irq = -1;
+		tdm->stage |= FON_STAGE_RESOURCES | FON_STAGE_PROBE_ONLY;
+		tdm->state = FON_STATE_RESOURCES_READY;
+		dev_info(&pdev->dev,
+			 "probe-only: resources=0x%x irq_spi=%u/%u irq_intid=%u/%u clock_refs=%u reset_refs=%u pinctrl_ref=%u dt_overlap=%u\n",
+			 tdm->resource_mask, tdm->irq_spi[0], tdm->irq_spi[1],
+			 tdm->irq_intid[0], tdm->irq_intid[1],
+			 tdm->clock_refs, tdm->reset_refs, tdm->pinctrl_ref,
+			 tdm->dt_overlap);
+		ret = devm_device_add_group(&pdev->dev, &fon_tdm_group);
+		if (ret)
+			return ret;
+		dev_info(&pdev->dev,
+			 "FON probe-only ready; no MMIO/clock/reset/IRQ/DMA access\n");
+		return 0;
+	}
+
 	tdm->irq = platform_get_irq_optional(pdev, 0);
 	if (tdm->irq == -ENXIO)
 		tdm->irq = -1;
@@ -623,21 +696,11 @@ static int fon_tdm_probe(struct platform_device *pdev)
 		tdm->irq = -1;
 	}
 
-	if (tdm->probe_only) {
-		tdm->stage |= FON_STAGE_RESOURCES | FON_STAGE_PROBE_ONLY;
-		tdm->state = FON_STATE_RESOURCES_READY;
-		dev_info(&pdev->dev,
-			 "probe-only: resources=0x%x irq=%d clock_refs=%u reset_refs=%u pinctrl_ref=%u dt_overlap=%u\n",
-			 tdm->resource_mask, tdm->irq, tdm->clock_refs,
-			 tdm->reset_refs, tdm->pinctrl_ref, tdm->dt_overlap);
-		ret = devm_device_add_group(&pdev->dev, &fon_tdm_group);
-		if (ret)
-			return ret;
-		dev_info(&pdev->dev,
-			 "FON probe-only ready; no MMIO/clock/reset/DMA access\n");
-		return 0;
-	}
-
+	/*
+	 * Full mode still does not read/write MMIO.  On any error below the
+	 * devm-managed mappings, clock/reset/pinctrl handles and group are
+	 * unwound by the driver core; no DMA is allocated here.
+	 */
 	tdm->adss = fon_map_resource(pdev, "adss");
 	if (IS_ERR(tdm->adss))
 		return PTR_ERR(tdm->adss);
