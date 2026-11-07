@@ -9,6 +9,8 @@ and grades the answer:
     SYMBOLIC  an expression over a proven base, never evaluated
     UNKNOWN   the base registers are not known statically
     STACK     the stack frame (`(sp)`)
+    PC_RELATIVE  relative to the return address (`(ra)`), i.e. a code or
+              literal-pool reference, never a peripheral address
     INDEXED   `[r12]` / `[r13]` indexed forms
 
 Model (deliberately conservative):
@@ -27,7 +29,8 @@ Model (deliberately conservative):
 
 Memory-operand forms understood (from `cr16-opc.c`, `LD_STOR_INS`):
 
-    <abs16>:m                    abs20 operand (address in the instruction)
+    <abs16>:m                    abs20 operand (4-byte form)
+    <abs16>:l                    abs24 operand (6-byte `opc20` form)
     <disp>:s|m(rN)               one base register
     <disp>:s|m(rN,rM)            register-pair base
     (rN) / (rN,rM)               zero displacement
@@ -52,7 +55,7 @@ sys.path.insert(0, str(ROOT / "src" / "mock"))
 
 import cr16_cfg as C  # noqa: E402
 
-TOOL_VERSION = "cr16-peripheral-xrefs/2"
+TOOL_VERSION = "cr16-peripheral-xrefs/3"
 OBJDUMP = Path("/tmp/opencode/cr16/build/binutils/objdump")
 IMAGES = [
     ("normal", ROOT / "firmware" / "dectfw_secondlevel_441.hex"),
@@ -64,9 +67,9 @@ ACCESS = {"loadw": ("READ", 16), "storw": ("WRITE", 16),
           "loadd": ("READ", 32), "stord": ("WRITE", 32)}
 BRANCHES = C.COND | C.JUMPS
 
-ABS20 = re.compile(r"^0x([0-9a-f]+):m$")
+ABS = re.compile(r"^0x([0-9a-f]+):[ml]$")
 DISPS_RP = re.compile(r"^(0x[0-9a-f]+|\$?-?\d+)(?::[sm])?\((r\d+),(r\d+)\)$")
-DISPS_R = re.compile(r"^(0x[0-9a-f]+|\$?-?\d+)(?::[sm])?\((r\d+)\)$")
+DISPS_R = re.compile(r"^(0x[0-9a-f]+|\$?-?\d+)(?::[sm])?\(((?:r\d+)|ra)\)$")
 BARE_RP = re.compile(r"^\((r\d+),(r\d+)\)$")
 BARE_R = re.compile(r"^\((r\d+)\)$")
 IDX = re.compile(r"^\[(r\d+)\](?:0x([0-9a-f]+))?(?::[a-z])?(?:\([^)]*\))?$")
@@ -100,7 +103,7 @@ def _num(text):
 
 def parse_memory_operand(text):
     text = text.strip()
-    m = ABS20.match(text)
+    m = ABS.match(text)
     if m:
         return "ABS", int(m.group(1), 16)
     m = DISPS_RP.match(text)
@@ -124,7 +127,32 @@ def parse_memory_operand(text):
 
 
 def abs20_address(raw):
+    """Address of the 4-byte `<abs>:m` form: low nibble of byte 0 is bit 20."""
     return ((raw[0] & 0x0F) << 16) | raw[2] | (raw[3] << 8)
+
+
+def abs24_address(raw):
+    """Address of the 6-byte `<abs>:l` form (`opc20`, `cr16-opc.c:354`).
+
+    cr16-dis.c builds a 48-bit big-endian word from the three little-endian
+    halfwords and then takes bits 31..16 (high byte split over two nibbles)
+    plus bits 15..0.  The formula is verified against every 6-byte load/store
+    in both images (161 and 170 instructions, 0 mismatches).
+    """
+    words = [raw[0] | (raw[1] << 8), raw[2] | (raw[3] << 8),
+             raw[4] | (raw[5] << 8)]
+    packed = (words[0] << 32) | (words[1] << 16) | words[2]
+    return ((((packed >> 16) & 0xF) << 20) | (((packed >> 24) & 0xF) << 16)
+            | (packed & 0xFFFF))
+
+
+def abs_address(insn):
+    """Decoded address of an absolute memory operand, or None."""
+    if len(insn.raw) == 6:
+        return abs24_address(insn.raw)
+    if len(insn.raw) == 4:
+        return abs20_address(insn.raw)
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -257,6 +285,14 @@ def _row(image, addr, insn, kind, width, address_kind, effective=None,
     }
 
 
+def double(symbol):
+    """Halve-safe doubling of a symbolic index: `2 * (2 * r1)` -> `4 * r1`."""
+    m = re.match(r"^(\d+)\*(.+)$", symbol)
+    if m:
+        return f"{2 * int(m.group(1))}*{m.group(2)}"
+    return f"2*{symbol}"
+
+
 def scan(fw, image):
     """Return (rows, stats, unclassified)."""
     blocks = blocks_of(fw)
@@ -280,7 +316,7 @@ def scan(fw, image):
                 if len(regs) == 2:
                     key = (regs[0], regs[1])
                     if key in index_sym:
-                        index_sym[key] = "2*" + index_sym[key]
+                        index_sym[key] = double(index_sym[key])
             m = re.match(r"^\((r\d+),(r\d+)\),\((r\d+),(r\d+)\)$", ops)
             if m and insn.mnemonic == "addd":
                 # `addd src,dst`: the first pair is the source, the second
@@ -307,7 +343,7 @@ def scan(fw, image):
                         parsed, payload = p
                         break
                 if parsed == "ABS":
-                    value = abs20_address(insn.raw)
+                    value = abs_address(insn)
                     if value == payload:
                         rows.append(_row(image, addr, insn, kind, width,
                                          "RESOLVED", f"0x{value:08x}",
@@ -317,8 +353,8 @@ def scan(fw, image):
                         rows.append(_row(image, addr, insn, kind, width,
                                          "UNKNOWN", None, [], None,
                                          mode_a, mode_b,
-                                         "abs20 field differs from the "
-                                         "printed operand"))
+                                         "absolute field differs from "
+                                         "the printed operand"))
                 elif parsed == "DISP_RP":
                     disp, hi, lo = payload
                     st = pair_state(state, hi, lo)
@@ -346,6 +382,12 @@ def scan(fw, image):
                     if reg in ("r12", "r13"):
                         rows.append(_row(image, addr, insn, kind, width,
                                          "INDEXED", f"[{reg}]+{disp}", [],
+                                         None, mode_a, mode_b))
+                    elif reg == "ra":
+                        # relative to the return address: address depends on
+                        # the caller, never a peripheral address by itself
+                        rows.append(_row(image, addr, insn, kind, width,
+                                         "PC_RELATIVE", f"ra+{disp}", [],
                                          None, mode_a, mode_b))
                     else:
                         rows.append(_row(image, addr, insn, kind, width,
