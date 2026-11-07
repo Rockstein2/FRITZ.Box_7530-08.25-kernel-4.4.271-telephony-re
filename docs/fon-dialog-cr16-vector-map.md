@@ -28,7 +28,7 @@ stored value alone is odd and therefore not an address.
 
 ## 2. The table, both images
 
-`INTBASE = 0x24`, 32 entries, `0x24`–`0xA3`.
+`INTBASE = 0x24`, **31 entries**, `0x24`–`0x9F`.
 
 | idx | reference name | normal | p2test | handler |
 |---|---|---|---|---|
@@ -39,7 +39,14 @@ stored value alone is odd and therefore not an address.
 | 27, 28 | `ad_int`, `spi2` | `0x28DCA` | `0x9FFC` | stub |
 | **29** | `dsp_int` | **`0x28A94`** | **`0x27914`** | real handler |
 | 30 | `reserved30` | `0x28DCA` | `0x9FFC` | stub |
-| 31 | `reserved31` | `0x1FFFE0A02` | same | out of range, not a handler |
+
+**Why 31 and not 32.**  A 32nd entry would sit at `0xA0`, whose bytes
+`01 05 FF FF FF FF FF FF …` are the start of a **TLV block**:
+`tag=1 len=5` is the RFPI record of `include/piglet_protocol.h`
+(`PIGLET_TAG_RFPI=1`, `PIGLET_RFPI_LEN=5`), followed by tag 2 (2 bytes),
+tag 3 (`'*'`), tag 4, tag 6 (`'P'`), tag 7, tag 10.  The bytes then continue
+into fields the protocol header describes.  So the table ends at `0x9C` and
+`0xA0` is data.
 
 Both images have the **same set** of real handlers ({24, 26, 29}) and the
 same shared stub.  Only the addresses differ.

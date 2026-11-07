@@ -56,19 +56,15 @@ The assembler **cannot emit a backward `disps17`**: building a loop of 400
 The backward form in this firmware was therefore hand-coded, and gas is not
 an independent oracle for it.
 
-## 3. The three branches
+## 3. The three branches (corrected)
 
-| Site | Bytes | Field | Sign bit | Magnitude | Target |
+| Site | Bytes | Field | Field & 0xFFFE | Signed | Target |
 |---|---|---|---|---|---|
-| `0x1017C` | `e0 18 85 ff` | `0xFF85` | 1 (negative) | −123 | **`0x010101`** |
-| `0x10298` | `e0 18 69 fe` | `0xFE69` | 1 (negative) | −407 | **`0x010101`** |
-| `0x10250` (`bne`) | `10 18 b1 fe` | `0xFEB1` | 1 (negative) | −335 | **`0x010101`** |
+| `0x1017C` | `e0 18 85 ff` | `0xFF85` | `0xFF84` | −124 | **`0x010100`** |
+| `0x10298` | `e0 18 69 fe` | `0xFE69` | `0xFE68` | −408 | **`0x010100`** |
+| `0x10250` (`bne`) | `10 18 b1 fe` | `0xFEB1` | `0xFEB0` | −336 | **`0x010100`** |
 
-### What `0x010101` is
-
-`0x010101` is **odd**, and the assembler would reject it (`OP_EVEN`), so the
-address is not a legal branch-displacement value.  The even address one bit
-below it, `0x010100`, **is** an instruction and a basic-block leader:
+`0x010100` is `movb $0x2,r2`, the head of the retry loop:
 
 ```text
 0x10100  movb $0x2:s,r2      <- retry loop entry
@@ -76,23 +72,16 @@ below it, `0x010100`, **is** an instruction and a basic-block leader:
 0x10106  bal 0x1029C         <- receive
 ```
 
-So the displacements are one too large, in magnitude, by exactly one.  This
-is consistent with the low bit of the field being a **flag** rather than
-part of a signed magnitude, i.e. the true displacement is `-(word1 >> 1)`
-with a separate sign indication — but that reading does not fit the
-forward cases (`0x012c >> 1 = 0x96`, not `0x12c`).
-
-**Status: UNRESOLVED.**  The three branches are still reported by the
-current decoder as `DIRECT_UNSUPPORTED`, and that is correct: the target
-`0x010101` is not an instruction, so a decoder that accepted it would be
-wrong.  The plausible target is `0x010100`, but the encoding rule that
-produces it is not established.
+`cr16_cfg.py` still reports these three as `DIRECT_UNSUPPORTED`, because
+`decode_insn` implements the plain `signed16(word1)` rule of binutils.  The
+masked rule is not wired in yet: see §5a for why it is supported but not
+adopted.
 
 ### The 6-byte form at `0x10284`
 
 `10 00 ef 0e 85 fd` is the `disps25` form.  Applying the same `arg_c` path
 gives a value far outside the image, so the rule for that field is not
-established either.  **UNSUPPORTED.**
+established.  **UNSUPPORTED.**
 
 ## 4. What the branches mean in the control flow
 
@@ -123,30 +112,50 @@ instruction:
 So the hand-off, if it exists as a branch, is the `0x10284` instruction,
 whose target this analysis cannot compute.
 
-## 5a. EXTREF-1 re-examination
+## 5a. EXTREF-1.1 correction — the rule is consistent
 
-The external reference project has working assembler sources with known
-targets, so its encodings were used as a second data set.
+The earlier text claimed that `signed16(word1 & 0xFFFE)` fails on `0x1017C`
+and yields `0x00877A`.  **That was an arithmetic error in this document**:
+the mask was applied after the sign conversion.  Applied in the right order:
 
-| Encoding tried | `0x1017C` | `0x10250` | `0x10298` | known positives |
-|---|---|---|---|---|
-| `signed16(word1)` (binutils) | `0x010101` | `0x010101` | `0x010101` | ✔ |
-| `signed16(word1 & 0xFFFE)` | `0x00877A` ✘ | `0x010100` | `0x010100` | ✔ |
-| `signed16(word1) − 1` | `0x00877C` ✘ | `0x010100` | `0x010100` | — |
+```text
+0xFF85 & 0xFFFE = 0xFF84 -> signed -124 -> 0x1017C - 124 = 0x010100
+0xFEB1 & 0xFFFE = 0xFEB0 -> signed -336 -> 0x10250 - 336 = 0x010100
+0xFE69 & 0xFFFE = 0xFE68 -> signed -408 -> 0x10298 - 408 = 0x010100
+```
 
-`signed16(word1 & 0xFFFE)` gives `0x010100` (the retry loop) for two of the
-three, but for `0x1017C` it gives `0x00877A`, which is **not an instruction
-in any of our three images**.  The required displacement for
-`0x1017C → 0x10100` is `−0x80`, and the field is `0xFF85`; no single mask of
-that field produces `−0x80`.
+All three land on `0x010100`, the start of the UART retry loop.
 
-**Conclusion: still UNRESOLVED.**  A rule that is right for two cases and
-wrong for one is not a rule.  The most likely explanation is that
-`0x1017C` is not the boundary the CFG thinks it is — e.g. the preceding
-`b`-family instruction is longer than 4 bytes, so `0x1017C` is mid-instruction
-data.  That would also explain why its field does not decode.
+### Validation against the assembler
 
-The 6-byte form at `0x10284` remains unresolved for the same reason.
+| Source | Bytes | Field | Result |
+|---|---|---|---|
+| `br *+0x12c:m` | `e0 18 2c 01` | `0x012C` | +300 ✔ |
+| `br *+0x3e8:m` | `e0 18 e8 03` | `0x03E8` | +1000 ✔ |
+| `br *+0xffe:m` | `e0 18 fe 0f` | `0x0FFE` | +4094 ✔ |
+| `br *+0x3ffe:m` | `e0 18 fe 3f` | `0x3FFE` | +16382 ✔ |
+
+Every field the assembler emits is **even**, so `& 0xFFFE` is a no-op on
+forward branches and only strips the flag bit on hand-coded backward ones.
+That is consistent with `OP_EVEN` on `disps17` in `cr16-opc.c` and with the
+assembler rejecting odd displacements (`br *4095:m` is an error).
+
+Against the three known positive second-level targets the masked rule also
+reproduces them exactly (`0x0932A`, `0x2008E`, `0x20614`).
+
+### Status
+
+The rule `target = addr + signed16(word1 & 0xFFFE)` now fits **every**
+case examined: three backward in the loader, four forward from the
+assembler, three forward in the second-level image.  It is **strongly
+supported** but still not documented in any offline CR16C source, so
+`cr16_cfg.py` is not changed by this iteration.
+
+## 5b. `0x10284` remains open
+
+The 6-byte `disps25` form at this site does not decode with the same method.
+It is now the **only** candidate for the actual hand-off, since the three
+four-byte branches all return to the retry loop.
 
 ## 6. What would settle it
 

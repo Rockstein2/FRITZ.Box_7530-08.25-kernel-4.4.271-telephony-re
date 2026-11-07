@@ -143,33 +143,70 @@ def our_accesses(xref):
     return out
 
 
-def functional_notes(name, rows):
-    """Notes that depend on the access sequence, not just the address.
+# Registers whose semantics were verified against our instructions by hand.
+# A name alone never qualifies: each entry names the evidence and the site.
+MANUAL_EVIDENCE = {
+    "UART_CTRL_REG": {
+        "level": "FUNCTIONAL_REGISTER_MATCH",
+        "our_address": "0x000f4900",
+        "evidence": "status bits used by our code match the reference bit "
+                    "numbers: RI = bit 6 (0x102ac tbit $6) and TI = bit 5 "
+                    "(0x102da tbit $5); the baud field bits 2-4 is set to "
+                    "0xC at 0x100ee, i.e. 115200 as the reference defines",
+    },
+    "WATCHDOG_REG": {
+        "level": "FUNCTIONAL_REGISTER_MATCH",
+        "our_address": "0x000f4c00",
+        "expected_value": "0xff",
+        "value_from_low_bits": "0x000f4c00",
+        "evidence": "written with the same value 0xFF as the reference "
+                    "(0x102a0, 0x102ca; the store at 0x28820 carries "
+                    "immediate 0xff in the report) inside a wait loop",
+        "width_note": "our 0x00FF4C00 uses storb (8-bit) and 0x000F4C00 "
+                      "uses storw (16-bit); the value 0xFF is the same, the "
+                      "width is not",
+    },
+    "UART_CLEAR_TX_INT_REG": {
+        "level": "FUNCTIONAL_REGISTER_MATCH",
+        "our_address": "0x000f4904",
+        "evidence": "written with 1 to clear the transmit flag (0x102e4), "
+                    "as the reference does",
+    },
+    "UART_CLEAR_RX_INT_REG": {
+        "level": "FUNCTIONAL_REGISTER_MATCH",
+        "our_address": "0x000f4906",
+        "evidence": "written with 1 to clear the receive flag (0x102ba), "
+                    "as the reference does",
+    },
+    "UART_RX_TX_REG": {
+        "level": "FUNCTIONAL_REGISTER_MATCH",
+        "our_address": "0x000f4902",
+        "evidence": "read and written as a 16-bit data word (0x102be, "
+                    "0x102ce) between the status polls",
+    },
+}
 
-    Each note states what was observed, so a reader can check it.
+
+def written_constants(rows):
+    """Immediate values our code stores, as seen in the report."""
+    return [r["immediate"] for r in rows
+            if r["operation"] in ("WRITE", "RMW") and r.get("immediate")]
+
+
+def functional_notes(name, rows):
+    """Return (labels, notes).  `labels` never come from the name alone.
+
+    The function only *describes* what the rows show.  The evidence level is
+    raised to FUNCTIONAL_REGISTER_MATCH by `build()` only for the registers
+    listed in MANUAL_EVIDENCE, whose sequence was checked by hand.
     """
     notes = []
-    if name.startswith("UART_CTRL_REG"):
-        reads = [r for r in rows if r["operation"] == "READ"]
-        writes = [r for r in rows if r["operation"] == "WRITE"]
-        if reads:
-            notes.append(f"{len(reads)} read(s) of the control/status word")
-        if writes:
-            notes.append(f"{len(writes)} read-modify-write(s)")
-    if name == "UART_RX_TX_REG":
-        notes.append("data register: read and written as a 16-bit word")
-    if name.startswith("UART_CLEAR"):
-        notes.append("written with a constant 1 to clear a flag")
-    if name == "WATCHDOG_REG":
-        notes.append("written with 0xff inside a wait loop "
-                     "(kicked repeatedly while polling)")
-    if name.startswith("RESET_INT_PENDING_REG"):
-        notes.append("written with one bit set to clear that pending IRQ")
-    if name.startswith("CLK_AMBA_REG") or name.startswith("CLK_PER10"):
-        notes.append("clock divider/enable bits")
-    if name.startswith("P0_") or name.startswith("P1_") or \
-            name.startswith("P2_") or name.startswith("P3_"):
-        notes.append("GPIO port direction/mode/data")
+    ops = sorted({r["operation"] for r in rows})
+    widths = sorted({r["width_bits"] for r in rows})
+    notes.append(f"observed operations: {', '.join(ops)}; "
+                 f"widths: {', '.join(str(w) for w in widths)}")
+    if "RMW" in ops:
+        notes.append("includes read-modify-write (bit operations)")
     return notes
 
 
@@ -214,18 +251,47 @@ def build(device_dir, xref_path):
                 level = "ADDRESS_ONLY"
             all_rows = [r for rows in same.values() for r in rows]
             notes = functional_notes(d["name"], all_rows)
-            if notes and level == "ACCESS_MATCH":
-                level = "FUNCTIONAL_REGISTER_MATCH"
+            manual = MANUAL_EVIDENCE.get(d["name"])
             entry["evidence"] = level
+            entry["manual_verification"] = manual
             entry["functional_notes"] = notes
+            if manual and manual.get("expected_value"):
+                consts = written_constants(all_rows)
+                alt = manual.get("value_from_low_bits")
+                if alt:
+                    # the exact address may be written from a register while
+                    # the same value is written at the low-bit twin
+                    for a, by_image in ours.items():
+                        if f"0x{a:08x}" == alt:
+                            consts += written_constants(
+                                [r for rows in by_image.values()
+                                 for r in rows])
+                expected = manual["expected_value"]
+                if expected in consts:
+                    entry["evidence"] = manual["level"]
+                    entry["functional_notes"].append(
+                        f"written value {expected} matches the reference")
+                else:
+                    entry["functional_notes"].append(
+                        f"expected {expected}, observed {sorted(set(consts))}")
+            elif manual:
+                entry["evidence"] = manual["level"]
         elif entry["low_bit_matches"]:
             # the exact address is absent, but the low 20 bits appear
             # under another high half: that is the aliasing question
-            entry["evidence"] = "LOW_BITS_ONLY"
-            entry["functional_notes"] = []
+            manual = MANUAL_EVIDENCE.get(d["name"])
+            if manual:
+                entry["evidence"] = manual["level"]
+                entry["functional_notes"] = [manual["evidence"]]
+                entry["manual_verification"] = manual
+            else:
+                entry["evidence"] = "LOW_BITS_ONLY"
+                entry["functional_notes"] = []
+                entry["manual_verification"] = None
         else:
             entry["evidence"] = "NOT_FOUND_IN_OUR_IMAGE"
             entry["functional_notes"] = []
+            entry["manual_verification"] = None
         registers.append(entry)
 
     report = {
@@ -240,6 +306,10 @@ def build(device_dir, xref_path):
         "low_mask": f"0x{LOW_MASK:08x}",
         "registers": registers,
         "alias_conclusion": "UNKNOWN — no hardware evidence",
+        "level_rule": "FUNCTIONAL_REGISTER_MATCH requires an entry in "
+                      "MANUAL_EVIDENCE, which names the instructions that "
+                      "were compared by hand; an access pattern alone stops "
+                      "at ACCESS_MATCH",
         "chip_configs": chip_configs(device_dir),
     }
     return report

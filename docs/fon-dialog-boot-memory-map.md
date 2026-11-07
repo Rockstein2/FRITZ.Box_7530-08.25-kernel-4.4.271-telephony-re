@@ -98,7 +98,7 @@ the image does not carry.  The start-up record clear fills exactly that gap:
 | Image | cleared range | next block |
 |---|---|---|
 | normal | `[0x936C, 0x9C5E)` | `0x9C5E` |
-| p2test | `[0x94A4, 0x9B44)` | `0x9B44` |
+| p2test | `[0x94A4, 0x9B43)` | `0x9B44` |
 
 The bytes at `0x936B` (one before the cleared range) are **not** in any
 block, so the region `0x936B`–`0x9C5D` is image-absent memory that the code

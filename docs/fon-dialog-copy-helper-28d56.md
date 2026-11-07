@@ -156,23 +156,28 @@ cleared region is outside the uploaded bytes.
 ```
 
 and `0x9C5E` is **exactly** the start of the next uploaded block
-(`0x9C5E`, length `0x3A2`).  The same holds in `p2test`:
+(`0x9C5E`, length `0x3A2`).  In `p2test` the boundary misses by one byte:
 
 | Image | record | range | next block |
 |---|---|---|---|
 | normal | `{0x8F2, 0x936C}` | `[0x936C, 0x9C5E)` | `0x9C5E` ✔ |
-| p2test | `{0x69F, 0x94A4}` | `[0x94A4, 0x9B44)` | `0x9B44` ✔ |
+| p2test | `{0x69F, 0x94A4}` | `[0x94A4, 0x9B43)` | `0x9B44` (one byte gap) |
+
+Every block in both images starts at an **even** address, so the one-byte
+difference in `p2test` is consistent with clearing up to an aligned end
+(`0x9B43` is odd, `0x9B44` is the next even boundary) rather than with an
+exact match.  The normal image happens to land on an even address already.
 
 This is the classic start-up `.bss` clear.  The reference project does the
 same thing in `device/startup.c` (`for (dest = &_bss; dest < &_ebss;
 dest++) *dest = 0;`), and its linker script places `.bss (NOLOAD)` after
 `.data`.
 
-**Status: STRONG_INFERENCE.**  The boundaries match in both images and the
-pattern matches the reference, but no SC14448 document says that the region
-is RAM named `.bss`.  A single coincidence of two numbers would be weak;
-matching in *two independent images* plus the reference is much stronger,
-yet still not a hardware fact.
+**Status: STRONG_INFERENCE.**  In `normal` the cleared end equals the next
+block start exactly; in `p2test` it stops one byte short, at the last even
+boundary before it.  Both are consistent with a `.bss` clear, the second
+with alignment, but the wording "exact match in both images" is **withdrawn**.
+No SC14448 document says the region is RAM named `.bss`.
 
 Note also what this rules out: the cleared region is **not** the region at
 `0x1C`–`0xD4`, so the function does not modify the dispatch table.

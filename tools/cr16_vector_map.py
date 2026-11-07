@@ -45,7 +45,7 @@ IMAGES = [
     ("p2test", ROOT / "firmware" / "dectfw_secondlevel_441p2test.hex"),
 ]
 INTBASE = 0x24
-NVECTORS = 32
+NVECTORS = 31   # entry 32 (0xA0) is the start of the TLV block, see below
 
 # Names from the reference `device/irq.h` `vector_table_t`, used only as a
 # candidate label.
@@ -56,7 +56,7 @@ REFERENCE_NAMES = [
     "ise_int", "access12_int", "keyb_int", "reserved_int18",
     "ct_classd_int", "uart_ri_int", "uart_ti_int", "spi_int", "tim0_int",
     "tim1_int", "clk100_int", "dip_int", "ad_int", "spi2", "dsp_int",
-    "reserved30", "reserved31",
+    "reserved30",
 ]
 
 
@@ -124,6 +124,23 @@ def build(image_name, path):
     }
 
 
+def parse_tlv_probe(path):
+    """Parse the TLV block that starts right after the table."""
+    if not path.is_file():
+        return []
+    mem, _, _, _, _ = parse_ihex(path)
+    out, i = [], 0xA0
+    while i < 0xC0:
+        tag, length = mem.get(i, 0), mem.get(i + 1, 0)
+        if tag == 0 or length > 0x20:
+            break
+        value = bytes(mem.get(i + 2 + k, 0) for k in range(length))
+        out.append({"address": f"0x{i:04x}", "tag": tag, "length": length,
+                    "value": value.hex()})
+        i += 2 + length
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", type=Path)
@@ -148,6 +165,15 @@ def main():
                                  "(vectors.s vector_table_fixup: lshd $-1)"},
         "caution": "the vector numbering is a candidate from SC14441 "
                    "hardware; a match is not proof for SC14448",
+        "table_length": {
+            "entries": NVECTORS,
+            "reason": "entry 32 would sit at 0xA0, whose bytes 01 05 ff ff "
+                      "parse as TLV tag 1 (RFPI) with length 5, matching "
+                      "include/piglet_protocol.h; the table therefore ends "
+                      "at 0x9C and the TLV block starts at 0xA0",
+            "evidence": "L1/L2",
+        },
+        "tlv_at_0xa0": parse_tlv_probe(IMAGES[0][1]),
         "images": {},
     }
     for name, path in IMAGES:

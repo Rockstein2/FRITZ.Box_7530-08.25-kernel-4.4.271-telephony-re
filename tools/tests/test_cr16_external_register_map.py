@@ -71,8 +71,9 @@ else:
     report = E.build(E.DEFAULT_TM, E.XREF)
     regs = {r["name"]: r for r in report["registers"]}
     uart = regs["UART_CTRL_REG"]
-    check("UART control is reported as LOW_BITS_ONLY",
-          uart["evidence"], "LOW_BITS_ONLY")
+    # the exact address is absent, but the semantics were verified by hand
+    check("UART control is reported as FUNCTIONAL_REGISTER_MATCH",
+          uart["evidence"], "FUNCTIONAL_REGISTER_MATCH")
     check("UART control has a low-bit candidate",
           list(uart["low_bit_matches"]), ["0x000f4900"])
     check("the exact address is not claimed present",
@@ -80,6 +81,17 @@ else:
 
     check("an address present in both is not merged",
           regs["WATCHDOG_REG"]["found_in_our_firmware"], True)
+    # the level must be earned by evidence, not by the register name
+    for r in report["registers"]:
+        if r["evidence"] == "FUNCTIONAL_REGISTER_MATCH":
+            check(f"{r['name']}: FUNCTIONAL_REGISTER_MATCH has manual "
+                  "evidence", bool(r.get("manual_verification")), True)
+    check("a GPIO register is not promoted by its name alone",
+          regs["P0_DIR_REG"]["evidence"] != "FUNCTIONAL_REGISTER_MATCH",
+          True)
+    check("the watchdog value is verified, not assumed",
+          any("0xff" in n for n in regs["WATCHDOG_REG"]
+              ["functional_notes"]), True)
     check("the alias conclusion stays UNKNOWN",
           report["alias_conclusion"].startswith("UNKNOWN"), True)
     check("the caution about SC14441 is recorded",

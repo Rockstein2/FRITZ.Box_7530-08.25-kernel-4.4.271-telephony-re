@@ -48,17 +48,23 @@ of the first-level image, and labels each register:
 
 | Level | Meaning |
 |---|---|
-| `FUNCTIONAL_REGISTER_MATCH` | the same address is accessed with the same width **and** the sequence matches the reference semantics |
-| `ACCESS_MATCH` | the same address, compatible width, no sequence evidence |
-| `ADDRESS_ONLY` | the same address, different width or no sequence evidence |
+| `FUNCTIONAL_REGISTER_MATCH` | an entry in `MANUAL_EVIDENCE` names the exact instructions that were compared with the reference, and — where a value matters — the stored immediate is checked against it |
+| `ACCESS_MATCH` | the same address, compatible width, **no sequence or value evidence** |
+| `ADDRESS_ONLY` | the same address, but the width or value does not line up |
 | `LOW_BITS_ONLY` | the exact address is absent, but the low 20 bits appear under another high half |
 | `NOT_FOUND_IN_OUR_IMAGE` | absent |
+
+**The level is never raised by the register name.**  An earlier version
+promoted any register whose name looked meaningful; that is withdrawn.  The
+GPIO, clock, battery, pad and interrupt-priority registers are therefore
+`ACCESS_MATCH` even though their addresses match, because no instruction
+sequence was verified for them.
 
 ## 2. UART — the strongest result
 
 | Reference | Name | Our image |
 |---|---|---|
-| `0x00FF4900` | `UART_CTRL_REG` | **absent**; `0x000F4900` is used (first-level) |
+| `0x00FF4900` | `UART_CTRL_REG` | **absent**; `0x000F4900` is used (first-level) — `FUNCTIONAL_REGISTER_MATCH` by manual comparison |
 | `0x00FF4902` | `UART_RX_TX_REG` | absent; `0x000F4902` used |
 | `0x00FF4904` | clear TX interrupt | absent; `0x000F4904` used |
 | `0x00FF4906` | clear RX interrupt | absent; `0x000F4906` used |
@@ -85,7 +91,7 @@ entire bit layout agrees.  It is still **not** an alias proof — see §4.
 | `0x00FF4838` | GPIO port 0 mode | `0x000F4838` used | low bits only |
 | `0x00FF4856` / `0x00FF4858` | GPIO port 2 direction / mode | used | low bits only |
 | `0x00FF4860` / `0x00FF4866` / `0x00FF4868` | GPIO port 3 | used | low bits only |
-| `0x00FF4C00` | `WATCHDOG_REG`, written `0xff` | `0x000F4C00`, written `0xFF` | `ADDRESS_ONLY` |
+| `0x00FF4C00` | `WATCHDOG_REG`, written `0xff` | exact address, 8-bit store; value `0xff` verified at `0x28820` | `FUNCTIONAL_REGISTER_MATCH` |
 | `0x00FF5402` | reset interrupt pending | `0x000F5402`, 7 writes | low bits only |
 | `0x00FF5404` / `0x00FF5406` | interrupt priority 0/1 | **same address** used in both images | `ACCESS_MATCH` |
 

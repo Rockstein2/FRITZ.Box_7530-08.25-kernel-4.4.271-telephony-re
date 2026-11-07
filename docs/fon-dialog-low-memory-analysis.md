@@ -24,7 +24,7 @@ this document is about, `0x1C`–`0xD4`, is inside it in **both** images.
 | `0x1C` holds the pair `(0x000008F2, 0x0000936C)` read as little-endian `u32` | **L2** | `0x8F2` is an instruction boundary (`movd $0x10ccc:l,(r12)`); `0xF2080000` is not |
 | the start-up code clears `0x8F2` bytes at `0x936C` | **L2** | see `fon-dialog-copy-helper-28d56.md` |
 | `0x24` onwards is a table of repeating 4-byte values `0x000146E5` | **L1** | bytes |
-| that table has a few different entries (`0x000144CB`, `0x00014668`) | **L1** | bytes at `0x74`, `0x7C` |
+| that table has a few different entries | **L1** | bytes at `0x84` (`0x000144CB`), `0x8C` (`0x00014668`), `0x98` (`0x0001454A`) |
 | the values are **odd** | **L1** | `0x146E5 & 1 = 1`, `0x144CB & 1 = 1`; `0x14668` is even |
 | no byte of the image covers `0x146E5`, `0x144CB` or `0x14668` | **L1** | block list ends at `0x28DCD` but has gaps; none covers those addresses |
 
@@ -108,14 +108,14 @@ loader, a ROM stage, or the hardware) changes memory first.
 
 The record at `0x1C` clears `[0x936C, 0x9C5E)`, and `0x9C5E` is exactly the
 start of the next uploaded block.  In `p2test` the record `{0x69F, 0x94A4}`
-clears `[0x94A4, 0x9B44)`, again landing on the next block start.  See
+clears `[0x94A4, 0x9B43)`, i.e. one byte short of the next block start.  See
 `fon-dialog-copy-helper-28d56.md`; status **STRONG_INFERENCE**.
 
 ## 7. `0x7C`
 
-`0x7C` lies inside block 1 (`0x0`–`0xD4`) and holds
-`68 46 01 00` — a **different** 32-bit value from the repeating
-`0x000146E5`, i.e. one of the two exceptions in the table.
+`0x7C` lies inside block 1 (`0x0`–`0xD4`) and holds `e5 46 01 00`, i.e. the
+**same** repeating stub value `0x000146E5`; it is vector 22, a stub.  The
+differing entries are at `0x84`, `0x8C` and `0x98`.
 
 The earlier statement that "no second-level block covers `0x7C`" was
 **wrong** and is corrected.  `0x7C` is loaded data.  Whether the CPU

@@ -38,11 +38,12 @@ def skip(name, why):
 
 print("== encoding")
 check("INTBASE", V.INTBASE, 0x24)
-check("32 vectors", V.NVECTORS, 32)
-check("table extent", f"0x{0x24:04x}-0x{0x24 + 4 * 32 - 1:04x}",
-      "0x0024-0x00a3")
+check("0xa0 starts a TLV block, not a vector", 0xA0 - 0x24, 4 * 31)
+check("31 vectors", V.NVECTORS, 31)
+check("table extent", f"0x{0x24:04x}-0x{0x24 + 4 * 31 - 1:04x}",
+      "0x0024-0x009f")
 check("value x 2 is the handler address", 0x146E5 * 2, 0x28DCA)
-check("reference names cover 32 entries", len(V.REFERENCE_NAMES), 32)
+check("reference names cover 31 entries", len(V.REFERENCE_NAMES), 31)
 
 print("== vector index")
 for offset, index in ((0x74, 20), (0x78, 21), (0x7C, 22),
@@ -59,16 +60,15 @@ else:
     for name, path in FW.items():
         entry = V.build(name, path)
         vecs = entry["vectors"]
-        check(f"{name}: 32 entries", len(vecs), 32)
+        check(f"{name}: 31 entries", len(vecs), 31)
         check(f"{name}: table starts at 0x24", vecs[0]["table_address"],
               "0x0024")
-        check(f"{name}: table ends at 0xa0", vecs[31]["table_address"],
-              "0x00a0")
+        check(f"{name}: table ends at 0x9c", vecs[30]["table_address"],
+              "0x009c")
         check(f"{name}: every entry is 4 bytes",
               {len(v["raw"]) for v in vecs}, {8})   # hex string of 4 bytes
         resolved = [v for v in vecs if v["handler"]["in_image"]]
-        # 31 real handlers plus one out-of-range entry
-        check(f"{name}: 31 entries resolve to code", len(resolved), 31)
+        check(f"{name}: all 31 entries resolve to code", len(resolved), 31)
         check(f"{name}: every resolved handler is even",
               all(v["handler_even"] for v in resolved), True)
         # the concrete handler addresses
@@ -101,6 +101,17 @@ else:
           {v["index"] for v in p["vectors"]
            if v["handler"].get("block_size", 0) > 2})
 
+print("== 0xa0 is data, not a vector")
+if FW["normal"].is_file():
+    sys.path.insert(0, str(ROOT / "tools"))
+    from cr16_boot_memory_map import parse_ihex
+    mem, _, _, _, _ = parse_ihex(FW["normal"])
+    raw = bytes(mem.get(a, 0) for a in range(0xA0, 0xA2))
+    check("0xa0 starts with TLV tag 1", raw[0], 1)
+    check("its length is 5 (the RFPI record)", raw[1], 5)
+    check("the table's last entry is at 0x9c",
+          0x9C + 4, 0xA0)
+
 print("== committed report")
 if not REPORT.is_file():
     skip("report", f"{REPORT} missing")
@@ -111,8 +122,8 @@ else:
     check("report records the encoding",
           "lshd" in data["upstream"]["encoding"], True)
     for name in ("normal", "p2test"):
-        check(f"{name}: 32 vectors in the report",
-              len(data["images"][name]["vectors"]), 32)
+        check(f"{name}: 31 vectors in the report",
+              len(data["images"][name]["vectors"]), 31)
     out = subprocess.run(
         [sys.executable, str(ROOT / "tools" / "cr16_vector_map.py"),
          "--json", "/tmp/cr16-vector-check.json"],

@@ -5,7 +5,7 @@
    "file": "dectfw_secondlevel_441.hex",
    "intbase": "0x0024",
    "parse_errors": [],
-   "table_extent": "0x0024-0x00a3",
+   "table_extent": "0x0024-0x009f",
    "vectors": [
     {
      "handler": {
@@ -647,18 +647,6 @@
      "reference_name": "reserved30",
      "stored": "0x000146e5",
      "table_address": "0x009c"
-    },
-    {
-     "handler": {
-      "in_image": false
-     },
-     "handler_address": "0x1fffe0a02",
-     "handler_even": true,
-     "index": 31,
-     "raw": "0105ffff",
-     "reference_name": "reserved31",
-     "stored": "0xffff0501",
-     "table_address": "0x00a0"
     }
    ]
   },
@@ -666,7 +654,7 @@
    "file": "dectfw_secondlevel_441p2test.hex",
    "intbase": "0x0024",
    "parse_errors": [],
-   "table_extent": "0x0024-0x00a3",
+   "table_extent": "0x0024-0x009f",
    "vectors": [
     {
      "handler": {
@@ -1308,22 +1296,59 @@
      "reference_name": "reserved30",
      "stored": "0x00004ffe",
      "table_address": "0x009c"
-    },
-    {
-     "handler": {
-      "in_image": false
-     },
-     "handler_address": "0x1fffe0a02",
-     "handler_even": true,
-     "index": 31,
-     "raw": "0105ffff",
-     "reference_name": "reserved31",
-     "stored": "0xffff0501",
-     "table_address": "0x00a0"
     }
    ]
   }
  },
+ "table_length": {
+  "entries": 31,
+  "evidence": "L1/L2",
+  "reason": "entry 32 would sit at 0xA0, whose bytes 01 05 ff ff parse as TLV tag 1 (RFPI) with length 5, matching include/piglet_protocol.h; the table therefore ends at 0x9C and the TLV block starts at 0xA0"
+ },
+ "tlv_at_0xa0": [
+  {
+   "address": "0x00a0",
+   "length": 5,
+   "tag": 1,
+   "value": "ffffffffff"
+  },
+  {
+   "address": "0x00a7",
+   "length": 2,
+   "tag": 2,
+   "value": "0b03"
+  },
+  {
+   "address": "0x00ab",
+   "length": 1,
+   "tag": 3,
+   "value": "2a"
+  },
+  {
+   "address": "0x00ae",
+   "length": 1,
+   "tag": 4,
+   "value": "08"
+  },
+  {
+   "address": "0x00b1",
+   "length": 1,
+   "tag": 6,
+   "value": "50"
+  },
+  {
+   "address": "0x00b4",
+   "length": 1,
+   "tag": 7,
+   "value": "00"
+  },
+  {
+   "address": "0x00b7",
+   "length": 1,
+   "tag": 10,
+   "value": "00"
+  }
+ ],
  "tool": "cr16-vector-map/1",
  "upstream": {
   "commit": "3d041a683c57fee585e04edc503cd7348f54c4a9",

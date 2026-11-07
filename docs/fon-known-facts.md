@@ -1003,7 +1003,9 @@ Documents: `fon-dialog-firstlevel-cfg.md`, `fon-dialog-uart-boot-protocol.md`,
 | `0x28D56` semantics | walks 8-byte records `{u32le count, u32le dest}` from `(r3,r2)` to `(r5,r4)` and writes `count` **zero** bytes per record (`r4` forced to 0 at `0x28D62`) | L2 |
 | call `0x15F6` | `fn_28d56(0x1C, 0x24)` = one record `{count=0x8F2, dest=0x936C}` → clears 2290 bytes at `0x936C` | L2 |
 | `0x936C` | first byte past the block that starts at `0x9000`; not covered by any block | L1 |
-| table at `0x24` | 32-bit little-endian values; ×2 gives instruction boundaries inside the image (`0x28996`, `0x28A94`, `0x28CD0`, `0x28DCA`) | L2 |
+| table at `0x24` | **31** entries of 32-bit little-endian values; ×2 gives instruction boundaries (`0x28996`, `0x28A94`, `0x28CD0`, `0x28DCA`) | L2 |
+| `0xA0` is not a vector | its bytes `01 05 …` are TLV tag 1 (RFPI, length 5) from `piglet_protocol.h` | L1 |
+| `.bss` in p2test | clears `[0x94A4, 0x9B43)`, one byte short of the next block at `0x9B44` (all blocks start even) | L2 |
 | table is an exception dispatch table | 32 entries, entry = handler address ÷ 2 (confirmed by TobleMiner `device/vectors.s`) | L2 + external |
 | real handlers | vectors 24, 26, 29; all other indices share the `nop`/`retx` stub | L2 |
 | vectors 20–22 (UART RX/TX, SPI per SC14441) | **stubs** in both images — the SC14441 numbering does not transfer | L2 |
@@ -1018,7 +1020,7 @@ Documents: `fon-dialog-firstlevel-cfg.md`, `fon-dialog-uart-boot-protocol.md`,
 | `0x7C` | **inside** block 1 (`0x0`–`0xD4`), holds `0x00014668` | L1 |
 | first-level load address | `0x10080` | L1 |
 | first-level execution entry | **UNKNOWN** | — |
-| first-level hand-off targets | `0x1017C`, `0x10298`, `0x10250` all compute `0x010101` (odd, not an instruction); `0x10284` unresolved | L2 |
+| first-level hand-off targets | with `signed16(word1 & 0xFFFE)` all three four-byte branches (`0x1017C`, `0x10250`, `0x10298`) reach `0x010100`, the retry loop; `0x10284` (6-byte form) unresolved | L2 |
 | `0x01000000` region | not present in any uploaded image | L1 |
 | `CFG` bit 8 | cleared by the loader, set before its hand-off wait and by the second-level start-up | L2 |
 

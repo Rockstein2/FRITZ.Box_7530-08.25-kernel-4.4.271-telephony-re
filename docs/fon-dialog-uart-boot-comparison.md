@@ -9,13 +9,31 @@ Status: **offline comparison.**  Three different things share the phrase
 
 | | A. Dialog ROM loader | B. AVM first-level | C. TobleMiner stub |
 |---|---|---|---|
-| runs from | on-chip ROM (no image available) | RAM at `0x10080` (image present) | RAM, image built by the reference |
-| source | none offline | `firmware/dectfw_firstlevel_441_slow.hex` | `device/*.s`, `device/*.c` |
-| protocol owner | Dialog | AVM | the stub itself |
-| purpose | receive a first image | receive the second-level image | test/demo firmware |
+| runs from | on-chip ROM | RAM at `0x10080` | RAM |
+| source | **`host/dialogtool.py` class `Bootrom`** (host implementation) plus the device code it drives | `firmware/dectfw_firstlevel_441_slow.hex` | `device/*.s`, `device/*.c` |
+| protocol | `STX` handshake, `SOH` + `u16le` length, `ACK`/`NACK` | `u32be` address, `u32be` length, XOR, `ACK 0x06` | `0xA5` header, CRC32 |
+| purpose | receive the first image | receive the second-level image | test/demo firmware |
 
-**A is not available.**  Every statement about the ROM loader is an
-inference from what B and C assume.
+**A is no longer "unknown".**  `dialogtool.py` implements it:
+
+```python
+class Bootrom:
+    BAUDRATE = 9600
+    STX = 0x02; SOH = 0x01; ACK = 0x06; NACK = 0x15
+
+    while True:                       # wait for the device
+        byt = read(1)
+        if byt == STX: break
+    write(struct.pack("<BH", SOH, len(payload)))   # SOH + u16 little-endian
+    # then the device answers STX (up to twice) and finally ACK or NACK
+```
+
+The ROM passes the length as **little-endian `u16`**, which is a different
+field width and byte order from B's big-endian `u32`.
+
+The device side of A is not in any image we hold — `dialogtool.py` is the
+only description.  Using it is legitimate: it is a working host
+implementation for the same core family.
 
 ## 2. What each side actually implements
 
@@ -31,7 +49,8 @@ inference from what B and C assume.
 | UART status bits: RI = 6, TI = 5 | `0x102AC`, `0x102DA` |
 | baud field bits 2–4 set to `0xC` → 115200 | `0x100EA`, `0x100EE` |
 
-`u32be` lengths and addresses are **big-endian** here.
+`u32be` lengths and addresses are **big-endian** here.  This is *not* the
+same protocol as A: A has no address field at all and a 16-bit length.
 
 ### C — TobleMiner host tool
 
@@ -121,12 +140,12 @@ address happens to match.
 
 | Property | A (ROM) | B (AVM first-level) | C (TobleMiner stub) |
 |---|---|---|---|
-| length field | unknown | `u32be` | little-endian |
-| address field | unknown | `u32be` | little-endian |
-| checksum | unknown | XOR, echoed, ACK `0x06` | CRC32, `0xA5` framing |
-| NAK | unknown | `0x15` | reference-specific |
-| start baud | unknown | field `0xC` = 115200 | settable |
-| entry into payload | unknown | `0x10284` (target unresolved) | `br _c_entry` |
+| length field | `u16` **little-endian** | `u32be` | little-endian |
+| address field | none (the payload is one blob) | `u32be` per block | little-endian |
+| start baud | 9600 | field `0xC` = 115200 | settable |
+| handshake | device sends `STX`, host sends `SOH`+len, device `ACK`/`NACK` | host sends, device replies `0x06`/`0x15` | `0xA5` frames |
+| checksum | none in `dialogtool.py` | XOR, echoed | CRC32 |
+| entry into payload | device-specific | `0x10284` (target unresolved) | `br _c_entry` |
 
 **Do not treat B and C as the same protocol.**  They agree on nothing except
 that both are UART uploads on the same core.

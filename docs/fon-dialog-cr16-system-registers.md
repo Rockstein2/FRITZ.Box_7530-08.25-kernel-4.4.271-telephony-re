@@ -82,9 +82,11 @@ image holds:
 ```
 
 Read as **little-endian 32-bit values** the region contains
-`0x000146E5` (repeating), with `0x000144CB` and `0x00014668` at `0x74` and
-`0x7C`.  **Doubling them** gives `0x28DCA`, `0x28996`, `0x28CD0` — all
-instruction boundaries inside the image, three of them `push` prologues.
+`0x000146E5` (repeating, the stub), with the differing entries at
+**`0x84`** (`0x000144CB`), **`0x8C`** (`0x00014668`) and **`0x98`**
+(`0x0001454A`).  **Doubling them** gives `0x28DCA`, `0x28996`, `0x28CD0`,
+`0x28A94` — all instruction boundaries inside the image.  Indices **20–22**
+(`0x74`, `0x78`, `0x7C`) all hold the stub, not a different entry.
 That is a word-offset encoding, so the entries do **not** point outside the
 image.  Derivation and the probability argument are in
 `fon-dialog-low-memory-analysis.md`.
@@ -149,9 +151,10 @@ the bit, so its function is **UNKNOWN**.
   write to `0x000F4C00`**, whereas the second-level image writes
   `0xFF4C00` with `storb`.  Same low 20 bits, different high bits, different
   width, different images.  This is a candidate pair, not evidence.
-* Branches at `0x1017C` and `0x10298` (`br *-0x10100:m`) target `0x7C`, a
-  zero region: the loader waits for the second-level image to be uploaded
-  and then jumps to code that does not exist in this image.
+* Branches at `0x1017C`, `0x10250` and `0x10298` are four-byte `disps17`
+  forms; under the corrected rule
+  (`signed16(word1 & 0xFFFE)`) all three return to **`0x10100`**, the start
+  of the UART retry loop.  They are not hand-off branches.
 
 ## 6. Remaining gaps
 

@@ -359,8 +359,11 @@ def reachability(fw):
     return mode_a, mode_b
 
 
+_CURRENT_IMM = {}
+
+
 def _row(image, addr, insn, kind, width, address_kind, effective=None,
-         provenance=(), expr=None, mode_a=(), mode_b=(), note=""):
+         provenance=(), expr=None, mode_a=(), mode_b=(), note="", state=None):
     return {
         "image": image,
         "instruction": f"0x{addr:06x}",
@@ -375,7 +378,39 @@ def _row(image, addr, insn, kind, width, address_kind, effective=None,
         "reachable_mode_a": addr in mode_a,
         "reachable_mode_b": addr in mode_b,
         "note": note,
+        # the immediate written by `storw $imm,addr` / `storb $imm,addr`,
+        # when the store source is a literal; None otherwise
+        "immediate": _immediate_of(insn, state if state is not None
+                                   else _CURRENT_IMM),
     }
+
+
+def _immediate_of(insn, state=None):
+    """Literal stored by a store, or None.
+
+    Two cases:
+      * `storw $imm,addr` / `storb $imm,addr`: the literal is in the
+        instruction;
+      * `storw rN,addr` where `rN` was loaded by `movw $imm,rN` in the same
+        basic block and not written since: the tracked value is used.
+    """
+    if insn.mnemonic not in ("storw", "storb", "stord"):
+        return None
+    first = insn.operands.split(",")[0].strip()
+    m_reg = re.match(r"^(r\d+)$", first)
+    if m_reg:
+        if state is None:
+            return None
+        entry = state.get(("IMM", m_reg.group(1)))
+        return entry if entry else None
+    m = re.match(r"^\$(-?0x[0-9a-f]+|-?\d+)", first)
+    if not m:
+        return None
+    text = m.group(1)
+    neg = text.startswith("-")
+    text = text.lstrip("-")
+    value = int(text, 16) if text.startswith("0x") else int(text)
+    return hex(-value if neg else value)
 
 
 def double(symbol):
@@ -419,15 +454,35 @@ def scan(fw, image):
     mode_a, mode_b = reachability(fw)
     rows, unclassified = [], []
     unsupported = []
+    # `_row` is called with the current block's immediate map through this
+    # module-level name; scan() is not re-entrant with respect to it
+    global _CURRENT_IMM
+    _CURRENT_IMM = {}
     for start in sorted(blocks):
         state = {}
         prov = {}
         sym = {}
         sym_base = {}
+        imm_state = {}
+        _CURRENT_IMM = imm_state
         for addr in blocks[start]:
             insn = fw.insns[addr]
             ops = insn.operands.replace(" ", "")
             written = written_registers(insn)
+            # literal values loaded into a register, tracked inside the block
+            m_movw = re.match(r"^\$(-?0x[0-9a-f]+|-?\d+)(?::[sm])?,(r\d+)$",
+                              ops)
+            if m_movw and insn.mnemonic == "movw":
+                text = m_movw.group(1)
+                neg = text.startswith("-")
+                text = text.lstrip("-")
+                val = int(text, 16) if text.startswith("0x") else int(text)
+                imm_state[("IMM", m_movw.group(2))] = hex(-val if neg else val)
+            for reg in written:
+                # the register just loaded keeps its value
+                if m_movw and reg == m_movw.group(2):
+                    continue
+                imm_state.pop(("IMM", reg), None)
 
             # Symbolic index state, keyed by register pair.
             #

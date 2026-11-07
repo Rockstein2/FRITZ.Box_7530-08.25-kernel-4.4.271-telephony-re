@@ -28,6 +28,7 @@
    "ram_origin": "0x00010000"
   }
  ],
+ "level_rule": "FUNCTIONAL_REGISTER_MATCH requires an entry in MANUAL_EVIDENCE, which names the instructions that were compared by hand; an access pattern alone stops at ACCESS_MATCH",
  "low_mask": "0x000fffff",
  "registers": [
   {
@@ -38,6 +39,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_CTRL_REG",
    "our_accesses": {},
    "width": 32
@@ -50,6 +52,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_CFG_REG",
    "our_accesses": {},
    "width": 16
@@ -62,6 +65,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_RECVDATA_REG",
    "our_accesses": {},
    "width": 32
@@ -74,6 +78,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_STATUS_REG",
    "our_accesses": {},
    "width": 16
@@ -86,6 +91,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_WRITEDATA8_REG",
    "our_accesses": {},
    "width": 8
@@ -98,6 +104,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_WRITEDATA16_REG",
    "our_accesses": {},
    "width": 16
@@ -110,6 +117,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_WRITEDATA32_REG",
    "our_accesses": {},
    "width": 32
@@ -122,6 +130,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_READDATA8_REG",
    "our_accesses": {},
    "width": 8
@@ -134,6 +143,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_READDATA16_REG",
    "our_accesses": {},
    "width": 16
@@ -146,17 +156,18 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_READDATA32_REG",
    "our_accesses": {},
    "width": 32
   },
   {
    "address": "0x00ff4000",
-   "evidence": "FUNCTIONAL_REGISTER_MATCH",
+   "evidence": "ACCESS_MATCH",
    "file": "clock.h",
    "found_in_our_firmware": true,
    "functional_notes": [
-    "clock divider/enable bits"
+    "observed operations: READ, WRITE; widths: 16"
    ],
    "low_bit_candidates": [
     "0x000f4000"
@@ -216,6 +227,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "CLK_AMBA_REG",
    "our_accesses": {
     "normal": [
@@ -272,6 +284,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "CLK_CODEC_DIV_REG",
    "our_accesses": {},
    "width": 16
@@ -303,6 +316,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "CLK_PER_DIV_REG",
    "our_accesses": {},
    "width": 16
@@ -346,6 +360,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "CLK_PER10_DIV_REG",
    "our_accesses": {},
    "width": 16
@@ -355,9 +370,13 @@
    "evidence": "ACCESS_MATCH",
    "file": "clock.h",
    "found_in_our_firmware": true,
-   "functional_notes": [],
+   "functional_notes": [
+    "observed operations: RMW; widths: 16",
+    "includes read-modify-write (bit operations)"
+   ],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "CLK_PLL_CTRL_REG",
    "our_accesses": {
     "normal": [
@@ -404,6 +423,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "CLK_PLL_DIV_REG",
    "our_accesses": {},
    "width": 16
@@ -435,6 +455,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "CLK_AUX_REG",
    "our_accesses": {},
    "width": 16
@@ -447,6 +468,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "CLK_ULP_CTRL_REG",
    "our_accesses": {},
    "width": 16
@@ -459,6 +481,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA0_A_STARTL_REG",
    "our_accesses": {},
    "width": 16
@@ -471,6 +494,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA0_A_STARTH_REG",
    "our_accesses": {},
    "width": 16
@@ -483,6 +507,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA0_B_STARTL_REG",
    "our_accesses": {},
    "width": 16
@@ -495,6 +520,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA0_B_STARTH_REG",
    "our_accesses": {},
    "width": 16
@@ -507,6 +533,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA0_INT_REG",
    "our_accesses": {},
    "width": 16
@@ -519,6 +546,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA0_INT_REG",
    "our_accesses": {},
    "width": 16
@@ -531,6 +559,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA0_LEN_REG",
    "our_accesses": {},
    "width": 16
@@ -543,6 +572,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA0_CTRL_REG",
    "our_accesses": {},
    "width": 16
@@ -555,6 +585,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA0_IDX_REG",
    "our_accesses": {},
    "width": 16
@@ -567,6 +598,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA1_CTRL_REG",
    "our_accesses": {},
    "width": 16
@@ -579,6 +611,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA2_CTRL_REG",
    "our_accesses": {},
    "width": 16
@@ -591,6 +624,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DMA3_CTRL_REG",
    "our_accesses": {},
    "width": 16
@@ -600,9 +634,13 @@
    "evidence": "ACCESS_MATCH",
    "file": "power.h",
    "found_in_our_firmware": true,
-   "functional_notes": [],
+   "functional_notes": [
+    "observed operations: RMW; widths: 16",
+    "includes read-modify-write (bit operations)"
+   ],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "BAT_CTRL_REG",
    "our_accesses": {
     "normal": [
@@ -630,6 +668,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_UNKNOWN_REG1",
    "our_accesses": {},
    "width": 16
@@ -642,6 +681,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "BAT_CTRL2_REG",
    "our_accesses": {},
    "width": 16
@@ -654,6 +694,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_UNKNOWN_REG3",
    "our_accesses": {},
    "width": 16
@@ -666,6 +707,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "QSPIC_UNKNOWN_REG2",
    "our_accesses": {},
    "width": 16
@@ -678,6 +720,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "CP_CTRL_REG",
    "our_accesses": {},
    "width": 16
@@ -687,9 +730,13 @@
    "evidence": "ACCESS_MATCH",
    "file": "power.h",
    "found_in_our_firmware": true,
-   "functional_notes": [],
+   "functional_notes": [
+    "observed operations: RMW; widths: 16",
+    "includes read-modify-write (bit operations)"
+   ],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "PAD_CTRL_REG",
    "our_accesses": {
     "normal": [
@@ -727,6 +774,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "LED_CTRL_REG",
    "our_accesses": {},
    "width": 16
@@ -739,6 +787,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P0_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -751,6 +800,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P0_SET_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -763,17 +813,18 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P0_RESET_DATA_REG",
    "our_accesses": {},
    "width": 16
   },
   {
    "address": "0x00ff4836",
-   "evidence": "FUNCTIONAL_REGISTER_MATCH",
+   "evidence": "ACCESS_MATCH",
    "file": "gpio.h",
    "found_in_our_firmware": true,
    "functional_notes": [
-    "GPIO port direction/mode/data"
+    "observed operations: READ, WRITE; widths: 16"
    ],
    "low_bit_candidates": [
     "0x000f4836"
@@ -824,6 +875,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "P0_DIR_REG",
    "our_accesses": {
     "normal": [
@@ -855,11 +907,11 @@
   },
   {
    "address": "0x00ff4838",
-   "evidence": "FUNCTIONAL_REGISTER_MATCH",
+   "evidence": "ACCESS_MATCH",
    "file": "gpio.h",
    "found_in_our_firmware": true,
    "functional_notes": [
-    "GPIO port direction/mode/data"
+    "observed operations: READ, WRITE; widths: 16"
    ],
    "low_bit_candidates": [
     "0x000f4838"
@@ -880,6 +932,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "P0_MODE_REG",
    "our_accesses": {
     "normal": [
@@ -917,6 +970,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P1_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -929,6 +983,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P1_SET_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -941,6 +996,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P1_RESET_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -953,6 +1009,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P1_DIR_REG",
    "our_accesses": {},
    "width": 16
@@ -965,6 +1022,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P1_MODE_REG",
    "our_accesses": {},
    "width": 16
@@ -977,6 +1035,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P2_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -989,6 +1048,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P2_SET_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -1001,20 +1061,22 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P2_RESET_DATA_REG",
    "our_accesses": {},
    "width": 16
   },
   {
    "address": "0x00ff4856",
-   "evidence": "FUNCTIONAL_REGISTER_MATCH",
+   "evidence": "ACCESS_MATCH",
    "file": "gpio.h",
    "found_in_our_firmware": true,
    "functional_notes": [
-    "GPIO port direction/mode/data"
+    "observed operations: READ, WRITE; widths: 16"
    ],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P2_DIR_REG",
    "our_accesses": {
     "normal": [
@@ -1086,11 +1148,11 @@
   },
   {
    "address": "0x00ff4858",
-   "evidence": "FUNCTIONAL_REGISTER_MATCH",
+   "evidence": "ACCESS_MATCH",
    "file": "gpio.h",
    "found_in_our_firmware": true,
    "functional_notes": [
-    "GPIO port direction/mode/data"
+    "observed operations: READ, WRITE; widths: 16"
    ],
    "low_bit_candidates": [
     "0x000f4858"
@@ -1113,6 +1175,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "P2_MODE_REG",
    "our_accesses": {
     "normal": [
@@ -1164,14 +1227,16 @@
   },
   {
    "address": "0x00ff4860",
-   "evidence": "FUNCTIONAL_REGISTER_MATCH",
+   "evidence": "ACCESS_MATCH",
    "file": "gpio.h",
    "found_in_our_firmware": true,
    "functional_notes": [
-    "GPIO port direction/mode/data"
+    "observed operations: RMW; widths: 16",
+    "includes read-modify-write (bit operations)"
    ],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P3_DATA_REG",
    "our_accesses": {
     "normal": [
@@ -1209,6 +1274,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P3_SET_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -1221,20 +1287,22 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P3_RESET_DATA_REG",
    "our_accesses": {},
    "width": 16
   },
   {
    "address": "0x00ff4866",
-   "evidence": "FUNCTIONAL_REGISTER_MATCH",
+   "evidence": "ACCESS_MATCH",
    "file": "gpio.h",
    "found_in_our_firmware": true,
    "functional_notes": [
-    "GPIO port direction/mode/data"
+    "observed operations: READ, WRITE; widths: 16"
    ],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P3_DIR_REG",
    "our_accesses": {
     "normal": [
@@ -1346,14 +1414,16 @@
   },
   {
    "address": "0x00ff4868",
-   "evidence": "FUNCTIONAL_REGISTER_MATCH",
+   "evidence": "ACCESS_MATCH",
    "file": "gpio.h",
    "found_in_our_firmware": true,
    "functional_notes": [
-    "GPIO port direction/mode/data"
+    "observed operations: READ, RMW, WRITE; widths: 16",
+    "includes read-modify-write (bit operations)"
    ],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P3_MODE_REG",
    "our_accesses": {
     "normal": [
@@ -1481,6 +1551,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P4_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -1493,6 +1564,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P4_SET_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -1505,6 +1577,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P4_RESET_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -1517,6 +1590,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P4_DIR_REG",
    "our_accesses": {},
    "width": 16
@@ -1529,6 +1603,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P4_MODE_REG",
    "our_accesses": {},
    "width": 16
@@ -1541,6 +1616,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P5_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -1553,6 +1629,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P5_SET_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -1565,6 +1642,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P5_RESET_DATA_REG",
    "our_accesses": {},
    "width": 16
@@ -1577,6 +1655,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P5_DIR_REG",
    "our_accesses": {},
    "width": 16
@@ -1589,16 +1668,19 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "P5_MODE_REG",
    "our_accesses": {},
    "width": 16
   },
   {
    "address": "0x00ff4900",
-   "evidence": "LOW_BITS_ONLY",
+   "evidence": "FUNCTIONAL_REGISTER_MATCH",
    "file": "uart.h",
    "found_in_our_firmware": false,
-   "functional_notes": [],
+   "functional_notes": [
+    "status bits used by our code match the reference bit numbers: RI = bit 6 (0x102ac tbit $6) and TI = bit 5 (0x102da tbit $5); the baud field bits 2-4 is set to 0xC at 0x100ee, i.e. 115200 as the reference defines"
+   ],
    "low_bit_candidates": [
     "0x000f4900"
    ],
@@ -1657,16 +1739,23 @@
      ]
     }
    },
+   "manual_verification": {
+    "evidence": "status bits used by our code match the reference bit numbers: RI = bit 6 (0x102ac tbit $6) and TI = bit 5 (0x102da tbit $5); the baud field bits 2-4 is set to 0xC at 0x100ee, i.e. 115200 as the reference defines",
+    "level": "FUNCTIONAL_REGISTER_MATCH",
+    "our_address": "0x000f4900"
+   },
    "name": "UART_CTRL_REG",
    "our_accesses": {},
    "width": 16
   },
   {
    "address": "0x00ff4902",
-   "evidence": "LOW_BITS_ONLY",
+   "evidence": "FUNCTIONAL_REGISTER_MATCH",
    "file": "uart.h",
    "found_in_our_firmware": false,
-   "functional_notes": [],
+   "functional_notes": [
+    "read and written as a 16-bit data word (0x102be, 0x102ce) between the status polls"
+   ],
    "low_bit_candidates": [
     "0x000f4902"
    ],
@@ -1700,16 +1789,23 @@
      ]
     }
    },
+   "manual_verification": {
+    "evidence": "read and written as a 16-bit data word (0x102be, 0x102ce) between the status polls",
+    "level": "FUNCTIONAL_REGISTER_MATCH",
+    "our_address": "0x000f4902"
+   },
    "name": "UART_RX_TX_REG",
    "our_accesses": {},
    "width": 16
   },
   {
    "address": "0x00ff4904",
-   "evidence": "LOW_BITS_ONLY",
+   "evidence": "FUNCTIONAL_REGISTER_MATCH",
    "file": "uart.h",
    "found_in_our_firmware": false,
-   "functional_notes": [],
+   "functional_notes": [
+    "written with 1 to clear the transmit flag (0x102e4), as the reference does"
+   ],
    "low_bit_candidates": [
     "0x000f4904"
    ],
@@ -1738,16 +1834,23 @@
      ]
     }
    },
+   "manual_verification": {
+    "evidence": "written with 1 to clear the transmit flag (0x102e4), as the reference does",
+    "level": "FUNCTIONAL_REGISTER_MATCH",
+    "our_address": "0x000f4904"
+   },
    "name": "UART_CLEAR_TX_INT_REG",
    "our_accesses": {},
    "width": 16
   },
   {
    "address": "0x00ff4906",
-   "evidence": "LOW_BITS_ONLY",
+   "evidence": "FUNCTIONAL_REGISTER_MATCH",
    "file": "uart.h",
    "found_in_our_firmware": false,
-   "functional_notes": [],
+   "functional_notes": [
+    "written with 1 to clear the receive flag (0x102ba), as the reference does"
+   ],
    "low_bit_candidates": [
     "0x000f4906"
    ],
@@ -1762,6 +1865,11 @@
      ]
     }
    },
+   "manual_verification": {
+    "evidence": "written with 1 to clear the receive flag (0x102ba), as the reference does",
+    "level": "FUNCTIONAL_REGISTER_MATCH",
+    "our_address": "0x000f4906"
+   },
    "name": "UART_CLEAR_RX_INT_REG",
    "our_accesses": {},
    "width": 16
@@ -1774,6 +1882,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "SPI_CTRL_REG",
    "our_accesses": {},
    "width": 16
@@ -1786,6 +1895,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "SPI_RX_TX_REG0",
    "our_accesses": {},
    "width": 16
@@ -1798,6 +1908,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "SPI_CLEAR_INT_REG",
    "our_accesses": {},
    "width": 16
@@ -1810,17 +1921,19 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "SPI_CTRL_REG1",
    "our_accesses": {},
    "width": 16
   },
   {
    "address": "0x00ff4c00",
-   "evidence": "ADDRESS_ONLY",
+   "evidence": "FUNCTIONAL_REGISTER_MATCH",
    "file": "watchdog.h",
    "found_in_our_firmware": true,
    "functional_notes": [
-    "written with 0xff inside a wait loop (kicked repeatedly while polling)"
+    "observed operations: WRITE; widths: 8",
+    "written value 0xff matches the reference"
    ],
    "low_bit_candidates": [
     "0x000f4c00"
@@ -1855,6 +1968,14 @@
      ]
     }
    },
+   "manual_verification": {
+    "evidence": "written with the same value 0xFF as the reference (0x102a0, 0x102ca; the store at 0x28820 carries immediate 0xff in the report) inside a wait loop",
+    "expected_value": "0xff",
+    "level": "FUNCTIONAL_REGISTER_MATCH",
+    "our_address": "0x000f4c00",
+    "value_from_low_bits": "0x000f4c00",
+    "width_note": "our 0x00FF4C00 uses storb (8-bit) and 0x000F4C00 uses storw (16-bit); the value 0xFF is the same, the width is not"
+   },
    "name": "WATCHDOG_REG",
    "our_accesses": {
     "normal": [
@@ -1882,6 +2003,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "DEBUG_REG",
    "our_accesses": {},
    "width": 16
@@ -1894,6 +2016,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "SET_INT_PENDING_REG",
    "our_accesses": {},
    "width": 16
@@ -1985,6 +2108,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "RESET_INT_PENDING_REG",
    "our_accesses": {},
    "width": 16
@@ -1994,7 +2118,9 @@
    "evidence": "ACCESS_MATCH",
    "file": "irq.h",
    "found_in_our_firmware": true,
-   "functional_notes": [],
+   "functional_notes": [
+    "observed operations: READ, WRITE; widths: 16"
+   ],
    "low_bit_candidates": [
     "0x000f5404"
    ],
@@ -2016,6 +2142,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "INT0_PRIORITY_REG",
    "our_accesses": {
     "normal": [
@@ -2050,7 +2177,9 @@
    "evidence": "ACCESS_MATCH",
    "file": "irq.h",
    "found_in_our_firmware": true,
-   "functional_notes": [],
+   "functional_notes": [
+    "observed operations: READ, WRITE; widths: 16"
+   ],
    "low_bit_candidates": [
     "0x000f5406"
    ],
@@ -2072,6 +2201,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "INT1_PRIORITY_REG",
    "our_accesses": {
     "normal": [
@@ -2168,6 +2298,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "INT2_PRIORITY_REG",
    "our_accesses": {},
    "width": 16
@@ -2199,6 +2330,7 @@
      ]
     }
    },
+   "manual_verification": null,
    "name": "INT3_PRIORITY_REG",
    "our_accesses": {},
    "width": 16
@@ -2211,6 +2343,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "CHIP_ID1_REG",
    "our_accesses": {},
    "width": 8
@@ -2223,6 +2356,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "CHIP_ID2_REG",
    "our_accesses": {},
    "width": 8
@@ -2235,6 +2369,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "CHIP_ID3_REG",
    "our_accesses": {},
    "width": 8
@@ -2247,6 +2382,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "CHIP_MEM_SIZE_REG",
    "our_accesses": {},
    "width": 8
@@ -2259,6 +2395,7 @@
    "functional_notes": [],
    "low_bit_candidates": [],
    "low_bit_matches": {},
+   "manual_verification": null,
    "name": "CHIP_REVISION_REG",
    "our_accesses": {},
    "width": 8
