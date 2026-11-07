@@ -1,6 +1,6 @@
 --- a/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4019-fritzbox-7530.dts
 +++ b/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4019-fritzbox-7530.dts
-@@ -24,6 +24,33 @@
+@@ -24,6 +24,35 @@
  	};
  
  	soc {
@@ -28,7 +28,9 @@
 +				     <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>;
 +			interrupt-names = "mbox0", "mbox3";
 +			clocks = <&gcc GCC_AUDIO_AHB_CLK>;
++			clock-names = "audio_ahb";
 +			resets = <&gcc GCC_AUDIO_BCR>;
++			reset-names = "audio_blk";
 +			status = "disabled";
 +		};
  

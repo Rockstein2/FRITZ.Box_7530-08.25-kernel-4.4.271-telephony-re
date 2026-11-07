@@ -30,7 +30,9 @@
 			     <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "mbox0", "mbox3";
 			clocks = <&gcc GCC_AUDIO_AHB_CLK>;
+			clock-names = "audio_ahb";
 			resets = <&gcc GCC_AUDIO_BCR>;
+			reset-names = "audio_blk";
 			status = "disabled";
 		};
 	};

@@ -106,6 +106,21 @@ static unsigned int fon_dt_string_count(struct device_node *np,
 	return count > 0 ? (unsigned int)count : 0;
 }
 
+/*
+ * Number of phandles in a <name> property, e.g. clocks = <&gcc ID>.
+ * This is deliberately separate from <name>-names: a node can describe a
+ * clock without naming it, and C1 relies on exactly that case.  Reporting
+ * only <name>-names made "clock_refs=0" mean nothing, so both are counted
+ * and the raw property is reported verbatim.
+ */
+static unsigned int fon_dt_phandle_count(struct device_node *np,
+					 const char *name)
+{
+	int count = of_count_phandle_with_args(np, name, NULL);
+
+	return count > 0 ? (unsigned int)count : 0;
+}
+
 static bool fon_resource_overlap(const struct resource *a,
 				 const struct resource *b)
 {
@@ -145,8 +160,10 @@ static void fon_report_resources(struct fon_tdm_dev *tdm)
 	struct device_node *np = tdm->dev->of_node;
 	unsigned int i;
 
-	tdm->clock_refs = fon_dt_string_count(np, "clock-names");
-	tdm->reset_refs = fon_dt_string_count(np, "reset-names");
+	tdm->clock_refs = fon_dt_phandle_count(np, "clocks") +
+			  fon_dt_string_count(np, "clock-names");
+	tdm->reset_refs = fon_dt_phandle_count(np, "resets") +
+			  fon_dt_string_count(np, "reset-names");
 	tdm->pinctrl_ref = of_find_property(np, "pinctrl-0", NULL) != NULL;
 
 	for (i = 0; i < FON_RESOURCE_COUNT; i++) {
@@ -344,6 +361,14 @@ static ssize_t diagnostics_show(struct device *dev, struct device_attribute *att
 	n += sysfs_emit_at(buf, n, "dt_overlap=%u\n", tdm->dt_overlap);
 	n += sysfs_emit_at(buf, n, "clock_refs=%u\n", tdm->clock_refs);
 	n += sysfs_emit_at(buf, n, "reset_refs=%u\n", tdm->reset_refs);
+	n += sysfs_emit_at(buf, n, "dt_clocks=%u\n",
+			   fon_dt_phandle_count(tdm->dev->of_node, "clocks"));
+	n += sysfs_emit_at(buf, n, "dt_clock_names=%u\n",
+			   fon_dt_string_count(tdm->dev->of_node, "clock-names"));
+	n += sysfs_emit_at(buf, n, "dt_resets=%u\n",
+			   fon_dt_phandle_count(tdm->dev->of_node, "resets"));
+	n += sysfs_emit_at(buf, n, "dt_reset_names=%u\n",
+			   fon_dt_string_count(tdm->dev->of_node, "reset-names"));
 	n += sysfs_emit_at(buf, n, "pinctrl_ref=%u\n", tdm->pinctrl_ref);
 	n += sysfs_emit_at(buf, n, "slots=%u\n", tdm->slots);
 	for (unsigned int i = 0; i < FON_RESOURCE_COUNT; i++) {

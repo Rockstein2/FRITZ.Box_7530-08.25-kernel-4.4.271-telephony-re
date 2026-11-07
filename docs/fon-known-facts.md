@@ -448,6 +448,68 @@ untouched under Stage B.
 
 Evidence: `../../restore/stage-b-c1/stage-b-c1/`.
 
+### 9d-5. Metric defect: clock_refs did not measure what it claimed
+
+While preparing C1 the diagnostic counter was found to be misleading:
+
+```c
+tdm->clock_refs = fon_dt_string_count(np, "clock-names");
+tdm->reset_refs = fon_dt_string_count(np, "reset-names");
+```
+
+It counted the **`-names`** properties only.  After the DT gained
+
+```dts
+clocks = <&gcc GCC_AUDIO_AHB_CLK>;
+resets = <&gcc GCC_AUDIO_BCR>;
+```
+
+without `clock-names`, the module still printed `clock_refs=0`, which read
+as "the node declares no clock".  That conclusion was wrong: the properties
+were present and verified in the live DT.
+
+Consequence for the earlier claim: the Stage B result after the DT change
+does **not** by itself prove that probe-only ignores the links.  What does
+prove it is the rest of the same run — `FON probe-only ready; no
+MMIO/clock/reset/IRQ/DMA access`, unchanged `/proc/iomem`, no new interrupt
+rows — plus the fact that the probe-only branch returns before any
+`devm_clk_get()`/`devm_reset_control_get()` call exists in that path.
+
+Fixes:
+
+- `clock_refs`/`reset_refs` now count phandles **and** names;
+- diagnostics gained the raw facts `dt_clocks`, `dt_clock_names`,
+  `dt_resets`, `dt_reset_names`, so "declared" can never again be confused
+  with "acquired";
+- the FON node now also carries `clock-names = "audio_ahb"` and
+  `reset-names = "audio_blk"`, because the full-mode path obtains clocks by
+  name and C1 would otherwise get nothing.
+
+### 9d-6. Corrected metric verified on hardware (2026-11-07)
+
+The rebuilt module reports the DT facts separately from the acquisition
+state, and the distinction is now visible:
+
+| Field | Value | Meaning |
+|---|---|---|
+| `dt_clocks` | **2** | one phandle plus one cell (`#clock-cells = 1`) |
+| `dt_clock_names` | **1** | `clock-names = "audio_ahb"` |
+| `dt_resets` | **2** | one phandle plus one cell |
+| `dt_reset_names` | **1** | `reset-names = "audio_blk"` |
+| `clock_refs` / `reset_refs` | **3** / **3** | combined counter, no longer zero |
+| **`clk_present`** | **0** | the driver acquired **no** clock |
+| **`reset_present`** | **0** | the driver acquired **no** reset |
+| `pinctrl_present` | `0` | no pinctrl state |
+| `irq` | `-1` | no IRQ requested |
+
+So the earlier ambiguity is gone: the node **declares** a clock and a reset
+(non-zero `dt_*`), and probe-only **still acquires neither** (`*_present`
+are 0).  `FON probe-only ready; no MMIO/clock/reset/IRQ/DMA access` is
+printed from that same run.
+
+Artifacts: module `a9ee7a13...d30f` (76 412 B), image `154bd755...4811`,
+evidence `../../restore/stage-b-c1b/stage-b-c1b/`.
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |

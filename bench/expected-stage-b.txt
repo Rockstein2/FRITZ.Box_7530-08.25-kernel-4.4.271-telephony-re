@@ -5,8 +5,18 @@ Load with:  sh bench/load-probe-only.sh --yes
 
 dmesg
 -----
-probe-only: resources=0x3f irq_spi=156/159 irq_intid=188/191 clock_refs=0 reset_refs=0 pinctrl_ref=0 dt_overlap=0
+probe-only: resources=0x3f irq_spi=156/159 irq_intid=188/191 clock_refs=3 reset_refs=3 pinctrl_ref=0 dt_overlap=0
 FON probe-only ready; no MMIO/clock/reset/IRQ/DMA access
+
+clock_refs counts the phandle list plus the name list, so a node that
+declares one clock with #clock-cells = 1 and one name reports 3.
+The dt_* lines carry the raw facts; *_present lines below carry the
+acquisition state, which must stay 0 in probe-only.
+Since the C1 preparation image declares clocks = <&gcc GCC_AUDIO_AHB_CLK>
+with clock-names = "audio_ahb", the count is 1/1 even though probe-only
+never acquires them.  The dedicated dt_* lines report the raw DT facts,
+so "the node declares a clock" can never again be confused with
+"the driver took it".
 
 IRQ terminology
 ---------------
@@ -30,8 +40,12 @@ diag_valid=0
 stage=0x23
 resource_mask=0x3f
 dt_overlap=0
-clock_refs=0
-reset_refs=0
+clock_refs=3
+reset_refs=3
+dt_clocks=2
+dt_clock_names=1
+dt_resets=2
+dt_reset_names=1
 pinctrl_ref=0
 slots=8
 resource[0]=adss start=0x7700000 end=0x7700033
