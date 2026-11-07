@@ -250,6 +250,39 @@ def branch_zero_target(addr: int, raw: bytes) -> int:
     return (addr + 2 * nib + 2 + extra) & ADDR_MASK
 
 
+def _disp_field(raw: bytes, size: int) -> int:
+    """Extract a branch displacement field the way `cr16-dis.c` does.
+
+    For the 4-byte form (`disps17`) the field is `word1`.  For the 6-byte
+    form (`disps25`) `cr16-dis.c` packs bits 16..47 and rebuilds
+    `((p >> 16) & 0xF) << 20 | ((p >> 24) & 0xF) << 16 | (p & 0xFFFF)`.
+    """
+    words = tuple(raw[i] | (raw[i + 1] << 8) for i in range(0, len(raw), 2))
+    if size == 17:
+        return words[1]
+    # 25-bit form: `p` is words[1] and words[2] packed big-endian
+    p = (words[1] << 16) | words[2]
+    return (((p >> 16) & 0xF) << 20) | (((p >> 24) & 0xF) << 16) | (p & 0xFFFF)
+
+
+def _disp_target(addr: int, raw: bytes, size: int) -> int:
+    """PC-relative target for `disps17`/`disps25`.
+
+    `cr16-dis.c` `arg_c`: the sign is bit 0 of the field; the magnitude is
+    the two's complement negated and masked to the field size; the printed
+    target is `addr + (-constant & 0xFFFFFE)` for a negative branch and
+    `addr + constant` otherwise, then masked to 24 bits.
+    """
+    field = _disp_field(raw, size)
+    # `a->size` from `cr16_optab`: disps17 is a 16-bit field, disps25 is a
+    # 24-bit field; the sign is bit 0 in both.
+    mask = (1 << (16 if size == 17 else 24)) - 1
+    negative = bool(field & 1)
+    magnitude = ((~field) + 1) & mask if negative else field
+    number = addr + ((-magnitude) & 0xFFFFFE if negative else magnitude)
+    return number & ADDR_MASK
+
+
 def decode(addr: int, raw: bytes) -> tuple[int | None, str, str]:
     """Decode one branch instruction **from its encoding only**.
 
@@ -269,18 +302,14 @@ def decode(addr: int, raw: bytes) -> tuple[int | None, str, str]:
     if n in (4, 6):
         if raw[1] == 0xC0:
             return bal_target(addr, words)[0], f"bal{n * 8}", "DIRECT"
+        # `opc4 c4 disps25`: `cr16-opc.c` matches `(OPC<<4)` with 16 mask
+        # bits, i.e. byte0 low nibble 0 and byte1 0x00.
+        if n == 6 and (raw[0] & 0x0F) == 0x00 and raw[1] == 0x00:
+            return _disp_target(addr, raw, 25), "disps25", "DIRECT"
         if (raw[1] & 0x0F) == 0x8:
             if n == 6:
-                # 6-byte conditional (`disps25`): layout not validated (the
-                # single occurrence sits in a data region).
-                return None, "cond48", "UNSUPPORTED"
-            # 4-byte conditional (`disps17`).  `target = addr + words[1]` holds
-            # for every validated occurrence; a word above 0x8000 would be a
-            # backward target, which the validated set never shows, so it is
-            # left unsupported instead of being guessed.
-            if words[1] > 0x8000:
-                return None, f"cond{n * 8}", "UNSUPPORTED"
-            return (addr + words[1]) & ADDR_MASK, f"cond{n * 8}", "DIRECT"
+                return _disp_target(addr, raw, 25), "disps25", "DIRECT"
+            return _disp_target(addr, raw, 17), "disps17", "DIRECT"
         if n == 6:
             return None, "6-byte", "UNSUPPORTED"
         return None, f"{n}-byte", "UNSUPPORTED"
@@ -312,12 +341,11 @@ def decode_insn(addr: int, mnemonic: str, raw: bytes) -> tuple[int | None, str, 
     """
     n = len(raw)
     if n in (4, 6):
-        if raw[1] == 0xC0 or (raw[1] & 0x0F) == 0x8:
+        if raw[1] == 0xC0 or (raw[1] & 0x0F) == 0x8 or \
+                (n == 6 and (raw[0] & 0x0F) == 0x00 and raw[1] == 0x00):
             return decode(addr, raw)
         if n == 6:
-            # 6-byte conditional (`disps25`): one occurrence, layout not
-            # validated, sitting in a data region.
-            return None, "cond48", "UNSUPPORTED"
+            return _disp_target(addr, raw, 25), "disps25", "DIRECT"
         if mnemonic in ("jump", "jal", "jmp", "bral", "jalr"):
             return None, "register-indirect", "NOT_A_BRANCH"
         return None, f"{n}-byte non-branch", "NOT_A_BRANCH"
