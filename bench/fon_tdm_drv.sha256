@@ -1,9 +1,1 @@
-# SHA-256 of the target fon_tdm_drv.ko used for this bench kit.
-# Copy that exact .ko to /tmp/fon_tdm_drv.ko before load-probe-only.sh.
-#
-# Use the module built from the SAME TREE as the boot kernel.  The SDK
-# build (b867b8c5...ad870) is rejected by the kernel with
-#   .gnu.linkonce.this_module section size must match ...
-# even though both report vermagic 6.12.112.  See docs/fon-known-facts.md
-# section 9b.
-cd5c05fb408f7f928fd7f6a786a189d22992fe5e12c2c44d9f61fe94c726aff6  fon_tdm_drv.ko
+2b523aec9ec4064ddfeebf3c79ae8413bb98ba199cbf3aff227aa34af3169e40  fon_tdm_drv.ko
