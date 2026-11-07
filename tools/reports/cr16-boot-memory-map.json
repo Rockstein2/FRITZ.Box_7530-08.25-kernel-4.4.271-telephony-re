@@ -1,0 +1,354 @@
+{
+ "copy_helper": {
+  "callers": [
+   {
+    "instruction": "bal (ra),*+0x28d56:m",
+    "site": "0x0015f6"
+   }
+  ],
+  "calling_convention": {
+   "dst_pair": "(r3,r2)",
+   "evidence": "L2: 0x28d5c cmpd (r10,r9),(r8,r7) compares the two pairs; 0x28d60 loadd 0x0(r8,r7) reads addr, 0x28d64 loadd 0x4(r8,r7) reads len; 0x28d6a addd $8,(r8,r7) advances by one 8-byte header",
+   "length_unit": "count of {u32be addr,u32be len} entries, not bytes",
+   "src_list_pair": "(r5,r4)"
+  },
+  "destination_argument": {
+   "loaded_at": "0x0015ea",
+   "value": "0x0000001c"
+  },
+  "direction": "the loop at 0x28d90 writes through (r8,r7) into the destination pair (r3,r2); the source is only read",
+  "function": "0x28d56",
+  "overlap": "UNKNOWN \u2014 the destination is (r3,r2), which the call loads with 0x1c; whether the block list at (r5,r4) is above or below it is not resolved here",
+  "reaches_0x24": "UNKNOWN \u2014 no instruction in 0x28d56..0x28d9c names 0x24",
+  "source_argument": {
+   "loaded_at": "0x0015f0",
+   "value": "0x00000024"
+  }
+ },
+ "cross_image_note": "the first-level image sits at 0x10080 and the second-level images start at 0x0, so they do not share a byte range in the files; any statement about them sharing memory at run time is a hypothesis",
+ "handoff": {
+  "evidence": "L3 for the block boundaries, UNKNOWN for the hand-off target",
+  "first_level_jumps_below_code": [
+   {
+    "bytes": "e01885ff",
+    "site": "0x1017c",
+    "target": "UNKNOWN (Q51)",
+    "target_form": "0x18 4-byte conditional/branch family"
+   },
+   {
+    "bytes": "e01869fe",
+    "site": "0x10298",
+    "target": "UNKNOWN (Q51)",
+    "target_form": "same family"
+   }
+  ],
+  "second_level_start": {
+   "normal": "0x15bc (system-register setup begins; 0x15aa is the block entry, no caller in the image)",
+   "p2test": "0x103a"
+  },
+  "upload_destination": {
+   "evidence": "L2 for the store, UNKNOWN for the branch",
+   "not_proven": "the control transfer into the loaded code",
+   "proven": "the loader stores each byte at the address carried in the block header (0x1022C), so the second-level image lands at its declared addresses"
+  }
+ },
+ "images": {
+  "first": {
+   "blocks": [
+    {
+     "address": "0x00010080",
+     "length": 618,
+     "length_hex": "0x26a"
+    }
+   ],
+   "code_range": [
+    "0x010080",
+    "0x0102e8"
+   ],
+   "data_bytes": 618,
+   "evidence": "L1 for every byte and block address",
+   "facts": [
+    {
+     "fact": "read CFG, clear bit 8 (andw $0xFEFF), write CFG",
+     "level": "L2",
+     "site": "0x010080"
+    },
+    {
+     "fact": "read PSR, clear bits 9 and 11 (andw $0xF5FF), write PSR",
+     "level": "L2",
+     "site": "0x01008c"
+    },
+    {
+     "fact": "storb $0x30,0xf4020",
+     "level": "L2",
+     "site": "0x010098"
+    },
+    {
+     "fact": "0xf400e: clear bits 0-2, set bit 0",
+     "level": "L2",
+     "site": "0x0100a0"
+    },
+    {
+     "fact": "0xf4000: clear bits 0-2, set bit 0",
+     "level": "L2",
+     "site": "0x0100ae"
+    },
+    {
+     "fact": "0xf4000: clear bits 3-4, set bit 3",
+     "level": "L2",
+     "site": "0x0100bc"
+    },
+    {
+     "fact": "sbitw $0,0xf4838",
+     "level": "L2",
+     "site": "0x0100ca"
+    },
+    {
+     "fact": "0xf4836: set bits 0-1",
+     "level": "L2",
+     "site": "0x0100ce"
+    },
+    {
+     "fact": "0xf4836: clear bits 2-3, set bit 2",
+     "level": "L2",
+     "site": "0x0100d8"
+    },
+    {
+     "fact": "0xf4900 (UART): clear bits 2-4, set bits 2-3",
+     "level": "L2",
+     "site": "0x0100e6"
+    },
+    {
+     "fact": "sbitw $0 / $1 on 0xf4900",
+     "level": "L2",
+     "site": "0x0100f4"
+    },
+    {
+     "fact": "sbitw $7 on 0xf4000",
+     "level": "L2",
+     "site": "0x0100fc"
+    },
+    {
+     "fact": "retry loop entry: r2 = 2",
+     "level": "L2",
+     "site": "0x010100"
+    },
+    {
+     "fact": "receive one byte: poll bit 6 of 0xf4900, timeout 0xC350, read 0xf4902 -> r2, return r0=1",
+     "level": "L2",
+     "site": "0x01029c"
+    },
+    {
+     "fact": "send one byte: write r2 to 0xf4902, poll bit 5 of 0xf4900, timeout 0xC350, signal 0xf4904",
+     "level": "L2",
+     "site": "0x0102c6"
+    },
+    {
+     "fact": "read a u32be header into (r13)",
+     "level": "L2",
+     "site": "0x01011e"
+    },
+    {
+     "fact": "cmpd $0,(r13): zero header -> length path",
+     "level": "L2",
+     "site": "0x01014c"
+    },
+    {
+     "fact": "block loop; xorb accumulates a checksum in r11",
+     "level": "L2",
+     "site": "0x010180"
+    },
+    {
+     "fact": "4-byte big-endian value built into (r12): the destination pointer",
+     "level": "L2",
+     "site": "0x01019a"
+    },
+    {
+     "fact": "4-byte big-endian value built into (r8,r7): the block length",
+     "level": "L2",
+     "site": "0x0101e2"
+    },
+    {
+     "fact": "storb r2,0x0:s(r12): each received byte is stored at the header address; (r12) advances at 0x10234",
+     "level": "L2",
+     "site": "0x01022c"
+    },
+    {
+     "fact": "0xf4836 writes and cbitw on 0xf4838",
+     "level": "L2",
+     "site": "0x010254"
+    },
+    {
+     "fact": "set CFG bit 8 (orw $0x100)",
+     "level": "L2",
+     "site": "0x010278"
+    },
+    {
+     "fact": "6-byte br, target form not decoded (Q51)",
+     "level": "L2",
+     "site": "0x010284"
+    },
+    {
+     "fact": "send 0x15 then r3",
+     "level": "L2",
+     "site": "0x01028a"
+    },
+    {
+     "fact": "shared RX/TX entry points",
+     "level": "L2",
+     "site": "0x01029c"
+    }
+   ],
+   "file": "dectfw_firstlevel_441_slow.hex",
+   "max_address": "0x000102e9",
+   "min_address": "0x00010080",
+   "parse_errors": [],
+   "record_types": {
+    "0": 39,
+    "1": 1,
+    "4": 1
+   },
+   "sha256": "0d855b5929f8b2ad0b8d8fb38065b32e27f9357cd44a2b4e60573b1b5b6da895",
+   "upload": {
+    "first_block_header_hex": "000100800000026a",
+    "header_bytes": 2,
+    "outer_header_hex": "0272",
+    "payload_length": 626,
+    "total_with_checksum": 629
+   }
+  },
+  "normal": {
+   "blocks": [
+    {
+     "address": "0x00000000",
+     "length": 213,
+     "length_hex": "0xd5"
+    },
+    {
+     "address": "0x000000d6",
+     "length": 477,
+     "length_hex": "0x1dd"
+    },
+    {
+     "address": "0x000002b4",
+     "length": 6138,
+     "length_hex": "0x17fa"
+    },
+    {
+     "address": "0x000024f8",
+     "length": 6150,
+     "length_hex": "0x1806"
+    },
+    {
+     "address": "0x00009000",
+     "length": 875,
+     "length_hex": "0x36b"
+    },
+    {
+     "address": "0x00009c5e",
+     "length": 930,
+     "length_hex": "0x3a2"
+    },
+    {
+     "address": "0x00017300",
+     "length": 2938,
+     "length_hex": "0xb7a"
+    },
+    {
+     "address": "0x00017fe0",
+     "length": 24,
+     "length_hex": "0x18"
+    },
+    {
+     "address": "0x00020000",
+     "length": 36302,
+     "length_hex": "0x8dce"
+    }
+   ],
+   "data_bytes": 54047,
+   "evidence": "L1 for every byte and block address",
+   "file": "dectfw_secondlevel_441.hex",
+   "max_address": "0x00028dcd",
+   "min_address": "0x00000000",
+   "parse_errors": [],
+   "record_types": {
+    "0": 3382,
+    "1": 1,
+    "4": 3
+   },
+   "sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "upload": {
+    "first_block_header_hex": "00000000000000d5",
+    "header_bytes": 4,
+    "outer_header_hex": "0000d367",
+    "payload_length": 54119,
+    "total_with_checksum": 54124
+   }
+  },
+  "p2test": {
+   "blocks": [
+    {
+     "address": "0x00000000",
+     "length": 213,
+     "length_hex": "0xd5"
+    },
+    {
+     "address": "0x000000d6",
+     "length": 5134,
+     "length_hex": "0x140e"
+    },
+    {
+     "address": "0x00001d56",
+     "length": 8106,
+     "length_hex": "0x1faa"
+    },
+    {
+     "address": "0x00009000",
+     "length": 1187,
+     "length_hex": "0x4a3"
+    },
+    {
+     "address": "0x00009b44",
+     "length": 1212,
+     "length_hex": "0x4bc"
+    },
+    {
+     "address": "0x00017300",
+     "length": 1786,
+     "length_hex": "0x6fa"
+    },
+    {
+     "address": "0x00017fe0",
+     "length": 24,
+     "length_hex": "0x18"
+    },
+    {
+     "address": "0x00020000",
+     "length": 32074,
+     "length_hex": "0x7d4a"
+    }
+   ],
+   "data_bytes": 49736,
+   "evidence": "L1 for every byte and block address",
+   "file": "dectfw_secondlevel_441p2test.hex",
+   "max_address": "0x00027d49",
+   "min_address": "0x00000000",
+   "parse_errors": [],
+   "record_types": {
+    "0": 3112,
+    "1": 1,
+    "4": 3
+   },
+   "sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "upload": {
+    "first_block_header_hex": "00000000000000d5",
+    "header_bytes": 4,
+    "outer_header_hex": "0000c288",
+    "payload_length": 49800,
+    "total_with_checksum": 49805
+   }
+  }
+ },
+ "overlaps": [],
+ "tool": "cr16-boot-memory-map/1"
+}
