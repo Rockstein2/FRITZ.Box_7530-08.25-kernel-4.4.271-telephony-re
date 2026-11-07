@@ -28,6 +28,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src" / "mock"))
 from piglet_image import parse_hex  # noqa: E402
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from cr16_branch import branch_target, is_in_runs  # noqa: E402
+
 DEFAULT_OBJDUMP = "/tmp/opencode/cr16/build/binutils/objdump"
 
 # Peripheral windows the firmware may address.  These names are working
@@ -128,7 +131,8 @@ def disassemble(run: Run, objdump: str) -> RunMap:
         operands = text[len(mnemonic):].strip()
         rm.insns.append(Insn(addr, len(raw), text, mnemonic,
                              operands))
-        rm.branches.append(classify(addr, mnemonic, operands))
+        braw = bytes(int(x, 16) for x in raw)
+        rm.branches.append(classify(addr, mnemonic, operands, braw))
     return rm
 
 
@@ -141,10 +145,22 @@ CALLS = {"bal", "jal", "jalr"}
 RETS = {"popret", "ret", "retx"}
 
 
-def target_from_operands(operands: str) -> int | None:
+def target_from_operands(operands: str, addr: int = 0,
+                         raw: bytes = b"") -> int | None:
+    """Resolve a branch target.
+
+    objdump prints the absolute target, with a sign prefix that only reflects
+    the CR16 sign flag (see docs/fon-dialog-cr16-branches.md).  The printed
+    magnitude is therefore taken as the target, and where raw bytes are
+    available the validated decoder is used instead.
+    """
+    if len(raw) >= 4 and raw[0] in (0x00, 0x02, 0xFF) and raw[1] == 0xC0:
+        w0 = raw[0] | (raw[1] << 8)
+        w1 = raw[2] | (raw[3] << 8)
+        return branch_target(addr, (w0, w1))[0]
     m = re.search(r"\*([+-]0x[0-9a-f]+|[+-]\d+):[sbwm]", operands)
     if m:
-        return int(m.group(1), 0)
+        return abs(int(m.group(1), 0))
     m = re.search(r",\s*(0x[0-9a-f]+):[sbwm]", operands)
     if m:
         return int(m.group(1), 16)
@@ -154,17 +170,18 @@ def target_from_operands(operands: str) -> int | None:
     return None
 
 
-def classify(addr: int, mnemonic: str, operands: str) -> Branch:
+def classify(addr: int, mnemonic: str, operands: str,
+             raw: bytes = b"") -> Branch:
     indirect = bool(re.search(r"\((?:r|sp|ra)", operands)) and \
         not operands.strip().startswith("*")
     if mnemonic in CALLS:
-        t = target_from_operands(operands)
+        t = target_from_operands(operands, addr, raw)
         return Branch(addr, "call", t, t is None)
     if mnemonic in COND:
-        t = target_from_operands(operands)
+        t = target_from_operands(operands, addr, raw)
         return Branch(addr, "cond", t, t is None)
     if mnemonic in JUMPS:
-        t = target_from_operands(operands)
+        t = target_from_operands(operands, addr, raw)
         return Branch(addr, "jump", t, t is None or indirect)
     if mnemonic in RETS:
         return Branch(addr, "ret", None, True)
