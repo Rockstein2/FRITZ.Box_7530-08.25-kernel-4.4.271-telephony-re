@@ -305,8 +305,10 @@ def apply_instruction(state, insn):
         return
 
     # any other write of a 16-bit constant: `movw $imm,rn`
+    # `movw $imm,rn` assigns a constant; any other instruction with the same
+    # operand shape computes a result and must not be modelled as a load.
     m = MV_RE.match(ops)
-    if m:
+    if m and mn == "movw":
         for reg in written_registers(insn):
             if reg != m.group(2):
                 invalidate(state, reg)
@@ -470,17 +472,24 @@ def scan(fw, image):
             ops = insn.operands.replace(" ", "")
             written = written_registers(insn)
             # literal values loaded into a register, tracked inside the block
+            # Only an instruction whose *mnemonic* is a proven constant
+            # load may put a value into imm_state.  `addw $1,r0` has the
+            # same `$imm,rN` shape but computes a result, so it must
+            # invalidate, not assign.
             m_movw = re.match(r"^\$(-?0x[0-9a-f]+|-?\d+)(?::[sm])?,(r\d+)$",
                               ops)
+            assigned = None
             if m_movw and insn.mnemonic == "movw":
                 text = m_movw.group(1)
                 neg = text.startswith("-")
                 text = text.lstrip("-")
                 val = int(text, 16) if text.startswith("0x") else int(text)
-                imm_state[("IMM", m_movw.group(2))] = hex(-val if neg else val)
+                assigned = m_movw.group(2)
+                imm_state[("IMM", assigned)] = hex(-val if neg else val)
             for reg in written:
-                # the register just loaded keeps its value
-                if m_movw and reg == m_movw.group(2):
+                # only the register that this very instruction assigned
+                # keeps its value
+                if assigned is not None and reg == assigned:
                     continue
                 imm_state.pop(("IMM", reg), None)
 
