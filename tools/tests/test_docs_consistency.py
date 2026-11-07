@@ -391,7 +391,8 @@ for name, path in BOOT_DOCS.items():
 HANDOFF = BOOT_DOCS["fon-dialog-boot-handoff.md"]
 if HANDOFF.is_file():
     t = HANDOFF.read_text()
-    check("handoff answer is PARTIALLY KNOWN", "PARTIALLY KNOWN" in t, True)
+    check("handoff answer is STATICALLY_RESOLVED",
+          "STATICALLY_RESOLVED" in t, True)
     check("handoff does not claim 0x7C as the target",
           "target is `0x7c`" not in t.lower(), True)
 
@@ -491,6 +492,101 @@ HELPER = ROOT / "docs" / "fon-dialog-copy-helper-28d56.md"
 if HELPER.is_file():
     t = HELPER.read_text()
     check("helper doc: p2test range ends 0x9b43", "0x9B43" in t, True)
+
+# ---------------------------------------------------------------------------
+# 13. BOOT-3.1: one consistent boot model everywhere
+# ---------------------------------------------------------------------------
+BOOTMAP = ROOT / "tools" / "reports" / "cr16-boot-memory-map.json"
+HAN = ROOT / "docs" / "fon-dialog-boot-handoff.md"
+DEC = ROOT / "docs" / "fon-dialog-boot-branch-decoding.md"
+OQ = ROOT / "docs" / "fon-open-questions.md"
+
+if BOOTMAP.is_file():
+    bm = json.loads(BOOTMAP.read_text())
+    ho = bm["handoff"]
+    check("boot map: chain statically resolved",
+          ho["chain"]["status"], "STATICALLY_RESOLVED")
+    check("boot map: hardware not observed",
+          ho["chain"]["hardware_observed"], False)
+    check("boot map: transfer site", ho["transfer_site"], "0x010284")
+    check("boot map: transfer target", ho["transfer_target"], "0x00000008")
+    check("boot map: normal trampoline",
+          ho["second_level"]["normal"]["decoded_in_isolation"]["target"],
+          "0x000015aa")
+    check("boot map: p2test trampoline",
+          ho["second_level"]["p2test"]["decoded_in_isolation"]["target"],
+          "0x00001026")
+    check("boot map: all three disps17 go to the retry loop",
+          sorted(r["target"] for r in ho["first_level"]
+                 if r.get("form") == "disps17"),
+          ["0x00010100"] * 3)
+    check("boot map: no site is left UNKNOWN",
+          [r for r in ho["first_level"]
+           if not r.get("target") or "UNKNOWN" in str(r.get("target"))],
+          [])
+
+for path in (HAN, DEC):
+    if not path.is_file():
+        continue
+    t = path.read_text()
+    check(f"{path.name}: no live 0x010101 target",
+          "0x010101" not in t, True)
+    check(f"{path.name}: no live 0x10284 -> UNKNOWN",
+          "0x10284" not in t or "UNKNOWN" not in
+          t.split("0x10284", 1)[1][:60], True)
+
+if HAN.is_file():
+    t = HAN.read_text()
+    check("handoff doc: states STATICALLY_RESOLVED",
+          "STATICALLY_RESOLVED" in t, True)
+    check("handoff doc: keeps runtime unverified",
+          "RUNTIME_UNVERIFIED" in t or "UNVERIFIED" in t, True)
+    check("handoff doc: no {u32be addr,u32be len} for 0x28d56",
+          "{u32be addr,u32be len}" not in t, True)
+    check("handoff doc: ROM entry stays UNKNOWN",
+          "UNKNOWN" in t, True)
+
+if OQ.is_file():
+    t = OQ.read_text()
+    check("open questions: no _old_ row", "| _old_ |" not in t, True)
+    check("open questions: Q66 says 31 entries", "31 entries" in t, True)
+
+# ---------------------------------------------------------------------------
+# 14. cross-report consistency
+# ---------------------------------------------------------------------------
+VECR = ROOT / "tools" / "reports" / "cr16-vector-map.json"
+ALR = ROOT / "tools" / "reports" / "cr16-address-alias.json"
+XREFR = ROOT / "tools" / "reports" / "peripheral-xrefs.json"
+
+if all(p.is_file() for p in (BOOTMAP, VECR, ALR, XREFR)):
+    bm = json.loads(BOOTMAP.read_text())
+    vec = json.loads(VECR.read_text())
+    al = json.loads(ALR.read_text())
+    xr = json.loads(XREFR.read_text())
+
+    shas = {bm["images"][n]["sha256"] for n in ("first", "normal", "p2test")}
+    check("each image has its own recorded SHA in the boot map",
+          len(shas), 3)
+    for image in ("normal", "p2test"):
+        check(f"{image}: boot map and xref report agree on SHA",
+              bm["images"][image]["sha256"], xr["images"][image]["sha256"])
+        check(f"{image}: 31 vectors", len(vec["images"][image]["vectors"]),
+              31)
+    check("alias report keeps the two address spaces separate",
+          [p for p in al["images"]["normal"]["pairs"]
+           if p["address_a"] == p["address_b"]], [])
+    check("alias evidence stops at code level",
+          al["max_level_from_code"], "BEHAVIOR_CORRELATION")
+    check("no pair claims a proven alias",
+          all(p["proof_status"].startswith("candidate")
+              for p in al["images"]["normal"]["pairs"]), True)
+    check("handoff targets are the same in boot map and docs",
+          (bm["handoff"]["transfer_target"],
+           bm["handoff"]["second_level"]["normal"]
+           ["decoded_in_isolation"]["target"],
+           bm["handoff"]["second_level"]["p2test"]
+           ["decoded_in_isolation"]["target"]),
+          ("0x00000008", "0x000015aa", "0x00001026"))
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
