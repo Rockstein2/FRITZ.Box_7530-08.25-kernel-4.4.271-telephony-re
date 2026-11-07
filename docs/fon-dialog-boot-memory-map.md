@@ -90,6 +90,20 @@ The first-level image writes only these addresses:
 No write below `0x10000` comes from a **static** address; the only writes
 there are the header-driven transfers.
 
+## 4a. The zero-filled gap and the `.bss` reading
+
+Between the block at `0x9000` and the block at `0x9C5E` there is a gap that
+the image does not carry.  The start-up record clear fills exactly that gap:
+
+| Image | cleared range | next block |
+|---|---|---|
+| normal | `[0x936C, 0x9C5E)` | `0x9C5E` |
+| p2test | `[0x94A4, 0x9B44)` | `0x9B44` |
+
+The bytes at `0x936B` (one before the cleared range) are **not** in any
+block, so the region `0x936B`–`0x9C5D` is image-absent memory that the code
+zeroes at start-up.  Status: **STRONG_INFERENCE** for `.bss`, not proof.
+
 ## 5. Region `0x01000000`
 
 The area the `0x25F90` sequence fills (`0x01000002`–`0x010003FE`) appears in

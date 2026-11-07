@@ -141,8 +141,10 @@ DECT, ISDN, CAPI, DSL.  Not needed for one FXS port; recorded in
 | Q63 | What are the contents of the dispatch table at `INTBASE = 0x24` when the firmware runs, and where does the copy at `0x15F6` put them? | resolve `(r3,r2)` at `0x15F6`, or read the table on hardware | offline / D |
 | Q64 | Is `0x15AA`/`0x102C` the reset entry? | the reset vector in the first-level image or a vector-table read | research |
 | Q65 | What does the hand-off branch at the `0x18` form (`0x1017C`, `0x10284`, `0x10298`) target? | **narrowed**: the binutils rule gives `0x010101` for `0x1017C`/`0x10298`/`0x10250` (odd, not an instruction); the even neighbour `0x10100` is the retry loop.  `gas` cannot emit a backward `disps17`, so it is not an oracle.  `0x10284` (6-byte `disps25`) is unresolved | offline |
-| Q66 | **answered in part**: the table at `0x24` holds word offsets (÷2) that resolve to prologues inside the image.  What dispatch mechanism consumes them, and whether the core uses them, is still open | a CR16C `INTBASE`/exception layout description | research |
+| Q66 | **answered**: the table is the exception dispatch table at `INTBASE = 0x24`, 32 entries, each handler address ÷ 2 (confirmed by TobleMiner `device/vectors.s`).  Real handlers are vectors 24, 26, 29 | — | answered |
 | Q67 | Is `0x10080` RAM that survives, or does the second-level image run in a different memory? | memory map of the device; no offline source | research |
-| Q68 | What is the region at `0x936C` (2290 bytes) that the start-up clears? | a memory map, or an observation of what reads it | research |
+| Q68 | **narrowed**: the cleared range ends exactly at the next block start in both images, which is the classic `.bss` clear.  Confirming it needs a memory map | a SC14448 map | research |
+| Q70 | Which SC14448 sources raise vectors 24, 26 and 29?  The SC14441 names (tim1/dip/dsp) do not fit three `0x5402` pending bits | a SC14448 interrupt chapter, or a capture of the pending bits | research |
+| Q71 | Is `CFG` bit 8 really "32-bit exception table format"?  The reference says so; no SC14448 document confirms it | a CR16C `CFG` description | research |
 | Q69 | Is `0x10080` the CPU execution entry, or only the image load address? | ROM boot description or the loader's entry mechanism | research |
 | Q61 | What exactly do `loadm`/`loadmp`/`storm`/`stormp` address (base register, register list semantics, post-increment)? | CR16B/C manual, or an assembler round trip for the register-list operand form; until then they stay `MEMORY_UNSUPPORTED` (16 + 2 instructions) | offline |

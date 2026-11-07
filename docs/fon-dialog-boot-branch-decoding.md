@@ -123,6 +123,31 @@ instruction:
 So the hand-off, if it exists as a branch, is the `0x10284` instruction,
 whose target this analysis cannot compute.
 
+## 5a. EXTREF-1 re-examination
+
+The external reference project has working assembler sources with known
+targets, so its encodings were used as a second data set.
+
+| Encoding tried | `0x1017C` | `0x10250` | `0x10298` | known positives |
+|---|---|---|---|---|
+| `signed16(word1)` (binutils) | `0x010101` | `0x010101` | `0x010101` | ✔ |
+| `signed16(word1 & 0xFFFE)` | `0x00877A` ✘ | `0x010100` | `0x010100` | ✔ |
+| `signed16(word1) − 1` | `0x00877C` ✘ | `0x010100` | `0x010100` | — |
+
+`signed16(word1 & 0xFFFE)` gives `0x010100` (the retry loop) for two of the
+three, but for `0x1017C` it gives `0x00877A`, which is **not an instruction
+in any of our three images**.  The required displacement for
+`0x1017C → 0x10100` is `−0x80`, and the field is `0xFF85`; no single mask of
+that field produces `−0x80`.
+
+**Conclusion: still UNRESOLVED.**  A rule that is right for two cases and
+wrong for one is not a rule.  The most likely explanation is that
+`0x1017C` is not the boundary the CFG thinks it is — e.g. the preceding
+`b`-family instruction is longer than 4 bytes, so `0x1017C` is mid-instruction
+data.  That would also explain why its field does not decode.
+
+The 6-byte form at `0x10284` remains unresolved for the same reason.
+
 ## 6. What would settle it
 
 1. A CR16C branch-encoding table for `disps17`/`disps25` from Dialog or

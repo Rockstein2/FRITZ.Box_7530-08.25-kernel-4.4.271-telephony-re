@@ -104,6 +104,13 @@ No write to this region was found in either image, so **the bytes in the file
 are what the code would see**, unless something outside the image (the
 loader, a ROM stage, or the hardware) changes memory first.
 
+## 6a. The `.bss` link
+
+The record at `0x1C` clears `[0x936C, 0x9C5E)`, and `0x9C5E` is exactly the
+start of the next uploaded block.  In `p2test` the record `{0x69F, 0x94A4}`
+clears `[0x94A4, 0x9B44)`, again landing on the next block start.  See
+`fon-dialog-copy-helper-28d56.md`; status **STRONG_INFERENCE**.
+
 ## 7. `0x7C`
 
 `0x7C` lies inside block 1 (`0x0`–`0xD4`) and holds

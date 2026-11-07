@@ -147,11 +147,35 @@ No.  The block at `0x9000` has length `0x36B` and therefore ends at
 other block covers it.  The
 cleared region is outside the uploaded bytes.
 
-### What the cleared region is
+### What the cleared region is: `.bss` (STRONG_INFERENCE)
 
-`count = 0x8F2 = 2290` bytes starting at `0x936C`.  Whether that is RAM, a
-peripheral window or something else is **UNKNOWN**; no offline source
-describes it.
+`count = 0x8F2 = 2290` bytes starting at `0x936C`, so the cleared range is
+
+```text
+[0x936C, 0x936C + 0x8F2) = [0x936C, 0x9C5E)
+```
+
+and `0x9C5E` is **exactly** the start of the next uploaded block
+(`0x9C5E`, length `0x3A2`).  The same holds in `p2test`:
+
+| Image | record | range | next block |
+|---|---|---|---|
+| normal | `{0x8F2, 0x936C}` | `[0x936C, 0x9C5E)` | `0x9C5E` ✔ |
+| p2test | `{0x69F, 0x94A4}` | `[0x94A4, 0x9B44)` | `0x9B44` ✔ |
+
+This is the classic start-up `.bss` clear.  The reference project does the
+same thing in `device/startup.c` (`for (dest = &_bss; dest < &_ebss;
+dest++) *dest = 0;`), and its linker script places `.bss (NOLOAD)` after
+`.data`.
+
+**Status: STRONG_INFERENCE.**  The boundaries match in both images and the
+pattern matches the reference, but no SC14448 document says that the region
+is RAM named `.bss`.  A single coincidence of two numbers would be weak;
+matching in *two independent images* plus the reference is much stronger,
+yet still not a hardware fact.
+
+Note also what this rules out: the cleared region is **not** the region at
+`0x1C`–`0xD4`, so the function does not modify the dispatch table.
 
 ## 5. Corrections to the BOOT-1 claims
 

@@ -1004,6 +1004,14 @@ Documents: `fon-dialog-firstlevel-cfg.md`, `fon-dialog-uart-boot-protocol.md`,
 | call `0x15F6` | `fn_28d56(0x1C, 0x24)` = one record `{count=0x8F2, dest=0x936C}` → clears 2290 bytes at `0x936C` | L2 |
 | `0x936C` | first byte past the block that starts at `0x9000`; not covered by any block | L1 |
 | table at `0x24` | 32-bit little-endian values; ×2 gives instruction boundaries inside the image (`0x28996`, `0x28A94`, `0x28CD0`, `0x28DCA`) | L2 |
+| table is an exception dispatch table | 32 entries, entry = handler address ÷ 2 (confirmed by TobleMiner `device/vectors.s`) | L2 + external |
+| real handlers | vectors 24, 26, 29; all other indices share the `nop`/`retx` stub | L2 |
+| vectors 20–22 (UART RX/TX, SPI per SC14441) | **stubs** in both images — the SC14441 numbering does not transfer | L2 |
+| handler acknowledgements | vector 24 writes `0x0100`, 26 writes `0x0400`, 29 writes `0x2000` to `0x000F5402` | L2 |
+| `.bss` clear | `[0x936C,0x9C5E)` (normal) and `[0x94A4,0x9B44)` (p2test) end exactly at the next block | STRONG_INFERENCE |
+| UART bit layout | RI = 6, TI = 5, baud field 2–4 = `0xC` → 115200 | L2 + external, matches |
+| watchdog | `0x000F4C00 ← 0xFF` inside the wait loops | L2 + external, matches |
+| `CFG` bit 8 | set before `INTBASE`; reference calls it "read exception handlers as 32 bit wide" | strong hypothesis |
 | table encoding | word offsets (address ÷ 2); 4/4 address-like values land on prologues, p ≈ 3e-9 by chance | L2 |
 | `0x7C` | **inside** block 1 (`0x0`–`0xD4`), holds `0x00014668` | L1 |
 | first-level load address | `0x10080` | L1 |

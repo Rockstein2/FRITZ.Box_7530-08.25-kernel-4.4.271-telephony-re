@@ -83,7 +83,7 @@ KNOWN**: the destination *data* is known, the *control transfer* is not.
 | destination | `(r3,r2) = 0x1C` loaded at `0x15EA` — this is the **record start**, not the copy address | L2 |
 | source | `(r5,r4) = 0x24` loaded at `0x15F0` | L2 |
 | what is actually written | **`0x8F2` zero bytes at `0x936C`** — one record `{count=0x8F2, dest=0x936C}` at `0x1C` | L2, `fon-dialog-copy-helper-28d56.md` |
-| does it change `0x24` | **UNKNOWN** | depends on the destination pointer, which is `(r3,r2) = 0x1C` — i.e. the copy writes at `0x1C` and above |
+| does it change `0x24` | **no** — the single record at `0x1C` names `0x936C` as the destination; nothing is written at `0x24` |
 
 The call is `fn_28d56(0x1C, 0x24)`: cursor `0x1C`, end `0x24`, i.e. exactly
 one 8-byte record, which asks for `0x8F2` zero bytes at `0x936C`.  It is a

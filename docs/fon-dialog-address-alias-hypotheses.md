@@ -8,7 +8,16 @@ The question: do `0x000F6006` and `0x00FF6006` name the same physical
 register on the SC14448?
 
 **Answer: UNKNOWN.**  Neither aliasing nor distinctness can be proven from
-the material available offline.  This document states exactly what is
+the material available offline.
+
+**Update (EXTREF-1).**  An external CR16C implementation
+(TobleMiner/dialog-cr16c-uart-boot, commit `3d041a68`, SC14441) uses the
+*low 20 bits* of the same addresses with the **same bit layout**: UART RI =
+bit 6, TI = bit 5, baud field bits 2–4, watchdog kicked with `0xFF`.  Our
+first-level image matches every one of those.  That upgrades the evidence
+from "the numbers share low bits" to `FUNCTIONAL_REGISTER_MATCH`, but the
+physical question is unchanged: see
+`fon-dialog-external-register-map.md`.  This document states exactly what is
 established, what each hypothesis would require, and what is missing.
 
 ---
@@ -120,7 +129,7 @@ common encoding, and both sites are start-up code.
 | # | Hypothesis | Supporting | Contradicting | Status |
 |---|---|---|---|---|
 | A | the addresses are physically distinct | different access structure (§3); only `0x6006` pairs, `0x6002` does not; different image coverage | the shared constant `0x0080`; the identical low-bit pairing across 12 registers | **architecturally plausible, not proven** |
-| B | the peripheral decoder ignores bits 20–23 | 12 address pairs agree on the low 20 bits; 6 of them also match in access pattern, which an aliased decoder would explain for free | no document; no mechanism identified | **observable pattern, cause unknown** |
+| B | the peripheral decoder ignores bits 20–23 | 12 address pairs agree on the low 20 bits; **and an independent SC14441 implementation uses the same low-20-bit addresses with the same bit layout for UART and the watchdog** | no document; no mechanism identified; most of the pairing is at `0x000F`/`0x00FF` which the reference never mixes in one image | **strongest hypothesis, still unproven** |
 | C | a dedicated alias window maps one block onto the other | the pairing is complete and regular | no document; no evidence of a window register being programmed | **speculation** |
 | D | the core or a system controller translates one form | `CFG` is written by both images, and the aliasing question is exactly about an address transformation | the core applies no translation (L2); **`CFG` bit 8 being set and cleared around boot phases does not by itself rule out a role in addressing** — a mode bit may be set when it matters and cleared when it does not | **open, not refuted** |
 | E | two independent blocks that happen to share low bits | different access structure for 6 of the 12 pairs (§2); different write widths for 2 pairs | 12 coincidences in a row is unlikely if the assignment were arbitrary, but the pairing is complete and regular, which a random layout would not produce | **plausible, unproven** |

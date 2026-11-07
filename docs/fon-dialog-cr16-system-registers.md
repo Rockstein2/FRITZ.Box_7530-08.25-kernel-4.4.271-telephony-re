@@ -53,7 +53,7 @@ Both images contain the same block, at different addresses:
 | `lprd (r2,r1),intbase` | `0x15E6` | `0x1068` | **`INTBASE = 0x24`** |
 | `movd $0x1c:l,(r3,r2)` | `0x15EA` | `0x106C` | |
 | `movd $0x24:l,(r5,r4)` | `0x15F0` | `0x1072` | |
-| `bal 0x28D56` | `0x15F6` | `0x1078` | **walk the list at `0x24`, write at `0x1C`** |
+| `bal 0x28D56` | `0x15F6` | `0x1078` | **clear `0x8F2` bytes at `0x936C`** (one record at `0x1C`) |
 | `movw $0x800:m,r1` / `lpr r1,psr` | `0x15FA`/`0x15FE` | `0x107C`/`0x1080` | PSR |
 | `bal 0x39F8` | `0x1602` | `0x1084` | main path |
 
@@ -65,9 +65,12 @@ walks 8-byte records from `(r3,r2)` while the cursor differs from
 record, which asks for `0x8F2` zeros at `0x936C`.  Full derivation:
 `fon-dialog-copy-helper-28d56.md`.
 
-**`CFG` bit 8 is the only `CFG` bit this firmware writes.**  What bit 8
-does is not documented in any offline source.  It must not be described as
-an address-decoding control.
+**`CFG` bit 8 is the only `CFG` bit this firmware writes.**  The reference
+project TobleMiner (`device/crt0.s`) sets the same bit with the comment
+*"Setup CPU to read exception handlers as 32 bit wide"*, and every image
+here sets it **before** writing `INTBASE`, whose entries are 32-bit values.
+That is a strong hypothesis for the bit's purpose.  It is **not** documented
+for the SC14448 and it is **not** evidence about address aliasing.
 
 ## 3. Interrupt vectors
 
