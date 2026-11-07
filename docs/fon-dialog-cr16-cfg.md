@@ -264,12 +264,23 @@ Not covered:
 | Aspect | normal | p2test |
 |---|---|---|
 | Runs | 9 | 8 |
-| Decoded instructions | 19 570 | 17 690 |
+| Decoded instructions | 19 570 | 18 058 |
+| Instruction sizes 2/4/6 B | 13 546 / 4 832 / 1 191 | 12 589 / 4 350 / 1 118 |
+| Reachable instructions | 8 178 | 6 558 |
+| Direct calls | 1 490 | 1 373 |
+| Cross-block calls | 376 | 294 |
+| Unresolved indirect edges | 2 706 | 2 563 |
+| Invalid branch targets | 204 | 239 |
 | `0xFF6006` site | `0x2582` | `0x1E3E` |
-| Bring-up routine | `0x25F90` | present, shifted |
-| Buffer fill base | `0x01000000` | same constant |
-| Ready poll | `0xF6002` | same constant |
+| `0x1001` buffer fill | `0x25F9A` | `0x26750` |
+| `0xF6002` readiness poll | `0x25FAE` | `0x26764` |
 | GPIO extra register | — | `0xFF4860` |
+
+All four load-bearing constants appear in both images at shifted
+addresses: the fill loop (`0x1001`), the buffer base (`0x01000000`) and the
+readiness poll (`0xF6002`).  The PCM bring-up is therefore the same code in
+both builds, and the difference is boundary placement plus one extra GPIO
+register.
 
 The PCM bring-up structure is **functionally identical** in both images: the
 same constants (`0x1001`, `0x01000000`, `0xF6002`) appear at shifted

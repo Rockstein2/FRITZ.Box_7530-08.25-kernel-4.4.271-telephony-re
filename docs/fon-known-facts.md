@@ -773,6 +773,60 @@ no external caller.
 effective address is `0x000F6400` unless a segment is implied; whether the
 hardware decodes it as `0xFF6400` is **not established**.
 
+### 9d-12. Global CFG: the PCM bring-up chain (2026-11-07)
+
+The 6-byte instruction bug was fixed (objdump prints the extra word on a
+second line with no mnemonic), and a global CFG across all runs was built.
+Instruction sizes in `dectfw_secondlevel_441.hex`: 2 B x 13 546, 4 B x
+4 832, 6 B x 1 191.
+
+**Reachability chain found:**
+
+```text
+0x1602 (candidate top level, no caller in the image)
+  -> 0x39F8 -> 0x3A2C -> 0x25FB8 -> 0x25F90
+       -> 0x25FAA -> 0x2558 -> 0x257E -> 0x24F8 (recursion)
+```
+
+**`0x25F90` is a PCM bring-up routine:**
+
+```text
+25f92  movd $0x937c:l,(r8,r7)
+25f98  storw $0x1:s,0x0:s(r8,r7)     ; counter = 1
+25f9a  movw $0x1001:m,r2             ; fill value
+25f9e  bal  -> 0x25BA                ; table[base + index*2] = value
+25fa4  cmpw $0x200:m,r0
+25fa8  bhi  *-0x25f9a                ; 512 words at 0x01000000
+25faa  bal  -> 0x2558                ; pulse 0xFF6006
+25fae  loadw 0xf6002:m,r0
+25fb4  bne  *-0x25fae                ; wait for readiness == 1
+```
+
+So the previous iteration's "only recursion, no caller" conclusion was
+**incomplete**: the caller lives in the `0x25Fxx` block that the old
+per-run CFG could not reach.
+
+What is proven and what is not:
+
+| Claim | Status |
+|---|---|
+| `0x24F8` is reachable from top-level code | **proven** (CFG path above) |
+| `0x257E` re-enters with the high byte of its argument | **proven** |
+| there is no external caller of `0x24F8` other than `0x257E` | **proven** |
+| `0x25F90` fills 512 words at `0x01000000` with `0x1001` | **proven** |
+| it then pulses `0xFF6006` and polls `0xF6002` for `1` | **proven** |
+| the buffer is the PCM buffer | **not proven** — `0x01000000` is in no loaded run |
+| `0x1001` has a known field layout | **not proven** |
+
+Statistics (second-level image): 9 blocks, 19 570 decoded, 0 verified
+entries, 404 candidate entries, 8 178 reachable, 1 490 direct calls, 376
+cross-block calls, 0 resolved indirect edges, 2 706 unresolved, 204
+invalid targets.
+
+`p2test` reproduces the same constants at shifted addresses
+(`0x1001` at `0x26750`, poll at `0x26764`, `0xFF6006` at `0x1E3E`), so the
+bring-up is the same code in both builds.
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |

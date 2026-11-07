@@ -94,7 +94,10 @@ build must confirm.
 | Q42 | Who calls the `0x24F8` selector? | **answered for this image**: only `0x257E`, i.e. recursive re-entry; no external caller exists | answered |
 | Q43 | What does `BIT(7)` of `0xFF6006` do on the SC14448? | dynamic test once firmware runs | D |
 | Q44 | Is `0xf6400:m` decoded as `0x000F6400` or `0xFF6400`? | needs the Dialog address map or a dynamic trace | research |
-| Q45 | How is the `0x24F8` block entered if no caller exists? | run-time vector, or code outside the loaded image | research |
+| Q45 | How is the `0x24F8` block entered if no caller exists? | **answered**: via `0x25FAA -> 0x2558 -> 0x257E`, reachable from `0x1602` | answered |
+| Q46 | Is `0x01000000` the PCM buffer, and what does `0x1001` mean? | needs the SC14448 memory map or a dynamic trace | research |
+| Q47 | Is `0x1602` the reset entry, or is there a vector table we have not found? | no vector table at a fixed address identified | research |
+| Q48 | Where are the 2 706 unresolved indirect calls dispatched from? | table recovery; the most likely place for a PCM RX handler | research |
 | Q39 | Is the SC14448 currently held in reset (GPIO40 = 0, pad is input)? | release GPIO40 under explicit approval and re-run the pin probe | D |
 | Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
 | Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |

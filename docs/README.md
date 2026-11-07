@@ -49,6 +49,7 @@ Stage C research additions:
 | `fon-dialog-cr16-disasm.md` | Real CR16 disassembly of the PCM function; supersedes the byte-level reading |
 | `fon-dialog-ff6006-callgraph.md` | Firmware memory map and the `0xFF6006` function (branch targets provisional) |
 | `fon-dialog-cr16-branches.md` | CR16 branch encoding solved, validated examples, re-derived call graph |
+| `fon-dialog-cr16-cfg.md` | Global CFG, entry points, the PCM bring-up chain, and full statistics |
 
 ## Layer 3 — history (`history/`)
 
