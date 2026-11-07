@@ -184,50 +184,124 @@ MD_M_RE = re.compile(r"^\$0x([0-9a-f]+):m,\((r\d+),(r\d+)\)$")
 MV_RE = re.compile(r"^\$0x([0-9a-f]+)(?::[sm])?,(r\d+)$")
 
 
-def apply_instruction(state, insn):
+# Registers that an instruction writes.
+#
+# The list is derived from the ISA, not from a whitelist of mnemonics found in
+# this firmware:  any instruction whose *last* operand is a register or a
+# register pair and whose semantics is not "compare" or "test" modifies it.
+# Callers (bal/jal/jalr) clobber the whole state and are handled before this.
+NOT_WRITING = C.COND | C.RETS | {"cmpw", "cmpb", "cmpd", "tbit", "tbitw",
+                                "tbitb", "cbitw", "cbitb", "sbitw", "sbitb"}
+PAIR_OPS = {"movd", "addd", "subd", "andd", "ord", "xord", "ashud", "lshd",
+            "muld", "loadd", "stord", "loadm", "loadmp", "storm"}
+# These print the destination as the first operand.
+WIDEN_FIRST_DEST = {"movzw", "movxw", "movzb", "movxb", "mulsw", "muluw",
+                    "mulsb"}
+
+TAIL_REG = re.compile(r"(?:,|^)(r\d+)$")
+TAIL_PAIR = re.compile(r"(?:,|^)\((r\d+),(r\d+)\)$")
+
+
+def written_registers(insn):
+    """Return the set of registers the instruction may modify.
+
+    Both halves of a written pair are returned, so any state keyed on either
+    half is invalidated by the caller.  A memory instruction whose operand is
+    a *destination* pair (`loadd ...,(rp)`, `loadm`) writes that pair; a memory
+    instruction whose pair is the *source* (`storw r2,0x0:s(rp)`) writes
+    nothing but the register it loads into.
+    """
+    mn = insn.mnemonic
     ops = insn.operands.replace(" ", "")
-    if insn.mnemonic in C.CALLS:
+    if mn in C.CALLS or mn in NOT_WRITING:
+        return set()
+    # memory instructions: only the register operand is written.
+    # (`ashud $1:s,(rp)` is not a memory access: the `:s` belongs to the
+    # immediate, not to an address operand.)
+    if mn in ACCESS:
+        if mn.startswith("load"):
+            for operand in split_operands(insn.operands):
+                operand = operand.strip()
+                m = re.fullmatch(r"(r\d+)", operand)
+                if m:
+                    return {m.group(1)}
+                m = re.fullmatch(r"\((r\d+),(r\d+)\)", operand)
+                if m:
+                    return {m.group(1), m.group(2)}
+        return set()
+    # widening moves print their destination first: `movzw r3,(r7,r6)`
+    # stores the zero-extended pair into r3.
+    if mn in WIDEN_FIRST_DEST:
+        m = re.match(r"^(r\d+),", ops)
+        if m:
+            return {m.group(1)}
+        m = re.match(r"^\((r\d+),(r\d+)\),", ops)
+        if m:
+            return {m.group(1), m.group(2)}
+        return set()
+    m = TAIL_PAIR.search(ops)
+    if m and mn in PAIR_OPS:
+        return {m.group(1), m.group(2)}
+    m = TAIL_REG.search(ops)
+    if m:
+        return {m.group(1)}
+    return set()
+
+
+def apply_instruction(state, insn):
+    """Update the register state for one instruction (in place).
+
+    Only two value forms are tracked: a 32-bit constant in a register pair and
+    a 16-bit constant in a single register.  Every other write is UNKNOWN.
+    """
+    mn = insn.mnemonic
+    ops = insn.operands.replace(" ", "")
+    if mn in C.CALLS:
         state.clear()
         return
+
+    # `movd $imm:l,(rp)` is the only way this analysis learns a 32-bit value
     m = MD_RE.match(ops)
     if m:
-        set_pair(state, m.group(2), m.group(3), int(m.group(1), 16))
+        hi, lo = m.group(2), m.group(3)
+        for reg in written_registers(insn):
+            if reg not in (hi, lo):
+                invalidate(state, reg)
+        set_pair(state, hi, lo, int(m.group(1), 16))
         return
-    m = MD_M_RE.match(ops)
-    if m:
-        invalidate(state, m.group(2))
-        invalidate(state, m.group(3))
+
+    # `addd src,dst` computes dst := dst + src.  A numeric value survives
+    # only when both sides are proven constants; otherwise the destination
+    # stops being known.  The source is never modified.
+    m = re.match(r"^\((r\d+),(r\d+)\),\((r\d+),(r\d+)\)$", ops)
+    if m and mn == "addd":
+        shi, slo, dhi, dlo = m.groups()
+        src = pair_state(state, shi, slo)
+        dst = pair_state(state, dhi, dlo)
+        if src[0] == "KNOWN32" and dst[0] == "KNOWN32":
+            set_pair(state, dhi, dlo, (dst[1] + src[1]) & 0xFFFFFFFF)
+        else:
+            invalidate(state, dhi)
+            invalidate(state, dlo)
         return
+
+    # any other write of a 16-bit constant: `movw $imm,rn`
     m = MV_RE.match(ops)
     if m:
+        for reg in written_registers(insn):
+            if reg != m.group(2):
+                invalidate(state, reg)
         set_reg(state, m.group(2), int(m.group(1), 16))
         return
-    # addd <rp>,<rp> keeps a constant only when the destination is one
-    m = re.match(r"^\((r\d+),(r\d+)\),(\(r\d+,r\d+\))$", ops)
-    if m and insn.mnemonic == "addd":
-        # destination first; without a value for the source the result is
-        # not a constant that this analysis can follow
-        invalidate(state, m.group(1))
-        invalidate(state, m.group(2))
-        return
-    # any other instruction that writes a register invalidates it
-    m = re.match(r"^.*,((?:r\d+)|\(r\d+(?:,r\d+)?\))$", ops)
-    if m and insn.mnemonic not in (C.COND | C.RETS) and \
-            insn.mnemonic not in ("cmpw", "cmpb", "cmpd", "tbit", "tbitw",
-                                  "tbitb", "cbitw", "cbitb"):
-        target = m.group(1)
-        if target.startswith("("):
-            for reg in re.findall(r"r\d+", target):
-                invalidate(state, reg)
-        else:
-            invalidate(state, target)
+
+    for reg in written_registers(insn):
+        invalidate(state, reg)
 
 
 def write_back(state, insn):
-    if insn.mnemonic.startswith("load"):
-        for operand in split_operands(insn.operands):
-            if re.match(r"^r\d+$", operand):
-                invalidate(state, operand)
+    """Registers written by a memory access stop being known."""
+    for reg in written_registers(insn):
+        invalidate(state, reg)
 
 
 # ---------------------------------------------------------------------------
@@ -293,6 +367,18 @@ def double(symbol):
     return f"2*{symbol}"
 
 
+def _resolved_note(value):
+    """Flag RESOLVED addresses that look unlike a real internal address."""
+    if 0x01000000 <= value < 0x01000000 + 0x100000:
+        return ""
+    if 0x0F0000 <= value < 0x100000 or 0x00FF0000 <= value < 0x01000000:
+        return ""
+    if 0x000000 <= value < 0x00100000:
+        return ""
+    return ("address outside the known internal ranges; may be data decoded "
+            "as code (see docs, 'unreliable RESOLVED')")
+
+
 def scan(fw, image):
     """Return (rows, stats, unclassified)."""
     blocks = blocks_of(fw)
@@ -301,45 +387,98 @@ def scan(fw, image):
     for start in sorted(blocks):
         state = {}
         prov = {}
-        index_sym = {}
+        sym = {}
+        sym_base = {}
         for addr in blocks[start]:
             insn = fw.insns[addr]
             ops = insn.operands.replace(" ", "")
+            written = written_registers(insn)
 
-            # index register used by the fill pattern: movzw rX,(rp)
+            # Symbolic index state, keyed by register pair.
+            #
+            # `sym` maps a pair to (expression, assumptions): the pair holds
+            # `base + expression`, where the assumptions list the *index*
+            # registers whose live value the expression depends on.  Any
+            # write to a pair or to a live index register drops the entry, so
+            # an expression can never outlive the value it names.
+            # A pair whose expression is *re-derived* by the current
+            # instruction (`movzw`/`movxw`/`ashud`/`addd` on that same pair)
+            # is exempt from the clobber check below; every other write to
+            # the pair or to a live index register drops the expression.
+            rederived = set()
             m = re.match(r"^(r\d+),\((r\d+),(r\d+)\)$", ops)
-            if m and insn.mnemonic == "movzw":
-                index_sym[(m.group(2), m.group(3))] = m.group(1)
+            if m and insn.mnemonic in ("movzw", "movxw"):
+                rederived.add((m.group(2), m.group(3)))
+            m = re.match(r"^\$(?:0x1|1):s,\(([^)]+)\)$", ops)
+            if m and insn.mnemonic == "ashud":
+                regs = re.findall(r"r\d+", m.group(1))
+                if len(regs) == 2:
+                    rederived.add((regs[0], regs[1]))
+            m = re.match(r"^\((r\d+),(r\d+)\),\((r\d+),(r\d+)\)$", ops)
+            if m and insn.mnemonic == "addd":
+                # the source pair keeps its expression (addd does not modify
+                # it); the destination is re-derived only when it has one
+                rederived.add((m.group(1), m.group(2)))
+                if (m.group(1), m.group(2)) in sym:
+                    rederived.add((m.group(3), m.group(4)))
+            for pair in list(sym):
+                expr, deps = sym[pair]
+                if pair in rederived:
+                    continue
+                if written & (set(pair) | set(deps)):
+                    del sym[pair]
+                    sym_base.pop(pair, None)
+
+            m = re.match(r"^(r\d+),\((r\d+),(r\d+)\)$", ops)
+            if m and insn.mnemonic in ("movzw", "movxw"):
+                # the pair now holds zero_extend16(rN); rN itself is an
+                # assumption, not part of the pair being described
+                sym[(m.group(2), m.group(3))] = (m.group(1), {m.group(1)})
+
             m = re.match(r"^\$(?:0x1|1):s,\(([^)]+)\)$", ops)
             if m and insn.mnemonic == "ashud":
                 regs = re.findall(r"r\d+", m.group(1))
                 if len(regs) == 2:
                     key = (regs[0], regs[1])
-                    if key in index_sym:
-                        index_sym[key] = double(index_sym[key])
+                    if key in sym:
+                        expr, deps = sym[key]
+                        sym[key] = (double(expr), set(deps) | set(key))
+
             m = re.match(r"^\((r\d+),(r\d+)\),\((r\d+),(r\d+)\)$", ops)
             if m and insn.mnemonic == "addd":
-                # `addd src,dst`: the first pair is the source, the second
-                # the destination, so the doubled index moves from the source
-                # to the destination pair
+                # `addd src,dst`: dst := dst + src.  A symbolic index moves
+                # from the source to the destination pair; a destination
+                # without a symbolic source loses its expression.
                 src = (m.group(1), m.group(2))
                 dst = (m.group(3), m.group(4))
-                if src in index_sym:
-                    index_sym[dst] = index_sym.pop(src)
-                elif dst in index_sym:
-                    index_sym[dst] = index_sym.pop(dst)
+                if src in sym:
+                    expr, deps = sym.pop(src)
+                    # keep the destination's own base value for later; a
+                    # symbolic store needs base + index, not the sum
+                    base = pair_state(state, *dst)
+                    sym[dst] = (expr, set(deps) | set(dst))
+                    if base[0] == "KNOWN32":
+                        sym_base[dst] = base[1]
                 else:
-                    index_sym.pop(dst, None)
-
-
-
+                    sym.pop(dst, None)
+                    sym_base.pop(dst, None)
 
             if insn.mnemonic in ACCESS:
                 kind, width = ACCESS[insn.mnemonic]
+                # A register pair is also a *value* (`stord (r1,r0),addr`
+                # stores the pair), so the address operand is chosen by
+                # direction: the first memory operand of a load is the
+                # address, the last one of a store is.
                 parsed, payload = None, None
-                for operand in split_operands(insn.operands):
+                operands_list = split_operands(insn.operands)
+                candidates = (operands_list if kind == "READ"
+                              else list(reversed(operands_list)))
+                for operand in candidates:
                     p = parse_memory_operand(operand)
-                    if p:
+                    if p and not (kind == "WRITE" and p[0] == "DISP_RP"
+                                  and operand in operands_list[:1]
+                                  and insn.mnemonic in ("stord", "storw", "storb")
+                                  and parse_memory_operand(operands_list[-1])):
                         parsed, payload = p
                         break
                 if parsed == "ABS":
@@ -358,21 +497,26 @@ def scan(fw, image):
                 elif parsed == "DISP_RP":
                     disp, hi, lo = payload
                     st = pair_state(state, hi, lo)
-                    sym = index_sym.get((hi, lo))
-                    if st[0] == "KNOWN32" and sym:
+                    entry = sym.get((hi, lo))
+                    base = sym_base.get((hi, lo))
+                    if entry and disp == 0 and base is not None:
+                        expr = entry[0]
+                        text = (f"0x{base:08x} + {expr}"
+                                if expr.startswith(("2*", "4*", "8*"))
+                                else f"0x{base:08x} + zero_extend16({expr})")
                         rows.append(_row(
                             image, addr, insn, kind, width, "SYMBOLIC",
-                            None, prov.get((hi, lo), []),
-                            f"0x{st[1]:08x} + {sym}" if sym.startswith("2*")
-                            else f"0x{st[1]:08x} + zero_extend16({sym})",
+                            None, prov.get((hi, lo), []), text,
                             mode_a, mode_b,
-                            "base loaded by movd, index added afterwards"))
+                            "base loaded by movd, index added by addd; "
+                            "depends on " + ", ".join(sorted(entry[1]))))
                     elif st[0] == "KNOWN32":
+                        value = (st[1] + disp) & 0xFFFFFFFF
                         rows.append(_row(image, addr, insn, kind, width,
-                                         "RESOLVED",
-                                         f"0x{(st[1] + disp) & 0xFFFFFFFF:08x}",
+                                         "RESOLVED", f"0x{value:08x}",
                                          prov.get((hi, lo), []), None,
-                                         mode_a, mode_b))
+                                         mode_a, mode_b,
+                                         _resolved_note(value)))
                     else:
                         rows.append(_row(image, addr, insn, kind, width,
                                          "UNKNOWN", None, [], f"({hi},{lo})+{disp}",
