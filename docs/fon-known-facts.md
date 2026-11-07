@@ -236,6 +236,40 @@ the FON LED is wrong.
 `AVM_DEF_HW_PARAM_GPIO_OUT_ACTIVE_HIGH` is an AVM **software convention**.  It
 does not prove the electrical level at the SC14448 reset pin.
 
+### 5a. Passive pin observation under OpenWrt (2026-11-07)
+
+All PCM candidate pins were read as GPIO inputs for two seconds each; the
+pad direction was already `in`, so reading changed nothing.
+
+| Pin | Level | Transitions in 2 s |
+|---|---|---|
+| GPIO20 (MCL, mux2) | 1 | 0 |
+| GPIO21 (DCL, mux2) | 0 | 0 |
+| GPIO22 (FSC, mux2) | 1 | 0 |
+| GPIO23 (DI) | 1 | 0 |
+| GPIO24 (MCL, mux3) | 1 | 0 |
+| GPIO25 (DCL, mux3) | 0 | 0 |
+| GPIO26 (FSC, mux3) | 1 | 0 |
+| GPIO27 (DO) | 1 | 0 |
+
+**No TDM activity on either pinmux group.**  This answers Q27 for the
+current boot: the SC14448 is not producing FSC/BCLK.
+
+Method limit: the shell cannot resolve 1 MHz, but 8 kHz would produce about
+16 000 periods in the window, so a flat line is a reliable result for FSC
+and a strong indication for BCLK.
+
+Reset line:
+
+| Pin | Direction | Level |
+|---|---|---|
+| GPIO40 (DECT reset) | `in` | **0** |
+
+The AVM board table declares GPIO40 as `OUT_ACTIVE_HIGH`.  Nothing in Linux
+drives it, the pad is an input, and it reads low, which is consistent with
+the SC14448 being **held in reset**.  Polarity at the chip is still
+unverified (Q15).
+
 ## 6. Boot order on FRITZ!OS
 
 | Time | Event | Evidence |

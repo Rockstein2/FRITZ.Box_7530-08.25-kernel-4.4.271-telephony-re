@@ -45,6 +45,7 @@ Stage C research additions:
 | `fon-audio-ahb-clock-warning.md` | Why the AHB clock warns on disable, and what is still unproven |
 | `fon-adss-avm-init-sequence.md` | AVM's real ADSS/TDM order and a register table |
 | `fon-tdm-clock-software-check.md` | The recovered `pcmlink` FSC/DCL count algorithm, and whether a passive GPIO read can replace a scope |
+| `fon-dialog-firmware-pcm.md` | What the SC14448 firmware actually programs, with a validated immediate decoder |
 
 ## Layer 3 — history (`history/`)
 
