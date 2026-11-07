@@ -302,6 +302,27 @@ else:
             check(f"xrefs doc: {image} unclassified is 0",
                   len(xr["images"][image]["unclassified"]), 0)
 
+# ---------------------------------------------------------------------------
+# 8. Fill-loop indices and the position of the 0x2558 call
+# ---------------------------------------------------------------------------
+XREF_DOC = ROOT / "docs" / "fon-dialog-peripheral-xrefs.md"
+DEPS_DOC = ROOT / "docs" / "fon-dialog-init-dependencies.md"
+if XREF_DOC.is_file():
+    text = XREF_DOC.read_text()
+    check("xrefs doc: index range is 1...511",
+          "`1 … 511`" in text, True)
+    check("xrefs doc: no stale 0...510 range",
+          "0 … 510" not in text and "0...510" not in text, True)
+    check("xrefs doc: fill span is 0x01000002...0x010003FE",
+          "0x01000002 … 0x010003FE" in text, True)
+if DEPS_DOC.is_file():
+    text = DEPS_DOC.read_text()
+    check("deps doc: 0x2558 is not described as run from the loop body",
+          "loop body" not in text, True)
+    check("deps doc: 0x2558 is called after the fill loop",
+          "after the fill loop" in text or "after** the" in text
+          or "after the" in text, True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)

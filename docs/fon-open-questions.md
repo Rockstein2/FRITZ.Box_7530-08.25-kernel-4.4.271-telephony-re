@@ -98,7 +98,7 @@ build must confirm.
 | Q45 | How is the `0x24F8` block entered if no caller exists? | **corrected**: `0x24F8` is entered by the `bal` at `0x257E` (the block's own entry); the old `0x25FAA -> 0x2558 -> 0x257E -> 0x24F8` chain is a sequence of addresses, not of call edges | answered |
 | Q53 | What do the 11 230 decoded instructions not reached from `0x1602` contain — code reachable only through an unfound dispatch, or data decoded as code? | classify by data/code heuristics and entry evidence; linear disassembly counts data as instructions | offline |
 | Q54 | Does an indirect dispatch exist that no site currently reveals (table built at run time, or read from RAM initialised by the loader)? | trace any load-then-jump pattern over the whole image, including the 11 230 unreached instructions | offline |
-| Q55 | Can the address written at `0x25D0` (`0x01000000 + 2·index`) be resolved far enough to decide whether any other instruction reads the same area? | **partly answered**: the store is now reported as `SYMBOLIC` `0x01000000 + 2*r3` with provenance `0x25C4`/`0x25CE`; no reader resolves to a constant, and every use of the base is computed. A full liveness analysis across blocks is still missing | offline |
+| Q55 | Can the address written at `0x25D0` (`0x01000000 + 2·index`) be resolved far enough to decide whether any other instruction reads the same area? | **partly answered**: the store is now reported as `SYMBOLIC` `0x01000000 + 2*r3` by the general rules (no special case for `0x25D0`), provenance `0x25C4`/`0x25CE`; no reader resolves to a constant. Inter-block liveness is still not implemented, which is the remaining gap | offline |
 | Q56 | Is `0x000F6006` bit 7 a start strobe, and does `0x000F6002` go to 1 because of it? | **restated**: `0x2558` pulses `0x00FF6006`, not `0x000F6006`, and the two are not proven to alias. Hardware observation only (see `fon-dialog-hw-test-plan.md`) | D |
 | Q52 | Is `0x000F6002` a status register whose value 1 means "ready", and which event sets it? | no L5 observation; the loop at `0x25FAE` has no timeout | D |
 | Q46 | Is `0x01000000` the PCM buffer, and what does `0x1001` mean? | **still open**: the fill helper writes one word per call and resets a counter at `0x937C`; the base and the value are proven, their meaning is not | research |
@@ -129,3 +129,10 @@ DECT, ISDN, CAPI, DSL.  Not needed for one FXS port; recorded in
 - The remaining `docs/fon-*.md` files — historical analysis, marked as such.
   They may still contain `UNVERIFIED` markers for things already answered
   here; **this file wins**.
+
+## 8. Opened by PERIPH-2.1 (2026-11-07)
+
+| # | Question | Closes with | Stage |
+|---|---|---|---|
+| Q58 | Do the two `RESOLVED` rows flagged "outside the known internal ranges" (`0x173A4`, `0x17D80` in normal) sit in a region that is data rather than code? | classify instruction blocks as code/data by reachability and entry evidence; the flag is already in the report note | offline |
+| Q59 | Is there a cross-block dataflow that would let a base loaded in one block be used in the next (currently always `UNKNOWN`)? | merge-on-all-predecessors analysis over the CFG, with the same conservative default | offline |

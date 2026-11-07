@@ -41,7 +41,7 @@ Two facts follow directly (L3, L4):
 | # | Address | Instruction | Value | Guard / condition |
 |---|---|---|---|---|
 | 1 | `0x0000937C` | `storw $1` | 1 | none |
-| 2 | `0x01000000 + 2·index` (**`SYMBOLIC`**) | `storw r2,0x0:s(r5,r4)` | `0x1001` | 511 times, loop bound proven in `fon-dialog-peripheral-init.md` |
+| 2 | `0x01000000 + 2·index` (**`SYMBOLIC`**) | `storw r2,0x0:s(r5,r4)` | `0x1001` | indices 1…511 (511 stores); loop bound in `fon-dialog-peripheral-init.md` |
 
 Both stores are reached only after `movd $0x937c` / `movd $0x1000000` into a
 register pair; the second also has an index added (`movzw`, `ashud $1`,
@@ -49,7 +49,7 @@ register pair; the second also has an index added (`movzw`, `ashud $1`,
 address.  The span `0x01000002 … 0x010003FE` is therefore an **inferred
 range**, not an address the code states.
 
-### 2.2 `0x2558` — called from the loop body of `0x25F90`
+### 2.2 `0x2558` — called once, after the fill loop of `0x25F90`
 
 Exact instruction order (normal image; `p2test` has the same structure in the
 routine starting at `0x1E0C`, with the same operations at `0x1E12`, `0x1E1A`,
@@ -73,6 +73,11 @@ routine starting at `0x1E0C`, with the same operations at `0x1E12`, `0x1E1A`,
 
 The `0x0080` write (6) and the clear (15) bracket the masked write to
 `0x00FF5406` (9–11); `0x000F5402 <- 0x0400` (14) sits between them.
+
+`0x2558` is reached by the single `bal` at `0x25FAA`, which is **after** the
+fill loop: the loop's backward branch (`0x25FA8 bhi` → `0x25F9A`) exits to
+`0x25FAA` only when the counter exceeds `0x200`.  The fill therefore runs
+511 times first, and the pulse runs once afterwards.
 
 **`0x000F6006` does not take part in this pulse.**  Every `0x6006` access in
 `0x2558` is to `0x00FF6006`; the `0x000F6006` rows in section 3 are separate

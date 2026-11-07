@@ -900,10 +900,23 @@ separately; nothing establishes that they alias the same register.
 | access width of every register above | 16 bits (`loadw`/`storw`) | L2 |
 | the `0x000Fxxxx` and `0x00FFxxxx` blocks are the same hardware | **not established** | — |
 
-Statistics (version 3): normal 4 301 memory operations — 1 346 `RESOLVED`,
-36 `SYMBOLIC`, 2 334 `UNKNOWN`, 656 `STACK`, 456 `INDEXED`, 41
-`PC_RELATIVE`; p2test 4 062 — 1 302 / 29 / 2 293 / 577 / 320 / 21.  Every
-memory instruction is classified (`unclassified` is empty in both images).
+Statistics (version 3 + PERIPH-2.1): normal 4 301 memory operations —
+1 280 `RESOLVED`, 8 `SYMBOLIC`, 2 288 `UNKNOWN`, 800 `STACK`, 452 `INDEXED`,
+41 `PC_RELATIVE`; p2test 4 062 — 1 253 / 10 / 2 244 / 688 / 326 / 21.
+Every memory instruction is classified (`unclassified` is empty in both
+images).
+
+The dataflow rules that version 3+ uses (PERIPH-2.1):
+
+| Rule | Value |
+|---|---|
+| registers an instruction writes | derived from the ISA (`written_registers`), not from a mnemonic whitelist: the destination operand of the instruction, both halves if it is a pair |
+| `addd src,dst` | `dst := dst + src`; a numeric result survives only when **both** pairs are proven constants, otherwise the destination becomes `UNKNOWN`; the source is never invalidated |
+| `movd $imm:m,(rp)` / `movzw` etc. | the pair is **not** a 32-bit constant; the instruction counts as writing both halves |
+| memory destination | `stord (rp),disp(rp2)` writes to `rp2`, not to `rp`: the address operand is selected by direction (first for a load, last for a store) |
+| calls | drop the whole state (no calling convention is verified) |
+| basic blocks | every block starts `UNKNOWN`; no value crosses an edge |
+| symbolic expressions | stored per pair together with the index registers they depend on; any write to the pair **or** to a live index register drops the expression |
 
 What precedes `0x25F90` on the path from `0x1602`: `0x3A08 di`,
 `0x3A0C -> 0x1388` (clears `0xF5404/6/8/A`, sets `0xFF4856` bits, sets

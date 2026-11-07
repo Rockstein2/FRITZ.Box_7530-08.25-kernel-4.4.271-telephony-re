@@ -59,8 +59,8 @@ relocation in `bfd/elf32-cr16.c`):
 
 | Image | memory operations | RESOLVED | SYMBOLIC | UNKNOWN | STACK / INDEXED / PC_RELATIVE | ADDRESS_LOAD | unclassified |
 |---|---|---|---|---|---|---|---|
-| normal | 4 301 | 1 346 | 36 | 2 334 | 656 / 456 / 41 | 568 | **0** |
-| p2test | 4 062 | 1 302 | 29 | 2 293 | 577 / 320 / 21 | 480 | **0** |
+| normal | 4 301 | 1 280 | 8 | 2 288 | 800 / 452 / 41 | 568 | **0** |
+| p2test | 4 062 | 1 253 | 10 | 2 244 | 688 / 326 / 21 | 480 | **0** |
 
 `normal` = `dectfw_secondlevel_441.hex`, `p2test` =
 `dectfw_secondlevel_441p2test.hex`; SHA-256 of both files is recorded in the
@@ -68,11 +68,39 @@ JSON report.
 
 **Completeness statement.** Every memory instruction in the decoded image is
 classified; `unclassified` is empty.  That is *not* the same as "every
-access is known": 2 334 operations in `normal` are `UNKNOWN` and 36 are
+access is known": 2 288 operations in `normal` are `UNKNOWN` and 8 are
 `SYMBOLIC`, and those could in principle touch any address at run time.
-Before PERIPH-2 the scanner silently dropped 371 memory instructions (the
-`data:l` and `(ra)` forms); the current number is therefore not comparable
-with the earlier report.
+
+**Version history of the numbers.**  Three changes moved these totals, and
+the earlier figures must not be compared with these:
+
+| Version | Change | `RESOLVED` (normal) |
+|---|---|---|
+| 2 | `disp:s(rp)` operands and per-block pairs | 1 346 |
+| 2.1 | correct `addd` destination, every register-writing instruction invalidated, symbolic state bound to a pair | 1 280 |
+
+The drop from 1 346 to 1 280 is **not** a regression.  Version 2 had three
+defects that produced false `RESOLVED` addresses:
+
+* `addd src,dst` invalidated the **source** pair instead of the destination,
+  so a pair kept a stale base and the following store was reported as
+  `RESOLVED` at that base;
+* only `load*` with a single-register destination invalidated its target, so
+  `loadd ...,(rp)` left the old 32-bit value in place;
+* a store whose address operand is the *second* operand
+  (`stord (rp),disp(rp2)`) took the **first** pair as the address, so the
+  destination pair was never treated as written.
+
+Re-measured against version 2, 70 entries in `normal` and 58 in `p2test`
+changed: their address was no longer `RESOLVED`, or the instruction became
+`STACK`/`INDEXED` because the address operand is now identified by
+direction.  The remaining `RESOLVED` entries are those backed by an absolute
+field or by a pair that nothing overwrote inside its block.
+
+Two `RESOLVED` rows in `normal` still carry a note flagging an address
+outside the known internal ranges (`0x173A4`, `0x17D80`).  Both sit in
+blocks that decode as data, so the value is an artefact of that decoding and
+must not be read as a peripheral address.
 
 ---
 
@@ -204,10 +232,11 @@ reader exists: the base is always combined with an index
 (`movzw`, `ashud $1`, `addd`) before use, so every access to this area is
 `SYMBOLIC` or `UNKNOWN` by construction.
 
-The proven index range in `0x25F90` is `0 … 510`, which gives the *possible*
-span `0x01000000 … 0x010003FE` for the two `SYMBOLIC` stores.  That span is a
-consequence of the loop bound (511 words, see
-`fon-dialog-peripheral-init.md`), not an address the code states.
+The proven index range in `0x25F90` is `1 … 511`: the counter at `0x937C` is
+set to 1 (`0x25F98`) and the loop runs while it is `<= 0x200`, which is 511
+iterations.  The stores therefore cover `0x01000002 … 0x010003FE`.  That span
+is a consequence of the loop bound (see `fon-dialog-peripheral-init.md`), not
+an address the code states.
 
 ---
 
