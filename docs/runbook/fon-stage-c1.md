@@ -35,15 +35,16 @@ to the SC14448 and does not enable any analog path.
 | # | Gate | How it is closed | Status |
 |---|---|---|---|
 | G1 | C0 has run on the target image and its summary is archived | `bench/collect-stage-c0.sh` | open |
-| G2 | The FON DT node has explicit `clocks = <&gcc GCC_AUDIO_AHB_CLK>` and `resets = <&gcc GCC_AUDIO_BCR>` | DT change + rebuild | **not done** |
+| G2 | The FON DT node has explicit `clocks = <&gcc GCC_AUDIO_AHB_CLK>` and `resets = <&gcc GCC_AUDIO_BCR>` | DT change + rebuild | **done 2026-11-07**: patch 900 updated, image `4c3bdfd1...` built and verified, not booted |
 | G3 | No other driver owns `0x07700000` or `GCC_AUDIO_BCR` | C0 `adss-ranges.txt`, `clk_summary` | open |
 | G4 | The passive TDM measurement has been taken (§ of `fon-tdm-passive-test.md`) | scope/logic analyser | **not done** |
 | G5 | A physical power-cycle path is available and tested | operator | open |
 | G6 | The exact module under test is rebuilt in the kernel tree and hashed | build record | open |
 
-G2 is the important one: today the FON node has **no** clock and reset
-links, so a C1 driver would have nothing to request.  Adding them is a DT
-change that must itself be reviewed before any hardware run.
+G2 is now closed in the DT and in a built image.  The links are descriptions
+only; a probe-only load must not acquire them.  Booting the new image and
+confirming that `clock_refs=0` / `reset_refs=0` still hold is the check that
+keeps Stage B valid.
 
 G4 is not strictly required for the MMIO read, but it is what tells us
 afterwards whether the read produced a *correct* state or a plausible

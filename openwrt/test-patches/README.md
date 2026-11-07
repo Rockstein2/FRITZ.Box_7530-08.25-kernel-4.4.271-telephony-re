@@ -21,6 +21,11 @@ patch -p1 < /path/to/901-arm-dts-ipq4019-fritzbox-7530-probe-only.patch
 ```text
 900  adds a board-specific avm,fon-tdm node to
      qcom-ipq4019-fritzbox-7530.dts and leaves status = "disabled".
+     The node also carries the C1 preparation links
+     clocks = <&gcc GCC_AUDIO_AHB_CLK> and
+     resets = <&gcc GCC_AUDIO_BCR>.  They are DT descriptions only: a
+     probe-only load must not acquire them, and only an explicitly
+     authorised C1 stage may.
 
 901  changes only that FON node's status to "okay".
      It is for a separate probe-only test image.

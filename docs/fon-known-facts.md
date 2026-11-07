@@ -389,6 +389,35 @@ Three collector defects were only visible on the device and are fixed:
 BusyBox awk has no `strtonum`, `od` is absent, and the iomem owner test
 matched non-ADSS ranges.
 
+### 9d-3. C1 preparation image built (2026-11-07, not booted)
+
+The FON node now carries the two links the C1 stage needs:
+
+```dts
+clocks = <&gcc GCC_AUDIO_AHB_CLK>;   /* 0x181b010 bit 0 */
+resets = <&gcc GCC_AUDIO_BCR>;       /* 0x181b008 bit 0, id 44 */
+```
+
+Verified offline three ways:
+
+| Check | Result |
+|---|---|
+| `dtc` on the standalone test DTS | `clocks = <0x05 0x13>`, `resets = <0x05 0x2c>` |
+| built board DTB | same two properties, `status = "okay"` |
+| DTB extracted from the FIT | same two properties inside the image |
+
+Build artefacts:
+
+| Artefact | Value |
+|---|---|
+| initramfs FIT | 9 129 176 B, sha256 `4c3bdfd1ca1bd07b0318fad600c8a920227842671c2e29b8d8aac7c72e5825d9` |
+| kernel `vmlinux` | sha256 `a79df5c3...baf32` (rebuilt: the DTB is part of the kernel image) |
+| `fon_tdm_drv.ko` | unchanged, sha256 `cd5c05fb...6aff6` |
+
+The module did not change, so the Stage B kit on the stick stays valid, and
+the probe-only behaviour (`clock_refs=0`, `reset_refs=0`) must stay identical
+after this image boots — that is the first thing to confirm.
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |

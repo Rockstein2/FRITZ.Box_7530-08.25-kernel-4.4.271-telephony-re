@@ -1,6 +1,6 @@
 --- a/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4019-fritzbox-7530.dts
 +++ b/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4019-fritzbox-7530.dts
-@@ -24,6 +24,28 @@
+@@ -24,6 +24,33 @@
  	};
  
  	soc {
@@ -9,6 +9,9 @@
 +		 * FON diagnostic transport.  Keep this node disabled by default:
 +		 * the driver must be selected explicitly for a bench test and it
 +		 * never starts TDM/DMA or drives line/ring voltage from DT alone.
++		 *
++		 * The clock and reset links are informational for the probe and
++		 * are only claimed by an explicitly authorised MMIO stage (C1).
 +		 */
 +		fon_tdm: fon-tdm@7700000 {
 +			compatible = "avm,fon-tdm";
@@ -24,6 +27,8 @@
 +			interrupts = <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>,
 +				     <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>;
 +			interrupt-names = "mbox0", "mbox3";
++			clocks = <&gcc GCC_AUDIO_AHB_CLK>;
++			resets = <&gcc GCC_AUDIO_BCR>;
 +			status = "disabled";
 +		};
  
