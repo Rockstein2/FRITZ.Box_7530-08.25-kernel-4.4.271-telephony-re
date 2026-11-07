@@ -346,6 +346,36 @@ if DEPS_DOC.is_file():
           "after the fill loop" in text or "after** the" in text
           or "after the" in text, True)
 
+# ---------------------------------------------------------------------------
+# 9. The alias verdict must stay UNKNOWN while no evidence exists
+# ---------------------------------------------------------------------------
+ALIAS_DOC = ROOT / "docs" / "fon-dialog-address-alias-hypotheses.md"
+if ALIAS_DOC.is_file():
+    t = ALIAS_DOC.read_text()
+    check("alias doc: verdict is UNKNOWN", "**Answer: UNKNOWN.**" in t, True)
+    check("alias doc: no DOCUMENTED_ALIAS claim",
+          "DOCUMENTED_ALIAS" not in t.replace("documented for the SC14448", ""),
+          True)
+    check("alias doc: full-width addresses are used",
+          "0x000F6006" in t and "0x00FF6006" in t, True)
+    check("alias doc: states what would prove it",
+          "bus observation" in t or "read-back experiment" in t, True)
+
+if REPORT.is_file() and (ROOT / "tools" / "reports" /
+                         "cr16-address-alias.json").is_file():
+    al = json.loads((ROOT / "tools" / "reports" /
+                     "cr16-address-alias.json").read_text())
+    check("alias report: code level stops at BEHAVIOR_CORRELATION",
+          al["max_level_from_code"], "BEHAVIOR_CORRELATION")
+    for image in ("normal", "p2test"):
+        check(f"alias report: {image} has the 0x6006 pair",
+              any(p["address_a"] == "0x000f6006"
+                  and p["address_b"] == "0x00ff6006"
+                  for p in al["images"][image]["pairs"]), True)
+        check(f"alias report: {image} claims no proven alias",
+              all("candidate" in p["proof_status"]
+                  for p in al["images"][image]["pairs"]), True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)
