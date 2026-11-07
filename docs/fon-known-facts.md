@@ -569,6 +569,51 @@ asserted, but the warning means the stop is **not confirmed**.
 After `rmmod`: no module, `gcc_audio_ahb_clk` back to enable 0, no
 `0x77000000` region in `/proc/iomem`, no leftover attributes.
 
+### 9d-8. Stage C2: the ADSS accepts the FON configuration (2026-11-07)
+
+First stage that **writes** to ADSS.  Module `3546c2b9...85c6`, loaded as
+`probe_only=0 allow_hw_writes=1 run_c2=1`.
+
+Sequence: enable AHB clock -> pulse reset -> baseline read -> write three
+registers -> read back -> re-assert reset -> disable clock.  No DMA, no IRQ,
+no GPIO, no SC14448 traffic.
+
+| Register | Before | Written | Read back | Match |
+|---|---|---|---|---|
+| `ADSS_GLB_TDM_CTRL` | `0x00010001` | `0x06070007` | `0x06070007` | **yes** |
+| `STEREO_TX_CONFIG` | `0x00000102` | `0x00240000` | `0x00240000` | **yes** |
+| `STEREO_RX_CONFIG` | `0x00000102` | `0x00240000` | `0x00240000` | **yes** |
+| `ADSS_GLB_AUDIO_MODE` | `0x00000000` | `0x10000005` | `0x10000005` | **yes** |
+| `ADSS_GLB_CLK_I2S_CTRL` | — | not written | `0x00000000` | — |
+| `ADSS_GLB_I2S_RST` | — | not written | `0x00000000` | — |
+
+Decoded:
+
+- `TDM_CTRL = 0x06070007`: `TX_CHAN_NUM = RX_CHAN_NUM = 7` (eight slots) and
+  both 1-bit delays set — the geometry the FON path needs;
+- `STEREO_CONFIG = 0x00240000`: `ENABLE` (21) and `NO_I2S_DELAY` (18) set,
+  **`MASTER` (8) cleared**, so the block is now a slave;
+- `AUDIO_MODE = 0x10000005`: `B1K` (28), `INTERFACE_EN` (0), `TX TDM` (0)
+  and `RX TDM` (2) set.
+
+What this proves:
+
+| Question | Answer |
+|---|---|
+| Does ADSS accept writes? | **yes**, all three read back exactly |
+| Can the block be set to eight slots? | **yes** |
+| Can it be switched to slave? | **yes**, `MASTER` stayed cleared |
+| Is the bus stable under writes? | **yes**, no hang, no abort |
+| Is a clock output enabled? | **no** — `CLK_I2S_CTRL` is zero, and in slave mode it must stay zero |
+
+Remaining unknown: with the block correctly configured as slave, the FON can
+only work if the **SC14448 actually drives BCLK/FSC**.  Nothing in software
+can tell us that; it is still Q27.
+
+The clock-framework warning on the disable path appeared again (same
+`clk_branch_toggle` path).  After `rmmod`: no module, `gcc_audio_ahb_clk`
+back to enable 0, no `0x77000000` region.
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |

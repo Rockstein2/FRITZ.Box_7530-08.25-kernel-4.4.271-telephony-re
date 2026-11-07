@@ -36,6 +36,7 @@
 #include <linux/version.h>
 
 #include "fon_c1.h"
+#include "fon_c2.h"
 #include "fon_hw.h"
 #include "fon_tdm.h"
 
@@ -77,6 +78,17 @@ static bool run_c1;
 module_param(run_c1, bool, 0444);
 MODULE_PARM_DESC(run_c1,
 		 "Run the bounded Stage C1 ADSS clock/reset/read once during probe (default: false; requires probe_only=0)");
+
+/*
+ * Stage C2 is the first stage that WRITES to the ADSS block: it programs the
+ * TDM control and stereo format, reads them back, then re-asserts the block
+ * reset.  It needs allow_hw_writes=1 as well, so a single forgotten
+ * parameter cannot turn a read-only run into a write.
+ */
+static bool run_c2;
+module_param(run_c2, bool, 0444);
+MODULE_PARM_DESC(run_c2,
+		 "Run the bounded Stage C2 ADSS TDM write test once during probe (default: false; requires probe_only=0 allow_hw_writes=1)");
 
 static const char *const fon_resource_names[FON_RESOURCE_COUNT] = {
 	"adss", "pcm", "mbox_tx", "mbox_rx", "stereo_tx", "stereo_rx",
@@ -732,6 +744,30 @@ static int fon_tdm_probe(struct platform_device *pdev)
 	 * resources, so it cannot run together with probe_only, with DMA
 	 * permission or with hardware writes.  Anything ambiguous refuses.
 	 */
+	if (run_c2) {
+		struct fon_c2_result c2;
+		int c2_ret;
+
+		if (!allow_hw_writes) {
+			dev_err(&pdev->dev,
+				"C2 refused: run_c2 additionally requires allow_hw_writes=1\n");
+			return -EINVAL;
+		}
+		if (allow_dma) {
+			dev_err(&pdev->dev,
+				"C2 refused: run_c2 requires allow_dma=0\n");
+			return -EINVAL;
+		}
+		dev_warn(&pdev->dev,
+			 "C2: programming TDM for 8 slots and stereo for slave mode, then reading back\n");
+		c2_ret = fon_c2_run(pdev, &c2);
+		dev_warn(&pdev->dev, "C2 finished: step=%d tdm_ok=%d stereo_ok=%d\n",
+			 c2.step, c2.tdm_ok, c2.stereo_ok);
+		if (c2_ret)
+			return c2_ret;
+		return 0;
+	}
+
 	if (run_c1) {
 		struct fon_c1_result c1;
 		int c1_ret;
