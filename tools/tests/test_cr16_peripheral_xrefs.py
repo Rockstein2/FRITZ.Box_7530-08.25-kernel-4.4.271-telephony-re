@@ -332,6 +332,35 @@ else:
     check("sbitw resolves its absolute address",
           hit[0]["effective_address"] if hit else None, "0x000f5806")
 
+    print("== synthetic: immediate tracking does not outlive a write")
+    # bytes produced by the CR16 assembler for each sequence
+    cases = [
+        ("movw then store",
+         [176, 90, 255, 0, 19, 0, 0, 255, 0, 76], "0xff"),
+        ("movw, addw, store",
+         [176, 90, 255, 0, 16, 50, 19, 0, 0, 255, 0, 76], None),
+        ("movw, movw other, store",
+         [176, 90, 255, 0, 1, 90, 19, 0, 0, 255, 0, 76], "0xff"),
+        ("movw, loadw, store",
+         [176, 90, 255, 0, 0, 137, 0, 1, 19, 0, 0, 255, 0, 76], None),
+    ]
+    for label, words, want in cases:
+        path = synth(words)
+        rows, stats, unc, unsup = scan_image(path)
+        hit = [r for r in rows if r["effective_address"] == "0x000f4c00"]
+        check(f"immediate: {label}", hit[0]["immediate"] if hit else None,
+              want)
+
+    print("== synthetic: MV_RE must not model arithmetic as assignment")
+    from types import SimpleNamespace
+    st = {}
+    X.apply_instruction(st, SimpleNamespace(
+        mnemonic="addw", operands="$0x1:s,r0", raw=b"\x00" * 2))
+    check("addw $1,r0 does not set r0 to 1", st.get(("R", "r0")), None)
+    X.apply_instruction(st, SimpleNamespace(
+        mnemonic="movw", operands="$0x5:m,r0", raw=b"\x00" * 2))
+    check("movw $5,r0 does set it", st.get(("R", "r0")), ("KNOWN16", 5))
+
 # ---------------------------------------------------------------------------
 # 3. real images
 # ---------------------------------------------------------------------------
