@@ -588,6 +588,37 @@ if all(p.is_file() for p in (BOOTMAP, VECR, ALR, XREFR)):
            ["decoded_in_isolation"]["target"]),
           ("0x00000008", "0x000015aa", "0x00001026"))
 
+# ---------------------------------------------------------------------------
+# 15. FON-D0.1: UART identification and D0 runbook
+# ---------------------------------------------------------------------------
+UARTID = ROOT / "docs" / "fon-dialog-board-uart-identification.md"
+D0 = ROOT / "docs" / "runbook" / "fon-stage-d0-uart-identification.md"
+check("uart identification doc exists", UARTID.is_file(), True)
+check("stage D0 runbook exists", D0.is_file(), True)
+
+if UARTID.is_file():
+    t = UARTID.read_text()
+    check("uart doc names blsp_uart0", "blsp_uart0" in t, True)
+    check("uart doc records gpio16/gpio17", "gpio16" in t and "gpio17" in t,
+          True)
+    check("uart doc does not claim a second UART",
+          "no evidence of a second UART" in t, True)
+    check("uart doc keeps the Dialog-side voltage UNKNOWN",
+          "UNKNOWN" in t, True)
+    check("uart doc does not assume 1.8 V on the Dialog side",
+          "do not assume 1.8 V" in t, True)
+
+if D0.is_file():
+    t = D0.read_text()
+    check("runbook forbids BGA probing",
+          "Never** probe a BGA ball" in t, True)
+    check("runbook forbids TX injection at D0",
+          "NO-GO at Stage D0" in t, True)
+    check("runbook requires a 1.8 V-capable analyser",
+          "1.8 V" in t, True)
+    check("runbook states console and loader share the port",
+          "share one port" in t, True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)

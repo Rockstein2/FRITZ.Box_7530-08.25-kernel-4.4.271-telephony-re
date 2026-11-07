@@ -274,6 +274,22 @@ drives it, the pad is an input, and it reads low, which is consistent with
 the SC14448 being **held in reset**.  Polarity at the chip is still
 unverified (Q15).
 
+### UART routing, established from the DTS (2026-11-08)
+
+| Fact | Source |
+|---|---|
+| `serial0` = `blsp_uart0` = `serial@78af000` | `Fritz_qcom-ipq4019.dtsi` |
+| its pins are `serial_pins` | same file, `pinctrl-0` |
+| the base mux entry uses `gpio60`/`gpio61` with `function = "blsp_uart0"` | same file |
+| HW236 **replaces** that entry with `gpio16`/`gpio17` and **no** `function`, **no** `bias` | `Fritz_Box_HW236.dtsi` |
+| `serial@78b0000` is disabled | same file |
+| the DECT loader attaches to the first probed port when no `avm,dectstub_uart` node exists | `msm_serial.c:1886-1908` |
+| GPIO16 is also the board's `gpio_avm_dect_rd` | `Fritz_Box_HW236.dtsi` |
+
+Consequence: **one UART**, not two.  The console and the DECT loader share
+`blsp_uart0`.  How `gpio16`/`gpio17` reach it is uncertain (the HW236 override
+drops `function`), and **no source states the voltage on the Dialog side**.
+
 ## 6. Boot order on FRITZ!OS
 
 | Time | Event | Evidence |
