@@ -42,9 +42,17 @@ IMAGES = [
 # ---------------------------------------------------------------------------
 # Intel HEX
 # ---------------------------------------------------------------------------
-def parse_ihex(path):
-    """Return (bytes_by_address, blocks, record_types, errors)."""
-    mem, errors, types = {}, [], {}
+def parse_ihex(path, strict=False):
+    """Parse Intel HEX.
+
+    Returns (bytes_by_address, blocks, record_types, errors, overlaps).
+
+    An address written by two different data records is recorded in
+    `overlaps`: identical bytes are `benign`, different bytes are
+    `conflicting` and, with `strict=True`, become an error so the caller
+    refuses to build a report.
+    """
+    mem, errors, types, overlaps = {}, [], {}, []
     upper = 0
     for lineno, line in enumerate(Path(path).read_text().splitlines(), 1):
         line = line.strip()
@@ -53,23 +61,61 @@ def parse_ihex(path):
         if not line.startswith(":"):
             errors.append(f"{lineno}: not a record")
             continue
-        raw = bytes.fromhex(line[1:])
+        try:
+            raw = bytes.fromhex(line[1:])
+        except ValueError:
+            errors.append(f"{lineno}: not hex")
+            continue
         if len(raw) < 5:
             errors.append(f"{lineno}: short record")
             continue
-        count, addr, kind = raw[0], (raw[1] << 8) | raw[2], raw[3]
+        count, addr = raw[0], (raw[1] << 8) | raw[2]
+        kind = raw[3]
+        if len(raw) != count + 5:
+            errors.append(f"{lineno}: length field {count} does not match "
+                          f"{len(raw) - 5} data bytes")
+            continue
         data, check = raw[4:4 + count], raw[4 + count]
         if (sum(raw[:-1]) + check) & 0xFF:
             errors.append(f"{lineno}: bad checksum")
         types[str(kind)] = types.get(str(kind), 0) + 1
         if kind == 0x00:
+            if count == 0:
+                errors.append(f"{lineno}: empty data record")
+            base = upper + addr
+            if base + count - 1 > 0xFFFFFFFF:
+                errors.append(f"{lineno}: address range overflows 32 bits")
+                continue
             for i, byte in enumerate(data):
-                mem[upper + addr + i] = byte
+                where = base + i
+                if where in mem:
+                    same = mem[where] == byte
+                    overlaps.append({
+                        "address": f"0x{where:08x}",
+                        "line": lineno,
+                        "kind": "benign" if same else "conflicting",
+                    })
+                    if not same and strict:
+                        errors.append(
+                            f"{lineno}: conflicting value at "
+                            f"0x{where:08x}")
+                    if not same:
+                        mem[where] = byte
+                else:
+                    mem[where] = byte
         elif kind == 0x01:
             break
         elif kind == 0x02:
+            if count != 2:
+                errors.append(f"{lineno}: extended segment record must be 2 "
+                              "bytes")
+                continue
             upper = ((data[0] << 8) | data[1]) << 4
         elif kind == 0x04:
+            if count != 2:
+                errors.append(f"{lineno}: extended linear record must be 2 "
+                              "bytes")
+                continue
             upper = ((data[0] << 8) | data[1]) << 16
         else:
             errors.append(f"{lineno}: unsupported type {kind}")
@@ -82,7 +128,34 @@ def parse_ihex(path):
                 start = a
             prev = a
         blocks.append((start, prev - start + 1))
-    return mem, blocks, types, errors
+    return mem, blocks, types, errors, overlaps
+
+
+def read32_le(mem, addr):
+    return int.from_bytes(bytes(mem.get(addr + k, 0) for k in range(4)),
+                          "little")
+
+
+def simulate_28d56(mem, start, end):
+    """Model 0x28d56 from its instructions (see the copy-helper document).
+
+    The function walks 8-byte records from `start` while the cursor differs
+    from `end`; each record is (count, destination) as little-endian u32,
+    and the helper writes `count` zero bytes at `destination`.
+    """
+    writes = []
+    rec = start
+    guard = 0
+    while rec != end and guard < 4096:
+        guard += 1
+        count = read32_le(mem, rec)
+        dest = read32_le(mem, rec + 4)
+        writes.append({"record": f"0x{rec:08x}",
+                       "count": f"0x{count:08x}",
+                       "count_dec": count,
+                       "destination": f"0x{dest:08x}"})
+        rec += 8
+    return writes
 
 
 def build_payload(mem, blocks, level):
@@ -190,13 +263,14 @@ def main():
               "overlaps": [], "handoff": {}}
 
     for name, path in IMAGES:
-        mem, blocks, types, errors = parse_ihex(path)
+        mem, blocks, types, errors, overlaps = parse_ihex(path, strict=True)
         level = 0 if name == "first" else 1
         entry = {
             "file": path.name,
             "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             "record_types": types,
             "parse_errors": errors,
+            "overlapping_records": overlaps,
             "data_bytes": len(mem),
             "min_address": f"0x{min(mem):08x}" if mem else None,
             "max_address": f"0x{max(mem):08x}" if mem else None,
@@ -213,40 +287,45 @@ def main():
             entry["facts"] = firstlevel_facts(fw)
         report["images"][name] = entry
 
-    # copy helper 0x28D56 (second-level): direction, length, ranges
+    # copy helper 0x28D56 (second-level): modelled from its instructions
     fw = C.load(str(IMAGES[1][1]))
     C.disassemble(fw, str(OBJDUMP))
     callers = find_callers(fw, 0x28D56)
-    length, site = movd_value_before(fw, 0x15F6, "r3,r2")
-    source, src_site = movd_value_before(fw, 0x15F6, "r5,r4")
+    first_arg, site_a = movd_value_before(fw, 0x15F6, "r3,r2")
+    end_arg, site_b = movd_value_before(fw, 0x15F6, "r5,r4")
+    sec_mem, _, _, _, _ = parse_ihex(IMAGES[1][1])
+    records = simulate_28d56(sec_mem, first_arg, end_arg) \
+        if first_arg is not None and end_arg is not None else []
     report["copy_helper"] = {
         "function": "0x28d56",
         "callers": callers,
-        "calling_convention": {
-            "dst_pair": "(r3,r2)",
-            "src_list_pair": "(r5,r4)",
-            "length_unit": "count of {u32be addr,u32be len} entries, "
-                           "not bytes",
-            "evidence": "L2: 0x28d5c cmpd (r10,r9),(r8,r7) compares the "
-                        "two pairs; 0x28d60 loadd 0x0(r8,r7) reads addr, "
-                        "0x28d64 loadd 0x4(r8,r7) reads len; 0x28d6a "
-                        "addd $8,(r8,r7) advances by one 8-byte header",
+        "arguments": {
+            "record_start": {"value": f"0x{first_arg:08x}"
+                             if first_arg is not None else None,
+                             "loaded_at": site_a},
+            "loop_end": {"value": f"0x{end_arg:08x}"
+                         if end_arg is not None else None,
+                         "loaded_at": site_b},
         },
-        "destination_argument": {
-            "value": f"0x{length:08x}" if length is not None else None,
-            "loaded_at": site,
+        "semantics": {
+            "loop": "while cursor != end: record = {u32le count, u32le dest};"
+                    " write count zero bytes at dest; cursor += 8",
+            "evidence": "L2: 0x28d5c cmpd cursor,end; 0x28d60 loadd 0(rec);"
+                        " 0x28d62 movw $0,r4; 0x28d64 loadd 4(rec);"
+                        " 0x28d88 helper writes r4 (=0) via storb;"
+                        " 0x28d6a addd $8,cursor",
+            "why_zero": "r4 is forced to 0 at 0x28d62 and nothing changes it "
+                        "before the storb at 0x28d92",
         },
-        "source_argument": {
-            "value": f"0x{source:08x}" if source is not None else None,
-            "loaded_at": src_site,
-        },
-        "direction": "the loop at 0x28d90 writes through (r8,r7) into the "
-                     "destination pair (r3,r2); the source is only read",
-        "overlap": "UNKNOWN — the destination is (r3,r2), which the call "
-                   "loads with 0x1c; whether the block list at (r5,r4) is "
-                   "above or below it is not resolved here",
-        "reaches_0x24": "UNKNOWN — no instruction in 0x28d56..0x28d9c "
-                        "names 0x24",
+        "simulated_writes": records,
+        "changed_region": [
+            {"start": f"0x{int(r['destination'], 16):08x}",
+             "length": r["count_dec"]}
+            for r in records],
+        "field_endianness": "little-endian: 0x1c holds 0x000008f2, which is "
+                            "an instruction boundary, while the big-endian "
+                            "reading is not",
+        "in_image": "UNKNOWN per record — compare with the block list",
     }
 
     # overlaps between the images' own byte ranges

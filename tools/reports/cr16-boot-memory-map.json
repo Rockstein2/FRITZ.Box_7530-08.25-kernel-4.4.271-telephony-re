@@ -1,29 +1,43 @@
 {
  "copy_helper": {
+  "arguments": {
+   "loop_end": {
+    "loaded_at": "0x0015f0",
+    "value": "0x00000024"
+   },
+   "record_start": {
+    "loaded_at": "0x0015ea",
+    "value": "0x0000001c"
+   }
+  },
   "callers": [
    {
     "instruction": "bal (ra),*+0x28d56:m",
     "site": "0x0015f6"
    }
   ],
-  "calling_convention": {
-   "dst_pair": "(r3,r2)",
-   "evidence": "L2: 0x28d5c cmpd (r10,r9),(r8,r7) compares the two pairs; 0x28d60 loadd 0x0(r8,r7) reads addr, 0x28d64 loadd 0x4(r8,r7) reads len; 0x28d6a addd $8,(r8,r7) advances by one 8-byte header",
-   "length_unit": "count of {u32be addr,u32be len} entries, not bytes",
-   "src_list_pair": "(r5,r4)"
-  },
-  "destination_argument": {
-   "loaded_at": "0x0015ea",
-   "value": "0x0000001c"
-  },
-  "direction": "the loop at 0x28d90 writes through (r8,r7) into the destination pair (r3,r2); the source is only read",
+  "changed_region": [
+   {
+    "length": 2290,
+    "start": "0x0000936c"
+   }
+  ],
+  "field_endianness": "little-endian: 0x1c holds 0x000008f2, which is an instruction boundary, while the big-endian reading is not",
   "function": "0x28d56",
-  "overlap": "UNKNOWN \u2014 the destination is (r3,r2), which the call loads with 0x1c; whether the block list at (r5,r4) is above or below it is not resolved here",
-  "reaches_0x24": "UNKNOWN \u2014 no instruction in 0x28d56..0x28d9c names 0x24",
-  "source_argument": {
-   "loaded_at": "0x0015f0",
-   "value": "0x00000024"
-  }
+  "in_image": "UNKNOWN per record \u2014 compare with the block list",
+  "semantics": {
+   "evidence": "L2: 0x28d5c cmpd cursor,end; 0x28d60 loadd 0(rec); 0x28d62 movw $0,r4; 0x28d64 loadd 4(rec); 0x28d88 helper writes r4 (=0) via storb; 0x28d6a addd $8,cursor",
+   "loop": "while cursor != end: record = {u32le count, u32le dest}; write count zero bytes at dest; cursor += 8",
+   "why_zero": "r4 is forced to 0 at 0x28d62 and nothing changes it before the storb at 0x28d92"
+  },
+  "simulated_writes": [
+   {
+    "count": "0x000008f2",
+    "count_dec": 2290,
+    "destination": "0x0000936c",
+    "record": "0x0000001c"
+   }
+  ]
  },
  "cross_image_note": "the first-level image sits at 0x10080 and the second-level images start at 0x0, so they do not share a byte range in the files; any statement about them sharing memory at run time is a hypothesis",
  "handoff": {
@@ -202,6 +216,7 @@
    "file": "dectfw_firstlevel_441_slow.hex",
    "max_address": "0x000102e9",
    "min_address": "0x00010080",
+   "overlapping_records": [],
    "parse_errors": [],
    "record_types": {
     "0": 39,
@@ -270,6 +285,7 @@
    "file": "dectfw_secondlevel_441.hex",
    "max_address": "0x00028dcd",
    "min_address": "0x00000000",
+   "overlapping_records": [],
    "parse_errors": [],
    "record_types": {
     "0": 3382,
@@ -333,6 +349,7 @@
    "file": "dectfw_secondlevel_441p2test.hex",
    "max_address": "0x00027d49",
    "min_address": "0x00000000",
+   "overlapping_records": [],
    "parse_errors": [],
    "record_types": {
     "0": 3112,
