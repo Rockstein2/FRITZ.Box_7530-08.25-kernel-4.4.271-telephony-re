@@ -148,17 +148,23 @@ def bal_target(addr: int, words: tuple[int, ...]) -> tuple[int, bool]:
 def cond2_target(addr: int, word0: int) -> int:
     """Target of a 2-byte conditional branch (`dispe9`, unsigned).
 
-    Layout, validated on all 1 755 two-byte conditional branches of
-    `dectfw_secondlevel_441.hex` (byte1 in 0x10..0x1f) against binutils:
+    The layout currently used, cross-checked against binutils on all 2 076
+    such branches of `dectfw_secondlevel_441.hex` (byte1 in 0x10..0x1f):
 
         disp = ((word0 & 0x0F) | (((word0 >> 8) & 0x0F) << 4)) << 1
         target = addr + disp
 
-    i.e. bits[3:0] hold the field's low nibble, bits[7:4] the condition code
-    and bits[11:8] the high nibble.  `42 10` -> `bhi +0x4`,
-    `00 12` -> `beq +0x40`, `00 1c` -> `beq +0x11e`, `a2 15` -> `blo +0xb0`.
-    The field is unsigned and even; a branch to a lower address always uses
-    the 4-byte form (confirmed with the CR16 assembler).
+    bits[3:0] hold the field's low nibble, bits[7:4] the condition code and
+    bits[11:8] the high nibble.
+
+    **This rule is not consistent with the documented CR16A layout.**  The
+    CR16A Programmer's Reference Manual (App. A.2.3) puts the displacement in
+    bits 0..4 and 9..12 with the condition in bits 5..8, i.e. every bit one
+    position away.  On the real image neither reading explains everything:
+    this rule matches binutils on 1 816 of the 2 076 occurrences (the
+    documented layout matches far fewer), while on the chain links
+    `0x25FA8` `bhi` (`49 1f`) and `0x25FB4` `bne` (`1d 1f`) this rule agrees
+    exactly with binutils.  The origin of the discrepancy is open (Q50).
     """
     disp = ((word0 & 0x0F) | (((word0 >> 8) & 0x0F) << 4)) << 1
     return (addr + disp) & ADDR_MASK
@@ -283,9 +289,8 @@ def decode_insn(addr: int, mnemonic: str, raw: bytes) -> tuple[int | None, str, 
     if 0x10 <= byte1 <= 0x1F:
         return cond2_target(addr, w0), "dispe9", "DIRECT"
     # Conditionals with a `byte1` below 0x10 (`00 1c`, `06 1a`, `47 1e`,
-    # `a2 15`, ...) use a layout that no candidate formula reproduced against
-    # binutils (10 candidate layouts were fitted to all 259 occurrences; the
-    # best matched 42).  They stay unsupported instead of being guessed.
+    # `a2 15`, ...): no formula reproduced binutils for all of them, so they
+    # are reported as unsupported instead of being guessed.
     return None, "2-byte-other", "UNSUPPORTED"
 
 

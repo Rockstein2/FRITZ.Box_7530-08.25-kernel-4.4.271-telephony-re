@@ -156,15 +156,48 @@ Evidence: the same bytes `40 11` print `*+0x20:s` at vma 0 and
 
 ## 3. Open decoder questions
 
+* **2-byte conditional layout disagrees with the CR16A documentation.**  The
+  CR16A Programmer's Reference Manual (App. A.2.3) places the condition in
+  bits 5..8 and the displacement in bits 0..4 and 9..12, stored halved:
+
+  ```text
+  disp = sign_extend( (word & 0x1F) | ((word >> 4) & 0x1E0) ) * 2
+  ```
+
+  The rule used here and in binutils is shifted one bit:
+
+  ```text
+  disp = ((word & 0x0F) | (((word >> 8) & 0x0F) << 4)) << 1
+  ```
+
+  On the image the two disagree on 260 of 2 076 occurrences.  Both were
+  checked against binutils at the instruction's own address:
+
+  | Rule | Matches binutils |
+  |---|---|
+  | rule used here | 1 816 / 2 076 |
+  | CR16A documented layout | 0 / 2 076 |
+
+  and the CR16A layout leaves 522 branches of 2 076 without an instruction
+  boundary at all, while the rule used here leaves 7.  On the specific chain
+  links this rule reproduces binutils exactly:
+
+  | Site | Bytes | Mnemonic | Target |
+  |---|---|---|---|
+  | `0x25FA8` | `49 1f` | `bhi` | `0x25F9A` |
+  | `0x25FB4` | `1d 1f` | `bne` | `0x25FAE` |
+  | `0x25E64` | `4d 19` | `bhi` | `0x25D9E` |
+
+  Neither rule can be declared correct yet; the open question is Q50.
 * 260 two-byte conditionals have a `byte1` below `0x10` (`00 1c`, `06 1a`,
-  `47 1e`, `a2 15`).  Ten candidate layouts were fitted to all 259
-  occurrences against the binutils output; the best explained only 42, so no
-  rule is adopted and these forms stay `UNSUPPORTED` (Q50).
+  `47 1e`, `a2 15`).  They are decoded by the same rule and therefore share
+  the same uncertainty.
 * The 45 four-byte conditionals with a high second word are unexplained.
 * The 6-byte conditional has no validated example.
 
-The first two do not affect the `0x25F90` chain, whose links are all `bal`
-edges or `0x10`-family conditionals.
+The two conditionals inside `0x25F90` (`0x25FA8`, `0x25FB4`) are in the set
+where this rule and binutils agree, so the chain links are reproducible
+with either tool.
 
 ---
 
