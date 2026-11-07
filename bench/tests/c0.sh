@@ -48,6 +48,15 @@ fresh() {
 	printf ' 12: 1 GIC 12 Edge timer\n' >"$WORK/root/proc/interrupts"
 	printf 'MemTotal: 243932 kB\n' >"$WORK/root/proc/meminfo"
 
+	# hexdump is used to decode the binary slots property.
+	cat >"$WORK/root/bin/hexdump" <<'EOF'
+#!/bin/sh
+# minimal stand-in mirroring busybox `hexdump -C -n4` for the slots cell
+echo "00000000  00 00 00 08                                       |....|"
+echo "00000004"
+EOF
+	chmod +x "$WORK/root/bin/hexdump"
+
 	# Every command that could touch hardware is a trap.
 	for c in insmod rmmod modprobe devmem i2cset i2cget mmap; do
 		printf '#!/bin/sh\necho "%s $*" >>"%s/calls"\nexit 1\n' "$c" "$WORK" >"$WORK/root/bin/$c"
@@ -79,6 +88,7 @@ fresh
 rc=$(run "$WORK/out1")
 check "runs without debugfs clocks" 0 "$rc"
 check "fon node detected" 2 "$(grep -c 'qcom,tdm-slots' "$WORK/out1/fon-node.txt")"
+check "slots decoded big-endian" 1 "$(grep -c 'qcom,tdm-slots: 8' "$WORK/out1/fon-node.txt")"
 check "no clock/reset/pinctrl in DT" "absent absent absent" \
 	"$(cat "$WORK/out1/fon-clocks.txt" "$WORK/out1/fon-resets.txt" "$WORK/out1/fon-pinctrl.txt" | tr '\n' ' ' | sed 's/ $//')"
 check "iomem has no ADSS owner" "no ADSS ranges claimed" "$(cat "$WORK/out1/adss-ranges.txt")"
@@ -114,6 +124,9 @@ printf 'pin 22 (GPIO_22): (MUX UNCLAIMED) (GPIO UNCLAIMED)\n' \
 rc=$(run "$WORK/out3")
 check "runs with pinctrl" 0 "$rc"
 check "pins 22 and 40 captured" 2 "$(grep -c '^pin' "$WORK/out3/pinctrl-pcm-40.txt")"
+check "all-unclaimed summary" \
+	"all PCM/GPIO40 pins mux-unclaimed: no audio function selected" \
+	"$(cat "$WORK/out3/pinctrl-summary.txt")"
 
 # 4: missing FON node
 fresh

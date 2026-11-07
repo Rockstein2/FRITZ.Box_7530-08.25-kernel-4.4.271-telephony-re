@@ -55,9 +55,33 @@ fi
 if [ -d "$FON_NODE" ]; then
 	note "FON DT node present"
 	{
-		for p in status qcom,tdm-slots; do
-			[ -r "$FON_NODE/$p" ] && { printf '%s: ' "$p"; tr -d '\0' <"$FON_NODE/$p"; echo; }
-		done
+		# qcom,tdm-slots is a binary u32; stripping NULs would hide it.
+		if [ -r "$FON_NODE/qcom,tdm-slots" ]; then
+			# dtc stores cells big-endian.  busybox hexdump has no
+			# endian modifier and od may be absent, so take the hex
+			# bytes from hexdump -C and combine them in awk.
+			# BusyBox awk has no strtonum, so combine the hex bytes by
+			# string concatenation and let printf convert the result.
+			# Neither strtonum nor hex string arithmetic is portable
+			# across gawk and BusyBox awk, so do it with arithmetic.
+			slots=$(hexdump -C -n4 "$FON_NODE/qcom,tdm-slots" 2>/dev/null |
+				awk 'function h(x,  i, d) {
+					d = 0
+					x = tolower(x)
+					for (i = 1; i <= length(x); i++) {
+						c = index("0123456789abcdef", substr(x, i, 1))
+						d = d * 16 + (c - 1)
+					}
+					return d
+				}
+				NR == 1 { printf "%d", h($2) * 16777216 + h($3) * 65536 + h($4) * 256 + h($5) }')
+			printf 'qcom,tdm-slots: %s\n' "${slots:-unreadable}"
+		fi
+		if [ -r "$FON_NODE/status" ]; then
+			printf 'status: '
+			tr -d '\0' <"$FON_NODE/status"
+			echo
+		fi
 		ls -1 "$FON_NODE"
 	} >"$OUT/fon-node.txt" 2>&1
 	tar -cf "$OUT/fon-node.tar" -C "$FON_NODE" . 2>/dev/null || true
@@ -114,20 +138,45 @@ if [ -d /sys/kernel/debug/pinctrl ]; then
 			grep -E 'pin (2[0-7]|40) ' "$d/pinmux-pins" >>"$OUT/pinctrl-pcm-40.txt" 2>/dev/null
 	done
 	[ -s "$OUT/pinctrl-pcm-40.txt" ] || echo 'no matching pinmux entries' >"$OUT/pinctrl-pcm-40.txt"
+	# Are any PCM pins actually muxed to a peripheral function?
+	if grep -q 'MUX UNCLAIMED' "$OUT/pinctrl-pcm-40.txt" 2>/dev/null &&
+	   ! grep -vq 'MUX UNCLAIMED' "$OUT/pinctrl-pcm-40.txt" 2>/dev/null; then
+		echo 'all PCM/GPIO40 pins mux-unclaimed: no audio function selected' \
+			>"$OUT/pinctrl-summary.txt"
+	elif grep -vq 'MUX UNCLAIMED' "$OUT/pinctrl-pcm-40.txt" 2>/dev/null; then
+		echo 'some PCM pins are muxed to a function' >"$OUT/pinctrl-summary.txt"
+	else
+		echo 'no pinctrl data' >"$OUT/pinctrl-summary.txt"
+	fi
 else
 	echo 'pinctrl debugfs unavailable' >"$OUT/pinctrl-pcm-40.txt"
 fi
 
 # ------------------------------------------------------------------ gates
+# Decide once, then print.  Splitting the decision from the output avoids the
+# command-substitution precedence trap that produced two lines on hardware.
+# A claimed range looks like "0a000000-... : owner".  The header line of
+# /proc/iomem has no colon, so testing for ' : ' anywhere in the file would
+# report "claimed" on a completely empty map.
+# Only the ADSS window counts for the FON gate.
+if grep -Eq '^[[:space:]]*0?77[0-9a-f]{5}-[0-9a-f]+[[:space:]]*: ' \
+	"$OUT/iomem.txt" 2>/dev/null; then
+	owner=claimed
+else
+	owner=free
+fi
+ahb=unknown
+if [ -r "$OUT/clk_summary.txt" ]; then
+	v=$(awk '/gcc_audio_ahb_clk/ { print $2; exit }' "$OUT/clk_summary.txt")
+	[ -n "${v:-}" ] && ahb=$v
+fi
 {
 	printf 'gate\tstate\n'
 	printf 'fon-node\t%s\n' "$([ -d "$FON_NODE" ] && echo present || echo absent)"
-	printf 'fon-clocks\t%s\n' "$(cat "$OUT/fon-clocks.txt")"
-	printf 'fon-resets\t%s\n' "$(cat "$OUT/fon-resets.txt")"
-	printf 'audio-ahb-enable\t%s\n' \
-		"$(awk '/gcc_audio_ahb_clk/ { print $2; exit }' "$OUT/clk_summary.txt" 2>/dev/null || echo unknown)"
-	printf 'adss-iomem-owner\t%s\n' \
-		"$(grep -qc '7700000' "$OUT/iomem.txt" 2>/dev/null && echo claimed || echo free)"
+	printf 'fon-clocks\t%s\n' "$(cat "$OUT/fon-clocks.txt" 2>/dev/null)"
+	printf 'fon-resets\t%s\n' "$(cat "$OUT/fon-resets.txt" 2>/dev/null)"
+	printf 'audio-ahb-enable\t%s\n' "$ahb"
+	printf 'adss-iomem-owner\t%s\n' "$owner"
 } >"$OUT/gates.txt"
 
 tar -czf "$OUT.tar.gz" -C "$(dirname "$OUT")" "$(basename "$OUT")" 2>/dev/null || true

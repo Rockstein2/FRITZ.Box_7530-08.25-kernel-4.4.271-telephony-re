@@ -82,11 +82,11 @@ build must confirm.
 
 | # | Question | How to answer | Stage |
 |---|---|---|---|
-| Q27 | Does the SC14448 currently emit FSC/BCLK, i.e. is it running? | passive scope measurement, `fon-tdm-passive-test.md` | C0/probe |
+| Q27 | Does the SC14448 currently emit FSC/BCLK, i.e. is it running? | scope measurement, `fon-tdm-passive-test.md`; C0 already proved the ADSS pads are not muxed, so Linux cannot see them | probe |
 | Q28 | Is `GCC_AUDIO_AHB_CLK` required to read the ADSS registers? | C1 with clock enabled, then a controlled negated run | C1 |
 | Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
 | Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |
-| Q31 | Which mux group is live on HW236, PINMUX2 or PINMUX3? | passive probe of GPIO20/21/22 vs 24/25/26 | C0/probe |
+| Q31 | Which mux group is live on HW236, PINMUX2 or PINMUX3? | **partly answered**: C0 shows every PCM pin unclaimed by Linux, so neither group is driven by software; the board wiring itself is still unknown | probe |
 | Q32 | Does the console UART tolerate a userspace uploader without corrupting the stream? | C-controlled test with `quiet loglevel=0` | D |
 | Q33 | What are the SC14448 boot reply timings on this unit? | measurement during a controlled handshake | D |
 

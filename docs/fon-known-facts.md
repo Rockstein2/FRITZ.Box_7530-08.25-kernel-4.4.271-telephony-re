@@ -356,6 +356,39 @@ Isolation checks:
 
 Evidence: `../../restore/stage-b/stage-b-2/`.
 
+### 9d-2. Stage C0 on hardware (2026-11-07, passive)
+
+`bench/collect-stage-c0.sh` ran on the probe-only image.  It only read DT,
+`/proc`, debugfs clocks and debugfs pinctrl.
+
+| Observation | Value |
+|---|---|
+| FON node | present, `status = okay` |
+| `qcom,tdm-slots` decoded from DT | **8** |
+| `clocks` / `resets` / `pinctrl-0` on the FON node | **absent / absent / absent** |
+| `gcc_audio_ahb_clk` | enable 0, hw gate `N`, `deviceless` |
+| `audio_clk_src` | enable 0, hw gate `N`, parent XO, 48 MHz |
+| `gcc_audio_pwm_clk` | enable 0, hw gate `N` |
+| ADSS ranges in `/proc/iomem` | **none claimed** |
+| SPI 156/159 | absent |
+| GPIO20-27 and GPIO40 | all `(MUX UNCLAIMED) (GPIO UNCLAIMED)` |
+
+Comparison with a clock that *is* in use: `gcc_blsp1_ahb_clk` has
+`enable=4`, `hw=Y`, consumer `78af000.serial`; `gcc_audio_ahb_clk` has the
+same parent (`pcnoc_clk_src`, enabled) but no consumer.  The audio branch is
+gated by the absence of an owner, not by a dead parent.
+
+The pinmux state is the decisive passive result: no GPIO in the PCM group is
+muxed to `i2s_rx`/`i2s_tx`/`i2s_td`, so **the ADSS pads are not connected to
+the PCM pins in the current configuration**.  Whether the SC14448 toggles
+them anyway cannot be answered by software.
+
+Evidence: `../../restore/stage-c0-final/stage-c0g/`, archive sha256
+`2a9f4afc3164131a180e579e55fa9c43b1bb9c02146e23e32d993e95a4030d7e`.
+Three collector defects were only visible on the device and are fixed:
+BusyBox awk has no `strtonum`, `od` is absent, and the iomem owner test
+matched non-ADSS ranges.
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |
