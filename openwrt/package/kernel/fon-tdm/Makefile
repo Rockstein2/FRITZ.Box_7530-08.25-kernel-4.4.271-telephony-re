@@ -35,6 +35,7 @@ define Build/Prepare
 	$(CP) $(CURDIR)/src/fon_c1.h $(PKG_BUILD_DIR)/
 	$(CP) $(CURDIR)/src/fon_c2.c $(PKG_BUILD_DIR)/
 	$(CP) $(CURDIR)/src/fon_c2.h $(PKG_BUILD_DIR)/
+	$(CP) $(CURDIR)/src/fon_c2_bits.h $(PKG_BUILD_DIR)/
 endef
 
 define Build/Compile
