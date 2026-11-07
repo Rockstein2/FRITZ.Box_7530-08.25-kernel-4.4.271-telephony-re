@@ -1,0 +1,1338 @@
+{
+ "caution": "the vector numbering is a candidate from SC14441 hardware; a match is not proof for SC14448",
+ "images": {
+  "normal": {
+   "file": "dectfw_secondlevel_441.hex",
+   "intbase": "0x0024",
+   "parse_errors": [],
+   "table_extent": "0x0024-0x00a3",
+   "vectors": [
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 0,
+     "raw": "e5460100",
+     "reference_name": "reserved00",
+     "stored": "0x000146e5",
+     "table_address": "0x0024"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 1,
+     "raw": "e5460100",
+     "reference_name": "nmi",
+     "stored": "0x000146e5",
+     "table_address": "0x0028"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 2,
+     "raw": "e5460100",
+     "reference_name": "reserved02",
+     "stored": "0x000146e5",
+     "table_address": "0x002c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 3,
+     "raw": "e5460100",
+     "reference_name": "reserved03",
+     "stored": "0x000146e5",
+     "table_address": "0x0030"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 4,
+     "raw": "e5460100",
+     "reference_name": "reserved04",
+     "stored": "0x000146e5",
+     "table_address": "0x0034"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 5,
+     "raw": "e5460100",
+     "reference_name": "svc_trap",
+     "stored": "0x000146e5",
+     "table_address": "0x0038"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 6,
+     "raw": "e5460100",
+     "reference_name": "dvz_trap",
+     "stored": "0x000146e5",
+     "table_address": "0x003c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 7,
+     "raw": "e5460100",
+     "reference_name": "flg_trap",
+     "stored": "0x000146e5",
+     "table_address": "0x0040"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 8,
+     "raw": "e5460100",
+     "reference_name": "bpt_trap",
+     "stored": "0x000146e5",
+     "table_address": "0x0044"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 9,
+     "raw": "e5460100",
+     "reference_name": "trc_trap",
+     "stored": "0x000146e5",
+     "table_address": "0x0048"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 10,
+     "raw": "e5460100",
+     "reference_name": "und_trap",
+     "stored": "0x000146e5",
+     "table_address": "0x004c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 11,
+     "raw": "e5460100",
+     "reference_name": "reserved11",
+     "stored": "0x000146e5",
+     "table_address": "0x0050"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 12,
+     "raw": "e5460100",
+     "reference_name": "iad_trap",
+     "stored": "0x000146e5",
+     "table_address": "0x0054"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 13,
+     "raw": "e5460100",
+     "reference_name": "reserved13",
+     "stored": "0x000146e5",
+     "table_address": "0x0058"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 14,
+     "raw": "e5460100",
+     "reference_name": "dbg_trap",
+     "stored": "0x000146e5",
+     "table_address": "0x005c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 15,
+     "raw": "e5460100",
+     "reference_name": "ise_int",
+     "stored": "0x000146e5",
+     "table_address": "0x0060"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 16,
+     "raw": "e5460100",
+     "reference_name": "access12_int",
+     "stored": "0x000146e5",
+     "table_address": "0x0064"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 17,
+     "raw": "e5460100",
+     "reference_name": "keyb_int",
+     "stored": "0x000146e5",
+     "table_address": "0x0068"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 18,
+     "raw": "e5460100",
+     "reference_name": "reserved_int18",
+     "stored": "0x000146e5",
+     "table_address": "0x006c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 19,
+     "raw": "e5460100",
+     "reference_name": "ct_classd_int",
+     "stored": "0x000146e5",
+     "table_address": "0x0070"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 20,
+     "raw": "e5460100",
+     "reference_name": "uart_ri_int",
+     "stored": "0x000146e5",
+     "table_address": "0x0074"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 21,
+     "raw": "e5460100",
+     "reference_name": "uart_ti_int",
+     "stored": "0x000146e5",
+     "table_address": "0x0078"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 22,
+     "raw": "e5460100",
+     "reference_name": "spi_int",
+     "stored": "0x000146e5",
+     "table_address": "0x007c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 23,
+     "raw": "e5460100",
+     "reference_name": "tim0_int",
+     "stored": "0x000146e5",
+     "table_address": "0x0080"
+    },
+    {
+     "handler": {
+      "block_size": 9,
+      "block_start": "0x028996",
+      "ends_with_retx": true,
+      "first_instruction": "push $0x3,r0",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": [
+       {
+        "address": "0x000002b6",
+        "instruction": "0x028998",
+        "operation": "ADDRESS_LOAD"
+       },
+       {
+        "address": "0x000002b6",
+        "instruction": "0x02899e",
+        "operation": "READ"
+       },
+       {
+        "address": "0x000002b6",
+        "instruction": "0x0289a2",
+        "operation": "WRITE"
+       },
+       {
+        "address": "0x000f5402",
+        "instruction": "0x0289a8",
+        "operation": "WRITE"
+       }
+      ]
+     },
+     "handler_address": "0x00028996",
+     "handler_even": true,
+     "index": 24,
+     "raw": "cb440100",
+     "reference_name": "tim1_int",
+     "stored": "0x000144cb",
+     "table_address": "0x0084"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 25,
+     "raw": "e5460100",
+     "reference_name": "clk100_int",
+     "stored": "0x000146e5",
+     "table_address": "0x0088"
+    },
+    {
+     "handler": {
+      "block_size": 10,
+      "block_start": "0x028cd0",
+      "ends_with_retx": false,
+      "first_instruction": "push $0x7,r0,RA",
+      "in_image": true,
+      "last_instruction": "bal (ra),*-0x28732:m",
+      "memory_operations": [
+       {
+        "address": "0x000093c9",
+        "instruction": "0x028cd2",
+        "operation": "ADDRESS_LOAD"
+       },
+       {
+        "address": "0x000093c9",
+        "instruction": "0x028cd8",
+        "operation": "READ"
+       },
+       {
+        "address": "0x000093c9",
+        "instruction": "0x028cdc",
+        "operation": "WRITE"
+       },
+       {
+        "address": "0x000f6006",
+        "instruction": "0x028cde",
+        "operation": "READ"
+       },
+       {
+        "address": "0x000f5402",
+        "instruction": "0x028ce8",
+        "operation": "WRITE"
+       }
+      ]
+     },
+     "handler_address": "0x00028cd0",
+     "handler_even": true,
+     "index": 26,
+     "raw": "68460100",
+     "reference_name": "dip_int",
+     "stored": "0x00014668",
+     "table_address": "0x008c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 27,
+     "raw": "e5460100",
+     "reference_name": "ad_int",
+     "stored": "0x000146e5",
+     "table_address": "0x0090"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 28,
+     "raw": "e5460100",
+     "reference_name": "spi2",
+     "stored": "0x000146e5",
+     "table_address": "0x0094"
+    },
+    {
+     "handler": {
+      "block_size": 20,
+      "block_start": "0x028a94",
+      "ends_with_retx": false,
+      "first_instruction": "push $0x8,r0,RA",
+      "in_image": true,
+      "last_instruction": "bne0b r2,*+0x2a:s",
+      "memory_operations": [
+       {
+        "address": "0x000093cb",
+        "instruction": "0x028a9a",
+        "operation": "ADDRESS_LOAD"
+       },
+       {
+        "address": "0x000093cb",
+        "instruction": "0x028aa0",
+        "operation": "READ"
+       },
+       {
+        "address": "0x000093cb",
+        "instruction": "0x028aa6",
+        "operation": "WRITE"
+       },
+       {
+        "address": "0x000000d6",
+        "instruction": "0x028aa8",
+        "operation": "READ"
+       },
+       {
+        "address": null,
+        "instruction": "0x028ab2",
+        "operation": "READ"
+       },
+       {
+        "address": null,
+        "instruction": "0x028ab4",
+        "operation": "WRITE"
+       },
+       {
+        "address": "0x000002c4",
+        "instruction": "0x028ac6",
+        "operation": "ADDRESS_LOAD"
+       }
+      ]
+     },
+     "handler_address": "0x00028a94",
+     "handler_even": true,
+     "index": 29,
+     "raw": "4a450100",
+     "reference_name": "dsp_int",
+     "stored": "0x0001454a",
+     "table_address": "0x0098"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 30,
+     "raw": "e5460100",
+     "reference_name": "reserved30",
+     "stored": "0x000146e5",
+     "table_address": "0x009c"
+    },
+    {
+     "handler": {
+      "in_image": false
+     },
+     "handler_address": "0x1fffe0a02",
+     "handler_even": true,
+     "index": 31,
+     "raw": "0105ffff",
+     "reference_name": "reserved31",
+     "stored": "0xffff0501",
+     "table_address": "0x00a0"
+    }
+   ]
+  },
+  "p2test": {
+   "file": "dectfw_secondlevel_441p2test.hex",
+   "intbase": "0x0024",
+   "parse_errors": [],
+   "table_extent": "0x0024-0x00a3",
+   "vectors": [
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 0,
+     "raw": "fe4f0000",
+     "reference_name": "reserved00",
+     "stored": "0x00004ffe",
+     "table_address": "0x0024"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 1,
+     "raw": "fe4f0000",
+     "reference_name": "nmi",
+     "stored": "0x00004ffe",
+     "table_address": "0x0028"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 2,
+     "raw": "fe4f0000",
+     "reference_name": "reserved02",
+     "stored": "0x00004ffe",
+     "table_address": "0x002c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 3,
+     "raw": "fe4f0000",
+     "reference_name": "reserved03",
+     "stored": "0x00004ffe",
+     "table_address": "0x0030"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 4,
+     "raw": "fe4f0000",
+     "reference_name": "reserved04",
+     "stored": "0x00004ffe",
+     "table_address": "0x0034"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 5,
+     "raw": "fe4f0000",
+     "reference_name": "svc_trap",
+     "stored": "0x00004ffe",
+     "table_address": "0x0038"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 6,
+     "raw": "fe4f0000",
+     "reference_name": "dvz_trap",
+     "stored": "0x00004ffe",
+     "table_address": "0x003c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 7,
+     "raw": "fe4f0000",
+     "reference_name": "flg_trap",
+     "stored": "0x00004ffe",
+     "table_address": "0x0040"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 8,
+     "raw": "fe4f0000",
+     "reference_name": "bpt_trap",
+     "stored": "0x00004ffe",
+     "table_address": "0x0044"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 9,
+     "raw": "fe4f0000",
+     "reference_name": "trc_trap",
+     "stored": "0x00004ffe",
+     "table_address": "0x0048"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 10,
+     "raw": "fe4f0000",
+     "reference_name": "und_trap",
+     "stored": "0x00004ffe",
+     "table_address": "0x004c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 11,
+     "raw": "fe4f0000",
+     "reference_name": "reserved11",
+     "stored": "0x00004ffe",
+     "table_address": "0x0050"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 12,
+     "raw": "fe4f0000",
+     "reference_name": "iad_trap",
+     "stored": "0x00004ffe",
+     "table_address": "0x0054"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 13,
+     "raw": "fe4f0000",
+     "reference_name": "reserved13",
+     "stored": "0x00004ffe",
+     "table_address": "0x0058"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 14,
+     "raw": "fe4f0000",
+     "reference_name": "dbg_trap",
+     "stored": "0x00004ffe",
+     "table_address": "0x005c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 15,
+     "raw": "fe4f0000",
+     "reference_name": "ise_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x0060"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 16,
+     "raw": "fe4f0000",
+     "reference_name": "access12_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x0064"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 17,
+     "raw": "fe4f0000",
+     "reference_name": "keyb_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x0068"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 18,
+     "raw": "fe4f0000",
+     "reference_name": "reserved_int18",
+     "stored": "0x00004ffe",
+     "table_address": "0x006c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 19,
+     "raw": "fe4f0000",
+     "reference_name": "ct_classd_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x0070"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 20,
+     "raw": "fe4f0000",
+     "reference_name": "uart_ri_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x0074"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 21,
+     "raw": "fe4f0000",
+     "reference_name": "uart_ti_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x0078"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 22,
+     "raw": "fe4f0000",
+     "reference_name": "spi_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x007c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 23,
+     "raw": "fe4f0000",
+     "reference_name": "tim0_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x0080"
+    },
+    {
+     "handler": {
+      "block_size": 9,
+      "block_start": "0x02772a",
+      "ends_with_retx": true,
+      "first_instruction": "push $0x3,r0",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": [
+       {
+        "address": "0x00000216",
+        "instruction": "0x02772c",
+        "operation": "ADDRESS_LOAD"
+       },
+       {
+        "address": "0x00000216",
+        "instruction": "0x027732",
+        "operation": "READ"
+       },
+       {
+        "address": "0x00000216",
+        "instruction": "0x027736",
+        "operation": "WRITE"
+       },
+       {
+        "address": "0x000f5402",
+        "instruction": "0x02773c",
+        "operation": "WRITE"
+       }
+      ]
+     },
+     "handler_address": "0x0002772a",
+     "handler_even": true,
+     "index": 24,
+     "raw": "953b0100",
+     "reference_name": "tim1_int",
+     "stored": "0x00013b95",
+     "table_address": "0x0084"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 25,
+     "raw": "fe4f0000",
+     "reference_name": "clk100_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x0088"
+    },
+    {
+     "handler": {
+      "block_size": 10,
+      "block_start": "0x027c88",
+      "ends_with_retx": false,
+      "first_instruction": "push $0x7,r0,RA",
+      "in_image": true,
+      "last_instruction": "bal (ra),*-0x25d74:m",
+      "memory_operations": [
+       {
+        "address": "0x00009510",
+        "instruction": "0x027c8a",
+        "operation": "ADDRESS_LOAD"
+       },
+       {
+        "address": "0x00009510",
+        "instruction": "0x027c90",
+        "operation": "READ"
+       },
+       {
+        "address": "0x00009510",
+        "instruction": "0x027c94",
+        "operation": "WRITE"
+       },
+       {
+        "address": "0x000f6006",
+        "instruction": "0x027c96",
+        "operation": "READ"
+       },
+       {
+        "address": "0x000f5402",
+        "instruction": "0x027ca0",
+        "operation": "WRITE"
+       }
+      ]
+     },
+     "handler_address": "0x00027c88",
+     "handler_even": true,
+     "index": 26,
+     "raw": "443e0100",
+     "reference_name": "dip_int",
+     "stored": "0x00013e44",
+     "table_address": "0x008c"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 27,
+     "raw": "fe4f0000",
+     "reference_name": "ad_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x0090"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 28,
+     "raw": "fe4f0000",
+     "reference_name": "spi2",
+     "stored": "0x00004ffe",
+     "table_address": "0x0094"
+    },
+    {
+     "handler": {
+      "block_size": 20,
+      "block_start": "0x027914",
+      "ends_with_retx": false,
+      "first_instruction": "push $0x8,r0,RA",
+      "in_image": true,
+      "last_instruction": "bne0b r2,*+0x2a:s",
+      "memory_operations": [
+       {
+        "address": "0x00009512",
+        "instruction": "0x02791a",
+        "operation": "ADDRESS_LOAD"
+       },
+       {
+        "address": "0x00009512",
+        "instruction": "0x027920",
+        "operation": "READ"
+       },
+       {
+        "address": "0x00009512",
+        "instruction": "0x027926",
+        "operation": "WRITE"
+       },
+       {
+        "address": "0x000000d6",
+        "instruction": "0x027928",
+        "operation": "READ"
+       },
+       {
+        "address": null,
+        "instruction": "0x027932",
+        "operation": "READ"
+       },
+       {
+        "address": null,
+        "instruction": "0x027934",
+        "operation": "WRITE"
+       },
+       {
+        "address": "0x00000224",
+        "instruction": "0x027946",
+        "operation": "ADDRESS_LOAD"
+       }
+      ]
+     },
+     "handler_address": "0x00027914",
+     "handler_even": true,
+     "index": 29,
+     "raw": "8a3c0100",
+     "reference_name": "dsp_int",
+     "stored": "0x00013c8a",
+     "table_address": "0x0098"
+    },
+    {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 30,
+     "raw": "fe4f0000",
+     "reference_name": "reserved30",
+     "stored": "0x00004ffe",
+     "table_address": "0x009c"
+    },
+    {
+     "handler": {
+      "in_image": false
+     },
+     "handler_address": "0x1fffe0a02",
+     "handler_even": true,
+     "index": 31,
+     "raw": "0105ffff",
+     "reference_name": "reserved31",
+     "stored": "0xffff0501",
+     "table_address": "0x00a0"
+    }
+   ]
+  }
+ },
+ "tool": "cr16-vector-map/1",
+ "upstream": {
+  "commit": "3d041a683c57fee585e04edc503cd7348f54c4a9",
+  "encoding": "stored value * 2 = handler byte address (vectors.s vector_table_fixup: lshd $-1)",
+  "files": [
+   "device/vectors.s",
+   "device/irq.h",
+   "device/crt0.s"
+  ],
+  "repo": "https://github.com/TobleMiner/dialog-cr16c-uart-boot"
+ }
+}
