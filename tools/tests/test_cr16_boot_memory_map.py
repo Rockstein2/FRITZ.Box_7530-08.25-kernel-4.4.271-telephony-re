@@ -262,10 +262,20 @@ else:
           ch["changed_region"][0]["length"], 0x8F2)
     check("no within-image overlaps",
           [o for o in data["overlaps"] if "image" in o], [])
-    check("hand-off target is UNKNOWN",
-          all("UNKNOWN" in h["target"]
-              for h in data["handoff"]["first_level_jumps_below_code"]),
-          True)
+    ho = data["handoff"]
+    check("hand-off chain is statically resolved",
+          ho["chain"]["status"], "STATICALLY_RESOLVED")
+    check("hand-off is not claimed as hardware-observed",
+          ho["chain"]["hardware_observed"], False)
+    check("the transfer site is the disps25 branch",
+          ho["transfer_site"], "0x010284")
+    check("the transfer target is 0x8", ho["transfer_target"], "0x00000008")
+    check("normal secondary branch",
+          ho["second_level"]["normal"]["decoded_in_isolation"]["target"],
+          "0x000015aa")
+    check("p2test secondary branch",
+          ho["second_level"]["p2test"]["decoded_in_isolation"]["target"],
+          "0x00001026")
     # no hardware property may be claimed from an address number
     text = json.dumps(data).lower()
     check("no RAM/ROM claim in the report",
@@ -287,26 +297,28 @@ else:
 # 11. hand-off branch targets are recorded, not guessed
 # ---------------------------------------------------------------------------
 print("== hand-off branch decoding")
-# binutils arg_c rule for disps17: 16-bit field, bit 0 is the sign flag
-def disps17_target(word1, addr):
-    c = word1
-    if c & 1:
-        c = (-c) & 0xFFFF
-        d = -c
-    else:
-        d = c
-    return (addr + d) & 0xFFFFFF
+# targets come from the shared decoder, never from a local formula
+sys.path.insert(0, str(ROOT / "tools"))
+import cr16_branch as B  # noqa: E402
 
+for site, raw, want in (
+        (0x1017C, "e01885ff", 0x10100),
+        (0x10250, "1018b1fe", 0x10100),
+        (0x10298, "e01869fe", 0x10100),
+        (0x10284, "1000ef0e85fd", 0x000008)):
+    t, form, status = B.decode_insn(site, "br", bytes.fromhex(raw))
+    check(f"{site:#07x} -> {want:#08x}", (status, t), ("DIRECT", want))
 
-check("0x1017c field decodes to 0x010101",
-      disps17_target(0xFF85, 0x1017C), 0x010101)
-check("0x10298 field decodes to 0x010101",
-      disps17_target(0xFE69, 0x10298), 0x010101)
-check("0x10250 field decodes to 0x010101",
-      disps17_target(0xFEB1, 0x10250), 0x010101)
-check("the computed target is odd", 0x010101 & 1, 1)
-check("a forward field keeps its value",
-      disps17_target(0x012C, 0x1000), 0x112C)
+# the second-level trampolines, decoded from the images
+if IMAGES["normal"].is_file() and IMAGES["p2test"].is_file():
+    for name, want in (("normal", 0x15AA), ("p2test", 0x1026)):
+        mem, _, _, _, _ = M.parse_ihex(IMAGES[name])
+        raw = bytes(mem.get(0x8 + k, 0) for k in range(6))
+        t, form, status = B.decode_insn(0x8, "br", raw)
+        check(f"{name}: 0x000008 -> {want:#06x}", (status, t),
+              ("DIRECT", want))
+else:
+    skip("second-level trampolines", "firmware missing")
 
 if first_path.is_file() and OBJDUMP.is_file():
     sys.path.insert(0, str(ROOT / "src" / "mock"))
