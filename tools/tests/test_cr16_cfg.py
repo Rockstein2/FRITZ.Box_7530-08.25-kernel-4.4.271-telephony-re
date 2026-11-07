@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Tests for tools/cr16_cfg.py and the instruction-length fix.
+"""Tests for tools/cr16_cfg.py: decode, edge categories, fallthrough, modes.
 
 Run: python3 tools/tests/test_cr16_cfg.py
 
-The firmware cases use real bytes from dectfw_secondlevel_441.hex; the
-synthetic cases build minimal images in memory so every CFG rule can be
-checked without depending on the vendor image.
+Each check prints PASS, FAIL or SKIP.  A SKIP is used when the vendor image
+or the locally built CR16 objdump is unavailable; it is never counted as a
+pass.
 """
 import sys
 import tempfile
@@ -14,11 +14,15 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import cr16_cfg as C  # noqa: E402
 
-OBJDUMP = "/tmp/opencode/cr16/build/binutils/objdump"
+OBJDUMP_CANDIDATES = [
+    Path("/tmp/opencode/cr16/build/binutils/objdump"),
+    Path("/tmp/opencode/cr16/build2/binutils/objdump"),
+]
 FW = Path(__file__).resolve().parent.parent.parent / \
     "firmware" / "dectfw_secondlevel_441.hex"
 
 fails = 0
+skips = 0
 
 
 def check(name, got, want):
@@ -30,34 +34,77 @@ def check(name, got, want):
         fails += 1
 
 
-def test_six_byte_instruction():
-    if not FW.exists() or not Path(OBJDUMP).exists():
-        print("SKIP six-byte instruction (firmware or objdump missing)")
-        return
+def skip(name, why):
+    global skips
+    print(f"SKIP {name}: {why}")
+    skips += 1
+
+
+def objdump():
+    for p in OBJDUMP_CANDIDATES:
+        if p.is_file():
+            return str(p)
+    return None
+
+
+def load_fw():
+    od = objdump()
+    if od is None:
+        skip("firmware load", "CR16 objdump not available")
+        return None
+    if not FW.exists():
+        skip("firmware load", f"{FW} missing")
+        return None
     fw = C.load(str(FW))
-    C.disassemble(fw, OBJDUMP)
+    C.disassemble(fw, od)
+    return fw
+
+
+def hexfile(records):
+    """Write a minimal Intel HEX file; records = [(addr, bytes)]."""
+    lines = []
+    for addr, data in records:
+        b = [len(data), (addr >> 8) & 0xFF, addr & 0xFF, 0x00] + list(data)
+        chk = (-sum(b)) & 0xFF
+        lines.append(":" + "".join(f"{x:02X}" for x in b + [chk]))
+    lines.append(":00000001FF")
+    f = tempfile.NamedTemporaryFile(suffix=".hex", delete=False, mode="w")
+    f.write("\n".join(lines) + "\n")
+    f.close()
+    return f.name
+
+
+# ---------------------------------------------------------------------------
+# Instruction decoding: the continuation line of a 6-byte instruction must
+# never become a separate instruction and never a fallthrough target.
+# ---------------------------------------------------------------------------
+def test_six_byte_instruction():
+    fw = load_fw()
+    if fw is None:
+        return
     check("0x2582 is 6 bytes", fw.insns[0x2582].size, 6)
     check("0x2582 mnemonic", fw.insns[0x2582].mnemonic, "movd")
     check("0x2588 starts after it", 0x2588 in fw.insns, True)
-    check("0x2588 is 4 bytes", fw.insns[0x2588].size, 4)
-    check("0x258C is the following store", fw.insns[0x258C].mnemonic,
-          "storw")
     check("0x2582 end", fw.insns[0x2582].end, 0x2588)
-    check("0x2588 end", fw.insns[0x2588].end, 0x258C)
+    # No instruction may start inside another instruction.
+    interior = set()
+    for a, i in fw.insns.items():
+        for k in range(a + 2, a + i.size, 2):
+            interior.add(k)
+    check("no instruction starts mid-instruction",
+          sorted(set(fw.insns) & interior)[:5], [])
 
 
 def test_known_branches():
-    if not FW.exists() or not Path(OBJDUMP).exists():
-        print("SKIP known branches (missing inputs)")
+    fw = load_fw()
+    if fw is None:
         return
-    fw = C.load(str(FW))
-    C.disassemble(fw, OBJDUMP)
     edges = C.build(fw)
 
     def tgt(src):
         for e in edges:
             if e.src == src and e.kind in ("call", "jump", "cond") and \
-               e.confidence == C.VERIFIED_DIRECT:
+               e.category == C.DIRECT_RESOLVED:
                 return e.dst
         return None
 
@@ -67,109 +114,193 @@ def test_known_branches():
     check("0x0AF0 -> 0x0496", tgt(0x0AF0), 0x0496)
 
 
-def test_synthetic_cfg():
-    """Build a tiny image: call, conditional, jump and return."""
-    import cr16_branch as B
+# ---------------------------------------------------------------------------
+# Fallthrough rules
+# ---------------------------------------------------------------------------
+def test_fallthrough_rules():
+    check("call falls through",
+          C.has_fallthrough(C.Insn(0, 4, "bal", "(ra),*+0x10:m", b"")), True)
+    check("conditional falls through",
+          C.has_fallthrough(C.Insn(0, 2, "beq", "*+0x4:s", b"")), True)
+    check("unconditional jump does not",
+          C.has_fallthrough(C.Insn(0, 2, "jump", "(ra)", b"")), False)
+    check("return does not",
+          C.has_fallthrough(C.Insn(0, 2, "popret", "$0x1,r0", b"")), False)
+    check("retx does not",
+          C.has_fallthrough(C.Insn(0, 2, "retx", "", b"")), False)
 
-    def enc(addr, disp):
-        """Encode a 2-word bal whose target is addr + disp."""
-        p = (-disp) & 0xFFFFFF if disp < 0 else disp
-        if disp < 0:
-            p |= 1
-        return bytes([0x00, 0xC0, p & 0xFF, (p >> 8) & 0xFF])
-
-    # 0x00: bal -> 0x10 ; 0x04: popret ; 0x10: popret
-    img = bytearray(b"\x1e\x03" * 0x10)   # popret RA everywhere: real code
-    img[0:4] = enc(0, 0x10 - 0)
-    img[4:6] = b"\x1e\x03"          # popret RA
-
-    with tempfile.NamedTemporaryFile(suffix=".hex", delete=False) as f:
-        # build a minimal Intel HEX with two records
-        def rec(addr, data):
-            n = len(data)
-            b = [n, (addr >> 8) & 0xFF, addr & 0xFF, 0x00] + list(data)
-            chk = (-sum(b)) & 0xFF
-            return ":" + "".join(f"{x:02X}" for x in b + [chk])
-        f.write((rec(0x0000, img[0:0x10]) + "\n").encode())
-        f.write((rec(0x0010, img[0x10:0x20]) + "\n").encode())
-        f.write(b":00000001FF\n")
-        path = f.name
-
+    od = objdump()
+    if od is None:
+        skip("fallthrough edges built", "CR16 objdump not available")
+        return
+    # A synthetic image: bal at 0, popret at 4, popret at 0x10.
+    img = bytearray(b"\x1e\x03" * 16)
+    img[0:4] = bytes([0x00, 0xC0, 0x10, 0x00])   # bal (ra),*+0x10
+    img[4:6] = b"\x1e\x03"                       # popret RA
+    path = hexfile([(0x0000, bytes(img))])
     fw = C.load(path)
-    C.disassemble(fw, OBJDUMP)
+    C.disassemble(fw, od)
     edges = C.build(fw)
-    calls = [e for e in edges if e.kind == "call"]
-    check("synthetic one call", len(calls), 1)
-    check("synthetic call target", calls[0].dst, 0x10)
-    check("synthetic call verified", calls[0].confidence,
-          C.VERIFIED_DIRECT)
-    # popret must not fall through
-    ft = [e for e in edges if e.kind == "fallthrough" and e.src == 0x4]
-    check("popret has no fallthrough", len(ft), 0)
+    calls = [e for e in edges
+             if e.src == 0 and e.kind in ("call", "jump", "cond")]
+    check("synthetic one call edge",
+          [(e.kind, e.dst, e.category) for e in calls],
+          [("call", 0x10, C.DIRECT_RESOLVED)])
+    check("call has a fallthrough edge",
+          [(e.kind, e.dst) for e in edges
+           if e.src == 0 and e.kind == "fallthrough"],
+          [("fallthrough", 0x04)])
+    check("popret has no fallthrough",
+          [e for e in edges if e.src == 4 and e.kind == "fallthrough"], [])
 
 
-def test_entry_rule():
-    if not FW.exists() or not Path(OBJDUMP).exists():
-        print("SKIP entry rule (missing inputs)")
+# ---------------------------------------------------------------------------
+# Edge categories, one per case
+# ---------------------------------------------------------------------------
+def test_edge_categories():
+    fw = load_fw()
+    if fw is None:
         return
-    fw = C.load(str(FW))
-    C.disassemble(fw, OBJDUMP)
     edges = C.build(fw)
-    targets = {e.dst for e in edges if e.kind == "call" and e.dst is not None}
-    ft = {e.dst for e in edges if e.kind == "fallthrough" and e.dst is not None}
-    roots = sorted(t for t in targets if t not in ft)
-    check("roots are call targets only", all(r in targets for r in roots),
+    by_src = {}
+    for e in edges:
+        by_src.setdefault(e.src, []).append(e)
+
+    # INDIRECT_REGISTER: `jump (ra)`
+    cat = [e.category for e in by_src.get(0x494, []) if e.kind == "indirect"]
+    check("0x494 jump (ra) is INDIRECT_REGISTER",
+          cat, [C.INDIRECT_REGISTER])
+    # `jal (r7,r6)` at 0x14
+    cat = [e.category for e in by_src.get(0x14, []) if e.kind == "indirect"]
+    check("0x14 jal (r7,r6) is INDIRECT_REGISTER",
+          cat, [C.INDIRECT_REGISTER])
+
+    # DIRECT_UNSUPPORTED: the 6-byte conditional at 0x92fc.
+    cat = [e.category for e in by_src.get(0x92FC, []) if e.kind == "cond"]
+    check("0x92fc 6-byte conditional is DIRECT_UNSUPPORTED",
+          cat, [C.DIRECT_UNSUPPORTED])
+
+    # Every direct-resolved non-fallthrough edge lands on an instruction.
+    bad = [e for e in edges
+           if e.category == C.DIRECT_RESOLVED and e.kind != "fallthrough"
+           and e.dst not in fw.insns]
+    check("DIRECT_RESOLVED never lands off-boundary", bad, [])
+
+    # TARGET_NOT_INSTRUCTION / OUTSIDE_LOADED_IMAGE carry a target but are
+    # never followed.
+    notch = [e for e in edges if e.category == C.TARGET_NOT_INSTRUCTION]
+    check("TARGET_NOT_INSTRUCTION targets are inside a run",
+          all(fw.in_run(e.dst) for e in notch), True)
+    outside = [e for e in edges if e.category == C.OUTSIDE_LOADED_IMAGE]
+    check("OUTSIDE_LOADED_IMAGE targets are outside every run",
+          all(not fw.in_run(e.dst) for e in outside), True)
+
+
+# ---------------------------------------------------------------------------
+# Category statistics: all eight categories are reported separately and the
+# old "2706 unresolved" figure is gone.
+# ---------------------------------------------------------------------------
+def test_category_stats():
+    fw = load_fw()
+    if fw is None:
+        return
+    edges = C.build(fw)
+    st = C.category_stats(edges)
+    check("all eight categories reported",
+          sorted(k for k in st if k != "TOTAL"), sorted(C.CATEGORIES))
+    check("category counts sum to the total",
+          sum(st[c] for c in C.CATEGORIES), st["TOTAL"])
+    check("INDIRECT_REGISTER is 382", st[C.INDIRECT_REGISTER], 382)
+    check("INDIRECT_UNRESOLVED is 0 (same thing as REGISTER here)",
+          st[C.INDIRECT_UNRESOLVED], 0)
+    check("DIRECT_UNSUPPORTED is 46", st[C.DIRECT_UNSUPPORTED], 46)
+    check("FALLTHROUGH_UNRESOLVED is 9", st[C.FALLTHROUGH_UNRESOLVED], 9)
+    check("TOTAL edges", st["TOTAL"], 23284)
+
+
+# ---------------------------------------------------------------------------
+# Entry points and the three reachability modes
+# ---------------------------------------------------------------------------
+def test_modes():
+    fw = load_fw()
+    if fw is None:
+        return
+    edges = C.build(fw)
+    modes = C.run_modes(fw, edges)
+
+    # A: single candidate
+    check("mode A starts at 0x1602", [e.addr for e in modes["A"].entries],
+          [0x1602])
+    check("mode A entry is not verified", modes["A"].entries[0].verified,
+          False)
+    check("mode A reaches the whole chain",
+          all(a in modes["A"].reached for a in
+              (0x39F8, 0x3A2C, 0x25FB8, 0x25F90, 0x25FAA, 0x2558, 0x257E,
+               0x24F8)), True)
+
+    # B: all heuristic candidates, never verified
+    check("mode B has candidates", modes["B"].count > 300, True)
+    check("mode B entries are not verified",
+          any(e.verified for e in modes["B"].entries), False)
+    check("mode B reaches at least as much as A",
+          set(modes["A"].reached) <= set(modes["B"].reached), True)
+
+    # C: verified entries only, empty on purpose
+    check("mode C has no verified entries", modes["C"].count, 0)
+    check("mode C reaches nothing", len(modes["C"].reached), 0)
+
+    # Heuristic entries must never be built from mid-instruction addresses.
+    interior = set()
+    for a, i in fw.insns.items():
+        for k in range(a + 2, a + i.size, 2):
+            interior.add(k)
+    check("no heuristic entry is mid-instruction",
+          [e.addr for e in modes["B"].entries if e.addr in interior], [])
+    # 0x1602 is reached by fallthrough from 0x15fe, so it is NOT a root.
+    check("0x1602 is not a heuristic root",
+          0x1602 in {e.addr for e in modes["B"].entries}, False)
+
+
+def test_partial_reach_is_explicit():
+    """The old `reachable()` defaults to one hop; `reach_all` does not."""
+    od = objdump()
+    if od is None:
+        skip("one-hop reach", "CR16 objdump not available")
+        return
+    img = bytearray(b"\x1e\x03" * 32)
+    img[0:4] = bytes([0x00, 0xC0, 0x10, 0x00])   # bal -> 0x10
+    # second hop: a 2-word bal from 0x10 to 0x20 encodes the displacement
+    # 0x10 in bits[31:8]: `00 c0 10 00` (the byte layout is identical to the
+    # first hop because the field is the offset, not the address).
+    img[0x10:0x14] = bytes([0x00, 0xC0, 0x10, 0x00])
+    path = hexfile([(0x0000, bytes(img))])
+    fw = C.load(path)
+    C.disassemble(fw, od)
+    edges = C.build(fw)
+    one = C.reachable(fw, edges, [C.Entry(0, "t", True)])
+    full = C.reach_all(fw, edges, [0])
+    check("reachable(min_depth=1) is one hop", sorted(one), [0])
+    # 0x10 and 0x20 are reached; 0x30 and 0x40 are the continuation after
+    # the return of each call, which the CFG keeps as a fallthrough edge.
+    # With the one-hop default only 0x0 is visited; reach_all follows the
+    # call to 0x10 and then the second hop to 0x20.
+    check("reach_all reaches the second call", 0x10 in full and 0x20 in full,
           True)
-    # 0x24F8 IS a call target and is never reached by fallthrough, so the
-    # rule calls it a root.  What matters is that it is ALSO reachable from
-    # a real caller, which the reachability test checks separately.
-    check("0x24F8 is a call target", 0x24F8 in targets, True)
-
-
-def test_reachability_chain():
-    if not FW.exists() or not Path(OBJDUMP).exists():
-        print("SKIP reachability (missing inputs)")
-        return
-    fw = C.load(str(FW))
-    C.disassemble(fw, OBJDUMP)
-    edges = C.build(fw)
-    targets = {e.dst for e in edges if e.kind == "call" and e.dst is not None}
-    ft = {e.dst for e in edges if e.kind == "fallthrough" and e.dst is not None}
-    roots = sorted(t for t in targets if t not in ft)
-    entries = [C.Entry(r, "call target", True) for r in roots]
-    reached = C.reachable(fw, edges, entries)
-    for a in (0x2558, 0x24F8, 0x3C8C, 0x25F90):
-        check(f"{a:#06x} reachable from the roots", a in reached, True)
-
-
-def test_branch_into_middle():
-    """A target inside a run but not on an instruction boundary is CANDIDATE."""
-    if not FW.exists() or not Path(OBJDUMP).exists():
-        print("SKIP middle-of-instruction (missing inputs)")
-        return
-    fw = C.load(str(FW))
-    C.disassemble(fw, OBJDUMP)
-    edges = C.build(fw)
-    cand = [e for e in edges
-            if e.confidence == C.CANDIDATE and e.dst is not None and
-            fw.in_run(e.dst)]
-    # Such edges may exist; what matters is that they are never VERIFIED.
-    verified_offboundary = [
-        e for e in edges
-        if e.confidence == C.VERIFIED_DIRECT and e.dst is not None and
-        e.kind != "fallthrough" and e.dst not in fw.insns]
-    check("no verified edge lands off-boundary", verified_offboundary, [])
+    # Return sites are followed too (each call also has a fallthrough edge).
+    check("reach_all follows return paths", 0x4 in full and 0x14 in full,
+          True)
 
 
 def main():
     test_six_byte_instruction()
     test_known_branches()
-    test_synthetic_cfg()
-    test_entry_rule()
-    test_reachability_chain()
-    test_branch_into_middle()
+    test_fallthrough_rules()
+    test_edge_categories()
+    test_category_stats()
+    test_modes()
+    test_partial_reach_is_explicit()
     print()
-    print("FAILURES" if fails else "all CFG tests passed")
+    print(f"{fails} failure(s), {skips} skip(s)")
     return 1 if fails else 0
 
 

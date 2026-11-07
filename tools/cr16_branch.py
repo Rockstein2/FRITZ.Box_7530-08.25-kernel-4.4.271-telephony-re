@@ -212,32 +212,32 @@ def decode(addr: int, raw: bytes) -> tuple[int | None, str, str]:
     Returns `(target, form, status)`; `status` is `DIRECT` or `UNSUPPORTED`.
     """
     n = len(raw)
-    words = tuple(raw[i] | (raw[i + 1] << 8) for i in range(0, n, 2))
     if n not in (2, 4, 6):
         return None, f"{n}-byte", "UNSUPPORTED"
+    words = tuple(raw[i] | (raw[i + 1] << 8) for i in range(0, n, 2))
     w0 = words[0]
 
     if n in (4, 6):
         if raw[1] == 0xC0:
             return bal_target(addr, words)[0], f"bal{n * 8}", "DIRECT"
         if (raw[1] & 0x0F) == 0x8:
-            # 4-byte conditional (`disps17`).  Layout: `target = addr+words[1]`
-            # holds for every forward branch, but the assembler shows that a
-            # target on the far side of the instruction forces this form, so
-            # the encoding is unsigned and can also encode a backward target
-            # that this simple rule cannot verify.  Such values are reported
-            # as unsupported instead of being guessed.
+            if n == 6:
+                # 6-byte conditional (`disps25`): layout not validated (the
+                # single occurrence sits in a data region).
+                return None, "cond48", "UNSUPPORTED"
+            # 4-byte conditional (`disps17`).  `target = addr + words[1]` holds
+            # for every validated occurrence; a word above 0x8000 would be a
+            # backward target, which the validated set never shows, so it is
+            # left unsupported instead of being guessed.
             if words[1] > 0x8000:
                 return None, f"cond{n * 8}", "UNSUPPORTED"
             return (addr + words[1]) & ADDR_MASK, f"cond{n * 8}", "DIRECT"
         if n == 6:
-            # 6-byte conditional (`disps25`), layout unvalidated; the single
-            # occurrence is in a data region.  Never guess a target.
-            return None, "cond48", "UNSUPPORTED"
+            return None, "6-byte", "UNSUPPORTED"
         return None, f"{n}-byte", "UNSUPPORTED"
 
-    # A 2-byte instruction cannot be resolved without the mnemonic.
-    return None, "2-byte", "AMBIGUOUS"
+    # Unreachable for a real branch: everything above is the 4/6-byte path.
+    return None, f"{n}-byte", "UNSUPPORTED"
 
 
 # 2-byte instruction classes, keyed by byte 1 (bits[15:8] of the word).
@@ -260,8 +260,19 @@ def decode_insn(addr: int, mnemonic: str, raw: bytes) -> tuple[int | None, str, 
           bits[3:0] and its high nibble in bits[11:8].
     """
     n = len(raw)
-    if n != 2:
-        return decode(addr, raw)
+    if n in (4, 6):
+        if raw[1] == 0xC0 or (raw[1] & 0x0F) == 0x8:
+            # A 4- or 6-byte branch form is decided by its own encoding.
+            return decode(addr, raw)
+        if n == 6:
+            # 6-byte conditional (`disps25`): layout not validated (the single
+            # occurrence sits in a data region).
+            return None, "cond48", "UNSUPPORTED"
+        # A non-branch (load/store/movd...) has no target of its own.
+        return None, f"{n}-byte non-branch", "UNSUPPORTED"
+    # A 2-byte *branch* is decoded from the mnemonic and the word, never by
+    # the 4-byte rules (whose first word would look like an ambiguous 2-byte
+    # form and must not produce a target).
     w0 = raw[0] | (raw[1] << 8)
     byte1 = raw[1]
     if mnemonic in BRANCH_ZERO_MNEMONICS:
