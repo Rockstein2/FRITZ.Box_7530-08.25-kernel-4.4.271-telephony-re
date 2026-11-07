@@ -1,0 +1,1801 @@
+{
+ "blocks": [
+  "0x000f0000-0x000fffff",
+  "0x00f00000-0x00ffffff"
+ ],
+ "cross_image": {
+  "low_bits_present_in_both": [
+   "0xf4000",
+   "0xf4002",
+   "0xf4004",
+   "0xf4006",
+   "0xf400a",
+   "0xf400c",
+   "0xf400e",
+   "0xf4010",
+   "0xf4012",
+   "0xf401a",
+   "0xf401c",
+   "0xf4808",
+   "0xf4810",
+   "0xf4812",
+   "0xf481e",
+   "0xf4836",
+   "0xf4838",
+   "0xf4856",
+   "0xf4858",
+   "0xf4860",
+   "0xf4866",
+   "0xf4868",
+   "0xf4900",
+   "0xf4902",
+   "0xf4904",
+   "0xf4966",
+   "0xf4970",
+   "0xf4974",
+   "0xf4976",
+   "0xf4978",
+   "0xf497a",
+   "0xf4c00",
+   "0xf5000",
+   "0xf5402",
+   "0xf5404",
+   "0xf5406",
+   "0xf5408",
+   "0xf540a",
+   "0xf5800",
+   "0xf5802",
+   "0xf5804",
+   "0xf5806",
+   "0xf5808",
+   "0xf580a",
+   "0xf580c",
+   "0xf580e",
+   "0xf6002",
+   "0xf6006",
+   "0xf6400",
+   "0xf6402",
+   "0xf7052",
+   "0xf7056",
+   "0xf7070",
+   "0xf7072",
+   "0xf7080",
+   "0xfba00",
+   "0xfba01",
+   "0xfbfdd",
+   "0xfbffe",
+   "0xff3b5",
+   "0xff3ba",
+   "0xff3bd",
+   "0xfff70",
+   "0xfff8b",
+   "0xfffa9"
+  ]
+ },
+ "evidence_levels": [
+  "LOW_BITS_MATCH",
+  "BEHAVIOR_CORRELATION",
+  "DOCUMENTED_ALIAS",
+  "HARDWARE_CONFIRMED_ALIAS"
+ ],
+ "images": {
+  "normal": {
+   "firmware": "dectfw_secondlevel_441.hex",
+   "pairs": [
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00141e",
+       "0x00187c"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00141e",
+       "RMW",
+       16
+      ],
+      [
+       "0x00187c",
+       "RMW",
+       16
+      ]
+     ],
+     "address_a": "0x000f4000",
+     "address_b": "0x00ff4000",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x028a7e",
+       "0x028a88"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x028a7e",
+       "READ",
+       16
+      ],
+      [
+       "0x028a88",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4000",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001362",
+       "0x001994"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001362",
+       "WRITE",
+       16
+      ],
+      [
+       "0x001994",
+       "READ",
+       16
+      ]
+     ],
+     "address_a": "0x000f4004",
+     "address_b": "0x00ff4004",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0014b8",
+       "0x0014be"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0014b8",
+       "READ",
+       16
+      ],
+      [
+       "0x0014be",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: READ, WRITE",
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf4004",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001442"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001442",
+       "RMW",
+       16
+      ]
+     ],
+     "address_a": "0x000f4858",
+     "address_b": "0x00ff4858",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0011da",
+       "0x0011e0",
+       "0x0011e2",
+       "0x0011e6"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0011da",
+       "READ",
+       16
+      ],
+      [
+       "0x0011e0",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0011e2",
+       "READ",
+       16
+      ],
+      [
+       "0x0011e6",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4858",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x028820"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x028820",
+       "WRITE",
+       16
+      ]
+     ],
+     "address_a": "0x000f4c00",
+     "address_b": "0x00ff4c00",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x0015ae"
+      ],
+      "widths": [
+       8
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0015ae",
+       "WRITE",
+       8
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: WRITE"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf4c00",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001a2a"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001a2a",
+       "WRITE",
+       16
+      ]
+     ],
+     "address_a": "0x000f5000",
+     "address_b": "0x00ff5000",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x0015b6"
+      ],
+      "widths": [
+       8
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0015b6",
+       "WRITE",
+       8
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: WRITE"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf5000",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001392"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001392",
+       "WRITE",
+       16
+      ]
+     ],
+     "address_a": "0x000f5404",
+     "address_b": "0x00ff5404",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00191e",
+       "0x001928"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x00191e",
+       "READ",
+       16
+      ],
+      [
+       "0x001928",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf5404",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001396"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001396",
+       "WRITE",
+       16
+      ]
+     ],
+     "address_a": "0x000f5406",
+     "address_b": "0x00ff5406",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001a1a",
+       "0x001a22",
+       "0x00259c",
+       "0x0025a2",
+       "0x026046",
+       "0x026050"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001a1a",
+       "READ",
+       16
+      ],
+      [
+       "0x001a22",
+       "WRITE",
+       16
+      ],
+      [
+       "0x00259c",
+       "READ",
+       16
+      ],
+      [
+       "0x0025a2",
+       "WRITE",
+       16
+      ],
+      [
+       "0x026046",
+       "READ",
+       16
+      ],
+      [
+       "0x026050",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf5406",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001964"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001964",
+       "RMW",
+       16
+      ]
+     ],
+     "address_a": "0x000f5804",
+     "address_b": "0x00ff5804",
+     "b": {
+      "operations": [
+       "READ",
+       "RMW",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001258",
+       "0x00125a",
+       "0x001262",
+       "0x001264",
+       "0x001266",
+       "0x001268",
+       "0x00126a",
+       "0x00126c",
+       "0x00126e",
+       "0x001270"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001258",
+       "RMW",
+       16
+      ],
+      [
+       "0x00125a",
+       "READ",
+       16
+      ],
+      [
+       "0x001262",
+       "WRITE",
+       16
+      ],
+      [
+       "0x001264",
+       "RMW",
+       16
+      ],
+      [
+       "0x001266",
+       "RMW",
+       16
+      ],
+      [
+       "0x001268",
+       "RMW",
+       16
+      ],
+      [
+       "0x00126a",
+       "RMW",
+       16
+      ],
+      [
+       "0x00126c",
+       "RMW",
+       16
+      ],
+      [
+       "0x00126e",
+       "RMW",
+       16
+      ],
+      [
+       "0x001270",
+       "RMW",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf5804",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001224",
+       "0x0014e4"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001224",
+       "RMW",
+       16
+      ],
+      [
+       "0x0014e4",
+       "RMW",
+       16
+      ]
+     ],
+     "address_a": "0x000f5806",
+     "address_b": "0x00ff5806",
+     "b": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0013b6"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0013b6",
+       "RMW",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: RMW",
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf5806",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false,
+       true
+      ],
+      "sites": [
+       "0x001348",
+       "0x00145c",
+       "0x02602c",
+       "0x028cde"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001348",
+       "WRITE",
+       16
+      ],
+      [
+       "0x00145c",
+       "WRITE",
+       16
+      ],
+      [
+       "0x02602c",
+       "READ",
+       16
+      ],
+      [
+       "0x028cde",
+       "READ",
+       16
+      ]
+     ],
+     "address_a": "0x000f6006",
+     "address_b": "0x00ff6006",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00258c",
+       "0x0025aa",
+       "0x0025b4"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x00258c",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0025aa",
+       "READ",
+       16
+      ],
+      [
+       "0x0025b4",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: READ, WRITE",
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf6006",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x00285e",
+       "0x00296a",
+       "0x00296e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00285e",
+       "READ",
+       16
+      ],
+      [
+       "0x00296a",
+       "WRITE",
+       16
+      ],
+      [
+       "0x00296e",
+       "READ",
+       16
+      ]
+     ],
+     "address_a": "0x000f7052",
+     "address_b": "0x00ff7052",
+     "b": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x002720",
+       "0x002722"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x002720",
+       "READ",
+       16
+      ],
+      [
+       "0x002722",
+       "READ",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf7052",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x002862"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x002862",
+       "READ",
+       16
+      ]
+     ],
+     "address_a": "0x000f7056",
+     "address_b": "0x00ff7056",
+     "b": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x002710",
+       "0x002718"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x002710",
+       "READ",
+       16
+      ],
+      [
+       "0x002718",
+       "READ",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: READ",
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf7056",
+     "proof_status": "candidate; no document and no hardware evidence"
+    }
+   ],
+   "resolved_addresses_in_scope": 78,
+   "sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31"
+  },
+  "p2test": {
+   "firmware": "dectfw_secondlevel_441p2test.hex",
+   "pairs": [
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000e94",
+       "0x0012fe"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000e94",
+       "RMW",
+       16
+      ],
+      [
+       "0x0012fe",
+       "RMW",
+       16
+      ]
+     ],
+     "address_a": "0x000f4000",
+     "address_b": "0x00ff4000",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x009fe6",
+       "0x009ff0"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x009fe6",
+       "READ",
+       16
+      ],
+      [
+       "0x009ff0",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4000",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000dd8",
+       "0x001416"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000dd8",
+       "WRITE",
+       16
+      ],
+      [
+       "0x001416",
+       "READ",
+       16
+      ]
+     ],
+     "address_a": "0x000f4004",
+     "address_b": "0x00ff4004",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000f34",
+       "0x000f3a"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000f34",
+       "READ",
+       16
+      ],
+      [
+       "0x000f3a",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: READ, WRITE",
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf4004",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000eb8"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000eb8",
+       "RMW",
+       16
+      ]
+     ],
+     "address_a": "0x000f4858",
+     "address_b": "0x00ff4858",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000c50",
+       "0x000c56",
+       "0x000c58",
+       "0x000c5c"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000c50",
+       "READ",
+       16
+      ],
+      [
+       "0x000c56",
+       "WRITE",
+       16
+      ],
+      [
+       "0x000c58",
+       "READ",
+       16
+      ],
+      [
+       "0x000c5c",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4858",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x02756a"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x02756a",
+       "WRITE",
+       16
+      ]
+     ],
+     "address_a": "0x000f4c00",
+     "address_b": "0x00ff4c00",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001030"
+      ],
+      "widths": [
+       8
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001030",
+       "WRITE",
+       8
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: WRITE"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf4c00",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001460"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001460",
+       "WRITE",
+       16
+      ]
+     ],
+     "address_a": "0x000f5000",
+     "address_b": "0x00ff5000",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001038"
+      ],
+      "widths": [
+       8
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001038",
+       "WRITE",
+       8
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: WRITE"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf5000",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000e08"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000e08",
+       "WRITE",
+       16
+      ]
+     ],
+     "address_a": "0x000f5404",
+     "address_b": "0x00ff5404",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x0013a0",
+       "0x0013aa"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0013a0",
+       "READ",
+       16
+      ],
+      [
+       "0x0013aa",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf5404",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000e0c"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000e0c",
+       "WRITE",
+       16
+      ]
+     ],
+     "address_a": "0x000f5406",
+     "address_b": "0x00ff5406",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001450",
+       "0x001458",
+       "0x001e58",
+       "0x001e5e",
+       "0x0267fc",
+       "0x026806"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001450",
+       "READ",
+       16
+      ],
+      [
+       "0x001458",
+       "WRITE",
+       16
+      ],
+      [
+       "0x001e58",
+       "READ",
+       16
+      ],
+      [
+       "0x001e5e",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0267fc",
+       "READ",
+       16
+      ],
+      [
+       "0x026806",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf5406",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x0013e6"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x0013e6",
+       "RMW",
+       16
+      ]
+     ],
+     "address_a": "0x000f5804",
+     "address_b": "0x00ff5804",
+     "b": {
+      "operations": [
+       "READ",
+       "RMW",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000cce",
+       "0x000cd0",
+       "0x000cd8",
+       "0x000cda",
+       "0x000cdc",
+       "0x000cde",
+       "0x000ce0",
+       "0x000ce2",
+       "0x000ce4",
+       "0x000ce6"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000cce",
+       "RMW",
+       16
+      ],
+      [
+       "0x000cd0",
+       "READ",
+       16
+      ],
+      [
+       "0x000cd8",
+       "WRITE",
+       16
+      ],
+      [
+       "0x000cda",
+       "RMW",
+       16
+      ],
+      [
+       "0x000cdc",
+       "RMW",
+       16
+      ],
+      [
+       "0x000cde",
+       "RMW",
+       16
+      ],
+      [
+       "0x000ce0",
+       "RMW",
+       16
+      ],
+      [
+       "0x000ce2",
+       "RMW",
+       16
+      ],
+      [
+       "0x000ce4",
+       "RMW",
+       16
+      ],
+      [
+       "0x000ce6",
+       "RMW",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf5804",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000c9a",
+       "0x000f60"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000c9a",
+       "RMW",
+       16
+      ],
+      [
+       "0x000f60",
+       "RMW",
+       16
+      ]
+     ],
+     "address_a": "0x000f5806",
+     "address_b": "0x00ff5806",
+     "b": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000e2c"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000e2c",
+       "RMW",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: RMW",
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf5806",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000dbe",
+       "0x000ed2",
+       "0x0267e2",
+       "0x027c96"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000dbe",
+       "WRITE",
+       16
+      ],
+      [
+       "0x000ed2",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0267e2",
+       "READ",
+       16
+      ],
+      [
+       "0x027c96",
+       "READ",
+       16
+      ]
+     ],
+     "address_a": "0x000f6006",
+     "address_b": "0x00ff6006",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001e48",
+       "0x001e66",
+       "0x001e70"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001e48",
+       "WRITE",
+       16
+      ],
+      [
+       "0x001e66",
+       "READ",
+       16
+      ],
+      [
+       "0x001e70",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: READ, WRITE",
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf6006",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x00211a",
+       "0x002226",
+       "0x00222a"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00211a",
+       "READ",
+       16
+      ],
+      [
+       "0x002226",
+       "WRITE",
+       16
+      ],
+      [
+       "0x00222a",
+       "READ",
+       16
+      ]
+     ],
+     "address_a": "0x000f7052",
+     "address_b": "0x00ff7052",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001fdc",
+       "0x001fde",
+       "0x0026ee",
+       "0x0026fe"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001fdc",
+       "READ",
+       16
+      ],
+      [
+       "0x001fde",
+       "READ",
+       16
+      ],
+      [
+       "0x0026ee",
+       "READ",
+       16
+      ],
+      [
+       "0x0026fe",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: READ, WRITE",
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf7052",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x00211e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00211e",
+       "READ",
+       16
+      ]
+     ],
+     "address_a": "0x000f7056",
+     "address_b": "0x00ff7056",
+     "b": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001fcc",
+       "0x001fd4"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001fcc",
+       "READ",
+       16
+      ],
+      [
+       "0x001fd4",
+       "READ",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "same operation set: READ",
+      "same access width: 16"
+     ],
+     "difference": "0x00f00000",
+     "evidence": "BEHAVIOR_CORRELATION",
+     "low_bits_match": "0xf7056",
+     "proof_status": "candidate; no document and no hardware evidence"
+    }
+   ],
+   "resolved_addresses_in_scope": 79,
+   "sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860"
+  }
+ },
+ "low_mask": "0x000fffff",
+ "max_level_from_code": "BEHAVIOR_CORRELATION",
+ "tool": "cr16-address-alias/1"
+}
