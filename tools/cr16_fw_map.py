@@ -118,6 +118,20 @@ def disassemble(run: Run, objdump: str) -> RunMap:
         Path(tmp).unlink(missing_ok=True)
 
     rm = RunMap(run)
+    pending: dict | None = None
+
+    def flush(rec):
+        if rec is None:
+            return
+        addr = rec["addr"]
+        raw = rec["raw"]
+        text = rec["text"]
+        mnemonic = text.split()[0] if text else ""
+        operands = text[len(mnemonic):].strip()
+        rm.insns.append(Insn(addr, len(raw), text, mnemonic, operands))
+        braw = bytes(raw)
+        rm.branches.append(classify(addr, mnemonic, operands, braw))
+
     for line in out.splitlines():
         m = MD_RE.match(line)
         if not m:
@@ -125,14 +139,26 @@ def disassemble(run: Run, objdump: str) -> RunMap:
         addr = int(m.group(1), 16)
         if addr < run.start or addr > run.end:
             continue
-        raw = m.group(2).split()
+        raw = [int(x, 16) for x in m.group(2).split()]
         text = m.group(3).strip()
-        mnemonic = text.split()[0] if text else ""
-        operands = text[len(mnemonic):].strip()
-        rm.insns.append(Insn(addr, len(raw), text, mnemonic,
-                             operands))
-        braw = bytes(int(x, 16) for x in raw)
-        rm.branches.append(classify(addr, mnemonic, operands, braw))
+
+        if not text:
+            # Continuation line: these bytes belong to the previous
+            # instruction (CR16 has 2-, 4- and 6-byte forms, and objdump
+            # prints the extra word on its own line with no mnemonic).
+            if pending is not None and \
+               addr == pending["addr"] + len(pending["raw"]):
+                pending["raw"] += raw
+                continue
+            # A continuation with no owner cannot be trusted.
+            flush(pending)
+            pending = {"addr": addr, "raw": raw, "text": ""}
+            continue
+
+        flush(pending)
+        pending = {"addr": addr, "raw": raw, "text": text}
+
+    flush(pending)
     return rm
 
 
