@@ -169,14 +169,36 @@ enabling the clock first is the conservative order.
 | `ADSS_GLB_CLK_I2S_CTRL` | `0x18` | `0x07700018` | BCLK/MCLK output enables |
 | `ADSS_GLB_TDM_CTRL` | `0x1c` | `0x0770001c` | channel/sync counts, delays |
 | `ADSS_GLB_AUDIO_MODE` | `0x30` | `0x07700030` | TDM/I2S select, `B1K BIT(28)` |
-| `STEREO0_CONFIG` | `0x8000` | `0x07708000` | `MASTER BIT(8)`, `ENABLE BIT(21)` |
-| `STEREO3_CONFIG` | `0xc000` | `0x0770c000` | same layout |
+| `STEREO0_CONFIG` | `0x00` in its own window at `0x07709000` | `MASTER BIT(8)`, `ENABLE BIT(21)` |
+| `STEREO3_CONFIG` | `0x00` in its own window at `0x0770f000` | same layout |
 
-`STEREO3` is the RX port in the AVM DTS (`stereo-rx-port = <STEREO0_ID>`,
-`stereo-tx-port = <STEREO3_ID>`) — note the AVM naming maps MBOX3 to
-stereo0 in this table; our driver uses the DT names `stereo_tx`/`stereo_rx`
-at `0x07709000`/`0x0770f000`.  Resolve this naming discrepancy before the
-first write.
+**Correction (2026-11-07).** An earlier revision of this document listed
+STEREO0/STEREO3 at `0x07708000`/`0x0770c000`.  That was wrong: those are the
+MBOX windows (`mbox0` at `0x07708000`, `mbox2` at `0x0770c000`).  The audio
+windows in AVM's `qcom-ipq4019-audio.dtsi` are:
+
+| Block | Address | AVM node |
+|---|---|---|
+| MBOX0 | `0x07708000` | `mbox0` |
+| MBOX1 | `0x0770a000` | `mbox1` |
+| MBOX2 | `0x0770c000` | `mbox2` |
+| MBOX3 | `0x0770e000` | `mbox3` |
+| STEREO0 | `0x07709000` | `stereo0` (`STEREO0_ID`) |
+| STEREO1 | `0x0770b000` | `stereo1` (`STEREO1_ID`) |
+| STEREO2 | `0x0770d000` | `stereo2` (`STEREO2_ID`) |
+| STEREO3 | `0x0770f000` | `stereo3` (`STEREO3_ID`) |
+
+The board DTS in this project is correct: `stereo_tx = 0x07709000`
+(STEREO0) and `stereo_rx = 0x0770f000` (STEREO3), so Stage C2 wrote to the
+STEREO windows and never to an MBOX block.
+
+Remaining discrepancy worth noting: AVM's **PCM** node pairs
+`dma-tx-channel = MBOX3_TX` with `stereo-tx-port = STEREO3` and
+`dma-rx-channel = MBOX0_RX` with `stereo-rx-port = STEREO0`, i.e. TX uses
+box/port 3 and RX uses 0.  Our node uses TX on 0 and RX on 3.  Which pairing
+the FON path actually needs is **unresolved** and belongs to Stage C3; it
+does not affect the C2 register writes, which only touched STEREO0/3
+format bits.
 
 ---
 
@@ -204,5 +226,5 @@ C0 must **not** enable a clock, assert/deassert a reset, `ioremap` plus
 | 1 | Is `GCC_AUDIO_AHB_CLK` required for ADSS register access? | C1 gate |
 | 2 | Who owned the audio clock at boot, if anyone? | C1 rationale |
 | 3 | Does the ADCC provider exist in mainline 6.12? | master-mode TDM only |
-| 4 | STEREO0/STEREO3 versus `stereo_tx`/`stereo_rx` naming | C1 writes |
+| 4 | TX/RX port pairing: AVM uses MBOX3/STEREO3 for TX, our node uses 0 | C3 |
 | 5 | Is a bus abort recoverable on this NOC? | C1 safety |
