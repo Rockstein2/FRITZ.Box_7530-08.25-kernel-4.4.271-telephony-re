@@ -278,6 +278,43 @@ def _decode_site(fw, mem, site):
     return row
 
 
+def _decode_entry_from_bytes(fw, mem, site, branch_bytes_required=6):
+    """Decode the second-level entry at `site` strictly from image bytes.
+
+    Returns a dict that always carries `all_six_bytes_present`,
+    `form_is_disps25` and `decode_status`, whether or not the linear
+    disassembly happens to start an instruction at `site`.  A missing byte is
+    reported, never replaced by zero.
+    """
+    missing = [site + k for k in range(branch_bytes_required)
+               if site + k not in mem]
+    if missing:
+        return {
+            "site": f"0x{site:08x}",
+            "status": "INCOMPLETE",
+            "all_six_bytes_present": False,
+            "missing_bytes": [f"0x{a:08x}" for a in missing],
+            "form_is_disps25": False,
+            "decode_status": None,
+            "target": None,
+            "target_is_instruction": False,
+        }
+    raw = bytes(mem[site + k] for k in range(branch_bytes_required))
+    target, form, status = C.decode_insn(site, "br", raw)
+    return {
+        "site": f"0x{site:08x}",
+        "bytes": raw.hex(),
+        "all_six_bytes_present": True,
+        "form": form,
+        "decode_status": status,
+        "target": f"0x{target:08x}" if target is not None else None,
+        "target_is_instruction":
+            target in fw.insns if target is not None else False,
+        "form_is_disps25": form == "disps25",
+        "linear_boundary": site in fw.insns,
+    }
+
+
 def link_is_valid(entry):
     """True only when a second-level entry really leads into code.
 
@@ -287,28 +324,40 @@ def link_is_valid(entry):
     if not entry:
         return False
     iso = entry.get("decoded_in_isolation")
-    if iso:
-        return bool(iso.get("all_six_bytes_present")
-                    and iso.get("form_is_disps25")
-                    and iso.get("decode_status") == "DIRECT"
-                    and iso.get("target")
-                    and iso.get("target_is_instruction"))
-    return bool(entry.get("target_is_instruction")
-                and entry.get("target_in_image"))
+    # The same strict conditions apply whether or not the linear disassembly
+    # happened to start an instruction at the entry address: an image must
+    # not be accepted or rejected depending on where linear decoding began.
+    if not iso:
+        return False
+    return bool(iso.get("all_six_bytes_present")
+                and iso.get("form_is_disps25")
+                and iso.get("decode_status") == "DIRECT"
+                and iso.get("target")
+                and iso.get("target_is_instruction"))
 
 
-def decode_handoff():
-    """Follow the loader -> second-level chain from real bytes."""
+def decode_handoff(memory=None):
+    """Follow the loader -> second-level chain from real bytes.
+
+    `memory` lets a caller inject already-parsed images (used by the tests to
+    drop a byte and check that the chain becomes INCOMPLETE).  When it is
+    None the images are read from disk.
+    """
     first_path = IMAGES[0][1]
     normal_path = IMAGES[1][1]
     p2_path = IMAGES[2][1]
-    if not (first_path.is_file() and normal_path.is_file()
-            and p2_path.is_file() and OBJDUMP.is_file()):
+    if not OBJDUMP.is_file():
+        return {"status": "UNAVAILABLE"}
+    if memory is None and not (first_path.is_file() and normal_path.is_file()
+                               and p2_path.is_file()):
         return {"status": "UNAVAILABLE"}
 
     fw_first = C.load(str(first_path))
     C.disassemble(fw_first, str(OBJDUMP))
-    mem_first, _, _, _, _ = parse_ihex(first_path)
+    if memory is not None and "first" in memory:
+        mem_first = memory["first"]
+    else:
+        mem_first, _, _, _, _ = parse_ihex(first_path)
     first_sites = [_decode_site(fw_first, mem_first, site)
                    for site, _ in HANDOFF_SITES["first"]]
 
@@ -326,41 +375,23 @@ def decode_handoff():
     for name, path in (("normal", normal_path), ("p2test", p2_path)):
         fw = C.load(str(path))
         C.disassemble(fw, str(OBJDUMP))
-        mem, _, _, _, _ = parse_ihex(path)
+        if memory is not None and name in memory:
+            mem = memory[name]
+        else:
+            mem, _, _, _, _ = parse_ihex(path)
         entry = None
         if branch and branch.get("target"):
             site = int(branch["target"], 16)
             entry = _decode_site(fw, mem, site)
             entry["meaning"] = ("second-level entry reached from the loader")
-            if not entry.get("target_is_instruction"):
-                # The loader's target is not an instruction boundary in the
-                # linear disassembly, which starts at 0x0.  Decode the bytes
-                # at that address in isolation so the branch is still read
-                # from the image, not assumed.
-                # every byte must really be in the Intel HEX: a missing byte
-                # must not be silently replaced by zero
-                missing = [site + k for k in range(6) if site + k not in mem]
-                if missing:
-                    entry["decoded_in_isolation"] = {
-                        "status": "INCOMPLETE",
-                        "missing_bytes": [f"0x{a:08x}" for a in missing],
-                    }
-                else:
-                    raw = bytes(mem[site + k] for k in range(6))
-                    target, form, status = C.decode_insn(site, "br", raw)
-                    entry["decoded_in_isolation"] = {
-                        "bytes": raw.hex(),
-                        "all_six_bytes_present": True,
-                        "form": form,
-                        "decode_status": status,
-                        "target": f"0x{target:08x}" if target is not None
-                                  else None,
-                        "target_is_instruction":
-                            target in fw.insns if target is not None else False,
-                        # the reported target is only trusted when the
-                        # decoder says DISP25 form and DIRECT
-                        "form_is_disps25": form == "disps25",
-                    }
+            # always decode the entry strictly from the bytes, whatever the
+            # linear disassembly did at that address
+            entry["decoded_in_isolation"] = _decode_entry_from_bytes(
+                fw, mem, site)
+            if not entry["decoded_in_isolation"]["all_six_bytes_present"]:
+                entry["note"] = ("bytes are missing from the image; the "
+                                 "entry cannot be decoded")
+            elif not entry.get("target_is_instruction"):
                 entry["note"] = ("the address is inside the linear "
                                  "disassembly of an instruction that "
                                  "starts before it; it is decoded "

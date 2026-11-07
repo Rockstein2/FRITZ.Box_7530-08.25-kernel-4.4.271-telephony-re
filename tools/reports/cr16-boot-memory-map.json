@@ -96,6 +96,8 @@
      "decode_status": "DIRECT",
      "form": "disps25",
      "form_is_disps25": true,
+     "linear_boundary": false,
+     "site": "0x00000008",
      "target": "0x000015aa",
      "target_is_instruction": true
     },
@@ -111,6 +113,8 @@
      "decode_status": "DIRECT",
      "form": "disps25",
      "form_is_disps25": true,
+     "linear_boundary": false,
+     "site": "0x00000008",
      "target": "0x00001026",
      "target_is_instruction": true
     },
