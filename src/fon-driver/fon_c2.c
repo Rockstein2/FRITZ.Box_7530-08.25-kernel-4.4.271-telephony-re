@@ -46,9 +46,9 @@ enum {
 	C2_STEP_CHIPCTRL = 7,
 	C2_STEP_I2S_RST = 8,
 	C2_STEP_TDM = 9,
-	C2_STEP_STEREO = 9,
-	C2_STEP_MODE = 10,
-	C2_STEP_VERIFIED = 11,
+	C2_STEP_STEREO = 10,
+	C2_STEP_MODE = 11,
+	C2_STEP_VERIFIED = 12,
 };
 
 static void c2_log(struct c2_ctx *c, const char *s)
@@ -249,6 +249,18 @@ int fon_c2_run(struct platform_device *pdev, struct fon_c2_result *out)
 
 	c2_log(&c, "step 11: read back and verify");
 	c2_snapshot(&c, &out->after);
+	fon_c2_compare_chip(&out->check, out->chip_ctrl_written,
+			    out->after.chip_ctrl);
+	fon_c2_compare_rst(&out->check, out->after.i2s_rst);
+	if (!out->check.chip_ctrl_ok)
+		dev_err(&pdev->dev,
+			"C2: CHIP_CTRL_I2S mismatch: expected INTERFACE_EN, actual 0x%08x xor 0x%08x\n",
+			out->check.chip_actual, out->check.chip_xor);
+	if (!out->check.i2s_rst_ok)
+		dev_err(&pdev->dev,
+			"C2: I2S_RST not cleared after the pulse: actual 0x%08x\n",
+			out->check.rst_actual);
+
 	fon_c2_compare(&out->check,
 		       out->tdm_written, out->after.tdm_ctrl,
 		       out->audio_mode_written, out->after.audio_mode,
@@ -274,8 +286,7 @@ int fon_c2_run(struct platform_device *pdev, struct fon_c2_result *out)
 			"C2: STEREO_RX mismatch: expected 0x%08x actual 0x%08x xor 0x%08x mask 0x%08lx\n",
 			out->check.rx_expected, out->check.rx_actual,
 			out->check.rx_xor, FON_C2_STEREO_RW_MASK);
-	out->check.all_ok = out->check.tdm_ok && out->check.audio_mode_ok &&
-			    out->check.stereo_tx_ok && out->check.stereo_rx_ok;
+	out->check.all_ok = fon_c2_all_ok(&out->check);
 	out->step = C2_STEP_VERIFIED;
 	if (!out->check.all_ok)
 		ret = -EIO;

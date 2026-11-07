@@ -48,11 +48,15 @@
 				BIT(16) | BIT(17) | BIT(23) | BIT(24))
 
 struct fon_c2_check {
+	bool chip_ctrl_ok;
+	bool i2s_rst_ok;
 	bool tdm_ok;
 	bool audio_mode_ok;
 	bool stereo_tx_ok;
 	bool stereo_rx_ok;
 	bool all_ok;
+	u32 chip_expected, chip_actual, chip_xor;
+	u32 rst_expected, rst_actual, rst_xor;
 	u32 tdm_expected, tdm_actual, tdm_xor;
 	u32 mode_expected, mode_actual, mode_xor;
 	u32 tx_expected, tx_actual, tx_xor;
@@ -91,6 +95,43 @@ static inline u32 fon_c2_stereo_value(u32 before, bool slave)
 	if (!slave)
 		v |= FON_C2_STEREO_MASTER;
 	return v;
+}
+
+/*
+ * CHIP_CTRL_I2S: only INTERFACE_EN is mandatory; the other bits are
+ * inherited from the pre-write snapshot.
+ */
+static inline void fon_c2_compare_chip(struct fon_c2_check *c,
+				       u32 exp, u32 act)
+{
+	c->chip_expected = exp;
+	c->chip_actual = act;
+	c->chip_xor = exp ^ act;
+	c->chip_ctrl_ok = ((~act & FON_C2_CHIP_I2S_INTERFACE_EN) == 0) &&
+			  (act & FON_C2_CHIP_I2S_INTERFACE_EN);
+}
+
+/*
+ * I2S_RST after the pulse: AVM writes 0 last, so the readback should have
+ * the reset bits clear.  Only the documented low nibble is checked.
+ */
+static inline void fon_c2_compare_rst(struct fon_c2_check *c,
+				      u32 act)
+{
+	c->rst_expected = 0;
+	c->rst_actual = act;
+	c->rst_xor = act & FON_C2_I2S_RESET_VAL;
+	c->i2s_rst_ok = (c->rst_xor == 0);
+}
+
+/*
+ * Recompute the combined verdict from the six individual flags.  Call this
+ * AFTER every comparison helper, otherwise all_ok can be stale.
+ */
+static inline bool fon_c2_all_ok(const struct fon_c2_check *c)
+{
+	return c->chip_ctrl_ok && c->i2s_rst_ok && c->tdm_ok &&
+	       c->audio_mode_ok && c->stereo_tx_ok && c->stereo_rx_ok;
 }
 
 static inline void fon_c2_compare(struct fon_c2_check *c,

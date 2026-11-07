@@ -61,7 +61,7 @@ static void test_written_values(void)
 
 static void test_readback_all_match(void)
 {
-	struct fon_c2_check c;
+	struct fon_c2_check c = { .chip_ctrl_ok = true, .i2s_rst_ok = true };
 
 	fon_c2_compare(&c, 0x06070007, 0x06070007,
 		       0x10000005, 0x10000005,
@@ -78,7 +78,7 @@ static void test_readback_all_match(void)
 
 static void test_readback_tdm_mismatch(void)
 {
-	struct fon_c2_check c;
+	struct fon_c2_check c = { .chip_ctrl_ok = true, .i2s_rst_ok = true };
 
 	fon_c2_compare(&c, 0x06070007, 0x00010001,
 		       0x10000005, 0x10000005,
@@ -91,7 +91,7 @@ static void test_readback_tdm_mismatch(void)
 
 static void test_readback_mode_mismatch(void)
 {
-	struct fon_c2_check c;
+	struct fon_c2_check c = { .chip_ctrl_ok = true, .i2s_rst_ok = true };
 
 	fon_c2_compare(&c, 0x06070007, 0x06070007,
 		       0x10000005, 0x00000000,
@@ -103,7 +103,7 @@ static void test_readback_mode_mismatch(void)
 
 static void test_readback_stereo_only_enable(void)
 {
-	struct fon_c2_check c;
+	struct fon_c2_check c = { .chip_ctrl_ok = true, .i2s_rst_ok = true };
 
 	/*
 	 * The old bug: a readback that has only ENABLE set was accepted.
@@ -120,7 +120,7 @@ static void test_readback_stereo_only_enable(void)
 
 static void test_readback_master_left_set(void)
 {
-	struct fon_c2_check c;
+	struct fon_c2_check c = { .chip_ctrl_ok = true, .i2s_rst_ok = true };
 
 	/* MASTER still set: the block would be a master, not a slave. */
 	fon_c2_compare(&c, 0x06070007, 0x06070007,
@@ -133,7 +133,7 @@ static void test_readback_master_left_set(void)
 
 static void test_readback_multiple_faults(void)
 {
-	struct fon_c2_check c;
+	struct fon_c2_check c = { .chip_ctrl_ok = true, .i2s_rst_ok = true };
 
 	fon_c2_compare(&c, 0x06070007, 0x00000000,
 		       0x10000005, 0x00000000,
@@ -144,9 +144,63 @@ static void test_readback_multiple_faults(void)
 	CHECK(!c.all_ok, "all_ok false on total failure");
 }
 
+static void test_chip_ctrl(void)
+{
+	struct fon_c2_check c;
+
+	/* INTERFACE_EN must be set after the write. */
+	memset(&c, 0, sizeof(c));
+	fon_c2_compare_chip(&c, 0x00000001, 0x00000001);
+	CHECK(c.chip_ctrl_ok, "chip_ctrl with INTERFACE_EN accepted");
+
+	fon_c2_compare_chip(&c, 0x00000001, 0x00000000);
+	CHECK(!c.chip_ctrl_ok, "chip_ctrl without INTERFACE_EN rejected");
+
+	fon_c2_compare_chip(&c, 0x00000001, 0x00000005);
+	CHECK(c.chip_ctrl_ok, "extra chip_ctrl bits do not fail the check");
+}
+
+static void test_i2s_rst(void)
+{
+	struct fon_c2_check c;
+
+	memset(&c, 0, sizeof(c));
+	fon_c2_compare_rst(&c, 0x00000000);
+	CHECK(c.i2s_rst_ok, "i2s_rst cleared after the pulse accepted");
+
+	fon_c2_compare_rst(&c, 0x0000000F);
+	CHECK(!c.i2s_rst_ok, "i2s_rst still holding reset rejected");
+
+	fon_c2_compare_rst(&c, 0x00000100);
+	CHECK(c.i2s_rst_ok, "i2s_rst high bits outside the mask ignored");
+}
+
+static void test_all_ok_needs_new_checks(void)
+{
+	struct fon_c2_check c = { 0 };
+
+	fon_c2_compare(&c, 0x06070007, 0x06070007,
+		       0x10000005, 0x10000005,
+		       0x00240400, 0x00240400,
+		       0x00240400, 0x00240400);
+	c.chip_ctrl_ok = false;
+	c.i2s_rst_ok = true;
+	CHECK(!fon_c2_all_ok(&c), "all_ok false when chip_ctrl flag is false");
+
+	c.chip_ctrl_ok = true;
+	c.i2s_rst_ok = false;
+	CHECK(!fon_c2_all_ok(&c), "all_ok false when i2s_rst flag is false");
+
+	c.i2s_rst_ok = true;
+	CHECK(fon_c2_all_ok(&c), "all_ok true when every flag is true");
+}
+
 int main(void)
 {
 	test_written_values();
+	test_chip_ctrl();
+	test_i2s_rst();
+	test_all_ok_needs_new_checks();
 	test_readback_all_match();
 	test_readback_tdm_mismatch();
 	test_readback_mode_mismatch();
