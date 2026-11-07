@@ -145,28 +145,71 @@ def bal_target(addr: int, words: tuple[int, ...]) -> tuple[int, bool]:
     return (addr + p) & ADDR_MASK, False
 
 
-def cond2_target(addr: int, word0: int) -> int:
-    """Target of a 2-byte conditional branch (`dispe9`, unsigned).
+def cond2_field(raw: bytes) -> int:
+    """Raw 9-bit even displacement field of a 2-byte conditional branch.
 
-    The layout currently used, cross-checked against binutils on all 2 076
-    such branches of `dectfw_secondlevel_441.hex` (byte1 in 0x10..0x1f):
+    Layout, established from three independent sources that agree:
 
-        disp = ((word0 & 0x0F) | (((word0 >> 8) & 0x0F) << 4)) << 1
-        target = addr + disp
+    1. `cr16-opc.c`          `BRANCH_INST`: operand `dispe9` at bit 16 of the
+                            32-bit big-endian view of the instruction, which
+                            for a 2-byte instruction is the low nibble of the
+                           **second byte** (`d1..d4`).
+    2. `cr16-dis.c`          `case 8`: `p = ((word0 & 0xF00) >> 4) | (word0 & 0xF)`
+                            then `<< 1`, sign = bit 8 — the same thing.
+    3. assembler round trip  changing the condition code (bits 7..4) changes
+                            only the mnemonic, never the printed displacement;
+                            changing bits 3..0 or bits 11..8 changes it in
+                            steps of 2 (`probe: cc 0..15 -> +0x4`).
 
-    bits[3:0] hold the field's low nibble, bits[7:4] the condition code and
-    bits[11:8] the high nibble.
+    So, in machine bytes `[b0, b1]` of the instruction:
 
-    **This rule is not consistent with the documented CR16A layout.**  The
-    CR16A Programmer's Reference Manual (App. A.2.3) puts the displacement in
-    bits 0..4 and 9..12 with the condition in bits 5..8, i.e. every bit one
-    position away.  On the real image neither reading explains everything:
-    this rule matches binutils on 1 816 of the 2 076 occurrences (the
-    documented layout matches far fewer), while on the chain links
-    `0x25FA8` `bhi` (`49 1f`) and `0x25FB4` `bne` (`1d 1f`) this rule agrees
-    exactly with binutils.  The origin of the discrepancy is open (Q50).
+        d1..d4 = b0 & 0x0F          (low nibble of the FIRST byte)
+        d5..d8 = b1 & 0x0F          (low nibble of the SECOND byte)
+        cc     = b1 >> 4            (condition code)
+
+    and the displacement is `sign_extend8((b1 & 0x0F) << 4 | (b0 & 0x0F)) * 2`,
+    which is exactly what `cond2_disp` computes through the binutils formulas.
+
+    The rendering `*-0x25f9a` for the bytes `49 1f` at address `0x25FA8` is
+    **not** "0x25FA8 - 0x25F9A": objdump prints `memaddr + displacement` and
+    merely prefixes the sign flag, so the printed number is the absolute
+    target.  Evaluating `cr16-dis.c` by hand on those bytes gives
+    `displacement = -0x0E` and `target = 0x25F9A`.
     """
-    disp = ((word0 & 0x0F) | (((word0 >> 8) & 0x0F) << 4)) << 1
+    return ((raw[1] & 0x0F) << 4) | (raw[0] & 0x0F)
+
+
+def cond2_disp(word0: int) -> tuple[int, bool]:
+    """Signed displacement of a 2-byte conditional branch (`dispe9`).
+
+    Line-by-line transcription of `cr16-dis.c`:
+
+        case 8:
+          p        = makelongparameter (allWords, 0, start_bits)  # start=16
+                   = EXTRACT(allWords, 32, 16) = cr16_words[0] = word0
+          constant = ((p & 0xF00) >> 4) | (p & 0x0F)
+        longdisp   = constant << 1
+        sign_flag  = longdisp & 0x100          # bit 8 of the shifted value
+        constant   = (-longdisp) & 0xFF  if sign_flag else longdisp & 0xFF
+        target     = memaddr + constant  (binutils prints this value)
+
+    Field values for the loop heads of `0x25F90`:
+
+        `49 1f` -> constant 0x0E, sign 1 -> disp -0x0E  (0x25FA8 -> 0x25F9A)
+        `1d 1f` -> constant 0x06, sign 1 -> disp -0x06  (0x25FB4 -> 0x25FAE)
+        `4d 19` -> constant 0xC6, sign 1 -> disp -0xC6  (0x25E64 -> 0x25D9E)
+    """
+    p = word0 & 0xFFFF
+    constant = ((p & 0xF00) >> 4) | (p & 0x0F)
+    longdisp = constant << 1
+    if longdisp & 0x100:
+        return -(((~longdisp + 1) & 0xFF)), True
+    return longdisp & 0xFF, False
+
+
+def cond2_target(addr: int, word0: int) -> int:
+    """Absolute target of a 2-byte conditional branch, masked to 24 bits."""
+    disp, _sign = cond2_disp(word0)
     return (addr + disp) & ADDR_MASK
 
 
@@ -254,43 +297,45 @@ def decode(addr: int, raw: bytes) -> tuple[int | None, str, str]:
 #                       branches of these families.
 
 def decode_insn(addr: int, mnemonic: str, raw: bytes) -> tuple[int | None, str, str]:
-    """Decode one branch **using its machine form and its mnemonic**.
+    """Decode one branch instruction and return `(target, form, status)`.
 
-    The 2-byte families share the byte1 range with other instructions, so the
-    mnemonic supplied by the disassembler is the discriminator:
+    `status` is one of:
 
-        * branch-if-zero mnemonics:  byte1 0x0C..0x0F, field `disps5`
-        * other conditional mnemonics: byte1 0x10..0x1F, field `dispe9`,
-          layout `((w0 & 0x0F) | ((w0 >> 8) & 0x0F) << 4) << 1`.  The
-          condition code sits in bits[7:4], the field's low nibble in
-          bits[3:0] and its high nibble in bits[11:8].
+        "DIRECT"          a target was computed from the encoding
+        "UNSUPPORTED"     the form is a branch but its layout is not implemented
+        "NOT_A_BRANCH"    the instruction (or register-indirect call) has no
+                           immediate field, so no target exists in it
+
+    The machine form is chosen from the encoding first and only then from the
+    mnemonic, because the 2-byte ranges overlap with other instruction
+    families (`42 10` is `bhi`, `42 0c` is `beq0b r2`, `92 59` is `movb`).
     """
     n = len(raw)
     if n in (4, 6):
         if raw[1] == 0xC0 or (raw[1] & 0x0F) == 0x8:
-            # A 4- or 6-byte branch form is decided by its own encoding.
             return decode(addr, raw)
         if n == 6:
-            # 6-byte conditional (`disps25`): layout not validated (the single
-            # occurrence sits in a data region).
+            # 6-byte conditional (`disps25`): one occurrence, layout not
+            # validated, sitting in a data region.
             return None, "cond48", "UNSUPPORTED"
-        # A non-branch (load/store/movd...) has no target of its own.
-        return None, f"{n}-byte non-branch", "UNSUPPORTED"
-    # A 2-byte *branch* is decoded from the mnemonic and the word, never by
-    # the 4-byte rules (whose first word would look like an ambiguous 2-byte
-    # form and must not produce a target).
+        if mnemonic in ("jump", "jal", "jmp", "bral", "jalr"):
+            return None, "register-indirect", "NOT_A_BRANCH"
+        return None, f"{n}-byte non-branch", "NOT_A_BRANCH"
+    if n != 2:
+        return None, f"{n}-byte", "UNSUPPORTED"
     w0 = raw[0] | (raw[1] << 8)
     byte1 = raw[1]
-    if byte1 in (0x0C, 0x0D, 0x0E, 0x0F):
-        return branch_zero_target(addr, raw), "disps5", "DIRECT"
     if mnemonic in BRANCH_ZERO_MNEMONICS:
+        if byte1 in (0x0C, 0x0D, 0x0E, 0x0F):
+            return branch_zero_target(addr, raw), "disps5", "DIRECT"
         return None, "disps5?", "UNSUPPORTED"
-    # A conditional whose second byte is 0x10.. belongs to the `dispe9` form.
     if 0x10 <= byte1 <= 0x1F:
         return cond2_target(addr, w0), "dispe9", "DIRECT"
+    if mnemonic in ("jump", "jal", "jmp", "bral", "jalr"):
+        return None, "register-indirect", "NOT_A_BRANCH"
     # Conditionals with a `byte1` below 0x10 (`00 1c`, `06 1a`, `47 1e`,
-    # `a2 15`, ...): no formula reproduced binutils for all of them, so they
-    # are reported as unsupported instead of being guessed.
+    # `a2 15`, ...): the second layout is not established, so no target is
+    # invented.
     return None, "2-byte-other", "UNSUPPORTED"
 
 

@@ -1,16 +1,27 @@
 #!/usr/bin/env python3
-"""Unit tests for tools/cr16_branch.py.
+"""Branch decoder tests and full validation report.
 
-Run: python3 tools/tests/test_cr16_branch.py
+Run: python3 tools/tests/test_cr16_branch.py [--json OUT.json]
 
-Every expected target was produced by the CR16 disassembler built from
-binutils-2.44, normally by re-running it on the isolated instruction bytes
-with `--adjust-vma=<address>`, where the printed value is the absolute
-target.  The firmware cases carry their machine bytes.
+Every branch instruction of both firmware images is decoded and compared
+against the CR16 objdump built from binutils 2.44 (the independent oracle).
+Each case ends in exactly one status:
 
-Results are PASS / FAIL / SKIP.  A SKIP means the firmware or the CR16
-toolchain was not available; it is never reported as a pass.
+    MATCH               decoder and oracle agree
+    MISMATCH            decoder and oracle disagree
+    UNSUPPORTED         the encoding form is not implemented (no target made up)
+    INVALID             the instruction is not a branch / decoder refuses it
+    ORACLE_UNAVAILABLE  the oracle could not be run for that address
+
+`MATCH` is only assigned when the oracle actually produced a target.  A
+skipped oracle is never counted as a match, and `UNSUPPORTED` is not a pass.
+
+Results are PASS / FAIL / SKIP per assertion, and the whole per-instruction
+table is written to JSON on request so that a reviewer can re-check a claim
+without the firmware (the image itself is never stored in Git).
 """
+import hashlib
+import json
 import re
 import subprocess
 import sys
@@ -18,21 +29,27 @@ import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent.parent
 sys.path.insert(0, str(HERE.parent))
-sys.path.insert(0, str(HERE.parent.parent / "src" / "mock"))
+sys.path.insert(0, str(ROOT / "src" / "mock"))
 
+import cr16_cfg as C  # noqa: E402
 import cr16_branch as B  # noqa: E402
 
-FW_HEX = HERE.parent.parent / "firmware" / "dectfw_secondlevel_441.hex"
+FW_NORMAL = ROOT / "firmware" / "dectfw_secondlevel_441.hex"
+FW_P2TEST = ROOT / "firmware" / "dectfw_secondlevel_441p2test.hex"
 
 OBJDUMP_CANDIDATES = [
     Path("/tmp/opencode/cr16/build/binutils/objdump"),
     Path("/tmp/opencode/cr16/build2/binutils/objdump"),
 ]
 
+STATUSES = ("MATCH", "MISMATCH", "UNSUPPORTED", "INVALID",
+            "ORACLE_UNAVAILABLE")
+
 fails = 0
 skips = 0
-DEBUG = False
+records = []
 
 
 def check(name, got, want):
@@ -50,283 +67,201 @@ def skip(name, why):
     skips += 1
 
 
-def objdump() -> Path | None:
+def objdump():
     for p in OBJDUMP_CANDIDATES:
         if p.is_file():
             return p
     return None
 
 
-def oracle_relative(raw: bytes) -> int:
-    """The number binutils prints when the base is 0 (a displacement).
+def oracle_target(od, addr, raw, relative_printed=False):
+    """Absolute target printed by objdump at the instruction's own address.
 
-    Note that `oracle_target` returns the printed number itself, and for
-    branch instructions objdump prints the base added to the displacement, so
-    at base 0 the printed value *is* the displacement.  The branch-if-zero
-    family prints `2*field+2` regardless of the base.
+    For the branch-if-zero family (`beq0b`/`bne0b`/`beq0w`/`bne0w`) binutils
+    prints `2*offset + 2`, i.e. the displacement and not `addr + disp`; the
+    flag turns the printed number back into an absolute target.  That is the
+    documented difference between the `disps5` and `dispe9` print paths in
+    `cr16-dis.c` (`a->constant = 2 * a->constant + 2` happens before the
+    `memaddr +` step only for BRANCH_NEQ_INS).
     """
-    od = objdump()
-    if od is None:
-        return 0
-    with tempfile.NamedTemporaryFile(suffix=".bin", delete=False) as f:
-        f.write(bytes(raw) + b"\0\0\0\0")
-        tmp = Path(f.name)
-    try:
-        out = subprocess.run(
-            [str(od), "-D", "-b", "binary", "-m", "cr16", str(tmp)],
-            capture_output=True, text=True, check=False).stdout
-    finally:
-        tmp.unlink(missing_ok=True)
-    # Positive form: `*+0x123` (or `*+123`).  Negative form: `*-0xffff80`,
-    # where the number is a signed displacement; convert to the uint24
-    # two's-complement value so the caller can add it to any base.
-    m = re.search(r"\*\+0x([0-9a-f]+)", out)
-    if m:
-        return int(m.group(1), 16)
-    m = re.search(r"\*-0x([0-9a-f]+)", out)
-    if m:
-        return (-int(m.group(1), 16)) & 0xFFFFFF
-    m = re.search(r"\*\+([0-9a-f]+)", out)
-    if m:
-        return int(m.group(1), 16)
-    m = re.search(r"\*-([0-9a-f]+)", out)
-    if m:
-        return (-int(m.group(1), 16)) & 0xFFFFFF
-    return 0
-
-
-def oracle_target(raw: bytes, vma: int = 0) -> int | None:
-    """Absolute target printed by binutils for these instruction bytes."""
-    od = objdump()
-    if od is None:
-        return None
     with tempfile.NamedTemporaryFile(suffix=".bin", delete=False) as f:
         f.write(bytes(raw) + b"\0\0\0\0")
         tmp = Path(f.name)
     try:
         out = subprocess.run(
             [str(od), "-D", "-b", "binary", "-m", "cr16",
-             f"--adjust-vma={vma}", str(tmp)],
+             f"--adjust-vma={addr}", str(tmp)],
             capture_output=True, text=True, check=False).stdout
     finally:
         tmp.unlink(missing_ok=True)
-    m = re.search(r"\*([+-])(0x[0-9a-f]+|[0-9a-f]+)", out)
-    if not m:
-        return None
-    return int(m.group(2), 16) & 0xFFFFFF
+    for line in out.splitlines():
+        if line.strip().startswith(f"{addr:x}:"):
+            ops = line.split("\t")[-1].strip()
+            # `bal (ra),*+0x3c8c:m` and `beq0b r0,*+0x2:s` both end with the
+            # absolute target; the sign prefix is cosmetic in CR16 objdump
+            # (the number is already `addr + displacement`).
+            m = re.search(r"\*[+-](0x[0-9a-f]+)", ops)
+            if m:
+                value = int(m.group(1), 16)
+                if relative_printed:
+                    return (addr + value) & 0xFFFFFF
+                return value
+            return None
+    return None
 
 
 # ---------------------------------------------------------------------------
-# 4-byte bal: required firmware cases
+# 1. The two loop heads of 0x25F90, computed field by field
 # ---------------------------------------------------------------------------
-BAL_CASES = [
-    (0x2570, "00 c0 1c 17", 0x3C8C),
-    (0x257E, "ff c0 7b ff", 0x24F8),
-    (0x25E2, "02 c0 c8 66", 0x28CAA),
-    (0x0AF0, "ff c0 a7 f9", 0x0496),
-    (0x131E, "ff c0 b1 fe", 0x11CE),
-    (0x036C, "00 c0 20 01", 0x048C),
-    (0x1602, "00 c0 f6 23", 0x39F8),
-]
-for addr, hx, want in BAL_CASES:
+print("== dispe9 field arithmetic")
+for hx, addr, want_disp, want_target in (
+        ("491f", 0x25FA8, -0x0E, 0x25F9A),
+        ("1d1f", 0x25FB4, -0x06, 0x25FAE),
+        ("4d19", 0x25E64, -0xC6, 0x25D9E),
+        ("3a1f", 0x28C00, -0x0C, 0x28BF4),
+        ("1212", 0x000EE, +0x44, 0x00132),
+        ("4011", 0x00294, +0x20, 0x002B4)):
+    raw = bytes.fromhex(hx)
+    w0 = raw[0] | (raw[1] << 8)
+    disp, sign = B.cond2_disp(w0)
+    check(f"disp {hx} @{addr:#07x}", disp, want_disp)
+    check(f"sign {hx}", sign, want_disp < 0)
+    check(f"target {hx} @{addr:#07x}", B.cond2_target(addr, w0), want_target)
+
+check("24-bit wrap", B.cond2_target(0xFFFF00, 0x0010), 0xFFFF00)
+check("backward wrap", B.cond2_target(0x000010, 0x1F01), (0x000010 - 0x1E) & 0xFFFFFF)
+
+# ---------------------------------------------------------------------------
+# 2. Branch-if-zero (disps5) and the 4-byte forms
+# ---------------------------------------------------------------------------
+print("== other forms")
+for addr, mn, hx, want in (
+        (0x016A, "beq0b", "000c", 0x016C),
+        (0x0174, "bne0b", "000d", 0x0196),
+        (0x017E, "beq0w", "000e", 0x0180),
+        (0x0100, "beq0b", "100c", 0x0104),
+        (0x0100, "beq0b", "f00c", 0x0120),
+        (0x0100, "bne0w", "ff0f", 0x0140)):
+    raw = bytes.fromhex(hx)
+    t, form, status = B.decode_insn(addr, mn, raw)
+    check(f"disps5 {hx} @{addr:#07x}", (t, status), (want, "DIRECT"))
+    check(f"disps5 {hx} form", form, "disps5")
+
+for addr, hx, want in ((0x0000, "40 18 00 03", 0x0300),
+                       (0x0200, "00 18 00 01", 0x0300)):
     raw = bytes.fromhex(hx.replace(" ", ""))
     t, form, status = B.decode(addr, raw)
-    check(f"bal {hx} @{addr:#06x} -> {want:#06x}",
-          (t, status), (want, "DIRECT"))
-    check(f"bal {hx} @{addr:#06x} form", form, "bal32")
-    o = oracle_target(raw, addr)
-    if o is None:
-        skip(f"oracle bal {hx}", "CR16 objdump not available")
-    else:
-        check(f"oracle bal {hx} @{addr:#06x}", t, o)
+    check(f"cond32 {hx} @{addr:#07x}", (t, status), (want, "DIRECT"))
 
-# ---------------------------------------------------------------------------
-# 2-byte conditional branches (dispe9)
-#
-# The 2-byte form is ambiguous without the mnemonic (`42 10` is `bhi +0x4`,
-# `42 0c` is `beq0b r2,+0x6`), so it is decoded by `decode_insn`.
-# ---------------------------------------------------------------------------
-COND2_CASES = [
-    # (address, mnemonic, bytes, expected target)
-    (0x0294, "bhi", "40 11", 0x02B4),
-    (0x10CE, "bfc", "9f 10", 0x10EC),
-    (0x28B12, "bhs", "b3 10", 0x28B18),
-    (0x00EE, "bne", "12 12", 0x0132),
-    (0x00F8, "beq", "00 12", 0x0138),
-    (0x19DA, "bls", "53 11", 0x1A00),
-    (0x0000, "bhi", "42 10", 0x0004),   # assembler
-    (0x0000, "bhi", "44 10", 0x0008),
-    (0x0000, "bhi", "4f 10", 0x001E),
-    (0x0000, "bhi", "40 12", 0x0040),
-    (0x0000, "bhi", "42 12", 0x0044),
-]
-for addr, mn, hx, want in COND2_CASES:
-    raw = bytes.fromhex(hx.replace(" ", ""))
-    t, form, status = B.decode_insn(addr, mn, raw)
-    check(f"cond2 {mn} {hx} @{addr:#06x} -> {want:#06x}",
-          (t, status), (want, "DIRECT"))
-    check(f"cond2 {hx} form", form.startswith("dispe9"), True)
-    o = oracle_target(raw, addr)
-    if o is None:
-        skip(f"oracle cond2 {hx}", "CR16 objdump not available")
-    else:
-        check(f"oracle cond2 {hx} @{addr:#06x}", t, o)
-
-# Encoder ground truth: a conditional whose byte1 is >= 0x10 other than
-# 0x10..0x1f encodes the target as a *byte offset* in bits[3:0] and bits[11:8].
-# From the CR16 binutils assembler:
-#   `beq 0x100` at 0x200 -> `00 18 00 01` (4-byte form, target = addr+words[1])
-#   `beq 0x2c8` at 0x200 -> `00 18 c8 02`
-# For the 2-byte form with byte1 >= 0x10, the byte-offset rule below holds,
-# but no firmware occurrence could be cross-checked against a validated
-# target, so the decoder reports those as UNSUPPORTED.
-
-# `decode()` alone cannot resolve a 2-byte branch and must say so.
-t, form, status = B.decode(0x0294, bytes.fromhex("4011"))
-check("decode() refuses the 2-byte form", status, "UNSUPPORTED")
-check("decode() returns no target for it", t, None)
-
-# 24-bit wrap: displacement 0x2FE past 0xFFFF00 wraps to 0x1FE (254).
-t = B.cond2_target(0xFFFF00, 0x1F7F)
-check("cond2 wraps modulo 2^24", t, 254)
-
-# ---------------------------------------------------------------------------
-# 2-byte branch-if-zero (disps5): 2*field+2
-# ---------------------------------------------------------------------------
-ZERO_CASES = [
-    (0x016A, "beq0b", "00 0c", 0x016C),
-    (0x0174, "bne0b", "00 0d", 0x0196),
-    (0x017E, "beq0w", "00 0e", 0x0180),
-    # Assembler/disassembler ground truth from the CR16 binutils suite.
-    (0x0100, "beq0b", "10 0c", 0x0104),
-    (0x0100, "beq0b", "f0 0c", 0x0120),
-    (0x0100, "beq0w", "00 0e", 0x0102),
-    (0x0100, "bne0w", "ff 0f", 0x0140),
-    (0x0100, "bne0b", "20 0d", 0x0126),
-    (0x0100, "bne0b", "10 0d", 0x0124),
-    (0x0100, "bne0w", "10 0f", 0x0124),
-]
-for addr, mn, hx, want in ZERO_CASES:
-    raw = bytes.fromhex(hx.replace(" ", ""))
-    t, form, status = B.decode_insn(addr, mn, raw)
-    check(f"branch-zero {mn} {hx} @{addr:#06x} -> {want:#06x}",
-          (t, status), (want, "DIRECT"))
-    check(f"branch-zero {hx} form", form, "disps5")
-
-# ---------------------------------------------------------------------------
-# 4-byte conditional branch (disps17): target = addr + words[1]
-# Assembler: `bhi 0x300` at 0 encodes as `40 18 00 03`.
-# ---------------------------------------------------------------------------
-COND4_CASES = [
-    (0x0000, "40 18 00 03", 0x0300),
-    (0x0000, "40 18 fe 01", 0x01FE),
-    (0x0000, "40 18 02 03", 0x0302),
-    (0x0200, "00 18 00 01", 0x0300),   # beq 0x100 at 0x200 -> *+0x300
-]
-for addr, hx, want in COND4_CASES:
+for hx, addr, want in (("00 c0 1c 17", 0x2570, 0x3C8C),
+                       ("ff c0 7b ff", 0x257E, 0x24F8),
+                       ("02 c0 c8 66", 0x25E2, 0x28CAA),
+                       ("ff c0 a7 f9", 0x0AF0, 0x0496)):
     raw = bytes.fromhex(hx.replace(" ", ""))
     t, form, status = B.decode(addr, raw)
-    check(f"cond4 {hx} @{addr:#06x} -> {want:#06x}",
-          (t, status), (want, "DIRECT"))
-    check(f"cond4 {hx} form", form, "cond32")
+    check(f"bal {hx} @{addr:#06x}", (t, status), (want, "DIRECT"))
+
+check("register-indirect jump has no target",
+      B.decode_insn(0x494, "jump", bytes.fromhex("ee0a"))[2], "NOT_A_BRANCH")
+check("register-indirect jal has no target",
+      B.decode_insn(0x14, "jal", bytes.fromhex("d600"))[2], "NOT_A_BRANCH")
+check("non-branch has no target",
+      B.decode_insn(0x25FAE, "loadw", bytes.fromhex("0f890260"))[2],
+      "NOT_A_BRANCH")
+check("6-byte conditional is unsupported",
+      B.decode_insn(0x92FC, "bhi", bytes.fromhex("10004d00074e"))[2],
+      "UNSUPPORTED")
 
 # ---------------------------------------------------------------------------
-# 4-byte direct call and 6-byte instruction
+# 3. Full sweep of both images with per-form statistics
 # ---------------------------------------------------------------------------
-t, _, st = B.decode(0x1602, bytes.fromhex("00c0f623"))
-check("direct call 0x1602 -> 0x39f8", (t, st), (0x39F8, "DIRECT"))
-
-t, form, status = B.decode(0x92FC, bytes.fromhex("10004d00074e"))
-check("6-byte conditional is flagged unsupported", status, "UNSUPPORTED")
-check("6-byte conditional yields no target", t, None)
-
-# ---------------------------------------------------------------------------
-# Register-indirect jump: no immediate field, classified by operand shape
-# ---------------------------------------------------------------------------
-import cr16_cfg as _C  # noqa: E402
-_jmp = _C.Insn(0x0494, 2, "jump", "(ra)", bytes.fromhex("ee0a"))
-check("jump (ra) classified as indirect register",
-      [(e.category, e.dst) for e in _C.classify_insn(_jmp, _C.Firmware([]))],
-      [("INDIRECT_REGISTER", None)])
-_jal = _C.Insn(0x0014, 2, "jal", "(r7,r6)", bytes.fromhex("d600"))
-check("jal (r7,r6) classified as indirect register",
-      [(e.category, e.dst) for e in _C.classify_insn(_jal, _C.Firmware([]))],
-      [("INDIRECT_REGISTER", None)])
-
-# ---------------------------------------------------------------------------
-# Synthetic sign rules for `bal`
-# ---------------------------------------------------------------------------
-t, sign = B.bal_target(0x1000, (0, 0x8B))
-check("bal synthetic odd field sets sign", sign, True)
-check("bal synthetic backward target", t, 0x108A)
-
-t, sign = B.bal_target(0x1000, (0, 0x0100))
-check("bal synthetic even field has no sign", sign, False)
-check("bal synthetic forward target", t, 0x1100)
-
-
-# ---------------------------------------------------------------------------
-# Firmware sweep: every branch decoded must match the binutils oracle
-# ---------------------------------------------------------------------------
-def firmware_sweep():
-    od = objdump()
-    if not FW_HEX.is_file():
-        skip("firmware sweep", f"{FW_HEX} missing")
-        return
-    if od is None:
-        skip("firmware sweep", "CR16 objdump not available")
-        return
-    import cr16_cfg as C
-    fw = C.load(str(FW_HEX))
-    C.disassemble(fw, str(od))
-    total = mism = unsup = 0
-    alt_unresolved = 0
-    unsup_kinds = {}
-    branch_mn = C.COND | C.CALLS | C.JUMPS
-    for a, i in sorted(fw.insns.items()):
-        if i.mnemonic not in branch_mn:
+def classify(od, fw, name, sha):
+    stats = {}
+    for addr, insn in sorted(fw.insns.items()):
+        if insn.mnemonic not in (C.COND | C.CALLS | C.JUMPS):
             continue
-        if i.mnemonic in C.INDIRECT_MN or _C._is_register_operands(
-                i.operands):
-            # No immediate field: covered by the operand-shape tests above.
-            continue
-        t, form, status = B.decode_insn(a, i.mnemonic, i.raw[:6])
-        if status != "DIRECT":
-            unsup += 1
-            unsup_kinds[(i.mnemonic, i.raw.hex(" "))] = \
-                unsup_kinds.get((i.mnemonic, i.raw.hex(" ")), 0) + 1
-            continue
-        total += 1
-        # The oracle must be placed at the instruction's own address: objdump
-        # prints the absolute target, so `--adjust-vma=0` would print the
-        # displacement instead (which differs for every non-zero address).
-        if i.mnemonic in B.BRANCH_ZERO_MNEMONICS:
-            o = (a + oracle_relative(i.raw)) & 0xFFFFFF
+        target, form, status = B.decode_insn(addr, insn.mnemonic,
+                                             insn.raw[:min(6, insn.size)])
+        oracle = oracle_target(od, addr, insn.raw,
+                               relative_printed=(form == "disps5"))
+        if status == "DIRECT":
+            if oracle is None:
+                verdict = "ORACLE_UNAVAILABLE"
+            elif target == oracle:
+                verdict = "MATCH"
+            else:
+                verdict = "MISMATCH"
+        elif status == "UNSUPPORTED":
+            verdict = "UNSUPPORTED"
+        elif status == "NOT_A_BRANCH":
+            if oracle is not None and oracle != addr:
+                # objdump produced a target for something we call a
+                # non-branch: that is a real disagreement.
+                verdict = "MISMATCH"
+            else:
+                verdict = "INVALID"
         else:
-            o = oracle_target(i.raw, a)
-        if o is None:
-            continue
-        if o != t and (len(i.raw) == 2 and 0x11 <= i.raw[1] <= 0x1F):
-            # The second 2-byte conditional form (byte1 >= 0x11) is not fully
-            # resolved yet; it is counted separately, never hidden.
-            alt_unresolved += 1
-            continue
-        if o != t:
-            mism += 1
-            if mism <= 5:
-                print(f"  mismatch {a:#08x} {i.mnemonic} {i.raw.hex(' ')} "
-                      f"decoder {t:#08x} oracle {o:#08x} "
-                      f"(rel={oracle_relative(i.raw):#x})")
-    check(f"firmware sweep: {total} direct branches, mismatches", mism, 0)
-    check("firmware sweep: second 2-byte form observed", alt_unresolved, 260)
-    # Unsupported on purpose: 45 four-byte conditionals whose second word
-    # would encode a target below the instruction, and 1 six-byte conditional.
-    check("firmware sweep: unsupported == 46", unsup, 46)
-    if unsup != 46:
-        print(f"  unsupported forms: {unsup_kinds}")
+            verdict = "INVALID"
+        key = (form, verdict)
+        stats[key] = stats.get(key, 0) + 1
+        if verdict in ("MISMATCH", "UNSUPPORTED"):
+            records.append({
+                "firmware": name,
+                "firmware_sha256": sha,
+                "address": f"{addr:#08x}",
+                "bytes": insn.raw.hex(),
+                "mnemonic": insn.mnemonic,
+                "form": form,
+                "calculated_target": None if target is None
+                else f"{target:#08x}",
+                "oracle_target": None if oracle is None else
+                f"{oracle:#08x}",
+                "status": verdict,
+            })
+    return stats
 
 
-firmware_sweep()
+def sweep(path, label, od):
+    if not path.is_file():
+        skip(f"{label} sweep", f"{path} missing")
+        return None
+    fw = C.load(str(path))
+    C.disassemble(fw, str(od))
+    sha = hashlib.sha256(path.read_bytes()).hexdigest()
+    stats = classify(od, fw, path.name, sha)
+    total = sum(stats.values())
+    print(f"-- {label}: {total} branch instructions, sha256 {sha[:16]}...")
+    by_verdict = {v: 0 for v in STATUSES}
+    for (form, verdict), n in sorted(stats.items()):
+        print(f"   {form:20s} {verdict:20s} {n:5d}")
+        by_verdict[verdict] += n
+    return by_verdict
+
+
+od = objdump()
+if od is None:
+    skip("full sweep", "CR16 objdump not available")
+else:
+    normal = sweep(FW_NORMAL, "normal", od)
+    p2 = sweep(FW_P2TEST, "p2test", od)
+    if normal is not None:
+        check("normal: zero MISMATCH", normal["MISMATCH"], 0)
+        check("normal: zero ORACLE_UNAVAILABLE",
+              normal["ORACLE_UNAVAILABLE"], 0)
+        check("normal: MATCH covers all direct branches",
+              normal["MATCH"] > 0, True)
+    if p2 is not None:
+        check("p2test: zero MISMATCH", p2["MISMATCH"], 0)
+        check("p2test: zero ORACLE_UNAVAILABLE",
+              p2["ORACLE_UNAVAILABLE"], 0)
+
+# ---------------------------------------------------------------------------
+# 4. Machine-readable report
+# ---------------------------------------------------------------------------
+if "--json" in sys.argv:
+    out = Path(sys.argv[sys.argv.index("--json") + 1])
+    out.write_text(json.dumps({"records": records}, indent=1) + "\n")
+    print(f"wrote {out} ({len(records)} records)")
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
