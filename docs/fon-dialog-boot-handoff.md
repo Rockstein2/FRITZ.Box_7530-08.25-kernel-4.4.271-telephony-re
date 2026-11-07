@@ -1,6 +1,10 @@
 # SC14448 boot hand-off
 
-Status: **offline reconstruction.**  **Answer: PARTIALLY KNOWN.**
+Status: **offline reconstruction.**
+
+**Answer: STATICALLY_RESOLVED / RUNTIME_UNVERIFIED.**  Every link of the
+transfer is decoded from the image bytes.  Nothing here has been observed on
+hardware.
 
 ---
 
@@ -22,7 +26,12 @@ byte protocol (0x1029C/0x102C6) PROVEN as code (L2)
 blocks written at header addr   PROVEN (L2) 0x1022C
         |
         v
-branch into loaded code         UNKNOWN (Q51) 0x1017C, 0x10284, 0x10298
+0x10284  br 0x000008           DECODED (disps25, L2)
+        |
+        v
+second-level 0x000008:
+  normal  br 0x15AA            DECODED (disps25, L2)
+  p2test  br 0x1026            DECODED (disps25, L2)
         |
         v
 second-level start-up           PROVEN location: 0x15AA block, 0x15BC setup
@@ -41,7 +50,9 @@ second-level start-up           PROVEN location: 0x15AA block, 0x15BC setup
 | second-level lands at its declared addresses | the header carries the address; no base adjustment exists in the loader | L2 |
 | second-level does not overwrite the loader | no second-level block covers `0x10080` | L1 |
 | the three `disps17` branches | decode to `0x010100`, the retry loop | L2 |
-| hand-off branch (`0x10284`) | `disps25` decodes to **`0x000008`**; `0x8` branches to `0x15AA` (normal) / `0x1026` (p2test) | **L3, decoded chain** |
+| hand-off branch (`0x10284`) | `disps25` decodes to **`0x000008`** | L2 |
+| second-level at `0x8` | `disps25` to `0x15AA` (normal) / `0x1026` (p2test); both are instruction boundaries | L2 |
+| whole transfer chain | every link decoded, no gaps | **L3 static** |
 | second-level start-up block | `0x15AA` (normal) / `0x102C` (p2test); sets USP, ISP, CFG, INTBASE | L2/L3 |
 | first-level *load* address | `0x10080`, L1 (the Intel HEX record) | L1 |
 | first-level *execution* entry | **UNKNOWN** — no ROM image and no decoded branch enters it | — |
@@ -50,37 +61,40 @@ second-level start-up           PROVEN location: 0x15AA block, 0x15BC setup
 
 ## 3. The `0x7C` question
 
-Earlier iterations suggested the hand-off goes to `0x7C`.  With the correct
-reading of the loader this is **not supported**:
+`0x7C` lies inside block 1 (`0x0`–`0xD4`) in both images and holds
+`e5 46 01 00`, i.e. the repeating stub value `0x000146E5` — vector 22 of the
+dispatch table.  It is **not** the hand-off target: the loader's branch goes
+to `0x8`.
 
-* the loader starts at `0x10080` and contains no code at `0x7C`;
-* the `0x18` branch form at `0x1017C` computes `0x010101` under the binutils
-  rule, not `0x7C` (see `fon-dialog-boot-branch-decoding.md`).
-
-**Correction.**  Earlier text claimed that "no second-level block covers
-`0x7C`".  That was wrong: block 1 is `0x0`–`0xD4` in both images, so `0x7C`
-**is** inside loaded data.  It holds `68 46 01 00`, one of the two
-non-repeating entries of the table at `0x24`.  Whether the CPU executes it
-is a separate, unproven question.
+An earlier iteration claimed that "no second-level block covers `0x7C`";
+that was wrong and is recorded here only as history.
 
 ## 4. How the second-level reaches its start-up block
 
-Two possibilities, neither proven:
+**Resolved.**  The loader's `disps25` branch at `0x10284` goes to `0x8`, and
+`0x8` in both images is itself a `disps25` branch:
 
-| Possibility | What would make it true |
-|---|---|
-| the loader jumps directly to `0x15AA`-equivalents | the hand-off branch target would be `0x15AA`; not established |
-| the loader jumps to a fixed entry (e.g. `0x0`) and the image's first instructions jump on | bytes at `0x0` decode as `loadm $1,r0` then `illegal` — not a plausible entry sequence |
+| Image | bytes at `0x8` | target | target is an instruction boundary |
+|---|---|---|---|
+| normal | `10 00 e0 00 a2 15` | **`0x15AA`** (the start-up block) | yes |
+| p2test | `10 00 e0 00 1e 10` | **`0x1026`** (six bytes before `0x102C`) | yes |
 
-Neither explanation is supported by the bytes.  The hand-off is **PARTIALLY
-KNOWN**: the destination *data* is known, the *control transfer* is not.
+Note that `0x8` is **not** an instruction boundary in the linear disassembly
+of the second-level image: linear decoding starts at `0x0` and reads
+`loadm $1,r0`, `illegal`, then a 6-byte `subd` that would span `0x4`–`0x9`.
+The bytes at `0x8` are therefore decoded in isolation, and they are a valid
+`disps25` branch.  This means the first ten bytes of the image are not code
+reached by fall-through; they are the entry block the loader jumps into.
+
+Runtime status: **UNVERIFIED**.  No capture or trace shows the board taking
+this path.
 
 ## 5. The `0x28D56` copy
 
 | Question | Answer | Evidence |
 |---|---|---|
 | direction | writes through the destination pair `(r3,r2)` | `0x28D90 storb r0,0x0:s(r8,r7)` after `0x28D58 movd (r3,r2),(r8,r7)` |
-| unit | **count of 8-byte `{u32be addr,u32be len}` entries**, not bytes | `0x28D6A addd $8,(r8,r7)` |
+| unit | one 8-byte record `{u32le count, u32le destination}`; the loop advances by 8 | `0x28D6A addd $8,(r8,r7)` |
 | destination | `(r3,r2) = 0x1C` loaded at `0x15EA` — this is the **record start**, not the copy address | L2 |
 | source | `(r5,r4) = 0x24` loaded at `0x15F0` | L2 |
 | what is actually written | **`0x8F2` zero bytes at `0x936C`** — one record `{count=0x8F2, dest=0x936C}` at `0x1C` | L2, `fon-dialog-copy-helper-28d56.md` |
