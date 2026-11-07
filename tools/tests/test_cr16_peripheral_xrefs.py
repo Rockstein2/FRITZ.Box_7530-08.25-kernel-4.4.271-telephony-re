@@ -174,24 +174,96 @@ else:
     check("indexed store names the doubled index",
           "2*r3" in (hit[0]["expression"] or "") if hit else None, True)
 
-    print("== synthetic: two branches disagree")
-    # beq to 0x10; one path sets the pair, the other does not; merge at 0x10
-    # 0x00 beq *+0x0E  (12 10 -> +2)   use `12 10`: bne +2
-    # 0x02 movd $0xff6006:l,(r1,r0)
-    # 0x08 br *+0x08
-    # 0x0A nop (skipped)
-    # 0x0C storw from an untouched path
-    path = synth([0x12, 0x10,                      # 0x00 bne +2
-                  0x70, 0x00, 0xFF, 0x00, 0x06, 0x60,   # 0x02 movd
-                  0xE4, 0x10,                      # 0x08 br +8
-                  0x00, 0x2C,                      # 0x0A nop
-                  0x24, 0xD0,                      # 0x0C storw (r5,r4)
-                  0x24, 0xD0,                      # 0x0E unreachable
-                  0x24, 0xD0])                     # 0x10 storw (r5,r4)
+    print("== synthetic: real CFG merge on ONE pair")
+    #           0x00 bne *+0x4:s  -> 0x04  (branch B, the one that assigns)
+    # A 0x02:  br *+0x0A:s     -> 0x0C  (skip B, merge)
+    # B 0x04:  movd $0xff6006:l,(r5,r4)
+    #    0x0A:  br *+0x02:s     -> 0x0C  (merge)
+    # M 0x0C:  storw r2,0x0:s(r5,r4)
+    # Only branch B assigns the pair; the merge must be UNKNOWN.
+    path = synth([0x12, 0x10,                          # 0x00 bne *+0x4
+                  0xE4, 0x10,                          # 0x02 br *+0x0A
+                  0x74, 0x00, 0xFF, 0x00, 0x06, 0x60,   # 0x04 movd
+                  0xE4, 0x10,                          # 0x0A br *+0x02
+                  0x24, 0xD0])                         # 0x0C storw
     rows, stats, unc = scan_image(path)
-    hit = find(rows, 0x0C, "WRITE") + find(rows, 0x10, "WRITE")
-    check("state does not leak across blocks",
-          all(r["address_kind"] != "RESOLVED" for r in hit), True)
+    hit = find(rows, 0x0C, "WRITE")
+    check("merge block reached via two paths is UNKNOWN",
+          hit[0]["address_kind"] if hit else None, "UNKNOWN")
+    check("merge block has no effective address",
+          hit[0]["effective_address"] if hit else None, None)
+
+    print("== synthetic: E addd with unknown source")
+    # movd $0xff6006:l,(r5,r4) ; addd (r7,r6),(r5,r4) ; storw
+    path = synth([0x74, 0x00, 0xFF, 0x00, 0x06, 0x60,
+                  0x64, 0x61,              # addd (r7,r6),(r5,r4)
+                  0x24, 0xD0])
+    rows, stats, unc = scan_image(path)
+    hit = find(rows, 0x08, "WRITE")
+    check("addd with unknown source is UNKNOWN",
+          hit[0]["address_kind"] if hit else None, "UNKNOWN")
+    check("addd with unknown source keeps no address",
+          hit[0]["effective_address"] if hit else None, None)
+
+    print("== synthetic: D loadd into the known pair")
+    path = synth([0x74, 0x00, 0xFF, 0x00, 0x06, 0x60,
+                  0x40, 0xA0,              # loadd 0x0:s(r1,r0),(r5,r4)
+                  0x24, 0xD0])
+    rows, stats, unc = scan_image(path)
+    hit = find(rows, 0x08, "WRITE")
+    check("loadd into the pair invalidates it",
+          hit[0]["address_kind"] if hit else None, "UNKNOWN")
+
+    print("== synthetic: C upper half overwritten")
+    path = synth([0x74, 0x00, 0xFF, 0x00, 0x06, 0x60,
+                  0x05, 0x5A,              # movw $0x0:s,r5
+                  0x24, 0xD0])
+    rows, stats, unc = scan_image(path)
+    hit = find(rows, 0x08, "WRITE")
+    check("writing r5 invalidates the pair",
+          hit[0]["address_kind"] if hit else None, "UNKNOWN")
+
+    print("== synthetic: F addd with two known constants")
+    # movd $0x00010000:l,(r5,r4) ; addd (r1,r0),(r5,r4) is unknown;
+    # so check that a known+known sum is computed: r1,r0 loaded first.
+    # `:l` immediate pairs, as the firmware encodes them (the assembler
+    # rewrites `movd $imm:l` to `:m`, so the bytes are taken from the image):
+    #   0x00 70 00 00 01 00 00   movd $0x01000000:l,(r1,r0)
+    #   0x06 74 00 01 00 00 00   movd $0x00010000:l,(r5,r4)
+    #   0x0C 04 61               addd (r1,r0),(r5,r4)
+    #   0x0E 24 d0               storw r2,0x0:s(r5,r4)
+    path = synth([0x70, 0x00, 0x00, 0x01, 0x00, 0x00,
+                  0x74, 0x00, 0x01, 0x00, 0x00, 0x00,
+                  0x04, 0x61,
+                  0x24, 0xD0])
+    rows, stats, unc = scan_image(path)
+    hit = find(rows, 0x0E, "WRITE")
+    check("addd of two constants stays RESOLVED",
+          hit[0]["address_kind"] if hit else None, "RESOLVED")
+    check("addd of two constants has the sum",
+          hit[0]["effective_address"] if hit else None, "0x01010000")
+
+    print("== synthetic: G symbolic pair loses its link on overwrite")
+    path = synth([0x74, 0x00, 0x00, 0x01, 0x00, 0x00,   # movd $0x01000000,(r5,r4)
+                  0x36, 0x5F,                           # movzw r3,(r7,r6)
+                  0x16, 0x4C,                           # ashud $1,(r7,r6)
+                  0x64, 0x61,                           # addd (r7,r6),(r5,r4)
+                  0x04, 0x5A,                           # movw $0x0:s,r4
+                  0x24, 0xD0])                          # storw
+    rows, stats, unc = scan_image(path)
+    hit = [r for r in rows if r["instruction"] == "0x00000e"
+           and r["operation"] == "WRITE"]
+    check("symbolic link does not survive a half overwrite",
+          hit[0]["address_kind"] if hit else None, "UNKNOWN")
+
+    print("== synthetic: H call clobbers everything")
+    path = synth([0x74, 0x00, 0xFF, 0x00, 0x06, 0x60,
+                  0x00, 0xC0, 0x00, 0x00,   # bal (ra),*+0:m
+                  0x24, 0xD0])
+    rows, stats, unc = scan_image(path)
+    hit = find(rows, 0x0A, "WRITE")
+    check("bal drops the register state",
+          hit[0]["address_kind"] if hit else None, "UNKNOWN")
 
 # ---------------------------------------------------------------------------
 # 3. real images
