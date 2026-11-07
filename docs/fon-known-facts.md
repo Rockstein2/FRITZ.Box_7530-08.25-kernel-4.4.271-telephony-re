@@ -867,6 +867,31 @@ removed when this was fixed.
 Nothing in this section reaches L5 (hardware): the register meanings remain
 unknown.
 
+## 9h. Peripheral cross-references (OFFLINE, 2026-11-07)
+
+Produced by `tools/cr16_peripheral_xrefs.py`; report in
+`tools/reports/peripheral-xrefs.json`; details in
+`docs/fon-dialog-peripheral-xrefs.md` and `docs/fon-dialog-peripheral-map.md`.
+
+| Fact | Value | Evidence |
+|---|---|---|
+| reader(s) of `0x000F6002` | exactly one, `0x25FAE` (normal) / `0x26764` (p2test) | L1/L2 |
+| writer(s) of `0x000F6002` | **none in either image** | L2 |
+| writers of `0x000F6006` | `0x1348`, `0x145C`, `0x258C`, all writing `0x0080`; `0x25B4` writes 0 | L2 |
+| readers of `0x000F6006` | `0x2602C`, `0x28CDE` (both discard or immediately overwrite) | L2 |
+| writers of `0x000F6400` / `0x000F6402` | one each, no readers | L2 |
+| writers of `0x000F5402` | seven, values `0x0400`, `0x2000`, `0x0100`, `0xFFFF` | L2 |
+| reader of `0x01000000` | none found; address is computed at run time (`0x25CE`) | L2, limited by Q55 |
+| access width of every register above | 16 bits (`loadw`/`storw`) | L2 |
+| the `abs20` and the `movd` register blocks are the same hardware | **not established** | — |
+
+What precedes `0x25F90` on the path from `0x1602`: `0x3A08 di`,
+`0x3A0C -> 0x1388` (clears `0xF5404/6/8/A`, sets `0xFF4856` bits, sets
+`0xF401A` bit 1, writes `0x80` to `0x000F6006`), `0x3A28` writes `0xFFFF` to
+`0x000F5402`.  What follows: `0x25FB8` calls `0x25EA6`.
+
+No register in this section reaches L5; none is named after a function.
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |
