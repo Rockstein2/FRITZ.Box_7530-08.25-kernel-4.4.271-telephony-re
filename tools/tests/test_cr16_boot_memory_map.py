@@ -59,7 +59,7 @@ def rec(count, addr, kind, data):
 
 
 plain = ihex([rec(2, 0x10, 0, [0xAA, 0xBB]), rec(0, 0, 1, [])])
-mem, blocks, types, errors = M.parse_ihex(plain)
+mem, blocks, types, errors, ovl = M.parse_ihex(plain)
 check("data record parsed", mem.get(0x10), 0xAA)
 check("second byte parsed", mem.get(0x11), 0xBB)
 check("block found", blocks, [(0x10, 2)])
@@ -68,14 +68,14 @@ check("no parse errors", errors, [])
 ext = ihex([rec(2, 0, 4, [0x00, 0x01]),      # upper = 0x00010000
             rec(1, 0x20, 0, [0x5A]),
             rec(0, 0, 1, [])])
-mem, blocks, types, errors = M.parse_ihex(ext)
+mem, blocks, types, errors, ovl = M.parse_ihex(ext)
 check("extended linear address applied", mem.get(0x00010020), 0x5A)
 check("extended block start", blocks[0][0], 0x00010020)
 
 seg = ihex([rec(2, 0, 2, [0x10, 0x00]),      # segment 0x1000 -> 0x10000
             rec(1, 0x02, 0, [0x77]),
             rec(0, 0, 1, [])])
-mem, blocks, types, errors = M.parse_ihex(seg)
+mem, blocks, types, errors, ovl = M.parse_ihex(seg)
 check("extended segment address applied", mem.get(0x10002), 0x77)
 
 # ---------------------------------------------------------------------------
@@ -83,12 +83,12 @@ check("extended segment address applied", mem.get(0x10002), 0x77)
 # ---------------------------------------------------------------------------
 print("== overlap detection")
 tmp_a = ihex([rec(4, 0x100, 0, [1, 2, 3, 4]), rec(0, 0, 1, [])])
-mem, blocks, _, _ = M.parse_ihex(tmp_a)
+mem, blocks, _, _, _ = M.parse_ihex(tmp_a)
 check("a single block has no overlap", len(blocks), 1)
 tmp_b = ihex([rec(2, 0x100, 0, [1, 2]),
               rec(2, 0x102, 0, [3, 4]),      # contiguous -> one block
               rec(0, 0, 1, [])])
-mem, blocks, _, _ = M.parse_ihex(tmp_b)
+mem, blocks, _, _, _ = M.parse_ihex(tmp_b)
 check("contiguous records merge", blocks, [(0x100, 4)])
 check("a gap splits blocks",
       [b[0] for b in blocks], [0x100])
@@ -126,6 +126,62 @@ else:
           "loadd 0x0:s(r8,r7)" in text, True)
 
 # ---------------------------------------------------------------------------
+# 5b. real overlapping records
+# ---------------------------------------------------------------------------
+print("== overlapping Intel HEX records")
+conflict = ihex([rec(4, 0x100, 0, [1, 2, 3, 4]),
+                 rec(4, 0x102, 0, [9, 9, 5, 6]),
+                 rec(0, 0, 1, [])])
+mem, blocks, _, errors, ovl = M.parse_ihex(conflict)
+check("a conflicting overlap is detected", len(ovl), 2)
+check("conflicting overlap is labelled",
+      {o["kind"] for o in ovl}, {"conflicting"})
+check("strict mode reports the conflict as an error",
+      len(M.parse_ihex(conflict, strict=True)[3]) > 0, True)
+
+benign = ihex([rec(4, 0x100, 0, [1, 2, 3, 4]),
+               rec(4, 0x102, 0, [3, 4, 5, 6]),
+               rec(0, 0, 1, [])])
+mem, blocks, _, errors, ovl = M.parse_ihex(benign, strict=True)
+check("an identical overlap is recorded", len(ovl), 2)
+check("identical overlap is labelled benign",
+      {o["kind"] for o in ovl}, {"benign"})
+check("identical overlap is not an error", errors, [])
+
+bad_sum = ihex([":02000000010200"])   # valid is ...02FB
+mem, blocks, _, errors, ovl = M.parse_ihex(bad_sum)
+check("a bad checksum is reported",
+      any("checksum" in e for e in errors), True)
+
+short_rec = ihex([":0400000001020304"])
+mem, blocks, _, errors, ovl = M.parse_ihex(short_rec)
+check("a length mismatch is reported",
+      any("length field" in e for e in errors), True)
+
+bad_ext = ihex([rec(4, 0, 4, [0, 1, 0, 0]), rec(0, 0, 1, [])])
+mem, blocks, _, errors, ovl = M.parse_ihex(bad_ext)
+check("an extended-address record of wrong size is rejected",
+      any("extended linear" in e for e in errors), True)
+
+# ---------------------------------------------------------------------------
+# 5c. the copy helper semantics
+# ---------------------------------------------------------------------------
+print("== copy helper (0x28d56)")
+synth_mem = {}
+rec_bytes = ((0x000008F2).to_bytes(4, "little")
+             + (0x0000936C).to_bytes(4, "little"))
+for i, b in enumerate(rec_bytes):
+    synth_mem[0x1C + i] = b
+writes = M.simulate_28d56(synth_mem, 0x1C, 0x24)
+check("one record is processed", len(writes), 1)
+check("count is little-endian 0x8f2", writes[0]["count_dec"], 0x8F2)
+check("destination is 0x936c", writes[0]["destination"], "0x0000936c")
+check("cursor stops at the end address",
+      M.simulate_28d56(synth_mem, 0x1C, 0x1C), [])
+check("the big-endian reading of the same bytes differs",
+      int.from_bytes(rec_bytes[:4], "big"), 0xF2080000)
+
+# ---------------------------------------------------------------------------
 # 6. a jump to code that is absent from the image
 # ---------------------------------------------------------------------------
 print("== jump into absent code")
@@ -133,10 +189,10 @@ first_path = IMAGES["first"]
 if not first_path.is_file():
     skip("hand-off", "first-level firmware missing")
 else:
-    mem, blocks, _, _ = M.parse_ihex(first_path)
+    mem, blocks, _, _, _ = M.parse_ihex(first_path)
     check("first-level starts at 0x10080", blocks[0][0], 0x10080)
     check("first-level does not contain 0x7c", 0x7C in mem, False)
-    sec_mem, sec_blocks, _, _ = M.parse_ihex(IMAGES["normal"])
+    sec_mem, sec_blocks, _, _, _ = M.parse_ihex(IMAGES["normal"])
     check("second-level does contain 0x7c", 0x7C in sec_mem, True)
 
 # ---------------------------------------------------------------------------
@@ -146,9 +202,9 @@ print("== image comparison")
 if not all(IMAGES[k].is_file() for k in ("normal", "p2test", "first")):
     skip("image comparison", "firmware missing")
 else:
-    n_mem, n_blocks, _, _ = M.parse_ihex(IMAGES["normal"])
-    p_mem, p_blocks, _, _ = M.parse_ihex(IMAGES["p2test"])
-    f_mem, f_blocks, _, _ = M.parse_ihex(IMAGES["first"])
+    n_mem, n_blocks, _, _, _ = M.parse_ihex(IMAGES["normal"])
+    p_mem, p_blocks, _, _, _ = M.parse_ihex(IMAGES["p2test"])
+    f_mem, f_blocks, _, _, _ = M.parse_ihex(IMAGES["first"])
     check("normal and p2test are parsed separately",
           len(n_mem) != len(p_mem) or n_mem is not p_mem, True)
     # The images are separate files; no byte is shared, but the first-level
@@ -165,13 +221,13 @@ else:
 # ---------------------------------------------------------------------------
 print("== file vs runtime")
 if first_path.is_file():
-    mem, blocks, _, _ = M.parse_ihex(first_path)
+    mem, blocks, _, _, _ = M.parse_ihex(first_path)
     payload = M.build_payload(mem, blocks, 0)
     check("upload payload has a 2-byte header for level 0",
           payload["header_bytes"], 2)
     check("payload length excludes header and checksum",
           payload["payload_length"], len(mem) + 8)
-    mem2, blocks2, _, _ = M.parse_ihex(IMAGES["normal"])
+    mem2, blocks2, _, _, _ = M.parse_ihex(IMAGES["normal"])
     payload2 = M.build_payload(mem2, blocks2, 1)
     check("upload payload has a 4-byte header for level 1",
           payload2["header_bytes"], 4)
@@ -188,10 +244,22 @@ else:
     data = json.loads(REPORT.read_text())
     check("report names all three images",
           sorted(data["images"]), ["first", "normal", "p2test"])
-    check("copy helper direction is stated",
-          "writes through" in data["copy_helper"]["direction"], True)
-    check("copy helper overlap is UNKNOWN",
-          data["copy_helper"]["overlap"].startswith("UNKNOWN"), True)
+    ch = data["copy_helper"]
+    check("copy helper semantics say zeros are written",
+          "zero bytes" in ch["semantics"]["loop"], True)
+    check("copy helper explains why the value is zero",
+          "forced to 0" in ch["semantics"]["why_zero"], True)
+    check("copy helper arguments are the record range",
+          (ch["arguments"]["record_start"]["value"]
+           == "0x0000001c"), True)
+    check("copy helper loop end is 0x24",
+          ch["arguments"]["loop_end"]["value"], "0x00000024")
+    check("copy helper simulated exactly one record",
+          len(ch["simulated_writes"]), 1)
+    check("copy helper destination is 0x936c",
+          ch["changed_region"][0]["start"], "0x0000936c")
+    check("copy helper length is 0x8f2",
+          ch["changed_region"][0]["length"], 0x8F2)
     check("no within-image overlaps",
           [o for o in data["overlaps"] if "image" in o], [])
     check("hand-off target is UNKNOWN",
@@ -214,6 +282,47 @@ else:
         check("committed report matches a fresh run",
               json.loads(REPORT.read_text()),
               json.loads(Path("/tmp/cr16-boot-map-check.json").read_text()))
+
+# ---------------------------------------------------------------------------
+# 11. hand-off branch targets are recorded, not guessed
+# ---------------------------------------------------------------------------
+print("== hand-off branch decoding")
+# binutils arg_c rule for disps17: 16-bit field, bit 0 is the sign flag
+def disps17_target(word1, addr):
+    c = word1
+    if c & 1:
+        c = (-c) & 0xFFFF
+        d = -c
+    else:
+        d = c
+    return (addr + d) & 0xFFFFFF
+
+
+check("0x1017c field decodes to 0x010101",
+      disps17_target(0xFF85, 0x1017C), 0x010101)
+check("0x10298 field decodes to 0x010101",
+      disps17_target(0xFE69, 0x10298), 0x010101)
+check("0x10250 field decodes to 0x010101",
+      disps17_target(0xFEB1, 0x10250), 0x010101)
+check("the computed target is odd", 0x010101 & 1, 1)
+check("a forward field keeps its value",
+      disps17_target(0x012C, 0x1000), 0x112C)
+
+if first_path.is_file() and OBJDUMP.is_file():
+    sys.path.insert(0, str(ROOT / "src" / "mock"))
+    import cr16_cfg as C
+    fw = C.load(str(first_path))
+    C.disassemble(fw, str(OBJDUMP))
+    for site in (0x1017C, 0x10284, 0x10298):
+        # the current decoder must not invent a target for these
+        t, form, status = C.decode_insn(site, fw.insns[site].mnemonic,
+                                        fw.insns[site].raw[:6])
+        check(f"{site:#07x} is not reported as DIRECT",
+              status != "DIRECT", True)
+    check("0x10100 is an instruction (the even neighbour)",
+          0x10100 in fw.insns, True)
+    check("0x10101 is not an instruction boundary",
+          0x10101 in fw.insns, False)
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
