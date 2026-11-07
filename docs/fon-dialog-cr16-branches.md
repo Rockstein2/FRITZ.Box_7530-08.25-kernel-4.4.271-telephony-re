@@ -8,9 +8,15 @@ Implementation: `tools/cr16_branch.py`.
 Tests and report: `tools/tests/test_cr16_branch.py --json <file>`;
 the checked-in summary is `tools/reports/cr16-branch-validation.json`.
 
+CR16 revision note: the SC14448 is a CR16C-class core.  The documents used
+here are the freely available CR16A Programmer's Reference Manual (bit-field
+appendix A and instruction semantics) and the binutils CR16 code, which
+targets the same ISA family; the CR16B/CR16C manuals are not freely readable
+offline, so nothing in this document relies on a CR16B/C-specific rule.
+
 Reference implementations: `binutils-2.44/opcodes/cr16-dis.c` and
-`cr16-opc.c` (from the OpenWrt build tree) and the git master copies (the
-CR16 code is identical), plus the CR16A Programmer's Reference Manual,
+`cr16-opc.c` (from the OpenWrt build tree) and the git master copy at commit
+`1b10c36` (the CR16 source is identical in both), plus the CR16A Programmer's Reference Manual,
 Appendix A (freely available; the bit-field appendix is authoritative for
 the formats and was used for the flag semantics as well).
 

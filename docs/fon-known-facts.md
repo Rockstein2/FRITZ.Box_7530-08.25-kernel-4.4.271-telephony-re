@@ -843,6 +843,7 @@ bring-up is the same code in both builds.
 | 2-byte conditional target for `1d 1f` at `0x25FB4` | `0x25FAE` (−0x06) | L2 |
 | branch validation matches, both images | 4 891, **0 mismatches** | L2 |
 | unsupported branch forms | 113 (four-byte backwards, one six-byte) | L2 |
+| `br` semantics | unconditional jump, no link, no fall-through | L2 |
 | `0x25F90` loop | `cmpw $0x200` + `bhi` → 0x25F9A | L3 |
 | fill iterations | **511** (indices 1..511) | L4 |
 | fill range | `0x01000002` … `0x010003FE` | L4 |
@@ -850,11 +851,16 @@ bring-up is the same code in both builds.
 | `0x2558`…`0x25B8` | one function, no caller of `0x257E` | L3 |
 | address operand `abs20` | `((b0 & 0x0F) << 16) \| word1` | L2 |
 
-CFG statistics (normal image, 23 284 edges): `DIRECT_RESOLVED` 22 815,
-`DIRECT_UNSUPPORTED` 46, `INDIRECT_REGISTER` 382, `INDIRECT_TABLE_RESOLVED`
-0, `FALLTHROUGH_UNRESOLVED` 9, `OUTSIDE_LOADED_IMAGE` 2,
-`TARGET_NOT_INSTRUCTION` 30.  Mode A from `0x1602` reaches 9 042
-instructions, mode B 17 600, mode C is empty.
+CFG statistics (normal image, 22 669 edges after `br` was reclassified as an
+unconditional jump): `DIRECT_RESOLVED` 22 200, `DIRECT_UNSUPPORTED` 46,
+`INDIRECT_REGISTER` 382, `INDIRECT_TABLE_RESOLVED` 0,
+`FALLTHROUGH_UNRESOLVED` 9, `OUTSIDE_LOADED_IMAGE` 2,
+`TARGET_NOT_INSTRUCTION` 30.  Mode A from `0x1602` reaches 8 340
+instructions, mode B 17 543, mode C is empty.
+
+`br` is the unconditional relative branch (CR16A §"BR (Unconditional
+Branch)"); it has no fall-through, and 615 false fall-through edges were
+removed when this was fixed.
 
 Nothing in this section reaches L5 (hardware): the register meanings remain
 unknown.

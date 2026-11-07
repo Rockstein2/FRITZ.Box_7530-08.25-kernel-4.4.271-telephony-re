@@ -133,7 +133,22 @@ Details:
   field than the CR16A drawing shows; this is recorded as the remaining
   format question (Q44), not as a segment translation.
 
-## 3. Register table (L1/L2 only)
+## 3. Access widths
+
+Three widths are easy to confuse in this code; the table keeps them apart.
+
+| Item | Width | Evidence |
+|---|---|---|
+| hardware address field | `abs20` for `:m` operands, 24 bits in the `movd` literal | `cr16-opc.c` operands `{abs20,0}` and `{op1,0},{regp,16}` |
+| address in a register pair | 32 bits (`r1:r0`, `r4:r3`, …) | `movd $0xff6006:l,(r1,r0)` loads both halves |
+| the operation on the bus | 16 bits for `loadw`/`storw`, 32 bits for `loadd`/`stord` | instruction mnemonic |
+| the value operand | 16 bits (`r2`, `$0x80:m`) | `movw`/`storw` register operands |
+
+So `movd $0xff6006:l,(r1,r0)` is a **32-bit address load**, and the write that
+follows it, `storw r2,0x0:s(r1,r0)`, is a **16-bit store**.  Nothing in the
+sequence writes 32 bits to `0xFF6006` or `0xFF5406`.
+
+## 4. Register table (L1/L2 only)
 
 | Address | Sites | Access | What is proven | What is not |
 |---|---|---|---|---|
@@ -148,7 +163,7 @@ Details:
 
 No claim is made that `0x000F6400` and `0x00FF6400` are the same register.
 
-## 4. `0x2558` – `0x25B8`: one function (L3 + L4)
+## 5. `0x2558` – `0x25B8`: one function (L3 + L4)
 
 | Address | Instruction | Effect |
 |---|---|---|
@@ -168,7 +183,7 @@ There is no return or jump between `0x257C` and `0x257E`; the block from
 image targets `0x257E`, so it is **not** a separately called function.
 `0x24F8` receives the byte in `r2` and returns when it is zero.
 
-## 5. The `0xFF6006` pulse (L2)
+## 6. The `0xFF6006` pulse (L2)
 
 ```text
 002582  movd $0xff6006:l,(r1,r0)
@@ -188,7 +203,7 @@ image targets `0x257E`, so it is **not** a separately called function.
 0025b4  storw $0x0:s,0x0:s(r1,r0)  ; [0xFF6006] = 0
 ```
 
-## 6. Normal versus `p2test`
+## 7. Normal versus `p2test`
 
 | Item | normal | `p2test` |
 |---|---|---|
@@ -203,7 +218,7 @@ The structure (value, counter, base, readiness read, bound) repeats, but the
 counter lives at a different address and the surrounding blocks differ, so
 the two builds are **not** declared identical.
 
-## 7. Pseudo-code with provenance
+## 8. Pseudo-code with provenance
 
 ```c
 void unknown_init(void)                       /* 0x25F90, L3 */
@@ -236,14 +251,18 @@ void unknown_two_registers(void)              /* 0x2558..0x25B8, L3 */
     *((volatile uint16_t *)0x000F6402) = 0x00F0;           /* 0x2566 */
     unknown_3C8C(2, 2);                                    /* 0x2570 */
     unknown_24F8(/* r2 = high byte of the result */);      /* 0x257E */
-    *((volatile uint32_t *)0x00FF6006) = 0x0080;           /* 0x258C */
-    *((volatile uint32_t *)0x00FF5406) &= 0xF0FF;          /* 0x25A2 */
-    *((volatile uint16_t *)0x000F5402) = 0x0400;           /* 0x25B0 */
-    *((volatile uint32_t *)0x00FF6006) = 0;                /* 0x25B4 */
+    /* 16-bit accesses: the operand is `0x0:s(r1,r0)` and the instructions
+       are `storw`/`loadw`.  The 32-bit value is only the ADDRESS, which the
+       firmware loads into the register pair (r1,r0) with `movd $0xff6006:l`;
+       the bus cycles themselves are 16 bits wide.                        */
+    *((volatile uint16_t *)0x00FF6006) = 0x0080;           /* 0x2588..0x258C */
+    *((volatile uint16_t *)0x00FF5406) &= 0xF0FF;          /* 0x2596..0x25A2 */
+    *((volatile uint16_t *)0x000F5402) = 0x0400;           /* 0x25AC..0x25B0 */
+    *((volatile uint16_t *)0x00FF6006) = 0x0000;           /* 0x25B4 */
 }
 ```
 
-## 8. What remains unknown
+## 9. What remains unknown
 
 | Item | Level reached |
 |---|---|

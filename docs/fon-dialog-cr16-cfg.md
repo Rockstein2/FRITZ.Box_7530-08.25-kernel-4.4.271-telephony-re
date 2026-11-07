@@ -25,7 +25,10 @@ Toolchain: CR16 binutils 2.44, built locally at
    (see `fon-dialog-peripheral-init.md` §1.2).
 4. **`abs20` operand field identified**: `((byte0 & 0x0F) << 16) | word1`,
    so `0x000F6400`, `0x000F6002` and `0x000F5402` really are 18/20-bit
-   absolute addresses with no segment extension (§5).
+   absolute addresses with no segment extension.
+5. **`br` reclassified as an unconditional jump** in this iteration: it has
+   no link register and no fall-through, and 615 false fall-through edges
+   were removed (§2.2).
 
 ## 2. Edge categories
 
@@ -59,7 +62,7 @@ the conditionals.
 |---|---|
 | Runs | 9 |
 | Decoded instructions | 19 570 |
-| `DIRECT_RESOLVED` | 22 815 |
+| `DIRECT_RESOLVED` | 22 200 |
 | `DIRECT_UNSUPPORTED` | 46 |
 | `INDIRECT_REGISTER` | 382 |
 | `INDIRECT_TABLE_RESOLVED` | 0 |
@@ -67,21 +70,27 @@ the conditionals.
 | `FALLTHROUGH_UNRESOLVED` | 9 |
 | `OUTSIDE_LOADED_IMAGE` | 2 |
 | `TARGET_NOT_INSTRUCTION` | 30 |
-| **Total** | 23 284 |
+| **Total** | 22 669 |
 
-(`p2test`: 21 503 edges, 21 007 resolved, 67 unsupported, 396 indirect,
+(`p2test`: 20 931 edges, 20 435 resolved, 67 unsupported, 396 indirect,
 1 outside, 22 off-boundary.)
 
 ## 3. Reachability modes
 
-| Mode | Starts | Status | Reached (normal) |
-|---|---|---|---|
-| **A** | `0x1602` | *candidate*, never verified | **9 042** |
-| **B** | 386 heuristic candidates | research only | **17 600** |
-| **C** | verified entries | empty: no loader or vector table read | 0 |
+The three modes are **different experiments**, not three confidence levels of
+the same path:
 
-Mode A is smaller than before because it now follows the corrected branches
-instead of the ones that used to leak into unrelated code.
+| Mode | Starts | What it answers | Reached (normal) |
+|---|---|---|---|
+| **A** | candidate `0x1602` | what can be reached if `0x1602` is an entry | **8 340** |
+| **B** | 386 heuristic candidates | what could be reached from any likely function root | **17 543** |
+| **C** | verified entries | what is proven to run at reset | 0 (none verified) |
+
+None of them is evidence that the SC14448 executes this code — see §8.
+
+Mode A is smaller than in the previous iteration because `br` no longer
+contributes a fall-through edge (615 false edges removed) and because the
+branches were corrected earlier; both changes only *remove* wrong paths.
 
 ### 3.1 The chain to `0x25F90`
 
@@ -125,31 +134,56 @@ until `0x257E` passes `r2` to `0x24F8`; the slot itself is released at
 
 ## 4. Indirect calls
 
-There is **no table dispatch**.  Every indirect edge is one of:
+Every register-indirect transfer is one of:
 
-* `jump (ra)` — tail call to the caller's return address, 260 sites;
-* `jump (r8,r7)` — one site, register-pair dispatch (`e6 0a`);
-* `jal (rp)` — 121 sites, all with a register pair operand, e.g. `d7 00`.
+* `jump (ra)` — 260 sites, returning to the caller's address;
+* `jump (r8,r7)` — one site (`e6 0a`);
+* `jal (rp)` — 121 sites, e.g. `d7 00`.
 
-Consequently the earlier hope that a table would hide the PCM RX handler is
-not supported.  The remaining unexamined code is whatever is unreachable from
-mode A (8 840 instructions) — a research target, not a dispatch table.
+No **dispatch table** (a table of code addresses indexed by a register) was
+found: none of the 382 sites reads a pointer from memory before the indirect
+jump.  That is a statement about what was found, **not** a proof that no
+indirect dispatch exists anywhere.  The 4 567 instructions not reached from
+mode A (19 570 decoded − 8 340) are, until examined, a place where such a
+construct could still hide; they are also the place where the remaining
+non-content classification errors (data decoded as code) live.
 
 ---
 
 ## 5. What is still unknown
 
-| Item | Why |
+| Item | Level reached |
 |---|---|
-| is `0x1602` the reset entry? | no vector table exists at a fixed address; Q47 |
-| what `0x000F6002` / `0x000F6400` physically are | the `:m` 16-bit address has no proven extension; Q44 |
-| what value `1` in `0x000F6002` means | no dynamic observation |
+| is `0x1602` the reset entry? | no loader or vector table read; Q47 |
+| what `0x000F6002` / `0x000F6400` physically are | `abs20` addressing is established (L2); the register functions are not |
+| what value `1` in `0x000F6002` means | L2 only, no hardware observation |
 | is `0x01000000` the PCM buffer? | not part of any loaded run |
-| loop count and poll semantics of `0x25F90` | two conditionals decode outside the function |
-| 260 two-byte conditionals with a `byte1 < 0x10` | second `dispe9` layout, not fully resolved |
+| meaning of `0x1001` | L2 only |
+| `br` as an indirect dispatcher | 382 register-indirect sites, no table found |
+| 113 unsupported branch forms | 112 backward four-byte conditionals, 1 six-byte |
 
-**Next step with the best information/risk ratio:** the static picture no
-longer promises a hidden dispatch table.  The productive next move is the
-controlled load of the original SC14448 firmware so that the register
-meanings can be observed, as planned in the runbook; as a purely offline
-interlude, resolve the byte-level contradiction in `0x25F90` §1.2.
+Status summary, so that this document cannot be read as stronger than the
+evidence: the decoder is L2 and validated; the loop of `0x25F90` and the
+sequence `0x2558`–`0x25B8` are L3 and L4; **no register meaning in this
+document reaches L5**.
+
+**Next step:** the static picture is consistent and no longer promises a
+hidden dispatch table.  The informative next stage is the controlled load of
+the original SC14448 firmware so that the register meanings (`0x01000000`,
+`0x000F6002`, `0xFF6006`) can be observed.
+
+## 6. Evidence levels for this document
+
+| Level | Applies to |
+|---|---|
+| L1 BYTES | every address and byte quoted in §2 and §3.1 |
+| L2 DECODE | the branch forms and the `abs20` operand, validated against binutils (4 891 matches, 0 mismatches) |
+| L3 CFG | the edges, the reachability counts and the function boundaries of `0x2558`–`0x25B8` |
+| L4 SEMANTICS | the loop count of `0x25F90` (see `fon-dialog-peripheral-init.md`) |
+| L5 HARDWARE | **nothing in this document** |
+
+L2 does not prove that an instruction executes, L3 does not establish what a
+register does, and L4 is a statement about the algorithm under the ISA
+assumptions, not about the chip.  Two independent implementations agreeing
+here would still share binutils as their origin, so agreement between them
+is not extra evidence.
