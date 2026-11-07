@@ -961,6 +961,29 @@ argument class, and the assembler itself rejects `movd $imm:l` (it emits
 `imm:m`).  Only `movd`'s printed literal is used, never an address derived
 from its encoding.
 
+## 9j. CR16 addressing, system registers and alias candidates (OFFLINE, 2026-11-07)
+
+Documents: `docs/fon-dialog-cr16-addressing.md`,
+`docs/fon-dialog-cr16-system-registers.md`,
+`docs/fon-dialog-address-alias-hypotheses.md`; report
+`tools/reports/cr16-address-alias.json` from `tools/cr16_address_alias.py`.
+
+| Fact | Value | Evidence |
+|---|---|---|
+| CR16A address width | 18 bits (`0 … 0x3FFFF`) | L2, manual §2.4 |
+| is the core CR16A? | **no** — the images address above `0x3FFFF` | L1 |
+| `abs20` field | 20 bits, low nibble of byte 0 is bit 20 | L1/L2 |
+| `abs24` field | 24 bits, relocation refuses above `0xFFFFFF` | L1 |
+| decoder masking | **none** — neither encoding is shifted or masked | L2 |
+| `INTBASE` | written once: `0x24` (`0x15E6`, `0x1068`) | L2 |
+| `ISP` / `USP` | `0x3FF0` / `0x3F00` | L2 |
+| `CFG` | bit 8 only; cleared by the first-level image, set by it and by the second-level image | L2 |
+| dispatch table at `INTBASE` | contents are not plausible code; effect of the copy at `0x15F6` unresolved | **UNKNOWN** |
+| reset entry | `0x15AA`/`0x102C` starts the system-register setup and has **no caller** in the image; not proven to be the reset vector | L3 |
+| address pairs with equal low 20 bits | **12** in `normal`, **12** in `p2test`, the same set | L2 |
+| `0x000F6006` ↔ `0x00FF6006` | same low bits, different access structure | L2 |
+| are the two one physical register? | **UNKNOWN** — no document, no hardware | — |
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |

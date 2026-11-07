@@ -74,8 +74,14 @@ storw r2,0x0:s(r7,r6)
 is `UNKNOWN` after the fix (it was `RESOLVED 0x00FF6006` before).  The source
 `r3` is not invalidated by this instruction.
 
-Occurrences: `normal` 222 `movzw` + 47 `movxw` + 14 `mulsw` + 3 `muluw` = 286
-pair-destination forms; `p2test` 163 + 43 + 57 + 4 = 267.
+Occurrences of *all* pair-destination widening/multiply forms: `normal`
+222 `movzw` + 47 `movxw` + 14 `mulsw` + 3 `muluw` = **286**; `p2test`
+163 + 43 + 57 + 4 = **267**.
+
+A narrower count appears in `fon-dialog-peripheral-xrefs.md`: 269 / 206
+covers only the widening moves (`movzw`, `movxw`), because the multiply
+forms are never used as an address base.  Both numbers are correct for their
+own definition and must not be read as one statistic.
 
 ## 3. Other instructions that write registers
 

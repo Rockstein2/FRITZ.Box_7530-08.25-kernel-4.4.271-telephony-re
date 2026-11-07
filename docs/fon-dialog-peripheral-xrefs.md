@@ -114,8 +114,11 @@ previous report, instruction by instruction:
 So the arithmetic drop of the `RESOLVED` counter from 1 280 to 951 is the
 **denominator** growing, not addresses disappearing.  The `movzw` fix
 removed a way to *produce* a false address; it did not invalidate any
-address this firmware actually states.  Measured: of the 269 `movzw`/`movxw`
-pair-destination forms in `normal` and 206 in `p2test`, **none** uses that
+address this firmware actually states.  Measured over the 269 `movzw`/`movxw`
+forms in `normal` and 206 in `p2test` whose destination is a register pair
+(*widening moves only* — the count in
+`fon-dialog-cr16-register-effects.md` is 286 / 267 because it also includes
+`mulsw`/`muluw`, which never appear as an address base), **none** uses that
 pair as an address base later in the same block (the pair is always a
 *literal* operand or a copy destination).  The fix is therefore a correctness
 fix for the rule, demonstrated by the synthetic counterexample in
