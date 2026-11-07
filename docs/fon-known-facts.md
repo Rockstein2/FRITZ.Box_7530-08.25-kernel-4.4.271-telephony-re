@@ -418,6 +418,36 @@ The module did not change, so the Stage B kit on the stick stays valid, and
 the probe-only behaviour (`clock_refs=0`, `reset_refs=0`) must stay identical
 after this image boots — that is the first thing to confirm.
 
+### 9d-4. Probe-only still side-effect free with the C1 links (2026-11-07)
+
+The C1 preparation image was booted into RAM and Stage B was repeated.
+
+| Diagnostic | Before (9d) | After the DT change |
+|---|---|---|
+| `stage` | `0x23` | `0x23` |
+| `clock_refs` | `0` | **`0`** |
+| `reset_refs` | `0` | **`0`** |
+| `pinctrl_ref` | `0` | `0` |
+| `irq` | `-1` | `-1` |
+| `/proc/iomem` before/after | identical | identical |
+| new `/proc/interrupts` rows | none | none |
+| unload | clean | clean, no driver link or attributes |
+
+Live DT confirmed inside the running kernel:
+
+```text
+clocks  interrupts  resets  status
+clocks  00000000 00 00 00 05 00 00 00 13    /* &gcc, GCC_AUDIO_AHB_CLK = 19 */
+resets  00000000 00 00 00 05 00 00 00 2c    /* &gcc, GCC_AUDIO_BCR     = 44 */
+status  okay
+```
+
+Conclusion: **declaring a clock and a reset in DT does not make a
+probe-only load acquire them.**  The resources exist for C1 and remain
+untouched under Stage B.
+
+Evidence: `../../restore/stage-b-c1/stage-b-c1/`.
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |
