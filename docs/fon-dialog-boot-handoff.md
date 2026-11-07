@@ -42,6 +42,8 @@ second-level start-up           PROVEN location: 0x15AA block, 0x15BC setup
 | second-level does not overwrite the loader | no second-level block covers `0x10080` | L1 |
 | hand-off branch | the `0x18` form at `0x1017C`/`0x10298` is not decoded | **UNKNOWN** |
 | second-level start-up block | `0x15AA` (normal) / `0x102C` (p2test); sets USP, ISP, CFG, INTBASE | L2/L3 |
+| first-level *load* address | `0x10080`, L1 (the Intel HEX record) | L1 |
+| first-level *execution* entry | **UNKNOWN** — no ROM image and no decoded branch enters it | — |
 | that block has no caller in the image | searched every direct branch and call | L2 |
 | `0x1602` is on the start-up path | `0x15FA`–`0x1602` write PSR then `bal 0x39F8` | L3 |
 
@@ -51,13 +53,14 @@ Earlier iterations suggested the hand-off goes to `0x7C`.  With the correct
 reading of the loader this is **not supported**:
 
 * the loader starts at `0x10080` and contains no code at `0x7C`;
-* no second-level block starts or covers `0x7C`;
-* the `0x18` branch form at `0x1017C` does not decode to `0x7C` under any
-  rule consistent with the three known-good second-level targets.
+* the `0x18` branch form at `0x1017C` computes `0x010101` under the binutils
+  rule, not `0x7C` (see `fon-dialog-boot-branch-decoding.md`).
 
-What *is* true about `0x7C`: it lies inside the second-level block that
-starts at `0x0`, and it holds a pointer pattern (`0x000146E5`) that points
-outside the image.  Whether the loader jumps there remains **UNKNOWN**.
+**Correction.**  Earlier text claimed that "no second-level block covers
+`0x7C`".  That was wrong: block 1 is `0x0`–`0xD4` in both images, so `0x7C`
+**is** inside loaded data.  It holds `68 46 01 00`, one of the two
+non-repeating entries of the table at `0x24`.  Whether the CPU executes it
+is a separate, unproven question.
 
 ## 4. How the second-level reaches its start-up block
 
@@ -66,7 +69,7 @@ Two possibilities, neither proven:
 | Possibility | What would make it true |
 |---|---|
 | the loader jumps directly to `0x15AA`-equivalents | the hand-off branch target would be `0x15AA`; not established |
-| the loader jumps to a fixed entry (e.g. `0x0`) and the image's first instructions jump on | bytes at `0x0` are `a0 00 00 00 35 00 00 00 …`, which decode as `loadm $1,r0` — not a plausible entry sequence |
+| the loader jumps to a fixed entry (e.g. `0x0`) and the image's first instructions jump on | bytes at `0x0` decode as `loadm $1,r0` then `illegal` — not a plausible entry sequence |
 
 Neither explanation is supported by the bytes.  The hand-off is **PARTIALLY
 KNOWN**: the destination *data* is known, the *control transfer* is not.
@@ -77,11 +80,11 @@ KNOWN**: the destination *data* is known, the *control transfer* is not.
 |---|---|---|
 | direction | writes through the destination pair `(r3,r2)` | `0x28D90 storb r0,0x0:s(r8,r7)` after `0x28D58 movd (r3,r2),(r8,r7)` |
 | unit | **count of 8-byte `{u32be addr,u32be len}` entries**, not bytes | `0x28D6A addd $8,(r8,r7)` |
-| destination | `(r3,r2) = 0x1C` loaded at `0x15EA` | L2 |
+| destination | `(r3,r2) = 0x1C` loaded at `0x15EA` — this is the **record start**, not the copy address | L2 |
 | source | `(r5,r4) = 0x24` loaded at `0x15F0` | L2 |
-| overlap of source and destination | **UNKNOWN** — `0x1C` and `0x24` are 8 bytes apart, so the list read and the bytes written overlap only if the destination bytes extend upward from `0x1C` into `0x24` | not resolved: the destination is a *pointer* to where the copy goes, not the copy address itself |
+| what is actually written | **`0x8F2` zero bytes at `0x936C`** — one record `{count=0x8F2, dest=0x936C}` at `0x1C` | L2, `fon-dialog-copy-helper-28d56.md` |
 | does it change `0x24` | **UNKNOWN** | depends on the destination pointer, which is `(r3,r2) = 0x1C` — i.e. the copy writes at `0x1C` and above |
 
-The function reads a **list** at `0x24` and writes the pointed-to data at
-`0x1C`.  It is not a simple byte copy, and it is not a vector-table
-installation: the list at `0x24` is walked as `{addr,len}` pairs.
+The call is `fn_28d56(0x1C, 0x24)`: cursor `0x1C`, end `0x24`, i.e. exactly
+one 8-byte record, which asks for `0x8F2` zero bytes at `0x936C`.  It is a
+buffer clear, not a copy and not a vector-table installation.

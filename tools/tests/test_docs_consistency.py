@@ -405,8 +405,10 @@ if SYSREG.is_file():
     t = SYSREG.read_text()
     check("system-register doc no longer calls 0x28D56 a byte copy",
           "byte-copy loop" not in t, True)
-    check("system-register doc explains the list format",
-          "u32be address" in t, True)
+    check("system-register doc explains the record format",
+          "u32le count" in t and "zero" in t, True)
+    check("system-register doc states the table is word-offset encoded",
+          "word-offset" in t, True)
 
 MEM = BOOT_DOCS["fon-dialog-boot-memory-map.md"]
 if MEM.is_file():

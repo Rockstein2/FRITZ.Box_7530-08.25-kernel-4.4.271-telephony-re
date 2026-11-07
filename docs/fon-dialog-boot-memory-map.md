@@ -40,7 +40,8 @@ The loader writes each byte at the address in its block header
 |---|---|
 | the second-level image is placed at the addresses its Intel HEX records declare | **proven at L2** (header-driven `storb`, `0x1019A`–`0x10234`) |
 | the second-level image is relocated to another base by the loader | **no evidence**; the loader has no base adjustment |
-| the second-level image is placed at `0x7C` | **not supported**: no block starts there |
+| `0x7C` holds loaded bytes | **yes** — block 1 covers `0x0`–`0xD4` in both images, and `0x7C` lies inside it (the earlier "no block covers `0x7C`" was wrong) |
+| the CPU executes `0x7C` | **UNKNOWN** — bytes present is not bytes executed |
 | the loader and the loaded code coexist in memory | **hypothesis**: the loader occupies `0x10080`, which lies inside the second-level *envelope* `0x0`–`0x28DCD`, but no second-level block covers `0x10080`.  The block `0x20000` `0x8dce` ends at `0x28DCe`, above it, and `0x9c5e` `0x3a2` ends at `0xA000`, below it |
 
 **The last row is the important one.**  Since no second-level block spans
@@ -51,22 +52,22 @@ the loader knows.
 
 ## 3. The region around `0x0`–`0x100`
 
-The second-level image starts at `0x0` with a block of `0xD5` bytes.  At
-`0x24` and around `0x7C` the same 4-byte pattern repeats:
+The second-level image starts at `0x0` with a block of `0xD5` bytes, so
+`0x7C` and `0x24` are both **loaded data**.  The table at `0x24` is analysed
+in `fon-dialog-low-memory-analysis.md`: its entries double to
+**instruction boundaries inside the image** (`0x28996`, `0x28A94`,
+`0x28CD0`, `0x28DCA`), which makes them word-offset addresses, not pointers
+to missing code.
 
-```text
-0x24: e5 46 01 00 e5 46 01 00 ...
-0x70: e5 46 01 00 e5 46 01 00 cb 44 01 00 e5 46 01 00 68 46 01 00
-```
+Also in that block, at `0x1C`, is the single record that the start-up code
+uses to clear a buffer (`{count=0x8F2, dest=0x936C}`).
 
-read as little-endian 32-bit values that is `0x000146E5`, `0x000144CB`,
-`0x00014668`.  **None of those addresses exists in the image**: the block
-list has no entry covering `0x146E5`.  So this region is a table of
-pointers into code that is *not* part of the uploaded image — it must come
-from somewhere else (a further upload, or a different image).
+## 3a. Load address versus execution entry
 
-The same table is what `INTBASE = 0x24` points at (see
-`fon-dialog-cr16-system-registers.md`).
+`0x10080` is the address of the first Intel HEX block of the first-level
+image.  That is an **image placement** fact (L1).  It does **not** establish
+that the CPU starts executing there: no ROM image and no decoded branch into
+it exists in the material available.  Execution entry: **UNKNOWN**.
 
 ## 4. What the loader itself writes
 

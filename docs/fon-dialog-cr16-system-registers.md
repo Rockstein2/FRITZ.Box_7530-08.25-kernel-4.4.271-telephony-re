@@ -57,13 +57,13 @@ Both images contain the same block, at different addresses:
 | `movw $0x800:m,r1` / `lpr r1,psr` | `0x15FA`/`0x15FE` | `0x107C`/`0x1080` | PSR |
 | `bal 0x39F8` | `0x1602` | `0x1084` | main path |
 
-`0x28D56` is **not** a byte copy: it walks a list of 8-byte
-`{u32be address, u32be length}` entries (`0x28D5C` compares the two
-pointers, `0x28D60` reads the address, `0x28D64` reads the length,
-`0x28D6A` advances by 8) and writes the pointed-to data through `(r3,r2)`.
-The call at `0x15F6` passes `(r3,r2) = 0x1C` and `(r5,r4) = 0x24`.  The
-effect is therefore "interpret the list at `0x24`, write at `0x1C`" — not
-"copy 28 bytes".  Whether the two regions overlap is **UNKNOWN**.
+`0x28D56` is **not** a byte copy and **not** a vector-table install: it
+walks 8-byte records from `(r3,r2)` while the cursor differs from
+`(r5,r4)`, and for each record `{u32le count, u32le dest}` it writes `count`
+**zero** bytes at `dest` (`r4` is forced to 0 at `0x28D62`).  The call at
+`0x15F6` passes `(r3,r2) = 0x1C` and `(r5,r4) = 0x24`, i.e. exactly one
+record, which asks for `0x8F2` zeros at `0x936C`.  Full derivation:
+`fon-dialog-copy-helper-28d56.md`.
 
 **`CFG` bit 8 is the only `CFG` bit this firmware writes.**  What bit 8
 does is not documented in any offline source.  It must not be described as
@@ -79,15 +79,12 @@ image holds:
 ```
 
 Read as **little-endian 32-bit values** the region contains
-`0x000146E5`, `0x000146E5`, … — a regular table of pointers, with a few
-different entries (`0x000144CB`, `0x00014668`).  **None of those addresses
-exists in the uploaded image** (the block list has no entry above
-`0x28DCE` for them).  So the table points at code that arrives from
-somewhere else, or into a region the image does not describe.
-
-Note that reading the same bytes as big-endian 16-bit values gives
-`0x4216`, `0x5B17`, … which are not instruction boundaries; the
-little-endian 32-bit reading is the one that produces a consistent table.
+`0x000146E5` (repeating), with `0x000144CB` and `0x00014668` at `0x74` and
+`0x7C`.  **Doubling them** gives `0x28DCA`, `0x28996`, `0x28CD0` — all
+instruction boundaries inside the image, three of them `push` prologues.
+That is a word-offset encoding, so the entries do **not** point outside the
+image.  Derivation and the probability argument are in
+`fon-dialog-low-memory-analysis.md`.
 
 Status: **UNKNOWN**, with two possibilities that cannot be separated
 offline:
