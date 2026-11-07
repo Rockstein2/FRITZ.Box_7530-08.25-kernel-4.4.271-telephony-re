@@ -709,7 +709,7 @@ known-good `0x2582` snippet.  Nothing was installed system-wide.
 
 | Claim | Evidence |
 |---|---|
-| `0xFF6006` is written `0x80`, read, then written `0` | disassembly of `0x2558`-`0x25B8` |
+| `0xFF6006` is written `0x80`, read, then written `0` | disassembly of `0x2558`-`0x25B8` (address `0x00FF6006`, *not* `0x000F6006`; see §9h) |
 | `0x80` is `BIT(7)` | by value |
 | it is a trigger, not a format register | set and cleared nine instructions later; no rate/word-size/master field exists in the function |
 | the read-back is discarded | `movw $0x400:m,r2` overwrites the value at `0x25ac` |
@@ -873,17 +873,37 @@ Produced by `tools/cr16_peripheral_xrefs.py`; report in
 `tools/reports/peripheral-xrefs.json`; details in
 `docs/fon-dialog-peripheral-xrefs.md` and `docs/fon-dialog-peripheral-map.md`.
 
+The first version of this scanner saw only `abs20` operands and `movd`
+literals: it recognised `disp:m(rp)` but not the `disp:s(rp)` form the
+firmware actually uses, so **no** register-pair access appeared in its report
+(0 resolved register-pair accesses, 618 records of which 568 were address
+literals).  The current version (3) parses every operand form, tracks
+register pairs inside a basic block, and classifies every memory instruction.
+The numbers below come only from version 3.
+
+`0x000F6006` and `0x00FF6006` are **different addresses** and are listed
+separately; nothing establishes that they alias the same register.
+
 | Fact | Value | Evidence |
 |---|---|---|
 | reader(s) of `0x000F6002` | exactly one, `0x25FAE` (normal) / `0x26764` (p2test) | L1/L2 |
-| writer(s) of `0x000F6002` | **none in either image** | L2 |
-| writers of `0x000F6006` | `0x1348`, `0x145C`, `0x258C`, all writing `0x0080`; `0x25B4` writes 0 | L2 |
-| readers of `0x000F6006` | `0x2602C`, `0x28CDE` (both discard or immediately overwrite) | L2 |
-| writers of `0x000F6400` / `0x000F6402` | one each, no readers | L2 |
+| writer(s) of `0x000F6002` | none among resolved forms; `UNKNOWN`/`SYMBOLIC` accesses remain unexamined | L2 |
+| writers of `0x000F6006` | `0x1348`, `0x145C`, both writing `0x0080` | L2 |
+| readers of `0x000F6006` | `0x2602C`, `0x28CDE` | L2 |
+| writers of `0x00FF6006` | `0x258C` (`0x0080`), `0x25B4` (`0`) | L2 |
+| readers of `0x00FF6006` | `0x25AA` (value discarded) | L2 |
+| writers of `0x000F6400` / `0x000F6402` | one each (`0x255E` / `0x2566`), no readers | L2 |
 | writers of `0x000F5402` | seven, values `0x0400`, `0x2000`, `0x0100`, `0xFFFF` | L2 |
-| reader of `0x01000000` | none found; address is computed at run time (`0x25CE`) | L2, limited by Q55 |
+| `0x00FF5406` | read-modify-write at `0x1A1A`–`0x1A22`, `0x259C`–`0x25A2`, `0x26046`–`0x26050` | L2 |
+| `0x01000000` | 6 `movd` literals; stores at `0x25D0`/`0x2618` are `SYMBOLIC` (`0x01000000 + 2*r3/r4`) | L2 |
+| reader of `0x01000000` | none resolved to a constant; all uses are computed (Q55) | L2, limited |
 | access width of every register above | 16 bits (`loadw`/`storw`) | L2 |
-| the `abs20` and the `movd` register blocks are the same hardware | **not established** | — |
+| the `0x000Fxxxx` and `0x00FFxxxx` blocks are the same hardware | **not established** | — |
+
+Statistics (version 3): normal 4 301 memory operations — 1 346 `RESOLVED`,
+36 `SYMBOLIC`, 2 334 `UNKNOWN`, 656 `STACK`, 456 `INDEXED`, 41
+`PC_RELATIVE`; p2test 4 062 — 1 302 / 29 / 2 293 / 577 / 320 / 21.  Every
+memory instruction is classified (`unclassified` is empty in both images).
 
 What precedes `0x25F90` on the path from `0x1602`: `0x3A08 di`,
 `0x3A0C -> 0x1388` (clears `0xF5404/6/8/A`, sets `0xFF4856` bits, sets
@@ -891,6 +911,36 @@ What precedes `0x25F90` on the path from `0x1602`: `0x3A08 di`,
 `0x000F5402`.  What follows: `0x25FB8` calls `0x25EA6`.
 
 No register in this section reaches L5; none is named after a function.
+
+## 9i. The `data:l` (abs24) form was invisible (OFFLINE, 2026-11-07)
+
+The 6-byte `opc20` load/store form printed as `<abs>:l` was dropped by the
+first scanner.  Its address is
+
+```text
+words = [b0 | b1<<8, b2 | b3<<8, b4 | b5<<8]
+packed = words[0]<<32 | words[1]<<16 | words[2]
+addr  = ((packed >> 16) & 0xF) << 20 | ((packed >> 24) & 0xF) << 16 | (packed & 0xFFFF)
+```
+
+which matches all 161 (normal) and 170 (p2test) occurrences and the assembler
+output for `0x0fffff`, `0x100000` and `0xff4c00`.
+
+Its two consequences:
+
+| Fact | Value | Evidence |
+|---|---|---|
+| `0x15AE` (normal) / `0x1030` (p2test) | `storb r0,0xff4c00:l` with `r0 = 0xFF` — the first **direct** access to the `0x00FFxxxx` block | L1/L2 |
+| `0x15B6` (normal) / `0x1038` (p2test) | `storb r0,0xff5000:l` with `r0 = 0x08` | L1/L2 |
+
+Both blocks are 8-bit accesses, unlike every other studied `0xFFxxxx`
+register (16-bit), and are not reached in mode A.
+
+The `imm:l` printouts of `movd`/arithmetic instructions are **not** decoded by
+this formula: binutils' disassembler derives them from the `imm20`/`imm32`
+argument class, and the assembler itself rejects `movd $imm:l` (it emits
+`imm:m`).  Only `movd`'s printed literal is used, never an address derived
+from its encoding.
 
 ## 9e. Offline state of the driver
 

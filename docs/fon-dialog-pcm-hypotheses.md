@@ -9,6 +9,10 @@ The purpose of this document is to keep hypotheses about PCM/TDM separate
 from confirmed facts.  Each row says what supports the hypothesis, what
 contradicts it, and which observation would settle it.
 
+**Address discipline.**  `0x000F6006` and `0x00FF6006` are different
+addresses with different sets of writers.  No hypothesis below may treat them
+as one register unless it says so explicitly and marks that step as unproven.
+
 ---
 
 ## 1. The known host-side frame (for reference only)
@@ -20,29 +24,34 @@ and it says nothing about what the SC14448 expects.
 
 ## 2. Hypotheses
 
-### H1 — `0x000F6002 == 1` means "the operation started at `0xFF6006` finished"
+### H1 — `0x000F6002 == 1` means "the operation started in `0x2558` finished"
 
 | | |
 |---|---|
-| Supporting | `0x25FAE`–`0x25FB4`: read, compare with 1, loop. It follows `0x2558`, which pulsed `0x80`. The register has exactly one access in each image (a read). |
-| Contradicting | no writer exists in the firmware; nothing shows what sets it |
-| Missing | an L5 observation: set the register to 1 from a debugger/host and see whether the loop exits, and whether `0x80` is needed first |
+| Supporting | `0x25FAE`–`0x25FB4`: read, compare with 1, loop. It follows `0x2558`, which pulsed `0x0080` into `0x00FF6006` and edited `0x00FF5406`. `0x000F6002` has exactly one access in each image (a read). |
+| Contradicting | no writer exists among the resolved forms; nothing shows what sets it; the poll is unbounded, so if it never becomes 1 the sequence never returns |
+| Missing | an L5 observation: does the value change while the firmware runs this path |
 | Confidence | **low-medium** |
 
-### H2 — `0x000F6006` bit 7 is a start/commit strobe for whatever `0x000F6002` reports
+### H2 — bit 7 of the `0x6006` register pair is a start/commit strobe
+
+This hypothesis must be split: the two addresses have different evidence.
 
 | | |
 |---|---|
-| Supporting | three independent routines write exactly `0x0080` (`0x1348`, `0x145C`, `0x258C`); `0x25B4` clears it again; the write at `0x25B0`–`0x25B4` is bracketed by the poll |
-| Contradicting | `0x145C` writes `0x80` without a following poll in the same routine |
-| Missing | what changes between the set and the clear: any other register, the poll value, or a pin |
-| Confidence | **medium** for "strobe", **none** for "PCM start" |
+| Supporting (both) | `0x0080` is written and then cleared (`0x258C`→`0x25B4` for `0x00FF6006`); the `0x000F6006` writers `0x1348`/`0x145C` write the same value |
+| Supporting (`0x00FF6006` only) | written at `0x258C`, read at `0x25AA`, cleared at `0x25B4`, all inside `0x2558`; the clear is immediately followed by the poll |
+| Missing | whether the same value at two different addresses means the same hardware |
+| Confidence | **medium** that `0x00FF6006` is pulsed inside `0x2558`, **none** for "PCM start", **none** for aliasing with `0x000F6006` |
+
+Since PERIPH-2 the statement "three independent routines write `0x0080` to
+`0x000F6006`" is withdrawn: only `0x1348` and `0x145C` write that address.
 
 ### H3 — `0x000F5402` selects a channel or a divider
 
 | | |
 |---|---|
-| Supporting | written with four distinct values (`0x0400`, `0x2000`, `0x0100`, `0xFFFF`) from seven sites; `0x0400` follows every read of `0x000F6006` |
+| Supporting | written with four distinct values (`0x0400`, `0x2000`, `0x0100`, `0xFFFF`) from seven sites; `0x0400` follows every read of `0x000F6006` (`0x26034`, `0x28CE8`) and is written inside `0x2558` (`0x25B0`) |
 | Contradicting | no read-back anywhere, so it could equally be a strobe with a payload |
 | Missing | the effect of changing one of the four values while the chip runs |
 | Confidence | **low** |
@@ -51,8 +60,8 @@ and it says nothing about what the SC14448 expects.
 
 | | |
 |---|---|
-| Supporting | 511 sequential 16-bit writes; the base is not inside any loaded code run; five other routines load the same base; `0x25BA` is a generic "store and advance the counter" helper reused with other values (`0x901` at `0x26020`) |
-| Contradicting | no reader of the area was found; `0x1001` appears nowhere else in either image |
+| Supporting | 511 sequential 16-bit writes; the base is not inside any loaded code run; other routines load the same base; the store address is `SYMBOLIC` (`0x01000000 + 2*r3`), consistent with an array |
+| Contradicting | no numeric reader was found; `0x1001` appears nowhere else in either image |
 | Missing | a reader: a routine that loads `0x01000000` and reads with an index, or a DMA descriptor pointing there |
 | Confidence | **low** for "PCM buffer", **medium** that it is a data area written by the firmware |
 
@@ -60,8 +69,8 @@ and it says nothing about what the SC14448 expects.
 
 | | |
 |---|---|
-| Supporting | the value is repeated 511 times, so per-element meaning is more likely than a one-off control word; the same helper writes `0x901` elsewhere |
-| Contradicting | nothing |
+| Supporting | the value is repeated 511 times, so per-element meaning is more likely than a one-off control word |
+| Contradicting | `0x1001` is not reused anywhere; the constant `0x901` that appears in the image (`0x2E48`, `0x2EFA`, `0x2FEC`, `0x30BA`, `0x316E`) is loaded by different code, not by the fill helper |
 | Missing | a second routine writing a different constant pattern into the same area, or a reader that interprets the field |
 | Confidence | **low** |
 
@@ -69,7 +78,7 @@ and it says nothing about what the SC14448 expects.
 
 | | |
 |---|---|
-| Supporting | the register set it touches (`0x000F6xxx`) and the `0xFF6xxx` block are adjacent in address space to the blocks used for GPIO (`0xFF48xx`) and timers (`0xFF58xx`), so a separate `0x6000` block exists; `0xFF600E` is loaded at `0x1486` into `r12` (a single register, not a pair) |
+| Supporting | the sequence touches `0x000F6xxx`, `0x00FF6xxx` and `0x00FF54xx`, which sit in blocks adjacent to GPIO (`0xFF48xx`) and timers (`0xFF58xx`), so a separate `0x6000` block exists in both address spaces |
 | Contradicting | no instruction in the sequence is conditioned on frame timing, no FIFO fill/drain loop, no 8 kHz or 8-slot constant, no interrupt entry |
 | Missing | an L5 trace of which registers change once per frame |
 | Confidence | **low** |
@@ -83,16 +92,26 @@ and it says nothing about what the SC14448 expects.
 | Missing | a full code/data classification and a check of the vector table that the CR16 uses for exceptions |
 | Confidence | **low** |
 
+### H8 — `0x00FF4C00` / `0x00FF5000` belong to the same block family as the other `0xFFxxxx` words
+
+| | |
+|---|---|
+| Supporting | they are the only `abs24` accesses into the `0x00FFxxxx` space, both 8-bit constant stores located in one small block |
+| Contradicting | 8-bit access width, while every neighbouring `0xFFxxxx` register is 16-bit; the block is not reached in mode A |
+| Missing | any second access, or a hardware map |
+| Confidence | **very low** |
+
 ## 3. What the firmware does *not* contain
 
 Searched for, and not found, in either image:
 
 * any 8 kHz / 8000 / 125 µs constant;
 * a loop whose trip count is 8, 16 or 128 in a register-fill pattern;
-* any read back from `0x01000000`;
+* any numeric (resolved) read from `0x01000000`;
 * any write to `0x000F6002`;
 * a second writer of `0x000F6400`/`0x000F6402`;
-* a write of any value other than `0x0080` to `0x000F6006`.
+* a write of any value other than `0x0080` to `0x000F6006`;
+* any access at all to `0x00FF6400` or `0x00FF6402`.
 
 This list is a statement about what the scanner can see (§1 of
 `fon-dialog-peripheral-xrefs.md`), not a proof of absence.
@@ -102,10 +121,11 @@ This list is a statement about what the scanner can see (§1 of
 There is **no demonstrated link** between `0x25F90`, the registers it touches
 and a PCM/TDM interface.  The strongest statement the evidence supports is:
 
-> the firmware writes a constant pattern into an unidentified RAM area,
-> stores two constants into an unidentified register pair, pulses one bit of
-> `0x000F6006`, edits four bits of `0x00FF5406`, writes `0x0400` to
-> `0x000F5402`, clears the pulse and then waits for `0x000F6002` to read 1.
+> the firmware writes a constant pattern into an unidentified area at
+> `0x01000000 + 2·index`, stores two constants (`0x0000`, `0x00F0`) into two
+> `0x000F64xx` registers, writes `0x0080` into `0x00FF6006`, clears four bits
+> of `0x00FF5406` under `di`, reads `0x00FF6006` back, writes `0x0400` to
+> `0x000F5402`, clears `0x00FF6006` and then waits for `0x000F6002` to read 1.
 
-The single observation that would establish or refute the link is in
-`fon-dialog-hw-test-plan.md`.
+The observation that would move this forward is described in
+`fon-dialog-hw-test-plan.md`; it cannot by itself establish causation.

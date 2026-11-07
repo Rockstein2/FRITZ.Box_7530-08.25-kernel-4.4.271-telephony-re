@@ -234,6 +234,74 @@ if report is not None:
     check("known facts: branch validation MATCH total",
           number(row[1]) if row else None, total_match)
 
+# ---------------------------------------------------------------------------
+# 7. Address spaces are never merged in the peripheral documents
+# ---------------------------------------------------------------------------
+XREF_REPORT = ROOT / "tools" / "reports" / "peripheral-xrefs.json"
+XREF_DOCS = [ROOT / "docs" / name for name in (
+    "fon-dialog-peripheral-xrefs.md", "fon-dialog-peripheral-map.md",
+    "fon-dialog-init-dependencies.md", "fon-dialog-pcm-hypotheses.md")]
+
+if not XREF_REPORT.is_file():
+    skip("address spaces", "peripheral-xrefs.json missing")
+else:
+    xr = json.loads(XREF_REPORT.read_text())
+
+    def ops_of(addr):
+        found = set()
+        for image in xr["images"].values():
+            for row in image["operations"]:
+                if row["effective_address"] == addr:
+                    found.add((row["operation"], row["address_kind"]))
+        return found
+
+    # 0x258c / 0x25b4 must be 0x00FF6006 and never 0x000F6006 (PERIPH-2)
+    check("report: 0x00FF6006 has register-pair writers",
+          {("WRITE", "RESOLVED")} <= ops_of("0x00ff6006"), True)
+    check("report: 0x000F6006 has only its own two writers",
+          sum(1 for image in xr["images"].values()
+              for row in image["operations"]
+              if row["effective_address"] == "0x000f6006"
+              and row["operation"] == "WRITE") , 4)
+    check("report: 0x25d0 is SYMBOLIC",
+          any(row["instruction"] == "0x0025d0"
+              and row["address_kind"] == "SYMBOLIC"
+              for image in xr["images"].values()
+              for row in image["operations"]), True)
+
+    # no document may claim that 0x258c or 0x25b4 writes 0x000F6006
+    for path in XREF_DOCS + [FACTS_DOC]:
+        text = path.read_text()
+        bad = []
+        for line in text.splitlines():
+            if "0x000F6006" not in line:
+                continue
+            if "0x258c" in line.lower() or "0x25b4" in line.lower():
+                # a line that also names 0x00FF6006 is drawing the
+                # distinction, which is what we want; flag only lines that
+                # attribute the site to 0x000F6006 alone
+                if "0x00FF6006" in line:
+                    continue
+                bad.append(line.strip())
+        check(f"{path.name}: no row merges 0x258c/0x25b4 into 0x000F6006",
+              bad, [])
+
+    # the XREF document's statistics must match the report
+    def total(image, kind):
+        return sum(v for k, v in xr["images"][image]["stats"].items()
+                   if k.endswith("/" + kind))
+
+    text = (ROOT / "docs" / "fon-dialog-peripheral-xrefs.md").read_text()
+    for image in ("normal", "p2test"):
+        row = find_row(ROOT / "docs" / "fon-dialog-peripheral-xrefs.md",
+                       f"| {image} |")
+        if row:
+            nums = [number(cell) for cell in row]
+            check(f"xrefs doc: {image} UNKNOWN matches report",
+                  total(image, "UNKNOWN") in nums, True)
+            check(f"xrefs doc: {image} unclassified is 0",
+                  len(xr["images"][image]["unclassified"]), 0)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)
