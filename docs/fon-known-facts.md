@@ -510,6 +510,65 @@ printed from that same run.
 Artifacts: module `a9ee7a13...d30f` (76 412 B), image `154bd755...4811`,
 evidence `../../restore/stage-b-c1b/stage-b-c1b/`.
 
+### 9d-7. Stage C1: the ADSS block answers on the bus (2026-11-07)
+
+First authorised clock/reset/MMIO access.  Module `2b523aec...9e40`,
+loaded as `probe_only=0 run_c1=1`.
+
+Sequence actually executed (each step logged before it ran):
+
+```text
+step 1  devm_clk_get("audio_ahb")
+step 2  clk_prepare_enable      -> rate 100000000 Hz
+step 3  devm_reset_control_get("audio_blk")
+step 4  assert, 20-24 ms, deassert
+step 5  ioremap adss / stereo_tx / stereo_rx
+step 6-11  six readl() calls, no write anywhere
+step 12 reset asserted again
+step 13 clk_disable_unprepare
+```
+
+Register values read once, immediately after the reset pulse:
+
+| Register | Offset | Value |
+|---|---|---|
+| `ADSS_GLB_AUDIO_MODE` | `0x30` | `0x00000000` |
+| `ADSS_GLB_TDM_CTRL` | `0x1c` | **`0x00010001`** |
+| `ADSS_GLB_CLK_I2S_CTRL` | `0x18` | `0x00000000` |
+| `ADSS_GLB_I2S_RST` | `0x14` | `0x00000000` |
+| `STEREO_TX_CONFIG` | `0x00` | **`0x00000102`** |
+| `STEREO_RX_CONFIG` | `0x00` | **`0x00000102`** |
+
+Interpretation, from the GPL bit definitions:
+
+- `TDM_CTRL = 0x00010001`: `TX_CHAN_NUM = 1` and `RX_CHAN_NUM = 1`, i.e.
+  **two channels per direction, not the eight slots the FON needs**
+  (`GLB_TDM_CTRL_TX_CHAN_NUM(slots-1)` would require `7`);
+  delays and sync counts are zero.
+- `STEREO_CONFIG = 0x102`: bit 8 is `STEREO_CONFIG_MASTER`, so **the block
+  came up as master, not slave**.  Bit 1 is not part of the documented
+  mask and its meaning is unknown.
+- Everything else is zero, which is what a freshly deasserted block should
+  report.
+
+What this proves:
+
+| Question | Answer |
+|---|---|
+| Is the ADSS window readable? | **yes** |
+| Does the AHB clock gate it? | not proven either way — it was enabled, and reads worked |
+| Are values plausible, not bus noise? | **yes**: no `0xffffffff`, two structured fields |
+| Is TDM configured for the FON? | **no** — channel count is 1, not 7 |
+| Is the block in slave mode? | **no** — `MASTER = 1` |
+
+A clock-framework warning was emitted on step 13 (`clk_branch_toggle`
+warn path from `clk_core_disable`): the gate did not report halting within
+the poll timeout.  The enable count did return to 0 and the block was left
+asserted, but the warning means the stop is **not confirmed**.
+
+After `rmmod`: no module, `gcc_audio_ahb_clk` back to enable 0, no
+`0x77000000` region in `/proc/iomem`, no leftover attributes.
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |

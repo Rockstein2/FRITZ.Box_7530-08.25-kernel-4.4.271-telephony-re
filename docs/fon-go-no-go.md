@@ -86,15 +86,20 @@ above ask for; the *expectation* is no longer unknown.
 | C0 shows audio clocks at enable 0 | `audio-clocks.txt` | Stage C0 | **PASS 2026-11-07** |
 | Passive TDM measurement | FSC 8 kHz / BCLK 1.0257 MHz present or absent | scope | **not done** |
 | FON node has clock/reset links | DT contains `clocks` and `resets` | DT change + review | **not done** |
-| C1 module built in kernel tree | new SHA-256 recorded, Stage B still passes | build | **partly done**: C1 image built (`4c3bdfd1...`), module unchanged, Stage B re-passed on hardware with `clock_refs=0` / `reset_refs=0` |
+| C1 module built in kernel tree | new SHA-256 recorded, Stage B still passes | build | **PASS**: module `2b523aec...9e40` (94 180 B) built from the kernel tree, Stage B re-passed, C1 executed |
 | Physical power-cycle path | operator confirms | operator | pending |
 
 Stage C0: **PASS, executed 2026-11-07** on the probe-only image; the
 collector needed three fixes found only on the real device (busybox awk has
 no `strtonum`, `od` is absent, and the iomem owner test must match only the
 ADSS window).  Bench tests: 20 passed, 0 failed.
-Stage C1: **NO-GO** — the DT links now exist and were verified on hardware,
-but the passive TDM measurement (G4) is still missing.  Everything else on
-the C1 checklist is closed except the physical power-cycle confirmation.
+Stage C1: **EXECUTED 2026-11-07** (`probe_only=0 run_c1=1`).  The block
+answered: `TDM_CTRL=0x00010001`, `STEREO_CONFIG=0x102`, all other registers
+zero.  The board did not hang and the module unloaded cleanly.
+
+Result: the ADSS window is readable with the AHB clock enabled, TDM is
+**not** configured for 8 slots, and the block comes up as **master**, not
+slave.  A clock-framework warning on the disable path means the gate stop
+is unconfirmed.
 Dialog firmware upload: **NO-GO** until C0 and the passive measurement
 separate "no firmware" from "no clocks".

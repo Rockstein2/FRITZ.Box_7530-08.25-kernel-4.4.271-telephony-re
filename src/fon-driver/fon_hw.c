@@ -35,6 +35,7 @@
 #include <linux/sysfs.h>
 #include <linux/version.h>
 
+#include "fon_c1.h"
 #include "fon_hw.h"
 #include "fon_tdm.h"
 
@@ -64,6 +65,18 @@ static bool probe_only = true;
 module_param(probe_only, bool, 0444);
 MODULE_PARM_DESC(probe_only,
 		 "Do not map MMIO or acquire clocks/reset/pinctrl (default: true)");
+
+/*
+ * Stage C1: the first bounded, explicitly authorised access to the ADSS
+ * block.  Requires probe_only=0 and run_c1=1, and refuses to run with any
+ * other module parameter that would widen the scope (DMA, hardware writes).
+ * There is no sysfs trigger: the sequence runs once during probe, so an
+ * accidental write cannot re-run it.
+ */
+static bool run_c1;
+module_param(run_c1, bool, 0444);
+MODULE_PARM_DESC(run_c1,
+		 "Run the bounded Stage C1 ADSS clock/reset/read once during probe (default: false; requires probe_only=0)");
 
 static const char *const fon_resource_names[FON_RESOURCE_COUNT] = {
 	"adss", "pcm", "mbox_tx", "mbox_rx", "stereo_tx", "stereo_rx",
@@ -708,6 +721,35 @@ static int fon_tdm_probe(struct platform_device *pdev)
 			return ret;
 		dev_info(&pdev->dev,
 			 "FON probe-only ready; no MMIO/clock/reset/IRQ/DMA access\n");
+		if (run_c1)
+			dev_warn(&pdev->dev,
+				 "run_c1 ignored: it requires probe_only=0\n");
+		return 0;
+	}
+
+	/*
+	 * Stage C1 is deliberately exclusive: it needs the real clock and reset
+	 * resources, so it cannot run together with probe_only, with DMA
+	 * permission or with hardware writes.  Anything ambiguous refuses.
+	 */
+	if (run_c1) {
+		struct fon_c1_result c1;
+		int c1_ret;
+
+		if (allow_dma || allow_hw_writes) {
+			dev_err(&pdev->dev,
+				"C1 refused: run_c1 requires allow_dma=0 and allow_hw_writes=0\n");
+			return -EINVAL;
+		}
+		dev_warn(&pdev->dev,
+			 "C1: enabling the audio AHB clock, pulsing the audio reset and reading six registers once\n");
+		c1_ret = fon_c1_run(pdev, &c1);
+		dev_warn(&pdev->dev,
+			 "C1 finished: step=%d err=%d clk_enabled=%d reset_pulsed=%d\n",
+			 c1.step, c1.err, c1.clk_enabled, c1.reset_pulsed);
+		if (c1_ret)
+			return c1_ret;
+		/* C1 is a one-shot: leave the probe path afterwards. */
 		return 0;
 	}
 

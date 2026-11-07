@@ -6,4 +6,4 @@
 
 obj-$(CONFIG_FON_TDM) += fon_tdm_drv.o
 
-fon_tdm_drv-y := fon_tdm.o fon_dma.o fon_hw.o
+fon_tdm_drv-y := fon_tdm.o fon_dma.o fon_hw.o fon_c1.o
