@@ -93,11 +93,14 @@ build must confirm.
 | Q41 | What does the printed branch target from `objdump` mean (absolute vs displacement)? | **answered**: absolute; sign prefix is cosmetic, sign is in bit 0 of the field | answered |
 | Q42 | Who calls the `0x24F8` selector? | **answered for this image**: only `0x257E`, i.e. recursive re-entry; no external caller exists | answered |
 | Q43 | What does `BIT(7)` of `0xFF6006` do on the SC14448? | dynamic test once firmware runs | D |
-| Q44 | Is `0xf6400:m` decoded as `0x000F6400` or `0xFF6400`? | needs the Dialog address map or a dynamic trace | research |
-| Q45 | How is the `0x24F8` block entered if no caller exists? | **answered**: via `0x25FAA -> 0x2558 -> 0x257E`, reachable from `0x1602` | answered |
-| Q46 | Is `0x01000000` the PCM buffer, and what does `0x1001` mean? | needs the SC14448 memory map or a dynamic trace | research |
+| Q44 | Is `0xf6400:m` decoded as `0x000F6400` or `0xFF6400`? | **narrowed**: the `:m` operand is a 16-bit immediate inside a 4-byte instruction, so the instruction itself cannot spell `0xFF6400`; whether the core sign- or segment-extends it is still unknown.  Same for `0xF6002` and `0xF5402` | research |
+| Q45 | How is the `0x24F8` block entered if no caller exists? | **corrected**: `0x24F8` is entered by the `bal` at `0x257E` (the block's own entry); the old `0x25FAA -> 0x2558 -> 0x257E -> 0x24F8` chain is a sequence of addresses, not of call edges | answered |
+| Q46 | Is `0x01000000` the PCM buffer, and what does `0x1001` mean? | **still open**: the fill helper writes one word per call and resets a counter at `0x937C`; the base and the value are proven, their meaning is not | research |
+| Q49 | Why do the two conditionals in `0x25F90` (`0x25FA8` `bhi`, `0x25FB4` `bne`) decode forward, outside the function, instead of looping? | re-verify the bytes against the assembler, check for a second `dispe9` layout | offline |
+| Q50 | What are the 260 two-byte conditionals with `byte1 < 0x10` (`00 1c`, `47 1e`, `a2 15`)? | derive the layout from `cr16-opc.c` instead of fitting | offline |
 | Q47 | Is `0x1602` the reset entry, or is there a vector table we have not found? | no vector table at a fixed address identified | research |
-| Q48 | Where are the 2 706 unresolved indirect calls dispatched from? | table recovery; the most likely place for a PCM RX handler | research |
+| Q51 | Are the 45 four-byte conditionals whose second word exceeds `0x8000` backward branches? | assembler experiment with a code block above `0x8000` | offline |
+| Q48 | Where are the indirect calls dispatched from? | **answered**: there is no table; 382 edges are `jump (ra)`/`jal (rp)`/one `jump (r8,r7)`, all register-indirect tail calls or stubs | answered |
 | Q39 | Is the SC14448 currently held in reset (GPIO40 = 0, pad is input)? | release GPIO40 under explicit approval and re-run the pin probe | D |
 | Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
 | Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |

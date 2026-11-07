@@ -788,6 +788,14 @@ Instruction sizes in `dectfw_secondlevel_441.hex`: 2 B x 13 546, 4 B x
        -> 0x25FAA -> 0x2558 -> 0x257E -> 0x24F8 (recursion)
 ```
 
+### 9d-12 (superseded)
+
+> **Superseded by §9g (2026-11-07).**  The text below was written from a
+> decoder that applied the `bal` rule to every 4/6-byte instruction and from a
+> one-hop reachability walk.  Its "512 words", "poll until ready" and
+> "recursion" statements are withdrawn; the edge statistics in it are wrong.
+> Kept only as history.
+
 **`0x25F90` is a PCM bring-up routine:**
 
 ```text
@@ -826,6 +834,49 @@ invalid targets.
 `p2test` reproduces the same constants at shifted addresses
 (`0x1001` at `0x26750`, poll at `0x26764`, `0xFF6006` at `0x1E3E`), so the
 bring-up is the same code in both builds.
+
+## 9g. CR16 control-flow graph, second iteration (OFFLINE, 2026-11-07)
+
+Branch decoding is now chosen by machine form, not by length.  Every rule is
+validated against the CR16 binutils built from 2.44:
+
+| Form | Rule | Checked |
+|---|---|---|
+| 4-byte `bal` (all condition bytes, `00 c0`…`ff c0`) | 24-bit field, sign in bit 0 | 1 490 / 1 490 |
+| 2-byte conditional, `byte1` 0x10..0x1f | `((w0 & 0xF) \| ((w0>>8) & 0xF) << 4) << 1`, unsigned | 1 755 / 1 755 |
+| 2-byte `beq0*/bne0*` | `2*nib + 2 (+0x20 if byte1 & 1)` | assembler |
+| 4-byte conditional | `addr + words[1]` | assembler |
+| 6-byte conditional, `0x92FC` | not implemented | — |
+
+Edge statistics of `dectfw_secondlevel_441.hex` (total 23 284):
+
+| Category | Count |
+|---|---|
+| `DIRECT_RESOLVED` | 22 714 |
+| `DIRECT_UNSUPPORTED` | 46 |
+| `INDIRECT_REGISTER` | 382 |
+| `INDIRECT_TABLE_RESOLVED` | 0 |
+| `FALLTHROUGH_UNRESOLVED` | 9 |
+| `OUTSIDE_LOADED_IMAGE` | 42 |
+| `TARGET_NOT_INSTRUCTION` | 91 |
+
+Reachability: mode A (`0x1602`) reaches **10 730** instructions; mode B
+(386 heuristic candidates) reaches 17 652; mode C (verified entries) is
+**empty** because no loader or vector table has been read.
+
+Corrections to the previous section (§9d-12) that this iteration establishes:
+
+| Old statement | Now |
+|---|---|
+| "2 706 unresolved indirect edges" | 382 register-indirect edges; the rest were unsupported direct forms or off-image targets |
+| "512 words filled at `0x01000000`" | `0x25BA` writes **one** word per call; the loop is unproven |
+| "poll `0xF6002` until ready" | the loop conditional at `0x25FA8` decodes forward to `0x2619A`, outside the function |
+| "`0x257E` re-enters, recursion depth 1" | no recursion: `0x24F8` has no call to itself |
+| "`0x2558 → 0x257E`" as a call | `0x2558` calls `0x3C8C`; `0x257E` is a separate entry |
+| "404 candidate entries" | 386 heuristic candidates, all `verified=False` |
+
+Detailed write-up: `docs/fon-dialog-peripheral-init.md` and
+`docs/fon-dialog-cr16-cfg.md`.
 
 ## 9e. Offline state of the driver
 
