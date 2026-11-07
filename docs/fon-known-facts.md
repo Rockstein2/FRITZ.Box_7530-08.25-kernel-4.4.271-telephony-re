@@ -843,8 +843,8 @@ bring-up is the same code in both builds.
 |---|---|---|
 | 2-byte conditional target for `49 1f` at `0x25FA8` | `0x25F9A` (−0x0E) | L2 |
 | 2-byte conditional target for `1d 1f` at `0x25FB4` | `0x25FAE` (−0x06) | L2 |
-| branch validation matches, both images | **7 807** (normal 4 039 + p2test 3 768), **0 mismatches** | L2 |
-| unsupported branch forms | 113 (normal 46 = 45 backward four-byte + 1 six-byte; p2test 67 four-byte) | L2 |
+| branch validation matches, both images | **7 920** (normal 4 085 + p2test 3 835), **0 mismatches**, **0 unsupported** | L2 |
+| unsupported branch forms | **0** — the 113 former cases (112 backward `disps17`, 1 `disps25`) decode with the `cr16-dis.c` rule | L2 |
 | `br` semantics | unconditional jump, no link, no fall-through | L2 |
 | `0x25F90` loop | `cmpw $0x200` + `bhi` → 0x25F9A | L3 |
 | fill iterations | **511** (indices 1..511) | L4 |
@@ -854,11 +854,11 @@ bring-up is the same code in both builds.
 | address operand `abs20` | `((b0 & 0x0F) << 16) \| word1` | L2 |
 
 CFG statistics (normal image, 22 669 edges after `br` was reclassified as an
-unconditional jump): `DIRECT_RESOLVED` 22 200, `DIRECT_UNSUPPORTED` 46,
+unconditional jump): `DIRECT_RESOLVED` 22 244, `DIRECT_UNSUPPORTED` 0,
 `INDIRECT_REGISTER` 382, `INDIRECT_TABLE_RESOLVED` 0,
 `FALLTHROUGH_UNRESOLVED` 9, `OUTSIDE_LOADED_IMAGE` 2,
 `TARGET_NOT_INSTRUCTION` 30.  Mode A from `0x1602` reaches 8 340
-instructions, mode B 17 543, mode C is empty.
+instructions, mode B 17 546, mode C is empty.
 
 `br` is the unconditional relative branch (CR16A §"BR (Unconditional
 Branch)"); it has no fall-through, and 615 false fall-through edges were
@@ -1021,7 +1021,9 @@ Documents: `fon-dialog-firstlevel-cfg.md`, `fon-dialog-uart-boot-protocol.md`,
 | first-level load address | `0x10080` | L1 |
 | first-level execution entry | **UNKNOWN** | — |
 | first-level hand-off targets | with `signed16(word1 & 0xFFFE)` all three four-byte branches (`0x1017C`, `0x10250`, `0x10298`) reach `0x010100`, the retry loop | L2 |
-| `0x10284` (`disps25`) | unresolved: only 2 occurrences exist in all images, both decode incoherently; no validated encoding, no linked fixture | UNKNOWN |
+| `0x10284` (`disps25`) | **decodes to `0x000008`** (sign in bit 0, 24-bit magnitude, `addr + (-mag & 0xFFFFFE)`, masked to 24 bits) | L2 |
+| `0x000008` | `br 0x15AA` in `normal`, `br 0x1026` in `p2test` | L2 |
+| hand-off chain | loader `0x10284` → `0x8` → `0x15AA`/`0x1026` → start-up → `0x1602` → `0x25F90` | **L3, static** |
 | immediate tracking | a register value is invalidated by any write other than the `movw` that loaded it | L2 |
 | `0x01000000` region | not present in any uploaded image | L1 |
 | `CFG` bit 8 | cleared by the loader, set before its hand-off wait and by the second-level start-up | L2 |

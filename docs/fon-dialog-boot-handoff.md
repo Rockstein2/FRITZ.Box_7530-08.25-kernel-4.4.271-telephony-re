@@ -41,7 +41,7 @@ second-level start-up           PROVEN location: 0x15AA block, 0x15BC setup
 | second-level lands at its declared addresses | the header carries the address; no base adjustment exists in the loader | L2 |
 | second-level does not overwrite the loader | no second-level block covers `0x10080` | L1 |
 | the three `disps17` branches | decode to `0x010100`, the retry loop | L2 |
-| hand-off branch (`0x10284`) | `disps25`, field layout not validated; see `fon-dialog-boot-disps25.md` | **UNKNOWN** |
+| hand-off branch (`0x10284`) | `disps25` decodes to **`0x000008`**; `0x8` branches to `0x15AA` (normal) / `0x1026` (p2test) | **L3, decoded chain** |
 | second-level start-up block | `0x15AA` (normal) / `0x102C` (p2test); sets USP, ISP, CFG, INTBASE | L2/L3 |
 | first-level *load* address | `0x10080`, L1 (the Intel HEX record) | L1 |
 | first-level *execution* entry | **UNKNOWN** — no ROM image and no decoded branch enters it | — |

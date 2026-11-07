@@ -66,18 +66,24 @@ fall-through edges; that was corrected and is covered by a test.
 |---|---|
 | Runs | 9 |
 | Decoded instructions | 19 570 |
-| `DIRECT_RESOLVED` | 22 200 |
-| `DIRECT_UNSUPPORTED` | 46 |
+| `DIRECT_RESOLVED` | 22 244 |
+| `DIRECT_UNSUPPORTED` | 0 |
 | `INDIRECT_REGISTER` | 382 |
 | `INDIRECT_TABLE_RESOLVED` | 0 |
 | `INDIRECT_UNRESOLVED` | 0 |
 | `FALLTHROUGH_UNRESOLVED` | 9 |
-| `OUTSIDE_LOADED_IMAGE` | 2 |
+| `OUTSIDE_LOADED_IMAGE` | 4 |
 | `TARGET_NOT_INSTRUCTION` | 30 |
 | **Total** | 22 669 |
 
-(`p2test`: 20 931 edges, 20 435 resolved, 67 unsupported, 396 indirect,
+(`p2test`: 20 931 edges, 20 502 resolved, 0 unsupported, 396 indirect,
 1 outside, 22 off-boundary.)
+
+**All branch forms now decode.**  The 113 formerly unsupported cases were
+112 backward `disps17` conditionals and 1 `disps25`; both are implemented
+from `cr16-dis.c` (`disps17`: 16-bit magnitude mask, `disps25`: 24-bit), so
+`DIRECT_UNSUPPORTED` is 0 and the four `OUTSIDE_LOADED_IMAGE` edges are the
+two genuine out-of-image targets reached from both ends of their branches.
 
 ## 3. Reachability modes
 
@@ -87,7 +93,7 @@ the same path:
 | Mode | Starts | What it answers | Reached (normal) |
 |---|---|---|---|
 | **A** | candidate `0x1602` | what can be reached if `0x1602` is an entry | **8 340** |
-| **B** | 403 heuristic candidates | what could be reached from any likely function root | **17 543** |
+| **B** | 403 heuristic candidates | what could be reached from any likely function root | **17 546** |
 | **C** | verified entries | what is proven to run at reset | 0 (none verified) |
 
 None of them is evidence that the SC14448 executes this code — see §8.
@@ -170,7 +176,7 @@ categories.
 | is `0x01000000` the PCM buffer? | not part of any loaded run |
 | meaning of `0x1001` | L2 only |
 | `br` as an indirect dispatcher | 382 register-indirect sites, no table found |
-| 113 unsupported branch forms | 112 backward four-byte conditionals, 1 six-byte |
+| unsupported branch forms | **0** — all 113 former cases now decode from `cr16-dis.c` |
 
 Status summary, so that this document cannot be read as stronger than the
 evidence: the decoder is L2 and validated; the loop of `0x25F90` and the

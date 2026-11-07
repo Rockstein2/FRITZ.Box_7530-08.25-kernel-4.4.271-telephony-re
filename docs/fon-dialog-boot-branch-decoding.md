@@ -72,16 +72,16 @@ an independent oracle for it.
 0x10106  bal 0x1029C         <- receive
 ```
 
-`cr16_cfg.py` still reports these three as `DIRECT_UNSUPPORTED`, because
-`decode_insn` implements the plain `signed16(word1)` rule of binutils.  The
-masked rule is not wired in yet: see §5a for why it is supported but not
-adopted.
+`cr16_branch.decode_insn` now implements this rule (`disps17` with a 16-bit
+magnitude mask), and the branch validation suite reports **0 MISMATCH** over
+7 807 branches.
 
 ### The 6-byte form at `0x10284`
 
-`10 00 ef 0e 85 fd` is the `disps25` form.  Applying the same `arg_c` path
-gives a value far outside the image, so the rule for that field is not
-established.  **UNSUPPORTED.**
+`10 00 ef 0e 85 fd` is the `disps25` form and **decodes to `0x000008`**
+with the `cr16-dis.c` rule (sign in bit 0, magnitude masked to 24 bits, then
+`addr + (-magnitude & 0xFFFFFE)` masked to 24 bits).  See
+`fon-dialog-boot-disps25.md` for the full derivation and validation.
 
 ## 4. What the branches mean in the control flow
 
