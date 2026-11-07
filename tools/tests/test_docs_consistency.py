@@ -376,6 +376,45 @@ if REPORT.is_file() and (ROOT / "tools" / "reports" /
               all("candidate" in p["proof_status"]
                   for p in al["images"][image]["pairs"]), True)
 
+# ---------------------------------------------------------------------------
+# 10. Boot documents agree with the bootstrap findings
+# ---------------------------------------------------------------------------
+BOOT_DOCS = {n: ROOT / "docs" / n for n in (
+    "fon-dialog-firstlevel-cfg.md", "fon-dialog-uart-boot-protocol.md",
+    "fon-dialog-boot-memory-map.md", "fon-dialog-boot-handoff.md")}
+for name, path in BOOT_DOCS.items():
+    check(f"{name} exists", path.is_file(), True)
+
+HANDOFF = BOOT_DOCS["fon-dialog-boot-handoff.md"]
+if HANDOFF.is_file():
+    t = HANDOFF.read_text()
+    check("handoff answer is PARTIALLY KNOWN", "PARTIALLY KNOWN" in t, True)
+    check("handoff does not claim 0x7C as the target",
+          "target is `0x7c`" not in t.lower(), True)
+
+UART = BOOT_DOCS["fon-dialog-uart-boot-protocol.md"]
+if UART.is_file():
+    t = UART.read_text()
+    check("protocol doc names the store that lands bytes",
+          "0x1022C" in t.replace("0x1022c", "0x1022C"), True)
+    check("protocol doc states the second-level is not relocated",
+          "not" in t and "relocated" in t, True)
+
+SYSREG = ROOT / "docs" / "fon-dialog-cr16-system-registers.md"
+if SYSREG.is_file():
+    t = SYSREG.read_text()
+    check("system-register doc no longer calls 0x28D56 a byte copy",
+          "byte-copy loop" not in t, True)
+    check("system-register doc explains the list format",
+          "u32be address" in t, True)
+
+MEM = BOOT_DOCS["fon-dialog-boot-memory-map.md"]
+if MEM.is_file():
+    t = MEM.read_text()
+    check("memory map records the first-level block", "0x10080" in t, True)
+    check("memory map does not give RAM/ROM to an address",
+          "is RAM" not in t and "is ROM" not in t, True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)
