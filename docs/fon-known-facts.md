@@ -700,6 +700,36 @@ Address correction: `STEREO0_CONFIG` is at `0x07709000` and
 were MBOX windows.  The executed C2 therefore wrote the right STEREO
 blocks.
 
+### 9d-10. Firmware analysis: what is proven and what is not (2026-11-07)
+
+A CR16 `objdump` was built locally from `binutils-2.44` and validated on the
+known-good `0x2582` snippet.  Nothing was installed system-wide.
+
+**Proven:**
+
+| Claim | Evidence |
+|---|---|
+| `0xFF6006` is written `0x80`, read, then written `0` | disassembly of `0x2558`-`0x25B8` |
+| `0x80` is `BIT(7)` | by value |
+| it is a trigger, not a format register | set and cleared nine instructions later; no rate/word-size/master field exists in the function |
+| the read-back is discarded | `movw $0x400:m,r2` overwrites the value at `0x25ac` |
+| the block at `0x000000` is data | linear disassembly gives `illegal` almost everywhere |
+| no direct branch targets `0x2558` or `0x24F8` | whole-image search |
+| no slot-5 / FON command handler found | bounded search over all immediate peripheral references and both large code blocks |
+
+**Not proven:**
+
+| Question | Why |
+|---|---|
+| where the `0x2570` / `0x257E` calls go | the two candidate interpretations of `objdump`'s printed target give different answers, and neither survives every test (see the call-graph document) |
+| who calls the `0x24F8` selector | no direct branch, no pointer table found |
+| what `BIT(7)` of `0xFF6006` does | no code reads it back |
+| whether `0xFF600E` is used | not found as an immediate; indirect access not excluded |
+
+Branch targets in the firmware analysis are therefore **provisional**.
+Instruction bytes, instruction boundaries and all immediate constants are
+unaffected.
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |
