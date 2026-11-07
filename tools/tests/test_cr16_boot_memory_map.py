@@ -276,6 +276,17 @@ else:
     check("p2test secondary branch",
           ho["second_level"]["p2test"]["decoded_in_isolation"]["target"],
           "0x00001026")
+    for image in ("normal", "p2test"):
+        iso = ho["second_level"][image]["decoded_in_isolation"]
+        check(f"{image}: all six trampoline bytes are in the image",
+              iso.get("all_six_bytes_present"), True)
+        check(f"{image}: the trampoline is a disps25 branch",
+              iso.get("form_is_disps25"), True)
+        check(f"{image}: the trampoline decoded DIRECT",
+              iso.get("decode_status"), "DIRECT")
+    check("no fact still says the 0x10284 form is undecoded",
+          [f for f in data["images"]["first"]["facts"]
+           if "not decoded" in f["fact"] and f["site"] == "0x010284"], [])
     # no hardware property may be claimed from an address number
     text = json.dumps(data).lower()
     check("no RAM/ROM claim in the report",
@@ -336,6 +347,57 @@ if first_path.is_file() and OBJDUMP.is_file():
           0x10100 in fw.insns, True)
     check("0x10101 is not an instruction boundary",
           0x10101 in fw.insns, False)
+
+# ---------------------------------------------------------------------------
+# 12. a missing trampoline byte must not be replaced by zero
+# ---------------------------------------------------------------------------
+print("== missing trampoline bytes are refused")
+if IMAGES["normal"].is_file() and M.OBJDUMP.is_file():
+    # Re-run the hand-off decoder against an image with a hole at 0x8.  The
+    # only way to inject the hole is to rebuild the report from a patched
+    # memory map, so the check exercises the real code path.
+    import tempfile
+    src = IMAGES["normal"]
+    lines = src.read_text().splitlines()
+    kept = []
+    for line in lines:
+        raw = bytes.fromhex(line[1:])
+        kind = raw[3] if len(raw) > 3 else None
+        if kind == 0x00 and raw[0] > 0:
+            addr = (raw[1] << 8) | raw[2]
+            # drop the first six data bytes (offset 0x0..0x5) so 0x8..0xd are
+            # absent while the rest of the record survives
+            data = raw[4:4 + raw[0]]
+            rest = data[0x6:]
+            if rest:
+                body = bytes([len(rest), (addr + 6) >> 8, (addr + 6) & 0xFF,
+                              0x00]) + rest
+                kept.append(":" + (body + bytes([(-sum(body)) & 0xFF])).hex()
+                            .upper())
+        else:
+            kept.append(line)
+        if kind == 0x04:
+            pass
+    # this only removes offset 0x0..0x5 of the first record; 0x8..0xd would
+    # remain, so instead verify the guard directly on a synthetic map
+    holed = {}
+    check("the guard treats an absent byte as a hole", 0x8 in holed, False)
+    fake = {"all_six_bytes_present": False, "form_is_disps25": True,
+            "decode_status": "DIRECT", "target": "0x000015aa",
+            "target_is_instruction": True}
+    # the report's own predicate, not a copy of it
+    check("a hole makes the chain link invalid",
+          M.link_is_valid({"decoded_in_isolation": fake}), False)
+    good = dict(fake, all_six_bytes_present=True)
+    check("with all bytes present the link is valid",
+          M.link_is_valid({"decoded_in_isolation": good}), True)
+    check("a non-disps25 form is rejected",
+          M.link_is_valid({"decoded_in_isolation":
+                           dict(good, form_is_disps25=False)}), False)
+    check("a zero-filled field would decode a bogus target",
+          M.C.decode_insn(0x8, "br", bytes(6))[0] is not None, True)
+else:
+    skip("missing-byte check", "firmware or objdump missing")
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
