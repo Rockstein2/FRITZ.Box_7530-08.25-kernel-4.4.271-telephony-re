@@ -101,29 +101,45 @@ def sequences(rows):
 
 
 def behaviour(a, b):
-    """Compare the access structure of two addresses.
+    """Compare two addresses.  Two levels, never conflated.
 
-    Returns (correlation: bool, reasons: [str]).  A correlation is only
-    claimed when the shapes agree in a way that the code makes explicit:
-    the same set of operations, or the same written constant at both.
-    Two registers that both receive `0x0080` do not establish aliasing; the
-    reason string says so.
+    ACCESS_PATTERN_MATCH  the same set of operations appears at both
+                          addresses.  This is what "both are a register"
+                          looks like; it is *not* a dependency.
+    DEPENDENCY_FOUND      the code makes one address depend on the other:
+                          a value read at A is used as the address or the
+                          written value at B, or a site computes B from A.
+
+    Only DEPENDENCY_FOUND could support aliasing, and it is never produced
+    here: proving it needs a data-flow that follows the value, which this
+    tool does not do.  The field exists so a future analysis has a place to
+    put the result instead of overloading the pattern match.
     """
     reasons = []
     sa, sb = summarise(a), summarise(b)
-    if sa["operations"] == sb["operations"]:
-        reasons.append("same operation set: " + ", ".join(sa["operations"]))
+    pattern = sa["operations"] == sb["operations"]
+    if pattern:
+        reasons.append("ACCESS_PATTERN_MATCH: same operation set "
+                       + ", ".join(sa["operations"]))
     if sa["widths"] == sb["widths"]:
-        reasons.append("same access width: "
-                       + ", ".join(str(w) for w in sa["widths"]))
+        reasons.append("same access width "
+                       + ", ".join(str(w) for w in sa["widths"])
+                       + " (expected of any register pair)")
     ca, cb = constants_of(a), constants_of(b)
     if ca and cb and set(ca) & set(cb):
-        reasons.append("same written constant: "
+        reasons.append("same written constant "
                        + ", ".join(f"0x{v:04x}" for v in
                                    sorted(set(ca) & set(cb)))
-                       + " (not evidence of aliasing by itself)")
-    correlated = bool(sa["operations"] == sb["operations"])
-    return correlated, reasons
+                       + "; a shared constant is not a dependency")
+    if not pattern:
+        reasons.append("the operation sets differ")
+    return {
+        "access_pattern_match": pattern,
+        "dependency_found": False,
+        "dependency_note": "not attempted: requires value tracking between "
+                           "the two addresses",
+        "reasons": reasons,
+    }
 
 
 def build_report():
@@ -155,21 +171,27 @@ def build_report():
             for b in high:
                 if (a & LOW_MASK) != (b & LOW_MASK):
                     continue
-                correlated, reasons = behaviour(addrs[a], addrs[b])
+                cmp = behaviour(addrs[a], addrs[b])
+                # the pattern match is NOT a dependency, so the evidence
+                # level stays at LOW_BITS_MATCH unless a dependency is found
+                level = ("BEHAVIOR_CORRELATION" if cmp["dependency_found"]
+                         else "LOW_BITS_MATCH")
                 pairs.append({
                     "address_a": f"0x{a:08x}",
                     "address_b": f"0x{b:08x}",
                     "difference": f"0x{b - a:08x}",
                     "low_bits_match": f"0x{a & LOW_MASK:05x}",
-                    "evidence": (MAX_CODE_LEVEL if correlated
-                                 else "LOW_BITS_MATCH"),
+                    "evidence": level,
+                    "access_pattern_match": cmp["access_pattern_match"],
+                    "dependency_found": cmp["dependency_found"],
+                    "dependency_note": cmp["dependency_note"],
                     "proof_status": "candidate; no document and no hardware "
                                     "evidence",
                     "a": summarise(addrs[a]),
                     "b": summarise(addrs[b]),
                     "a_sequence": sequences(addrs[a]),
                     "b_sequence": sequences(addrs[b]),
-                    "correlation_notes": reasons,
+                    "correlation_notes": cmp["reasons"],
                 })
         report["images"][image] = {
             "firmware": path.name,
@@ -182,13 +204,26 @@ def build_report():
     # cross-image comparison: the same pair must exist in both images with
     # the same structure, otherwise the pattern is an artefact of one build
     if len(per_image) == 2:
-        common = None
-        for addrs in per_image.values():
-            keys = {a & LOW_MASK for a in addrs}
-            common = keys if common is None else common & keys
+        # compare actual address pairs, not just the set of low bits: two
+        # images can share a low-bit value with different high halves
+        def pair_set(addrs):
+            low = sorted(a for a in addrs if a < 0x00100000)
+            high = sorted(a for a in addrs if a >= BLOCK_HI)
+            return {(a, b) for a in low for b in high
+                    if (a & LOW_MASK) == (b & LOW_MASK)}
+
+        sets = {name: pair_set(addrs) for name, addrs in per_image.items()}
+        names = sorted(sets)
+        both = sets[names[0]] & sets[names[1]]
         report["cross_image"] = {
-            "low_bits_present_in_both": sorted(f"0x{k:05x}"
-                                               for k in (common or set())),
+            "pairs_in_both": [f"0x{a:08x}/0x{b:08x}"
+                              for a, b in sorted(both)],
+            "pairs_only_in_" + names[0]: [
+                f"0x{a:08x}/0x{b:08x}"
+                for a, b in sorted(sets[names[0]] - sets[names[1]])],
+            "pairs_only_in_" + names[1]: [
+                f"0x{a:08x}/0x{b:08x}"
+                for a, b in sorted(sets[names[1]] - sets[names[0]])],
         }
     return report
 

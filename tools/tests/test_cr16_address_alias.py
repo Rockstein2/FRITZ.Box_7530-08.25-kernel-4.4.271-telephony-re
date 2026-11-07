@@ -113,13 +113,25 @@ check("code analysis cannot claim DOCUMENTED_ALIAS",
       A.MAX_CODE_LEVEL, "BEHAVIOR_CORRELATION")
 rows_a = [row(0x1348, "WRITE", "RESOLVED")]
 rows_b = [row(0x258C, "WRITE", "RESOLVED")]
-correlated, notes = A.behaviour(rows_a, rows_b)
-check("same operation set produces a correlation", correlated, True)
-check("correlation notes explain it",
-      any("same operation set" in n for n in notes), True)
+cmp = A.behaviour(rows_a, rows_b)
+check("same operation set is an ACCESS_PATTERN_MATCH",
+      cmp["access_pattern_match"], True)
+check("a pattern match is not a dependency", cmp["dependency_found"], False)
+check("the reasons name the pattern, not a dependency",
+      any(n.startswith("ACCESS_PATTERN_MATCH") for n in cmp["reasons"]), True)
 rows_c = [row(0x2602C, "READ", "RESOLVED")]
-correlated2, _ = A.behaviour(rows_a, rows_c)
-check("different operation sets do not correlate", correlated2, False)
+cmp2 = A.behaviour(rows_a, rows_c)
+check("different operation sets do not match", cmp2["access_pattern_match"],
+      False)
+
+# a shared constant must never be called a dependency
+rows_d = [dict(row(0x145C, "WRITE", "RESOLVED"), value=0x0080)]
+rows_e = [dict(row(0x25B4, "WRITE", "RESOLVED"), value=0x0080)]
+cmp3 = A.behaviour(rows_d, rows_e)
+check("a shared written constant is not a dependency",
+      cmp3["dependency_found"], False)
+check("the shared constant is described as non-evidence",
+      any("not a dependency" in n for n in cmp3["reasons"]), True)
 
 # ---------------------------------------------------------------------------
 # 5. the committed report, if present
@@ -151,19 +163,23 @@ else:
                   for p in pairs), True)
         check(f"{image}: no pair reaches DOCUMENTED_ALIAS",
               all(p["evidence"] != "DOCUMENTED_ALIAS" for p in pairs), True)
+        check(f"{image}: no pair claims a dependency it did not find",
+              all(not (p["dependency_found"]
+                       and p["evidence"] == "LOW_BITS_MATCH")
+                  for p in pairs), True)
         check(f"{image}: every pair is listed with its instructions",
               all(p["a"]["sites"] and p["b"]["sites"] for p in pairs), True)
         # the two addresses must stay separate entries
         check(f"{image}: the two addresses are never merged into one",
               all(p["address_a"] != p["address_b"] for p in pairs), True)
 
-    # different low bits never form a pair
-    lows = set()
-    for image in ("normal", "p2test"):
-        for p in data["images"][image]["pairs"]:
-            lows.add(p["low_bits_match"])
-    check("all pairs share the same low-bits key set per image",
-          len(lows) >= 1, True)
+    # cross-image comparison must be over address pairs
+    cx = data["cross_image"]
+    check("cross-image compares pairs, not low bits",
+          "pairs_in_both" in cx and "pairs_only_in_normal" in cx
+          and "pairs_only_in_p2test" in cx, True)
+    check("the 0x6006 pair exists in both images",
+          "0x000f6006/0x00ff6006" in cx["pairs_in_both"], True)
 
     print("== reproducibility")
     out = subprocess.run(

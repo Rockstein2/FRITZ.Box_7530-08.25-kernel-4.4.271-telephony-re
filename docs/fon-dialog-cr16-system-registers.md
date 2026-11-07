@@ -53,16 +53,17 @@ Both images contain the same block, at different addresses:
 | `lprd (r2,r1),intbase` | `0x15E6` | `0x1068` | **`INTBASE = 0x24`** |
 | `movd $0x1c:l,(r3,r2)` | `0x15EA` | `0x106C` | |
 | `movd $0x24:l,(r5,r4)` | `0x15F0` | `0x1072` | |
-| `bal 0x28D56` | `0x15F6` | `0x1078` | **copy `0x1C` bytes from `0x24`** |
+| `bal 0x28D56` | `0x15F6` | `0x1078` | **walk the list at `0x24`, write at `0x1C`** |
 | `movw $0x800:m,r1` / `lpr r1,psr` | `0x15FA`/`0x15FE` | `0x107C`/`0x1080` | PSR |
 | `bal 0x39F8` | `0x1602` | `0x1084` | main path |
 
-`0x28D56` is a byte-copy loop (`loadd …; storb; addd; cmpb`), so the call at
-`0x15F6` copies 28 bytes from `0x24` to the address in `(r3,r2) = 0x1C`…
-The destination pair is loaded with `0x1C`, and the source with `0x24`, so
-the copy overlaps the source region.  The exact destination is not resolved
-by this analysis (the register values flow into an indirect call), so the
-*effect* of the copy is **UNKNOWN**.
+`0x28D56` is **not** a byte copy: it walks a list of 8-byte
+`{u32be address, u32be length}` entries (`0x28D5C` compares the two
+pointers, `0x28D60` reads the address, `0x28D64` reads the length,
+`0x28D6A` advances by 8) and writes the pointed-to data through `(r3,r2)`.
+The call at `0x15F6` passes `(r3,r2) = 0x1C` and `(r5,r4) = 0x24`.  The
+effect is therefore "interpret the list at `0x24`, write at `0x1C`" — not
+"copy 28 bytes".  Whether the two regions overlap is **UNKNOWN**.
 
 **`CFG` bit 8 is the only `CFG` bit this firmware writes.**  What bit 8
 does is not documented in any offline source.  It must not be described as
@@ -77,19 +78,24 @@ image holds:
 0x24: 16 42 17 5b 07 2b b7 22 00 80 07 52 04 1f 60 5b
 ```
 
-These words are not plausible vector addresses (they would point into
-`0x4216`, `0x5B17`, `0x2B07`, … in an 18–24-bit space; no instruction
-starts at those addresses in the decoded image).  Since the copy at
-`0x15F6` runs before interrupts are enabled, the table the core uses is
-probably **not** the file image at offset `0x24`.
+Read as **little-endian 32-bit values** the region contains
+`0x000146E5`, `0x000146E5`, … — a regular table of pointers, with a few
+different entries (`0x000144CB`, `0x00014668`).  **None of those addresses
+exists in the uploaded image** (the block list has no entry above
+`0x28DCE` for them).  So the table points at code that arrives from
+somewhere else, or into a region the image does not describe.
+
+Note that reading the same bytes as big-endian 16-bit values gives
+`0x4216`, `0x5B17`, … which are not instruction boundaries; the
+little-endian 32-bit reading is the one that produces a consistent table.
 
 Status: **UNKNOWN**, with two possibilities that cannot be separated
 offline:
 
-1. the copy at `0x15F6` installs a table built elsewhere
-   (`(r3,r2)` is not resolved here);
-2. the region at `0x24` is overwritten by the first-level image before
-   this second-level code runs.
+1. the copy at `0x15F6` walks the list at `0x24` as `{u32be addr,len}`
+   pairs and writes elsewhere (`(r3,r2) = 0x1C`), so the region at `0x24` is
+   itself a *descriptor list*, not the table;
+2. the pointers in the table are resolved once the missing code is uploaded.
 
 No `retx` handler is reachable from `0x1602` (`0x28996`, `0x28AFA`,
 `0x28CF0`, `0x28DCA` are all unreachable in mode A).  That is consistent

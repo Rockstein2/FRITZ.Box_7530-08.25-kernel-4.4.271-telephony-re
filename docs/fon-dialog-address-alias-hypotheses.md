@@ -34,25 +34,30 @@ Produced by `tools/cr16_address_alias.py`.  Every pair differs by exactly
 `0x00F00000`; there is no other difference in the images, so the "mask"
 question reduces to whether bits 20–23 are significant.
 
-| low 20 bits | A | B | A access | B access | evidence |
-|---|---|---|---|---|---|
-| `0xF4000` | `0x000F4000` | `0x00FF4000` | RW 16 | RW 16 | LOW_BITS_MATCH |
-| `0xF4004` | `0x000F4004` | `0x00FF4004` | RW 16 | RW 16 | BEHAVIOR_CORRELATION |
-| `0xF4858` | `0x000F4858` | `0x00FF4858` | RW 16 | RW 16 | LOW_BITS_MATCH |
-| `0xF4C00` | `0x000F4C00` | `0x00FF4C00` | W16 (`0x28820`) | W8 (`0x15AE`) | BEHAVIOR_CORRELATION |
-| `0xF5000` | `0x000F5000` | `0x00FF5000` | W16 (`0x1A2A`) | W8 (`0x15B6`) | BEHAVIOR_CORRELATION |
-| `0xF5404` | `0x000F5404` | `0x00FF5404` | RW 16 | RW 16 | LOW_BITS_MATCH |
-| `0xF5406` | `0x000F5406` | `0x00FF5406` | RW 16 | RMW 16 | LOW_BITS_MATCH |
-| `0xF5804` | `0x000F5804` | `0x00FF5804` | RMW 16 | RMW 16 | LOW_BITS_MATCH |
-| `0xF5806` | `0x000F5806` | `0x00FF5806` | RMW 16 | RMW 16 | BEHAVIOR_CORRELATION |
-| `0xF6006` | `0x000F6006` | `0x00FF6006` | R+W 16 | R+W 16 | BEHAVIOR_CORRELATION |
-| `0xF7052` | `0x000F7052` | `0x00FF7052` | RW 16 | RW 16 | LOW_BITS_MATCH |
-| `0xF7056` | `0x000F7056` | `0x00FF7056` | R 16 | R 16 | BEHAVIOR_CORRELATION |
+Every pair below is `LOW_BITS_MATCH`; the "pattern" column only says whether
+the two addresses happen to have the same set of operations, which is not
+evidence (see above).
 
-Notable: `0x000F6002` has **no** partner in the `0x00FF` block.  Only
-`0x6006` pairs, not `0x6002` — if the two blocks were the same decoder with
-high bits ignored, the whole `0x6000` range would be expected to appear on
-both sides.
+| low 20 bits | A | B | A access | B access | pattern |
+|---|---|---|---|---|---|
+| `0xF4000` | `0x000F4000` | `0x00FF4000` | RMW 16 | READ/WRITE 16 | **no** |
+| `0xF4004` | `0x000F4004` | `0x00FF4004` | READ/WRITE 16 | READ/WRITE 16 | yes |
+| `0xF4858` | `0x000F4858` | `0x00FF4858` | RMW 16 | READ/WRITE 16 | **no** |
+| `0xF4C00` | `0x000F4C00` | `0x00FF4C00` | WRITE 16 | WRITE 8 | yes |
+| `0xF5000` | `0x000F5000` | `0x00FF5000` | WRITE 16 | WRITE 8 | yes |
+| `0xF5404` | `0x000F5404` | `0x00FF5404` | WRITE 16 | READ/WRITE 16 | **no** |
+| `0xF5406` | `0x000F5406` | `0x00FF5406` | WRITE 16 | READ/WRITE 16 | **no** |
+| `0xF5804` | `0x000F5804` | `0x00FF5804` | RMW 16 | READ/RMW/WRITE 16 | **no** |
+| `0xF5806` | `0x000F5806` | `0x00FF5806` | RMW 16 | RMW 16 | yes |
+| `0xF6006` | `0x000F6006` | `0x00FF6006` | READ/WRITE 16 | READ/WRITE 16 | yes |
+| `0xF7052` | `0x000F7052` | `0x00FF7052` | READ/WRITE 16 | READ 16 | **no** |
+| `0xF7056` | `0x000F7056` | `0x00FF7056` | READ 16 | READ 16 | yes |
+
+`0x000F6002` has no partner in the `0x00FF` block.  **This is not an
+argument against aliasing**: a decoder that ignores high bits aliases
+whatever addresses are *used*, not every address in a range.  `0x00FF6002`
+may simply never be addressed in this firmware.  The observation is recorded
+because it is a fact, not because it decides anything.
 
 Also notable: two pairs are accessed with **different widths**:
 
@@ -65,8 +70,12 @@ A single 16-bit register written by `storb` only changes 8 of its bits, so
 this is not impossible; but two different widths for the same address is
 what independent registers of different granularity look like.
 
-**BEHAVIOR_CORRELATION is not aliasing evidence.**  Two registers that both
-have a reader and a writer correlate trivially; that is what "a register" is.
+**An access-pattern match is not evidence of anything.**  Two addresses
+that both have a reader and a writer match trivially; that is what "a
+register" is.  The report labels this `access_pattern_match` and keeps the
+evidence level at `LOW_BITS_MATCH`.  A real dependency (`dependency_found`:
+a value read at A used as the address or the written value at B) would be
+needed, and this analysis does not attempt it.
 
 ## 3. The sequences are different
 
@@ -111,10 +120,10 @@ common encoding, and both sites are start-up code.
 | # | Hypothesis | Supporting | Contradicting | Status |
 |---|---|---|---|---|
 | A | the addresses are physically distinct | different access structure (§3); only `0x6006` pairs, `0x6002` does not; different image coverage | the shared constant `0x0080`; the identical low-bit pairing across 12 registers | **architecturally plausible, not proven** |
-| B | the peripheral decoder ignores bits 20–23 | 12/12 address pairs agree on the low 20 bits | no document; `0x000F6002` exists without a `0x00FF6002` partner | **observable pattern, cause unknown** |
+| B | the peripheral decoder ignores bits 20–23 | 12 address pairs agree on the low 20 bits; 6 of them also match in access pattern, which an aliased decoder would explain for free | no document; no mechanism identified | **observable pattern, cause unknown** |
 | C | a dedicated alias window maps one block onto the other | the pairing is complete and regular | no document; no evidence of a window register being programmed | **speculation** |
-| D | the core or a system controller translates one form | `CFG` is written by both images | `CFG` bit 8 is set *and* cleared around boot phases, which fits a boot flag better; the core applies no translation (L2) | **not supported** |
-| E | two independent blocks that happen to share low bits | different access structure (§3); different address ranges for name (`0x0F4xxx` vs `0x0FFxxx` — see below) | 12 coincidences in a row is unlikely if the assignment were arbitrary | **plausible, unproven** |
+| D | the core or a system controller translates one form | `CFG` is written by both images, and the aliasing question is exactly about an address transformation | the core applies no translation (L2); **`CFG` bit 8 being set and cleared around boot phases does not by itself rule out a role in addressing** — a mode bit may be set when it matters and cleared when it does not | **open, not refuted** |
+| E | two independent blocks that happen to share low bits | different access structure for 6 of the 12 pairs (§2); different write widths for 2 pairs | 12 coincidences in a row is unlikely if the assignment were arbitrary, but the pairing is complete and regular, which a random layout would not produce | **plausible, unproven** |
 
 ### A note on the naming
 

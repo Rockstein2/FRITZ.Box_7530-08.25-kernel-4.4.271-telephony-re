@@ -984,6 +984,27 @@ Documents: `docs/fon-dialog-cr16-addressing.md`,
 | `0x000F6006` ↔ `0x00FF6006` | same low bits, different access structure | L2 |
 | are the two one physical register? | **UNKNOWN** — no document, no hardware | — |
 
+## 9k. Boot chain and memory layout (OFFLINE, 2026-11-07)
+
+Documents: `fon-dialog-firstlevel-cfg.md`, `fon-dialog-uart-boot-protocol.md`,
+`fon-dialog-boot-memory-map.md`, `fon-dialog-boot-handoff.md`; report
+`tools/reports/cr16-boot-memory-map.json`.
+
+| Fact | Value | Evidence |
+|---|---|---|
+| first-level image | one block, `0x10080`–`0x102E9`, 618 bytes | L1 |
+| second-level image (`normal`) | 9 blocks, `0x0`–`0x28DCD`, 54 047 bytes | L1 |
+| upload format on the wire | `u32be address`, `u32be length`, then the bytes | L2 |
+| loader writes received bytes where | `storb r2,0x0:s(r12)` at `0x1022C`, `(r12)` from the 4-byte header | L2 |
+| is the second-level relocated | **no** — the header carries the address and the loader adds no base | L2 |
+| loader code overwritten by the image | **no** — no second-level block covers `0x10080` | L1 |
+| `0x0` is a plausible entry | **no** — `loadm $1,r0` then `illegal` | L2 |
+| hand-off branch target | **UNKNOWN** (Q51, `0x18` form) | — |
+| `0x28D56` copy | walks an 8-byte `{u32be addr,u32be len}` list at `0x24`, writes at `(r3,r2)=0x1C` | L2 |
+| pointers at `0x24` | `0x000146E5` etc., **absent from the image** | L1 |
+| `0x01000000` region | not present in any uploaded image | L1 |
+| `CFG` bit 8 | cleared by the loader, set before its hand-off wait and by the second-level start-up | L2 |
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |
