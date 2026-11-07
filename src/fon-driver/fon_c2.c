@@ -286,9 +286,9 @@ int fon_c2_run(struct platform_device *pdev, struct fon_c2_result *out)
 			"C2: STEREO_RX mismatch: expected 0x%08x actual 0x%08x xor 0x%08x mask 0x%08lx\n",
 			out->check.rx_expected, out->check.rx_actual,
 			out->check.rx_xor, FON_C2_STEREO_RW_MASK);
-	out->check.all_ok = fon_c2_all_ok(&out->check);
+	out->all_ok = fon_c2_all_ok(&out->check);
 	out->step = C2_STEP_VERIFIED;
-	if (!out->check.all_ok)
+	if (!out->all_ok)
 		ret = -EIO;
 
 out:

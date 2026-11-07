@@ -71,7 +71,7 @@ static void test_readback_all_match(void)
 	CHECK(c.audio_mode_ok, "audio_mode matches");
 	CHECK(c.stereo_tx_ok, "stereo_tx matches");
 	CHECK(c.stereo_rx_ok, "stereo_rx matches");
-	CHECK(c.all_ok, "all_ok when every register matches");
+	CHECK(fon_c2_all_ok(&c), "all_ok when every register matches");
 	CHECK(c.tdm_xor == 0 && c.mode_xor == 0 && c.tx_xor == 0 &&
 	      c.rx_xor == 0, "xor is zero when every register matches");
 }
@@ -85,7 +85,7 @@ static void test_readback_tdm_mismatch(void)
 		       0x00240400, 0x00240400,
 		       0x00240400, 0x00240400);
 	CHECK(!c.tdm_ok, "tdm mismatch detected");
-	CHECK(!c.all_ok, "all_ok false when tdm mismatches");
+	CHECK(!fon_c2_all_ok(&c), "all_ok false when tdm mismatches");
 	CHECK(c.tdm_xor == (0x06070007 ^ 0x00010001), "tdm xor reported");
 }
 
@@ -98,7 +98,7 @@ static void test_readback_mode_mismatch(void)
 		       0x00240400, 0x00240400,
 		       0x00240400, 0x00240400);
 	CHECK(!c.audio_mode_ok, "audio_mode mismatch detected");
-	CHECK(!c.all_ok, "all_ok false when audio_mode mismatches");
+	CHECK(!fon_c2_all_ok(&c), "all_ok false when audio_mode mismatches");
 }
 
 static void test_readback_stereo_only_enable(void)
@@ -115,7 +115,7 @@ static void test_readback_stereo_only_enable(void)
 		       0x00240400, 0x00200000);
 	CHECK(!c.stereo_tx_ok, "stereo_tx alone-with-enable is rejected");
 	CHECK(!c.stereo_rx_ok, "stereo_rx alone-with-enable is rejected");
-	CHECK(!c.all_ok, "all_ok false when stereo is wrong");
+	CHECK(!fon_c2_all_ok(&c), "all_ok false when stereo is wrong");
 }
 
 static void test_readback_master_left_set(void)
@@ -141,7 +141,7 @@ static void test_readback_multiple_faults(void)
 		       0x00240400, 0x00000000);
 	CHECK(!c.tdm_ok && !c.audio_mode_ok && !c.stereo_tx_ok &&
 	      !c.stereo_rx_ok, "all four mismatches detected");
-	CHECK(!c.all_ok, "all_ok false on total failure");
+	CHECK(!fon_c2_all_ok(&c), "all_ok false on total failure");
 }
 
 static void test_chip_ctrl(void)

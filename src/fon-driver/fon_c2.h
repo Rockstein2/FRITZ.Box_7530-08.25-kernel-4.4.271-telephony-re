@@ -47,6 +47,7 @@ struct fon_c2_result {
 	u32 stereo_rx_written;
 	u32 audio_mode_written;
 	u32 chip_ctrl_written;
+	bool all_ok;          /* single source of truth: fon_c2_all_ok() */
 	struct fon_c2_check check;
 };
 

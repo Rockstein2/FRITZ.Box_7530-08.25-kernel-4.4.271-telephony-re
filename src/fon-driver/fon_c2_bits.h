@@ -54,7 +54,6 @@ struct fon_c2_check {
 	bool audio_mode_ok;
 	bool stereo_tx_ok;
 	bool stereo_rx_ok;
-	bool all_ok;
 	u32 chip_expected, chip_actual, chip_xor;
 	u32 rst_expected, rst_actual, rst_xor;
 	u32 tdm_expected, tdm_actual, tdm_xor;
@@ -160,8 +159,7 @@ static inline void fon_c2_compare(struct fon_c2_check *c,
 	c->rx_xor = rx_exp ^ rx_act;
 	c->stereo_rx_ok = ((c->rx_xor & FON_C2_STEREO_RW_MASK) == 0);
 
-	c->all_ok = c->tdm_ok && c->audio_mode_ok &&
-		    c->stereo_tx_ok && c->stereo_rx_ok;
+	/* The combined verdict is fon_c2_all_ok(); there is no cached field. */
 }
 
 #endif /* FON_C2_BITS_H */
