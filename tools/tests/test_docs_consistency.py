@@ -417,6 +417,39 @@ if MEM.is_file():
     check("memory map does not give RAM/ROM to an address",
           "is RAM" not in t and "is ROM" not in t, True)
 
+# ---------------------------------------------------------------------------
+# 11. EXTREF-1 documents
+# ---------------------------------------------------------------------------
+EXT = {n: ROOT / "docs" / n for n in (
+    "fon-dialog-cr16-vector-map.md",
+    "fon-dialog-external-register-map.md",
+    "fon-dialog-uart-boot-comparison.md")}
+for name, path in EXT.items():
+    check(f"{name} exists", path.is_file(), True)
+
+VEC = EXT["fon-dialog-cr16-vector-map.md"]
+if VEC.is_file():
+    t = VEC.read_text()
+    check("vector doc refutes the UART=20/SPI=22 reading",
+          "refuted" in t.lower(), True)
+    check("vector doc records the /2 encoding", "divided by 2" in t, True)
+
+EXTMAP = EXT["fon-dialog-external-register-map.md"]
+if EXTMAP.is_file():
+    t = EXTMAP.read_text()
+    check("register-map doc keeps the alias answer UNKNOWN",
+          "still UNKNOWN" in t, True)
+    check("register-map doc names the UART functional match",
+          "FUNCTIONAL_REGISTER_MATCH" in t, True)
+
+UART = EXT["fon-dialog-uart-boot-comparison.md"]
+if UART.is_file():
+    t = UART.read_text()
+    check("comparison separates the three loader levels",
+          "A. Dialog ROM loader" in t or "A (ROM)" in t, True)
+    check("comparison warns not to treat B and C as identical",
+          "Do not treat B and C as the same protocol" in t, True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)
