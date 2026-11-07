@@ -86,6 +86,16 @@ else:
           "SC14441" in report["caution"], True)
     check("upstream commit is recorded",
           report["upstream"]["commit"], E.UPSTREAM_SHA)
+    check("fork commit is recorded",
+          report["upstream"]["fork_commit"], E.FORK_SHA)
+    chips = {c["chip"]: c for c in report["chip_configs"]}
+    check("the fork declares SC14448", "SC14448" in chips, True)
+    check("SC14448 RAM origin", chips.get("SC14448", {}).get("ram_origin"),
+          "0x00010000")
+    check("the PLL control register is found at the exact address",
+          regs["CLK_PLL_CTRL_REG"]["found_in_our_firmware"], True)
+    check("the pad control register is found at the exact address",
+          regs["PAD_CTRL_REG"]["found_in_our_firmware"], True)
     check("licence is recorded", "MIT" in report["upstream"]["license"], True)
 
     print("== evidence levels")

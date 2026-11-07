@@ -42,10 +42,15 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 
 TOOL_VERSION = "cr16-external-register-map/1"
+# Upstream and the fork are both used.  The fork adds chip configs (including
+# an SC14448 entry) and more peripherals, so it is the primary source; the
+# upstream commit stays recorded for reproducibility.
 UPSTREAM_REPO = "https://github.com/TobleMiner/dialog-cr16c-uart-boot"
 UPSTREAM_SHA = "3d041a683c57fee585e04edc503cd7348f54c4a9"
+FORK_REPO = "https://github.com/vincentscode/dialog-cr16c-uart-boot"
+FORK_SHA = "9e413b55b9576a1dee50a4aefa43e2447d4d2c02"
 UPSTREAM_LICENSE = "MIT, Copyright 2022 Tobias Schramm"
-DEFAULT_TM = Path("/tmp/opencode/tm/device")
+DEFAULT_TM = Path("/tmp/opencode/vc/device")
 
 XREF = ROOT / "tools" / "reports" / "peripheral-xrefs.json"
 FIRST_LEVEL = ROOT / "firmware" / "dectfw_firstlevel_441_slow.hex"
@@ -53,7 +58,8 @@ OBJDUMP = Path("/tmp/opencode/cr16/build/binutils/objdump")
 LOW_MASK = 0x000FFFFF
 
 HEADERS = ["uart.h", "irq.h", "clock.h", "gpio.h", "watchdog.h",
-           "system.h", "chipid.h", "qspi.h"]
+           "system.h", "chipid.h", "qspi.h", "power.h", "spi.h",
+           "display.h", "debug.h", "flash.h", "dma.h"]
 
 MMIO_RE = re.compile(r"#define\s+(\w+)\s+MMIO(8|16|32)\(0x([0-9A-Fa-f]+)\)")
 
@@ -87,6 +93,35 @@ def first_level_rows():
     C.disassemble(fw, str(OBJDUMP))
     rows, _stats, _unc, _unsup = X.scan(fw, "first")
     return rows
+
+
+CHIP_RE = re.compile(
+    r"#elif defined\(CHIP_(\w+)\)|#if defined\(CHIP_(\w+)\)")
+RAM_RE = re.compile(r"#define CHIP_RAM_ORIGIN\s+0x([0-9A-Fa-f]+)")
+RAMLEN_RE = re.compile(r"#define CHIP_RAM_LENGTH\s+0x([0-9A-Fa-f]+)")
+
+
+def chip_configs(device_dir):
+    """Parse chip_config.h into [{chip, ram_origin, ram_length}]."""
+    path = device_dir / "chip_config.h"
+    if not path.is_file():
+        return []
+    out, current = [], None
+    for line in path.read_text().splitlines():
+        m = CHIP_RE.search(line)
+        if m:
+            current = {"chip": m.group(1) or m.group(2)}
+            out.append(current)
+            continue
+        if current is None:
+            continue
+        m = RAM_RE.search(line)
+        if m:
+            current["ram_origin"] = f"0x{int(m.group(1), 16):08x}"
+        m = RAMLEN_RE.search(line)
+        if m:
+            current["ram_length"] = f"0x{int(m.group(1), 16):08x}"
+    return out
 
 
 def our_accesses(xref):
@@ -196,6 +231,7 @@ def build(device_dir, xref_path):
     report = {
         "tool": TOOL_VERSION,
         "upstream": {"repo": UPSTREAM_REPO, "commit": UPSTREAM_SHA,
+                     "fork_repo": FORK_REPO, "fork_commit": FORK_SHA,
                      "license": UPSTREAM_LICENSE,
                      "files_read": [h for h in HEADERS
                                     if (device_dir / h).is_file()]},
@@ -204,6 +240,7 @@ def build(device_dir, xref_path):
         "low_mask": f"0x{LOW_MASK:08x}",
         "registers": registers,
         "alias_conclusion": "UNKNOWN — no hardware evidence",
+        "chip_configs": chip_configs(device_dir),
     }
     return report
 

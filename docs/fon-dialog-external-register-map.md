@@ -4,9 +4,37 @@ Status: **offline correlation.**  The reference targets **SC14441**; a match
 is a candidate, never proof for the SC14448.
 
 Reference: [TobleMiner/dialog-cr16c-uart-boot](https://github.com/TobleMiner/dialog-cr16c-uart-boot),
-commit `3d041a68`, MIT, Copyright 2022 Tobias Schramm.  Files read:
+commit `3d041a68`, MIT, Copyright 2022 Tobias Schramm, and its fork
+[vincentscode/dialog-cr16c-uart-boot](https://github.com/vincentscode/dialog-cr16c-uart-boot),
+commit `9e413b55`.  The fork adds a chip table, more peripherals and — the
+reason it matters here — an **SC14448 entry**.  Files read:
 `uart.h`, `irq.h`, `clock.h`, `gpio.h`, `watchdog.h`, `system.h`,
-`chipid.h`, `qspi.h`.
+`chipid.h`, `qspi.h`, `power.h`, `spi.h`, `display.h`, `debug.h`, `flash.h`,
+`dma.h`, `chip_config.h`.
+
+## 0. The fork's chip table
+
+`device/chip_config.h` declares five chips; the SC14448 entry is:
+
+```c
+#elif defined(CHIP_SC14448)
+    #define CHIP_NAME        "SC14448"
+    #define CHIP_ID_DECIMAL  448
+    // 16K SHARED_RAM (0x10000-0x13FFF) (this is just a guess)
+    #define CHIP_RAM_ORIGIN  0x00010000
+    #define CHIP_RAM_LENGTH  0x00004000
+    #define CHIP_HAS_QSPI    1
+```
+
+Two facts and one caveat:
+
+* every chip in the table uses `CHIP_RAM_ORIGIN = 0x00010000`, so the
+  `0x10080` load address of our first-level image sits inside the shared-RAM
+  window by the reference's own convention;
+* the fork's README lists **`Gigaset C430 / SC14448` as tested**, i.e. the
+  toolchain demonstrably runs on this SoC;
+* the RAM size is marked *"this is just a guess"* in the source, so it is
+  **not** evidence for the actual memory size.
 
 Report: `tools/reports/cr16-external-register-map.json`.
 
@@ -61,9 +89,28 @@ entire bit layout agrees.  It is still **not** an alias proof — see §4.
 | `0x00FF5402` | reset interrupt pending | `0x000F5402`, 7 writes | low bits only |
 | `0x00FF5404` / `0x00FF5406` | interrupt priority 0/1 | **same address** used in both images | `ACCESS_MATCH` |
 
+### Registers that the fork added
+
+| Reference | Name | Ours |
+|---|---|---|
+| `0x00FF4002` | `CLK_CODEC_DIV_REG` | `0x000F4002` written once (`0x18BE`) |
+| `0x00FF400C` | `CLK_PER_DIV_REG` | `0x000F400C` written once (`0x18C2`) |
+| `0x00FF4010` | **`CLK_PLL_CTRL_REG`** | **exact address**, read-modify-write at `0x1896` |
+| `0x00FF4012` | `CLK_PLL_DIV_REG` | `0x000F4012` written |
+| `0x00FF401A` | `CLK_AUX_REG` | `0x000F401A` RMW at `0x1454` |
+| `0x00FF4812` | `BAT_CTRL_REG` | exact address |
+| `0x00FF481E` | **`PAD_CTRL_REG`** | **exact address**, two bit writes at `0x1200`/`0x1202` |
+| `0x00FF4940`–`0x00FF4948` | SPI block | not used by our images |
+
+The PLL control register being written by the second-level start-up is a new
+lead: the firmware does configure a clock source, which matters for any
+PCM/TDM timing question.
+
 ### Watchdog
 
-The reference does `WATCHDOG_REG = 0xff`.  Our first-level does
+The reference does `WATCHDOG_REG = 0xff`.  The **exact address**
+`0x00FF4C00` is written **8-bit** in our image (`storb`, `0x15AE`/`0x15B6`),
+while `0x000F4C00` is written **16-bit** with `0xFF`.  Our first-level does
 `0x102A0 storw $0xFF,0x000F4C00` and `0x102CA storw $0xFF,0x000F4C00`,
 inside the two wait loops of the receive/send helpers.  Same address low
 bits, same width (16-bit), **same written value**, same functional role

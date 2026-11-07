@@ -1012,6 +1012,8 @@ Documents: `fon-dialog-firstlevel-cfg.md`, `fon-dialog-uart-boot-protocol.md`,
 | UART bit layout | RI = 6, TI = 5, baud field 2–4 = `0xC` → 115200 | L2 + external, matches |
 | watchdog | `0x000F4C00 ← 0xFF` inside the wait loops | L2 + external, matches |
 | `CFG` bit 8 | set before `INTBASE`; reference calls it "read exception handlers as 32 bit wide" | strong hypothesis |
+| PLL / clock registers | `0x00FF4010` (`CLK_PLL_CTRL_REG`) and `0x00FF481E` (`PAD_CTRL_REG`) are used at the **exact** reference address; `0x000F4002/400C/4012/401A` match the reference's `0x00FF40xx` clock block | L2 + external |
+| SC14448 reference config | the fork declares `CHIP_SC14448`, RAM origin `0x00010000`, and lists `Gigaset C430 / SC14448` as tested; the RAM size is marked "just a guess" in the source | external only |
 | table encoding | word offsets (address ÷ 2); 4/4 address-like values land on prologues, p ≈ 3e-9 by chance | L2 |
 | `0x7C` | **inside** block 1 (`0x0`–`0xD4`), holds `0x00014668` | L1 |
 | first-level load address | `0x10080` | L1 |
