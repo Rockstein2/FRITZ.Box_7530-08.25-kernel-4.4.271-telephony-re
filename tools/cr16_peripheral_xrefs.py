@@ -62,9 +62,26 @@ IMAGES = [
     ("p2test", ROOT / "firmware" / "dectfw_secondlevel_441p2test.hex"),
 ]
 
+# Instructions with a memory operand.  `sbit*`/`cbit*` set or clear one bit
+# in place, so they are read-modify-write, not a plain store.
 ACCESS = {"loadw": ("READ", 16), "storw": ("WRITE", 16),
           "loadb": ("READ", 8), "storb": ("WRITE", 8),
-          "loadd": ("READ", 32), "stord": ("WRITE", 32)}
+          "loadd": ("READ", 32), "stord": ("WRITE", 32),
+          "sbitw": ("RMW", 16), "cbitw": ("RMW", 16),
+          "sbitb": ("RMW", 8), "cbitb": ("RMW", 8)}
+
+# Instructions known to touch memory but whose operand form this scanner does
+# not decode.  They are counted separately, never silently dropped:
+# `loadm`/`loadmp`/`storm`/`stormp` carry a register list (`cr16-opc.c`
+# `REGLIST_INST`) and are not described in the CR16A manual.
+MEMORY_UNSUPPORTED = {"loadm": "register-list load, operand form not decoded",
+                      "loadmp": "register-list load with post-increment, "
+                                "operand form not decoded",
+                      "storm": "register-list store, operand form not decoded",
+                      "stormp": "register-list store with post-increment, "
+                                "operand form not decoded"}
+# `tbit*` only reads a bit.
+BIT_TEST = {"tbitw": 16, "tbitb": 8}
 BRANCHES = C.COND | C.JUMPS
 
 ABS = re.compile(r"^0x([0-9a-f]+):[ml]$")
@@ -194,9 +211,10 @@ NOT_WRITING = C.COND | C.RETS | {"cmpw", "cmpb", "cmpd", "tbit", "tbitw",
                                 "tbitb", "cbitw", "cbitb", "sbitw", "sbitb"}
 PAIR_OPS = {"movd", "addd", "subd", "andd", "ord", "xord", "ashud", "lshd",
             "muld", "loadd", "stord", "loadm", "loadmp", "storm"}
-# These print the destination as the first operand.
-WIDEN_FIRST_DEST = {"movzw", "movxw", "movzb", "movxb", "mulsw", "muluw",
-                    "mulsb"}
+# `OP src,dest` forms that widen or multiply; the destination is the second
+# operand and may be a register pair.
+WIDEN_SRC_DEST = {"movzw", "movxw", "movzb", "movxb", "mulsw", "muluw",
+                  "mulsb"}
 
 TAIL_REG = re.compile(r"(?:,|^)(r\d+)$")
 TAIL_PAIR = re.compile(r"(?:,|^)\((r\d+),(r\d+)\)$")
@@ -229,15 +247,16 @@ def written_registers(insn):
                 if m:
                     return {m.group(1), m.group(2)}
         return set()
-    # widening moves print their destination first: `movzw r3,(r7,r6)`
-    # stores the zero-extended pair into r3.
-    if mn in WIDEN_FIRST_DEST:
-        m = re.match(r"^(r\d+),", ops)
-        if m:
-            return {m.group(1)}
-        m = re.match(r"^\((r\d+),(r\d+)\),", ops)
+    # Widening and multiply forms are `OP src,dest` (CR16A manual,
+    # `MOVZB src, dest`, `MULi src, dest`; the assembler accepts only these
+    # forms): `movzw r3,(r7,r6)` writes the pair, `movzb r8,r0` writes r0.
+    if mn in WIDEN_SRC_DEST:
+        m = re.search(r",\((r\d+),(r\d+)\)$", ops)
         if m:
             return {m.group(1), m.group(2)}
+        m = re.search(r",(r\d+)$", ops)
+        if m:
+            return {m.group(1)}
         return set()
     m = TAIL_PAIR.search(ops)
     if m and mn in PAIR_OPS:
@@ -367,6 +386,21 @@ def double(symbol):
     return f"2*{symbol}"
 
 
+def _address_of(parsed, payload, insn):
+    """(kind, address) for a parsed memory operand (used by `tbit*`)."""
+    if parsed == "ABS":
+        value = abs_address(insn)
+        if value == payload:
+            return "RESOLVED", f"0x{value:08x}"
+        return "UNKNOWN", None
+    if parsed == "IDX":
+        reg, disp = payload
+        return "INDEXED", f"[{reg}]+{disp:#x}"
+    if parsed == "STACK":
+        return "STACK", "sp"
+    return "UNKNOWN", None
+
+
 def _resolved_note(value):
     """Flag RESOLVED addresses that look unlike a real internal address."""
     if 0x01000000 <= value < 0x01000000 + 0x100000:
@@ -384,6 +418,7 @@ def scan(fw, image):
     blocks = blocks_of(fw)
     mode_a, mode_b = reachability(fw)
     rows, unclassified = [], []
+    unsupported = []
     for start in sorted(blocks):
         state = {}
         prov = {}
@@ -463,6 +498,40 @@ def scan(fw, image):
                     sym.pop(dst, None)
                     sym_base.pop(dst, None)
 
+            if insn.mnemonic in MEMORY_UNSUPPORTED:
+                unsupported.append({
+                    "image": image,
+                    "instruction": f"0x{addr:06x}",
+                    "bytes": insn.raw.hex(),
+                    "mnemonic": insn.mnemonic,
+                    "operands": insn.operands,
+                    "reason": MEMORY_UNSUPPORTED[insn.mnemonic],
+                    "possible_access": "READ" if insn.mnemonic.startswith("load")
+                                       else "WRITE",
+                })
+                # the instruction writes the registers in its list, so no
+                # pair survives it
+                for reg in re.findall(r"r\d+", insn.operands):
+                    invalidate(state, reg)
+                continue
+
+            if insn.mnemonic in BIT_TEST:
+                # `tbit*` reads one bit; the address operand is the second
+                parsed, payload = None, None
+                operands_list = split_operands(insn.operands)
+                for operand in operands_list[1:] or operands_list:
+                    p = parse_memory_operand(operand)
+                    if p:
+                        parsed, payload = p
+                        break
+                if parsed is not None:
+                    akind, value = _address_of(parsed, payload, insn)
+                    rows.append(_row(image, addr, insn, "READ",
+                                     BIT_TEST[insn.mnemonic], akind, value,
+                                     [f"0x{addr:06x}"] if value else [],
+                                     None, mode_a, mode_b, "single bit"))
+                continue
+
             if insn.mnemonic in ACCESS:
                 kind, width = ACCESS[insn.mnemonic]
                 # A register pair is also a *value* (`stord (r1,r0),addr`
@@ -471,8 +540,14 @@ def scan(fw, image):
                 # address, the last one of a store is.
                 parsed, payload = None, None
                 operands_list = split_operands(insn.operands)
-                candidates = (operands_list if kind == "READ"
-                              else list(reversed(operands_list)))
+                if kind in ("WRITE", "RMW", "READ") and \
+                        insn.mnemonic in ("sbitw", "cbitw", "sbitb", "cbitb"):
+                    # `sbitw $bit,<addr>`: the address is the second operand
+                    candidates = operands_list[1:] or operands_list
+                elif kind == "READ":
+                    candidates = operands_list
+                else:
+                    candidates = list(reversed(operands_list))
                 for operand in candidates:
                     p = parse_memory_operand(operand)
                     if p and not (kind == "WRITE" and p[0] == "DISP_RP"
@@ -575,7 +650,7 @@ def scan(fw, image):
                 elif src and prov.get(src):
                     prov[dst] = prov[src] + [f"0x{addr:06x}"]
 
-    return rows, _stats(rows), unclassified
+    return rows, _stats(rows), unclassified, unsupported
 
 
 def _stats(rows):
@@ -583,6 +658,37 @@ def _stats(rows):
     for r in rows:
         st[(r["operation"], r["address_kind"])] += 1
     return {f"{k[0]}/{k[1]}": v for k, v in sorted(st.items())}
+
+
+def _summary(rows, unsupported, decoded):
+    """Top-level counters, with ADDRESS_LOAD kept out of the memory totals."""
+    mem = [r for r in rows if r["operation"] in ("READ", "WRITE", "RMW")]
+    addr = [r for r in rows if r["operation"] == "ADDRESS_LOAD"]
+
+    def by(kind):
+        return sum(1 for r in mem if r["address_kind"] == kind)
+
+    out = {
+        "decoded_instructions": decoded,
+        "memory_instructions_supported": len({r["instruction"] for r in mem}),
+        "memory_instructions_unsupported": len(unsupported),
+        "memory_operations_classified": len(mem),
+        "memory_READ": sum(1 for r in mem if r["operation"] == "READ"),
+        "memory_WRITE": sum(1 for r in mem if r["operation"] == "WRITE"),
+        "memory_READ_MODIFY_WRITE": sum(1 for r in mem
+                                        if r["operation"] == "RMW"),
+        "address_RESOLVED": by("RESOLVED"),
+        "address_SYMBOLIC": by("SYMBOLIC"),
+        "address_UNKNOWN": by("UNKNOWN"),
+        "address_STACK": by("STACK"),
+        "address_INDEXED": by("INDEXED"),
+        "address_PC_RELATIVE": by("PC_RELATIVE"),
+        "ADDRESS_LOAD_non_memory": len(addr),
+    }
+    out["address_total"] = sum(out[k] for k in (
+        "address_RESOLVED", "address_SYMBOLIC", "address_UNKNOWN",
+        "address_STACK", "address_INDEXED", "address_PC_RELATIVE"))
+    return out
 
 
 def main():
@@ -601,14 +707,16 @@ def main():
     for image, path in IMAGES:
         fw = C.load(str(path))
         C.disassemble(fw, str(args.objdump))
-        rows, stats, unclassified = scan(fw, image)
+        rows, stats, unclassified, unsupported = scan(fw, image)
         report["images"][image] = {
             "file": path.name,
             "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             "decoded_instructions": len(fw.insns),
             "operations": rows,
             "stats": stats,
+            "summary": _summary(rows, unsupported, len(fw.insns)),
             "unclassified": unclassified,
+            "memory_unsupported": unsupported,
         }
     text = json.dumps(report, indent=1, sort_keys=True) + "\n"
     if args.json:
