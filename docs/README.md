@@ -38,6 +38,14 @@ Procedures and build records.  Executable, dated, not arguments.
 | `runbook/fon-build-validation.md` | Build, test and artifact results |
 | `runbook/fon-stage-c1.md` | Stage C1 ADSS MMIO read plan (currently NO-GO) |
 
+Stage C research additions:
+
+| File | What it is |
+|---|---|
+| `fon-audio-ahb-clock-warning.md` | Why the AHB clock warns on disable, and what is still unproven |
+| `fon-adss-avm-init-sequence.md` | AVM's real ADSS/TDM order and a register table |
+| `fon-tdm-clock-software-check.md` | The recovered `pcmlink` FSC/DCL count algorithm, and whether a passive GPIO read can replace a scope |
+
 ## Layer 3 — history (`history/`)
 
 The reasoning trail.  Many files still say `UNKNOWN` about questions that have

@@ -145,6 +145,25 @@ Verified restore assets outside the repository:
 Our driver maps six of these (`adss`, `pcm`, `mbox_tx`, `mbox_rx`,
 `stereo_tx`, `stereo_rx`) — `resource_mask = 0x3f`.
 
+### 1c. SC14448 variant and codec count — unconfirmed
+
+The board component list in the historical analysis shows a marking of the
+form `SC14448-B96R101QNC`.  A public short datasheet for the **SC14448B**
+family lists a very similar order code (suffix `X`), which suggests the 7530
+may carry the **B** revision rather than the A revision.
+
+Status: **not confirmed.**  No marking on our board has been read, and
+order-code similarity alone is not identification.
+
+Related claim under review: an older project note assumed two internal audio
+codecs.  The public SC14448B material describes **one** 16-bit audio codec.
+Until the datasheet for the exact variant or a die marking is read, the
+correct statement is: **one codec is documented for SC14448B; a second one
+is unproven.**
+
+This matters for the FON because a second codec would imply an audio path
+our driver does not model at all.
+
 ## 3. Interrupts
 
 | Fact | Value | Evidence |

@@ -86,6 +86,9 @@ build must confirm.
 | Q28 | Is `GCC_AUDIO_AHB_CLK` required to read the ADSS registers? | C1 with clock enabled, then a controlled negated run | C1 |
 | Q34 | Does the audio AHB gate actually close when disabled? | one post-disable `readl()` of `0x181b010` (bit 31 + FSM bits) | C2.2 |
 | Q35 | Which TX/RX port pairing does the FON need (AVM uses 3 for TX, our node uses 0)? | C3 comparison against `pcmlink.ko` | C3 |
+| Q36 | Which SC14448 revision is on HW236 (A or B), and how many audio codecs does it have? | die/package marking, or the exact-variant datasheet | research |
+| Q37 | Can FSC/BCLK be measured with a passive GPIO read (no pinmux change)? | C0+ sampling of pins 20/21/22/24/25/26, `fon-tdm-clock-software-check.md` | C0+ |
+| Q38 | Do the SC14448 firmware PCM accesses (0xFF6006/0xFF600E) reveal the slave clock format? | `dectfw_secondlevel_441.hex` analysis | research |
 | Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
 | Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |
 | Q31 | Which mux group is live on HW236, PINMUX2 or PINMUX3? | **partly answered**: C0 shows every PCM pin unclaimed by Linux, so neither group is driven by software; the board wiring itself is still unknown | probe |
