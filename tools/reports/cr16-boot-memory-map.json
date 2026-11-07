@@ -41,29 +41,85 @@
  },
  "cross_image_note": "the first-level image sits at 0x10080 and the second-level images start at 0x0, so they do not share a byte range in the files; any statement about them sharing memory at run time is a hypothesis",
  "handoff": {
-  "evidence": "L3 for the block boundaries, UNKNOWN for the hand-off target",
-  "first_level_jumps_below_code": [
+  "chain": {
+   "evidence": "L2/L3: every link decoded from the image bytes",
+   "hardware_observed": false,
+   "status": "STATICALLY_RESOLVED"
+  },
+  "first_level": [
+   {
+    "bytes": "1000ef0e85fd",
+    "form": "disps25",
+    "instruction": "br *-0x8:l",
+    "site": "0x010284",
+    "status": "DIRECT",
+    "target": "0x00000008",
+    "target_in_image": "checked per second-level image below",
+    "target_is_instruction": "checked per second-level image below"
+   },
    {
     "bytes": "e01885ff",
-    "site": "0x1017c",
-    "target": "UNKNOWN (Q51)",
-    "target_form": "0x18 4-byte conditional/branch family"
+    "form": "disps17",
+    "instruction": "br *-0x10100:m",
+    "site": "0x01017c",
+    "status": "DIRECT",
+    "target": "0x00010100",
+    "target_in_image": true,
+    "target_is_instruction": true
+   },
+   {
+    "bytes": "1018b1fe",
+    "form": "disps17",
+    "instruction": "bne *-0x10100:m",
+    "site": "0x010250",
+    "status": "DIRECT",
+    "target": "0x00010100",
+    "target_in_image": true,
+    "target_is_instruction": true
    },
    {
     "bytes": "e01869fe",
-    "site": "0x10298",
-    "target": "UNKNOWN (Q51)",
-    "target_form": "same family"
+    "form": "disps17",
+    "instruction": "br *-0x10100:m",
+    "site": "0x010298",
+    "status": "DIRECT",
+    "target": "0x00010100",
+    "target_in_image": true,
+    "target_is_instruction": true
    }
   ],
-  "second_level_start": {
-   "normal": "0x15bc (system-register setup begins; 0x15aa is the block entry, no caller in the image)",
-   "p2test": "0x103a"
+  "second_level": {
+   "normal": {
+    "decoded_in_isolation": {
+     "bytes": "1000e000a215",
+     "form": "disps25",
+     "target": "0x000015aa",
+     "target_is_instruction": true
+    },
+    "meaning": "second-level entry reached from the loader",
+    "note": "the address is inside the linear disassembly of an instruction that starts before it; it is decoded separately because the loader branches there",
+    "site": "0x000008",
+    "status": "NOT_AN_INSTRUCTION"
+   },
+   "p2test": {
+    "decoded_in_isolation": {
+     "bytes": "1000e0001e10",
+     "form": "disps25",
+     "target": "0x00001026",
+     "target_is_instruction": true
+    },
+    "meaning": "second-level entry reached from the loader",
+    "note": "the address is inside the linear disassembly of an instruction that starts before it; it is decoded separately because the loader branches there",
+    "site": "0x000008",
+    "status": "NOT_AN_INSTRUCTION"
+   }
   },
+  "transfer_site": "0x010284",
+  "transfer_target": "0x00000008",
   "upload_destination": {
-   "evidence": "L2 for the store, UNKNOWN for the branch",
-   "not_proven": "the control transfer into the loaded code",
-   "proven": "the loader stores each byte at the address carried in the block header (0x1022C), so the second-level image lands at its declared addresses"
+   "handoff": "the loader's disps25 branch transfers control to the loaded image",
+   "not_observed": "that the board actually reaches this site",
+   "proven": "the loader stores each byte at the address carried in the block header (0x1022c)"
   }
  },
  "images": {

@@ -246,6 +246,117 @@ def firstlevel_facts(fw):
     return facts
 
 
+HANDOFF_SITES = {
+    # site -> (image, why it matters)
+    "first": [(0x10284, "the loader's only disps25 branch"),
+              (0x1017C, "disps17, zero/end-of-transfer path"),
+              (0x10250, "disps17, failed-ACK path"),
+              (0x10298, "disps17, error path")],
+}
+
+
+def _decode_site(fw, mem, site):
+    """Decode one branch and describe where its target lands."""
+    insn = fw.insns.get(site)
+    if insn is None:
+        return {"site": f"0x{site:06x}", "status": "NOT_AN_INSTRUCTION"}
+    target, form, status = C.decode_insn(site, insn.mnemonic, insn.raw)
+    row = {
+        "site": f"0x{site:06x}",
+        "bytes": insn.raw.hex(),
+        "instruction": f"{insn.mnemonic} {insn.operands}",
+        "form": form,
+        "status": status,
+        "target": f"0x{target:08x}" if target is not None else None,
+    }
+    if target is not None:
+        row["target_in_image"] = target in mem
+        row["target_is_instruction"] = target in fw.insns
+    return row
+
+
+def decode_handoff():
+    """Follow the loader -> second-level chain from real bytes."""
+    first_path = IMAGES[0][1]
+    normal_path = IMAGES[1][1]
+    p2_path = IMAGES[2][1]
+    if not (first_path.is_file() and normal_path.is_file()
+            and p2_path.is_file() and OBJDUMP.is_file()):
+        return {"status": "UNAVAILABLE"}
+
+    fw_first = C.load(str(first_path))
+    C.disassemble(fw_first, str(OBJDUMP))
+    mem_first, _, _, _, _ = parse_ihex(first_path)
+    first_sites = [_decode_site(fw_first, mem_first, site)
+                   for site, _ in HANDOFF_SITES["first"]]
+
+    handoff = {"first_level": first_sites, "second_level": {}}
+    # the loader's disps25 branch is the hand-off
+    branch = next((r for r in first_sites
+                   if r.get("form") == "disps25" and r.get("target")), None)
+    handoff["transfer_site"] = branch["site"] if branch else None
+    handoff["transfer_target"] = branch["target"] if branch else None
+    if branch:
+        # the target lands in the *second-level* image, not in the loader
+        branch["target_in_image"] = "checked per second-level image below"
+        branch["target_is_instruction"] = "checked per second-level image below"
+
+    for name, path in (("normal", normal_path), ("p2test", p2_path)):
+        fw = C.load(str(path))
+        C.disassemble(fw, str(OBJDUMP))
+        mem, _, _, _, _ = parse_ihex(path)
+        entry = None
+        if branch and branch.get("target"):
+            site = int(branch["target"], 16)
+            entry = _decode_site(fw, mem, site)
+            entry["meaning"] = ("second-level entry reached from the loader")
+            if not entry.get("target_is_instruction"):
+                # The loader's target is not an instruction boundary in the
+                # linear disassembly, which starts at 0x0.  Decode the bytes
+                # at that address in isolation so the branch is still read
+                # from the image, not assumed.
+                raw = bytes(mem.get(site + k, 0) for k in range(6))
+                target, form, status = C.decode_insn(site, "br", raw)
+                entry["decoded_in_isolation"] = {
+                    "bytes": raw.hex(),
+                    "form": form,
+                    "target": f"0x{target:08x}" if target is not None
+                              else None,
+                    "target_is_instruction":
+                        target in fw.insns if target is not None else False,
+                }
+                entry["note"] = ("the address is inside the linear "
+                                 "disassembly of an instruction that "
+                                 "starts before it; it is decoded "
+                                 "separately because the loader branches "
+                                 "there")
+        handoff["second_level"][name] = entry
+
+    def linked(name):
+        e = handoff["second_level"][name]
+        if not e:
+            return False
+        iso = e.get("decoded_in_isolation")
+        if iso:
+            return bool(iso["target"] and iso["target_is_instruction"])
+        return bool(e.get("target_is_instruction") and e.get("target_in_image"))
+
+    ok = branch is not None and all(linked(n) for n in ("normal", "p2test"))
+    handoff["chain"] = {
+        "status": "STATICALLY_RESOLVED" if ok else "INCOMPLETE",
+        "hardware_observed": False,
+        "evidence": "L2/L3: every link decoded from the image bytes",
+    }
+    handoff["upload_destination"] = {
+        "proven": "the loader stores each byte at the address carried in the "
+                  "block header (0x1022c)",
+        "handoff": "the loader's disps25 branch transfers control to the "
+                   "loaded image",
+        "not_observed": "that the board actually reaches this site",
+    }
+    return handoff
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", type=Path)
@@ -349,31 +460,15 @@ def main():
         "start at 0x0, so they do not share a byte range in the files; any "
         "statement about them sharing memory at run time is a hypothesis")
 
-    # hand-off facts
-    report["handoff"] = {
-        "first_level_jumps_below_code": [
-            {"site": "0x1017c", "bytes": "e01885ff",
-             "target_form": "0x18 4-byte conditional/branch family",
-             "target": "UNKNOWN (Q51)"},
-            {"site": "0x10298", "bytes": "e01869fe",
-             "target_form": "same family", "target": "UNKNOWN (Q51)"},
-        ],
-        "second_level_start": {
-            "normal": "0x15bc (system-register setup begins; 0x15aa is the "
-                      "block entry, no caller in the image)",
-            "p2test": "0x103a",
-        },
-        "upload_destination": {
-            "proven": "the loader stores each byte at the address carried in "
-                      "the block header (0x1022C), so the second-level image "
-                      "lands at its declared addresses",
-            "not_proven": "the control transfer into the loaded code",
-            "evidence": "L2 for the store, UNKNOWN for the branch",
-        },
-        "evidence": "L3 for the block boundaries, UNKNOWN for the hand-off "
-                    "target",
-    }
+    # hand-off: decoded from the bytes with the shared decoder, never typed in
+    report["handoff"] = decode_handoff()
 
+    parse_errors = {name: entry["parse_errors"]
+                    for name, entry in report["images"].items()
+                    if entry["parse_errors"]}
+    if parse_errors:
+        print(f"REFUSED: Intel HEX errors: {parse_errors}", file=sys.stderr)
+        return 2
     text = json.dumps(report, indent=1, sort_keys=True) + "\n"
     if args.json:
         args.json.write_text(text)
