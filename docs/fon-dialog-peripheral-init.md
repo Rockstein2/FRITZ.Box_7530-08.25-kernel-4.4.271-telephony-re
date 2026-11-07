@@ -1,333 +1,254 @@
 # SC14448 firmware: peripheral bring-up around `0x25F90`
 
-Status: **static analysis only, offline.**  No hardware was touched.  Every
-statement names the instruction address it comes from; anything without such
-a reference is a hypothesis and is marked so.
+Status: **static analysis only, offline.**  Every claim carries a level:
 
-Image: `firmware/dectfw_secondlevel_441.hex`; the `p2test` build is compared
-in §8.  Toolchain: CR16 binutils 2.44 built locally at
-`/tmp/opencode/cr16/build/binutils/objdump`, and the decoder in
-`tools/cr16_branch.py`.  The decoder's 2-byte conditional layout still
-disagrees with the CR16A manual (Q50); on the addresses below it matches
-binutils exactly, which is what the listing assumes.
+| Level | Meaning |
+|---|---|
+| **L1 BYTES** | instruction bytes and their addresses read from the image |
+| **L2 DECODE** | the encoding is confirmed by binutils and/or the CR16A manual |
+| **L3 CFG** | control-flow edges between basic blocks |
+| **L4 SEMANTICS** | flags, arguments, stack and the effect of the operations |
+| **L5 HARDWARE** | observed on a real SC14448 — **not reached in this document** |
+
+Image: `firmware/dectfw_secondlevel_441.hex`
+(sha256 `7cac33c72b222246…`); the `p2test` variant is compared in §8.
 
 ---
 
-## 1. The functions involved
+## 1. `0x25F90`, the exact algorithm
 
-| Address | Role (observed, not named by the vendor) | Extent |
-|---|---|---|
-| `0x25F90` | fill, start, poll | `0x25F90`–`0x25FB6` (last instruction `popret` at `0x25FB6`) |
-| `0x25FB8` | wrapper: calls `0x25F90`, then `0x25EA6` | `0x25FB8`–`0x25FBE` |
-| `0x25BA` | one fill step: stores one word, increments a counter | `0x25BA`–`0x25FD6` (28 B) |
-| `0x2558` | two peripheral stores, then calls `0x3C8C` | `0x2558`–`0x257C` |
-| `0x257E` | writes `0xFF6006`, masks an interrupt source, clears `0xFF6006` | `0x257E`–`0x25B8` |
-
-`0x2558` and `0x257E` are separate functions.  `0x2558` ends at `0x257C` by
-splitting the word returned by `0x3C8C` into `r2`/`r3`; `0x257E` directly
-follows the last instruction of `0x2558`.  In this image **no `bal` targets
-`0x257E`**: it is entered only when execution runs off the end of `0x2558`.
-
-### 1.1 Exact listing of `0x25F90`
+### 1.1 Listing
 
 ```text
 025f90  97 01               push    $0x2,r7,RA
 025f92  77 00 00 00 7c 93   movd    $0x937c:l,(r8,r7)
-025f98  17 c2               storw   $0x1:s,0x0:s(r8,r7)      ; [0x937C] <- 1
-025f9a  b2 5a 01 10         movw    $0x1001:m,r2            ; r2 <- 0x1001
-025f9e  fd c0 1d c6         bal     (ra),*-0x25ba:m         ; call 0x25BA
-025fa2  07 90               loadw   0x0:s(r8,r7),r0         ; r0 <- [0x937C]
+025f98  17 c2               storw   $0x1:s,0x0:s(r8,r7)       ; [0x937C] = 1
+025f9a  b2 5a 01 10         movw    $0x1001:m,r2              ; r2 = 0x1001
+025f9e  fd c0 1d c6         bal     (ra),*-0x25ba:m           ; call 0x25BA
+025fa2  07 90               loadw   0x0:s(r8,r7),r0           ; r0 = [0x937C]
 025fa4  b0 52 00 02         cmpw    $0x200:m,r0
-025fa8  49 1f               bhi     *-0x25f9a:s             ; -> 0x25F9A
-025faa  fd c0 af c5         bal     (ra),*-0x2558:m         ; call 0x2558
+025fa8  49 1f               bhi     *-0x25f9a:s              ; -> 0x25F9A
+025faa  fd c0 af c5         bal     (ra),*-0x2558:m           ; call 0x2558
 025fae  0f 89 02 60         loadw   0xf6002:m,r0
 025fb2  10 52               cmpw    $0x1:s,r0
-025fb4  1d 1f               bne     *-0x25fae:s             ; -> 0x25FAE
+025fb4  1d 1f               bne     *-0x25fae:s              ; -> 0x25FAE
 025fb6  97 03               popret  $0x2,r7,RA
 ```
 
-Both conditionals were decoded three ways and agree:
+### 1.2 The two branch targets (L2)
 
-| Site | Bytes | This decoder | binutils, base = instruction address | Target |
-|---|---|---|---|---|
-| `0x25FA8` | `49 1f` | `0x25F9A` | `0x25F9A` | `movw $0x1001` |
-| `0x25FB4` | `1d 1f` | `0x25FAE` | `0x25FAE` | `loadw 0xf6002` |
+| Site | Bytes | Field | Sign | Displacement | Target |
+|---|---|---|---|---|---|
+| `0x25FA8` | `49 1f` | `0x0E` | 1 | −0x0E | `0x25F9A` |
+| `0x25FB4` | `1d 1f` | `0x06` | 1 | −0x06 | `0x25FAE` |
 
-So inside this function the code is a **loop**: `0x25F9A` … `0x25FA8` repeats
-while `[0x937C] > 0x200`.
+Both agree with `objdump` at the instruction's own address, and the field
+arithmetic follows binutils `cr16-dis.c` `case 8` (see
+`fon-dialog-cr16-branches.md` §2).  So `0x25F9A..0x25FA8` is a loop and
+`0x25FAE..0x25FB4` is a wait loop.  (L3)
 
-The earlier version of this document reported that these two branches decode
-*forward, out of the function* (`0x2619A`, `0x261AE`).  That was an artefact
-of the decoder bug fixed in commit `63bca2c`; the current value agrees with
-binutils and with the code's own structure.
+### 1.3 `CMPW` and `BHI` (L4, from the CR16A manual)
 
-### 1.2 The loop, step by step
+* `cmpw $0x200, r0` — immediate form, `Rsrc = 0x200`, `Rdest = r0`.
+  The instruction subtracts `src1` from `src2` and sets three flags:
+  `PSR.Z` (equal), `PSR.N` (signed greater), **`PSR.L` (the Low flag:
+  “set to 1 if the second operand Rdest is less than the first operand
+  Rsrc, unsigned”)**.
+* `bhi` — “Conditional Branch if Higher”: **taken when `L` is 1**,
+  i.e. when `Rdest < Rsrc`, here when `r0 < 0x200`.
 
-| Instruction | Operation (proven from the encoding) |
-|---|---|
-| `0x25F98` | store 1 to `0x0000937C` — this is the counter reset |
-| `0x25F9A` | `r2 = 0x1001` (the value written into memory by the helper) |
-| `0x25F9E` | call `0x25BA`, which stores `r2` and increments `[0x937C]` |
-| `0x25FA2` | read back `[0x937C]` |
-| `0x25FA4` | compare with `0x200`: `cmpw $0x200,r0` → the absolute value in `r0` is compared with the literal `0x200` |
-| `0x25FA8` | `bhi` = branch if higher (unsigned) → repeats while `counter > 0x200` |
+There is no carry/borrow flag involved; the condition is the `L` flag.
 
-Iteration count, computed from the counter arithmetic:
-
-* first store happens at index 1,
-* the loop continues while the index is at most `0x200` (because the
-  comparison is "higher than `0x200`" for exiting),
-* therefore indices `1 … 0x200` are written: **512 words**,
-* first address `0x01000000 + 2·1`, last address `0x01000000 + 2·0x200`
-  = `0x01000400`, end of the written range `0x01000402`.
-
-This is the original "512 words" claim, and it is now supported by the
-decoded control flow rather than assumed.  The one caveat: it relies on
-`0x25FA8` being a *backward* branch to `0x25F9A`, which binutils and the
-decoder both print; a rule that read the same bytes in the other direction
-would turn the loop into a jump out of the function, so this is one of the
-places where Q50 matters.
-
-`0x25FB8` wraps the call (`bal 0x25F90` at `0x25FBA`), so the whole sequence
-runs once per invocation of the wrapper.
-
----
-
-## 2. `0x25BA`, the fill step
+### 1.4 The fill step `0x25BA` (L1 + L2)
 
 ```text
 0025ba  07 01               push    $0x1,r7
 0025bc  70 00 00 00 7c 93   movd    $0x937c:l,(r1,r0)
-0025c2  30 90               loadw   0x0:s(r1,r0),r3        ; r3 <- [0x937C]
-0025c4  74 00 00 01 00 00   movd    $0x1000000:l,(r5,r4)   ; base 0x01000000
+0025c2  30 90               loadw   0x0:s(r1,r0),r3          ; r3 = [0x937C]
+0025c4  74 00 00 01 00 00   movd    $0x1000000:l,(r5,r4)     ; base
 0025ca  36 5f               movzw   r3,(r7,r6)
-0025cc  16 4c               ashud   $1:s,(r7,r6)           ; index * 2
-0025ce  64 61               addd    (r7,r6),(r5,r4)        ; base + 2*index
-0025d0  24 d0               storw   r2,0x0:s(r5,r4)        ; store the value
+0025cc  16 4c               ashud   $1:s,(r7,r6)             ; index * 2
+0025ce  64 61               addd    (r7,r6),(r5,r4)
+0025d0  24 d0               storw   r2,0x0:s(r5,r4)          ; store
 0025d2  13 32               addw    $0x1:s,r3
-0025d4  30 d0               storw   r3,0x0:s(r1,r0)        ; counter + 1
+0025d4  30 d0               storw   r3,0x0:s(r1,r0)          ; [0x937C] = index + 1
 0025d6  07 03               popret  $0x1,r7
 ```
 
-* record size: one 16-bit word;
-* index: 16-bit value from `0x937C`, zero-extended (`movzw`);
-* address: `0x01000000 + 2·index` — a byte address, so the index counts
-  words.
+One call writes one 16-bit word at `0x01000000 + 2·index` and increments the
+counter.
 
-Other callers use the same helper with other values:
-`0x26016`/`0x2601C`/`0x26020` sets the counter to 1, loads `0x901` and calls
-`0x25BA`; `0x2BB4`, `0x333E`, `0x3350` also call it.  So `0x25BA` is a
-generic "store value at the next slot" helper, and `0x1001` is only one of
-the values it receives.
+### 1.5 Iteration count (L4)
 
----
+The counter runs `1 → 0x200`, and the loop test is `r0 < 0x200` with `r0`
+read *after* the increment:
 
-## 3. `0x2558`, the two-register sequence
-
-```text
-002558  1e 01               push    RA
-00255a  bf 60 fe ff         addd    $0xfffe:m,(sp)
-00255e  0f c1 00 64         storw   $0x0:s,0xf6400:m        ; [0x000F6400] <- 0
-002562  b0 5a f0 00         movw    $0xf0:m,r0
-002566  0f c9 02 64         storw   r0,0xf6402:m            ; [0x000F6402] <- 0xF0
-00256a  f4 55               movd    (sp),(r5,r4)
-00256c  23 58               movb    $0x2:s,r3
-00256e  22 58               movb    $0x2:s,r2
-002570  00 c0 1c 17         bal     (ra),*+0x3c8c:m         ; call 0x3C8C
-002574  0f 90               loadw   0x0:s(sp),r0
-002576  03 59               movb    r0,r3
-002578  0f 90               loadw   0x0:s(sp),r0
-00257a  80 49               lshw    $-8:s,r0
-00257c  02 59               movb    r0,r2
-```
-
-The two stores are proven: `0` to the 16-bit address `0x000F6400`, then
-`0x00F0` to `0x000F6402`.  What the registers do is unknown (§5).  After the
-call the returned word on the stack is split into `r2` (high byte) and `r3`
-(low byte).
-
-## 4. `0x257E`, the `0xFF6006` sequence
-
-```text
-00257e  ff c0 7b ff         bal     (ra),*-0x24f8:m         ; call 0x24F8
-002582  70 00 ff 00 06 60   movd    $0xff6006:l,(r1,r0)
-002588  b2 5a 80 00         movw    $0x80:m,r2
-00258c  20 d0               storw   r2,0x0:s(r1,r0)         ; [0xFF6006] <- 0x0080
-00258e  14 00 92 30         sprd    psr,(r3,r2)             ; save psr
-002592  04 00               di
-002594  00 2c               nop
-002596  73 00 ff 00 06 54   movd    $0xff5406:l,(r4,r3)
-00259c  53 90               loadw   0x0:s(r4,r3),r5
-00259e  b5 22 ff f0         andw    $0xf0ff:m,r5            ; clear bits 8..11
-0025a2  53 d0               storw   r5,0x0:s(r4,r3)         ; write back
-0025a4  22 5f               movzw   r2,(r3,r2)
-0025a6  14 00 92 10         lprd    (r3,r2),psr            ; restore psr
-0025aa  20 90               loadw   0x0:s(r1,r0),r2         ; read back, discarded
-0025ac  b2 5a 00 04         movw    $0x400:m,r2
-0025b0  2f c9 02 54         storw   r2,0xf5402:m            ; [0x000F5402] <- 0x400
-0025b4  00 c2               storw   $0x0:s,0x0:s(r1,r0)     ; [0xFF6006] <- 0
-0025b6  2f 60               addd    $0x2:s,(sp)
-0025b8  1e 03               popret  RA
-```
-
-* the argument in `r2` is **inherited**: `0x257E` never loads `r2` before the
-  call to `0x24F8`; whatever the previous code left there is passed on;
-* the read at `0x25AA` is dead: `r2` is overwritten at `0x25AC`;
-* the sequence is a set/clear pulse around a masked read-modify-write of
-  `0xFF5406` with interrupts disabled.
-
-## 5. The registers
-
-| Address | Sites | Access | Width | Known | Unknown |
+| index before write | address written | counter after | `cmpw` operands | `L` | `bhi` |
 |---|---|---|---|---|---|
-| `0x0000937C` | `0x25BC`, `0x25C2`, `0x25D4`, `0x25F92`, `0x25F98`, `0x25FA2` | read/write word | 16-bit | the fill counter | what else uses it |
-| `0x01000000` | `0x25C4` | write | 32-bit base | fill destination | what the area is |
-| `0x000F6400` | `0x255E` | write 0 | **16-bit `:m`** | — | whether the CPU extends it (Q44) |
-| `0x000F6402` | `0x2566` | write `0xF0` | **16-bit `:m`** | — | as above |
-| `0x000F6002` | `0x25FAE` | read | **16-bit `:m`** | polled for `1` | which event sets it |
-| `0x000F5402` | `0x25B0` | write `0x400` | **16-bit `:m`** | — | as above |
-| `0x00FF6006` | `0x2582`, `0x258C`, `0x25AA`, `0x25B4` | read/write word | 32-bit `:l` | bit 7 set then cleared | what bit 7 starts or acknowledges |
-| `0x00FF5406` | `0x2596`, `0x25A2` | read-modify-write | 32-bit `:l` | bits 8..11 cleared | which peripheral |
+| 1 | `0x01000002` | 2 | `0x200` vs `r0=2` | 1 | taken |
+| 2 | `0x01000004` | 3 | `0x200` vs 3 | 1 | taken |
+| 510 | `0x010003FC` | 511 | `0x200` vs 511 | 1 | taken |
+| 511 | `0x010003FE` | 512 | `0x200` vs 512 | 0 | **not taken** |
+| 512 | — | — | — | — | loop already left |
 
-The `:m` operands really are 16-bit immediates inside 4-byte instructions, so
-the instruction itself cannot spell `0xFF6400`; whether the core sign- or
-segment-extends the value is still open (Q44).  The firmware never performs a
-`:m` access into the `0xFF00xx` range, so no in-image comparison exists.
+**511 writes**, indices 1…511, addresses `0x01000002` … `0x010003FE`, run
+end `0x01000400`.  The previous “512” counted the initial value 1 as a write,
+which it is not: the first store happens inside the loop.
 
-## 6. Where `0x1602` leads (chain)
+Corroboration: two more loops in the same image use the identical
+`addw $1` / `cmpw $0x28` / `bhi <back>` shape — `0x25C5E`–`0x25C64`
+(looping to `0x25C4A`) and `0x25E5E`–`0x25E64` (looping to `0x25D9E`).  With
+`Rdest < Rsrc` both are genuine bounded loops; the opposite operand order
+would make each of them execute once and leave, which no compiler emits for
+an explicitly counter-based construct.
 
-All links are instruction boundaries in the image and are reachable in CFG
-mode A (from `0x1602` alone):
+The equivalence “`bhi` after `cmpw $imm, rX` means `rX < imm`” was checked
+by hand on the three loops above; it depends on the manual's flag table and
+is **not** an observation on silicon (no L5).
 
-| Call site | Bytes | Target | Type | Condition |
+## 2. Address operands: `abs20` (L1 + L2)
+
+The four instructions of the sequence use two different address forms.
+
+| Instruction | Bytes | Operand form | Address field | Effective address |
 |---|---|---|---|---|
-| `0x1602` | `00 c0 f6 23` | `0x39F8` | `bal` | after `lpr r1,psr` sets `0x800` |
-| `0x3A2C` | `02 c0 8c 25` | `0x25FB8` | `bal` | inside the `0x39F8` routine, after `di` (`0x3A08`) and two calls (`0x3A0C`, `0x3A10`) |
-| `0x25FBA` | `ff c0 d7 ff` | `0x25F90` | `bal` | run after call |
-| `0x25F9E` | `fd c0 1d c6` | `0x25BA` | `bal` | loop body |
-| `0x25FAA` | `fd c0 af c5` | `0x2558` | `bal` | loop exit |
-| `0x2570` | `00 c0 1c 17` | `0x3C8C` | `bal` | inside `0x2558` |
-| `0x257E` | `ff c0 7b ff` | `0x24F8` | `bal` | run off the end of `0x2558` |
+| `loadw 0xf6002:m,r0` | `0f 89 02 60` | `{abs20,0}` + `regr` | `((0x0F & 0x0F) << 16) \| 0x6002` | `0x000F6002` |
+| `storw r0,0xf6402:m` | `0f c9 02 64` | `abs20` + `regr` | `(0x0F << 16) \| 0x6402` | `0x000F6402` |
+| `storw r2,0xf5402:m` | `2f c9 02 54` | `abs20` + `regr` | `(0x0F << 16) \| 0x5402` | `0x000F5402` |
+| `movd $0xff6006:l,(r1,r0)` | `70 00 ff 00 06 60` | `imm32` = `{abs24,16}` | 24-bit literal | `0x00FF6006` |
 
-The simplified chain in earlier reports (`0x25FAA → 0x2558 → 0x257E →
-0x24F8`) is a sequence of *addresses*: `0x2558` does not call `0x257E`, it
-calls `0x3C8C`; `0x257E` is the next function and calls `0x24F8`.
+Details:
 
-## 7. `0x24F8` revisited
+* the `:m` suffix is a **display width marker**, not the access width:
+  `loadw`/`storw` are 16-bit accesses, `loadd`/`stord` 32-bit, and the
+  suffix only tells how many bits the address field holds (`:s` ≤ 8,
+  `:m` 16/20, `:l` 24/32);
+* the field is `((byte0 & 0x0F) << 16) | (byte2 | byte3 << 8)`; sweeping
+  `byte0` over `0x0…0xF` moves the address by `0x10000` each time, which
+  was verified with objdump on synthetic words as well as on the image;
+* **there is no segment register and no page mapping** for these accesses:
+  the address is complete in the instruction.  The CR16A manual's absolute
+  load/store figure (A-9) shows only the low 16 bits plus two upper bits,
+  while the firmware needs bit 19 for `0xF6006`, so the SC14448 uses a wider
+  field than the CR16A drawing shows; this is recorded as the remaining
+  format question (Q44), not as a segment translation.
+
+## 3. Register table (L1/L2 only)
+
+| Address | Sites | Access | What is proven | What is not |
+|---|---|---|---|---|
+| `0x0000937C` | `0x25BC`…`0x25FA2` | 16-bit R/W | fill counter | — |
+| `0x01000000` | `0x25C4` | 16-bit writes, `+2·idx` | fill base | what the area is |
+| `0x000F6400` | `0x255E` | write 0 | value sent | function |
+| `0x000F6402` | `0x2566` | write `0x00F0` | value sent | function |
+| `0x000F6002` | `0x25FAE` | read | polled for 1 | which event sets it |
+| `0x000F5402` | `0x25B0`, `0x3A28`, `0x1934` | write `0x400`, `0xFFFF`, … | values | function |
+| `0x00FF6006` | `0x2582`/`0x258C`/`0x25AA`/`0x25B4` | 32-bit R/W | `0x80` set then cleared | what bit 7 does |
+| `0x00FF5406` | `0x2596`/`0x25A2` | 32-bit RMW | bits 8..11 cleared | which block |
+
+No claim is made that `0x000F6400` and `0x00FF6400` are the same register.
+
+## 4. `0x2558` – `0x25B8`: one function (L3 + L4)
+
+| Address | Instruction | Effect |
+|---|---|---|
+| `0x2558` | `push RA` | SP −2 |
+| `0x255A` | `addd $0xfffe,(sp)` | SP −2, 2-byte scratch |
+| `0x255E` | `storw $0,0xf6400:m` | write 0 |
+| `0x2562`/`0x2566` | `movw $0xf0,r0` / `storw r0,0xf6402:m` | write 0xF0 |
+| `0x256A`–`0x2570` | `movd (sp),(r5,r4)`, arguments 2,2, `bal 0x3C8C` | call |
+| `0x2574`–`0x257C` | read the scratch word; `r3 = low byte`, `r2 = high byte` | split |
+| `0x257E` | `bal 0x24F8` | call with `r2` |
+| `0x2582`–`0x25B4` | pulse sequence (see §5) | writes |
+| `0x25B6` | `addd $0x2,(sp)` | SP +2 |
+| `0x25B8` | `popret RA` | SP +2, return |
+
+There is no return or jump between `0x257C` and `0x257E`; the block from
+`0x257E` on is reached by falling through.  No `bal` anywhere in either
+image targets `0x257E`, so it is **not** a separately called function.
+`0x24F8` receives the byte in `r2` and returns when it is zero.
+
+## 5. The `0xFF6006` pulse (L2)
 
 ```text
-0024f8  02 50   cmpb    $0x0:s,r2
-0024fa  0e 12   beq     *+0x2556:s      ; r2 == 0 -> return
-0024fc  b1 5a 80 00  movw    $0x80:m,r1
-002500  74 00 ff 00 0a 40  movd    $0xff400a:l,(r5,r4)
-002506  64 90   loadw   0x0:s(r5,r4),r6
-...
-002550  f1 49   lshw    $-1:s,r1
-002552  01 52   cmpw    $0x0:s,r1
-002554  13 1f   bne     *-0x253a:s
-002556  ee 0a   jump    (ra)
+002582  movd $0xff6006:l,(r1,r0)
+002588  movw $0x80:m,r2
+00258c  storw r2,0x0:s(r1,r0)      ; [0xFF6006] = 0x0080
+00258e  sprd psr,(r3,r2)           ; save PSR
+002592  di                         ; interrupts disabled
+002596  movd $0xff5406:l,(r4,r3)
+00259c  loadw 0x0:s(r4,r3),r5
+00259e  andw $0xf0ff:m,r5          ; clear bits 8..11
+0025a2  storw r5,0x0:s(r4,r3)
+0025a4  movzw r2,(r3,r2)
+0025a6  lprd (r3,r2),psr           ; restore PSR
+0025aa  loadw 0x0:s(r1,r0),r2      ; read back, overwritten below
+0025ac  movw $0x400:m,r2
+0025b0  storw r2,0xf5402:m         ; [0x000F5402] = 0x0400
+0025b4  storw $0x0:s,0x0:s(r1,r0)  ; [0xFF6006] = 0
 ```
 
-* it is **not recursive**: nothing in it calls `0x24F8` again;
-* it returns immediately when the byte in `r2` is `0`;
-* otherwise it walks a bit mask (`0x80` shifted right) over bits 8..10 of
-  the word at `0xFF400A`, setting or clearing them one at a time;
-* the argument is a *byte* compared with `0`, and the value written at
-  `0x257E` is exactly the inherited byte — so the `0x80` write happens once
-  per call of `0x257E`, not repeatedly.
-
-Register and stack handling is local: `push`/`popret` pairs balance inside
-each function, and the word passed between `0x2558` and `0x3C8C` is copied
-through a 2-byte stack slot (`0x255A`).
-
-## 8. Normal versus `p2test`
-
-The `p2test` build repeats the same pattern at different addresses:
+## 6. Normal versus `p2test`
 
 | Item | normal | `p2test` |
 |---|---|---|
 | fill value `0x1001` | `0x25F9A` | `0x26750` |
-| helper counter | `0x937C` | `0x94B6` |
-| fill base `0x01000000` | `0x25C4` | `0x1E80` |
-| readiness read `0xF6002` | `0x25FAE` | `0x26764` |
+| counter | `0x937C` | `0x94B6` |
+| fill base | `0x01000000` (`0x25C4`) | `0x01000000` (`0x1E80`) |
+| readiness read | `0xF6002` (`0x25FAE`) | `0xF6002` (`0x26764`) |
+| loop bound | `0x200` | `0x200` |
+| same-pattern loops with bound 0x28 | `0x25C4A`, `0x25D9E`, `0x25E5E` | present at shifted addresses |
 
-So the same shape — value `0x1001`, a 16-bit counter, base `0x01000000`, a
-read of `0x000F6002` — exists in both builds, but the counter is at a
-different address and the surrounding control flow differs.  They are **not**
-declared functionally identical here.
+The structure (value, counter, base, readiness read, bound) repeats, but the
+counter lives at a different address and the surrounding blocks differ, so
+the two builds are **not** declared identical.
 
----
-
-## 9. Pseudo-code with provenance
+## 7. Pseudo-code with provenance
 
 ```c
-/* 0x25F90 -- proven from the decoded control flow */
-void unknown_init(void)
+void unknown_init(void)                       /* 0x25F90, L3 */
 {
     volatile uint16_t *counter = (uint16_t *)0x0000937C;   /* 0x25F92 */
     *counter = 1;                                          /* 0x25F98 */
 
     do {
-        unknown_fill_below(0x1001);                        /* 0x25F9A, 0x25F9E */
-    } while (*counter > 0x200);                            /* 0x25FA2..0x25FA8 */
-    /* 512 words: indices 1..0x200 -> 0x01000002 .. 0x01000400 */
+        unknown_fill(0x1001);                              /* 0x25F9A, 0x25F9E */
+    } while (*counter < 0x200);                            /* 0x25FA2..0x25FA8 */
+    /* 511 words at 0x01000002 .. 0x010003FE, L4 */
 
-    unknown_two_registers();                               /* 0x25FAA -> 0x2558 */
+    unknown_two_registers();                               /* 0x25FAA */
 
     while (*((volatile uint16_t *)0x000F6002) != 1)        /* 0x25FAE..0x25FB4 */
-        ;                                                  /* no timeout visible */
+        ;                                                  /* no timeout */
 }
 
-/* 0x25BA */
-void unknown_fill_below(uint16_t value)                    /* arg in r2 */
+void unknown_fill(uint16_t value)             /* 0x25BA, L2 */
 {
-    volatile uint16_t *counter = (uint16_t *)0x0000937C;   /* 0x25BC */
+    volatile uint16_t *counter = (uint16_t *)0x0000937C;
     uint16_t index = *counter;                             /* 0x25C2 */
-    ((volatile uint16_t *)0x01000000)[index] = value;      /* 0x25C4..0x25D0 */
-    *counter = (uint16_t)(index + 1);                      /* 0x25D2, 0x25D4 */
+    ((volatile uint16_t *)0x01000000)[index] = value;      /* 0x25D0 */
+    *counter = index + 1;                                  /* 0x25D4 */
 }
 
-/* 0x2558 */
-void unknown_two_registers(void)
+void unknown_two_registers(void)              /* 0x2558..0x25B8, L3 */
 {
-    *((volatile uint16_t *)0x000F6400) = 0x0000;           /* 0x255E */
-    *((volatile uint16_t *)0x000F6402) = 0x00F0;           /* 0x2562, 0x2566 */
-    unknown_3C8C(2, 2);                                    /* 0x256C, 0x256E, 0x2570 */
-}
-
-/* 0x257E -- reached by running off the end of 0x2558 */
-void unknown_pulse(uint8_t inherited_r2)
-{
-    unknown_24F8(inherited_r2);                            /* 0x257E */
-    volatile uint32_t *ctl = (uint32_t *)0x00FF6006;       /* 0x2582 */
-    *ctl = 0x0080;                                         /* 0x2588, 0x258C */
-    disable_irq();                                         /* 0x258E..0x2594 */
-    *((volatile uint32_t *)0x00FF5406) &= 0xF0FF;          /* 0x2596..0x25A2 */
-    enable_irq();                                          /* 0x25A4, 0x25A6 */
-    (void)*ctl;                                            /* 0x25AA, dead read */
-    *((volatile uint16_t *)0x000F5402) = 0x0400;           /* 0x25AC, 0x25B0 */
-    *ctl = 0;                                              /* 0x25B4 */
+    *((volatile uint16_t *)0x000F6400) = 0;                /* 0x255E */
+    *((volatile uint16_t *)0x000F6402) = 0x00F0;           /* 0x2566 */
+    unknown_3C8C(2, 2);                                    /* 0x2570 */
+    unknown_24F8(/* r2 = high byte of the result */);      /* 0x257E */
+    *((volatile uint32_t *)0x00FF6006) = 0x0080;           /* 0x258C */
+    *((volatile uint32_t *)0x00FF5406) &= 0xF0FF;          /* 0x25A2 */
+    *((volatile uint16_t *)0x000F5402) = 0x0400;           /* 0x25B0 */
+    *((volatile uint32_t *)0x00FF6006) = 0;                /* 0x25B4 */
 }
 ```
 
----
+## 8. What remains unknown
 
-## 10. What is proven and what is not
-
-| Claim | Status |
+| Item | Level reached |
 |---|---|
-| `0x25F90` stores 1 to `0x937C` | proven (`0x25F98`) |
-| `0x25BA` writes one 16-bit word at `0x01000000 + 2·index` and increments the counter | proven (`0x25C4`..`0x25D4`) |
-| the loop writes indices 1..0x200, i.e. 512 words, ending at `0x01000400` | proven, subject to the `0x25FA8` direction (Q50) |
-| `0x2558` writes 0 to `0x000F6400` and `0xF0` to `0x000F6402` | proven (`0x255E`, `0x2566`) |
-| `0x257E` sets bit 7 of `0xFF6006`, masks `0xFF5406` bits 8..11, writes `0x400` to `0x000F5402`, clears `0xFF6006` | proven |
-| `0x24F8` is not recursive and returns when `r2 == 0` | proven |
-| the code waits until `[0x000F6002] == 1` | proven as a loop; the *event* is unknown |
-| there is no timeout or watchdog on that wait | the loop body contains no counter or alternative exit |
-| `0x01000000` is a PCM buffer | **not proven** |
-| `0x1001` has a known field layout | **not proven** |
-| this is PCM initialisation | **not proven** |
-
-`0x1001` occurs in the image only at `0x25F9A` (normal) and `0x26750`
-(`p2test`) as a `movw` argument to this fill helper; it is not used anywhere
-else in either image.
+| meaning of `0x01000000`, of `0x1001`, of `0x937C` | L2 only |
+| what events set `0x000F6002` to 1 | L2 only |
+| what bit 7 of `0xFF6006` triggers | L2 only |
+| whether `0xFFFF` written to `0x000F5402` at `0x3A28` is a reset value | L2 only |
+| is this PCM initialisation | **not established** |

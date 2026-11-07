@@ -835,57 +835,29 @@ invalid targets.
 (`0x1001` at `0x26750`, poll at `0x26764`, `0xFF6006` at `0x1E3E`), so the
 bring-up is the same code in both builds.
 
-## 9g. CR16 control-flow graph, second iteration (OFFLINE, 2026-11-07)
+## 9g. CR16 decoding and CFG (OFFLINE, 2026-11-07, iteration 3)
 
-Branch decoding is chosen by machine form, not by length.  The 2-byte
-conditional layout is still disputed (Q50): the rule used here and in
-binutils differs from the CR16A manual by one bit position, matches binutils
-on 1 816 of 2 076 occurrences, and is the only rule that keeps the two
-loop branches inside `0x25F90` pointing backwards.
+| Fact | Value | Level |
+|---|---|---|
+| 2-byte conditional target for `49 1f` at `0x25FA8` | `0x25F9A` (−0x0E) | L2 |
+| 2-byte conditional target for `1d 1f` at `0x25FB4` | `0x25FAE` (−0x06) | L2 |
+| branch validation matches, both images | 4 891, **0 mismatches** | L2 |
+| unsupported branch forms | 113 (four-byte backwards, one six-byte) | L2 |
+| `0x25F90` loop | `cmpw $0x200` + `bhi` → 0x25F9A | L3 |
+| fill iterations | **511** (indices 1..511) | L4 |
+| fill range | `0x01000002` … `0x010003FE` | L4 |
+| `bhi` condition | `PSR.L`, set when `Rdest < Rsrc` (CR16A manual) | L4 |
+| `0x2558`…`0x25B8` | one function, no caller of `0x257E` | L3 |
+| address operand `abs20` | `((b0 & 0x0F) << 16) \| word1` | L2 |
 
-Edge statistics of `dectfw_secondlevel_441.hex` (total 23 284):
+CFG statistics (normal image, 23 284 edges): `DIRECT_RESOLVED` 22 815,
+`DIRECT_UNSUPPORTED` 46, `INDIRECT_REGISTER` 382, `INDIRECT_TABLE_RESOLVED`
+0, `FALLTHROUGH_UNRESOLVED` 9, `OUTSIDE_LOADED_IMAGE` 2,
+`TARGET_NOT_INSTRUCTION` 30.  Mode A from `0x1602` reaches 9 042
+instructions, mode B 17 600, mode C is empty.
 
-| Category | Count |
-|---|---|
-| `DIRECT_RESOLVED` | 22 714 |
-| `DIRECT_UNSUPPORTED` | 46 |
-| `INDIRECT_REGISTER` | 382 |
-| `INDIRECT_UNRESOLVED` | 0 |
-| `INDIRECT_TABLE_RESOLVED` | 0 |
-| `FALLTHROUGH_UNRESOLVED` | 9 |
-| `OUTSIDE_LOADED_IMAGE` | 42 |
-| `TARGET_NOT_INSTRUCTION` | 91 |
-
-Reachability: mode A (`0x1602`) reaches **10 730** instructions; mode B
-(386 heuristic candidates) reaches 17 652; mode C (verified entries) is
-**empty** because no loader or vector table has been read.
-
-`0x25F90`, proven from the decoded control flow (all links checked against
-binutils at the instruction's own address):
-
-| Fact | Value |
-|---|---|
-| counter location | `0x0000937C`, reset to 1 at `0x25F98` |
-| fill value | `0x1001` (`0x25F9A`), the only use of that constant in the image |
-| fill helper | `0x25BA`: one word at `0x01000000 + 2·index`, then `index + 1` |
-| loop condition | `bhi` at `0x25FA8` → `0x25F9A` while `counter > 0x200` |
-| words written | indices 1..`0x200` = **512 words**, `0x01000002`..`0x01000400` |
-| after the loop | `bal 0x2558` (`0x25FAA`): `0xF6400 <- 0`, `0xF6402 <- 0xF0`, `bal 0x3C8C` |
-| wait | `loadw 0xF6002` / `cmpw 1` / `bne 0x25FAE`; no timeout or alternative exit in the body |
-| pulse | `0x257E`: `0xFF6006 <- 0x80`, `0xFF5406 &= 0xF0FF` with IRQ disabled, `0xF5402 <- 0x400`, `0xFF6006 <- 0` |
-
-Corrections to §9d-12 that this iteration establishes:
-
-| Old statement | Now |
-|---|---|
-| "2 706 unresolved indirect edges" | 382 register-indirect edges; the rest were unsupported direct forms or off-image targets |
-| "the two conditionals decode outside the function" (intermediate state of this iteration) | they are backward branches `0x25FA8 → 0x25F9A` and `0x25FB4 → 0x25FAE`, confirmed with binutils |
-| "`0x257E` re-enters, recursion depth 1" | no recursion: `0x24F8` has no call to itself; `0x257E` has no caller and follows `0x2558` |
-| "`0x2558 → 0x257E`" as a call | `0x2558` calls `0x3C8C`; `0x257E` is a separate entry |
-| "404 candidate entries" | 386 heuristic candidates, all `verified=False` |
-
-Detailed write-up: `docs/fon-dialog-peripheral-init.md` and
-`docs/fon-dialog-cr16-cfg.md`.
+Nothing in this section reaches L5 (hardware): the register meanings remain
+unknown.
 
 ## 9e. Offline state of the driver
 

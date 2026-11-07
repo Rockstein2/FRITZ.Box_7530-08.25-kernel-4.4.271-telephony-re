@@ -1,210 +1,136 @@
-# CR16 branch decoding — rules and validation
+# CR16 branch decoding — rules, validation, and the remaining unknowns
 
-Status: **decoder validated against binutils for every branch instance in the
-image.**  Static analysis only; no hardware was touched.
+Status: **decoder fixed and validated against binutils for every branch
+instruction of both images; zero mismatches.**
+Static analysis only; no hardware was touched.
 
 Implementation: `tools/cr16_branch.py`.
-Tests: `tools/tests/test_cr16_branch.py` (PASS/FAIL/SKIP, with a sweep that
-compares every decoded branch to the locally built CR16 objdump).
+Tests and report: `tools/tests/test_cr16_branch.py --json <file>`;
+the checked-in summary is `tools/reports/cr16-branch-validation.json`.
 
-The reference implementation is `binutils-2.44/opcodes/cr16-dis.c` /
-`cr16-opc.c`; the assembler from the same tree is used to confirm encodings
-the firmware does not exercise.
+Reference implementations: `binutils-2.44/opcodes/cr16-dis.c` and
+`cr16-opc.c` (from the OpenWrt build tree) and the git master copies (the
+CR16 code is identical), plus the CR16A Programmer's Reference Manual,
+Appendix A (freely available; the bit-field appendix is authoritative for
+the formats and was used for the flag semantics as well).
 
 ---
 
-## 1. Two different branch families
+## 1. Why the previous version disagreed with itself
 
-The decisive lesson of this iteration: **the branch length does not select the
-decoding rule.**  Three machine forms exist, and the rule must be chosen from
-the instruction's own encoding (and, for the 2-byte forms, from its mnemonic).
+Earlier iterations recorded that `objdump` shows the loop head of `0x25F90`
+as `49 1f  bhi *-0x25f9a`, while the Python decoder said `0x2619A`.  The
+cause was misreading the printed text:
 
-### 1.1 4-/6-byte `bal` (the relaxable branch form)
-
-Encoding in `cr16-opc.c` (all conditions share it; the condition code sits in
-bits[23:20] of the first word, `00 c0` is the unconditional `ra`):
+`cr16-dis.c` computes
 
 ```c
-#define BRANCH_INST(NAME, OPC)                                       \
-  /* opc4 c4 dispe9 */                                               \
-  {NAME, 1, OPC, 28, ..., {{cc,20}, {dispe9,16}}},                   \
-  /* opc4 c4 disps17 */                                              \
-  {NAME, 2, ((OPC<<4)+0x8), 24, ..., {{cc,20}, {disps17,0}}},        \
-  /* opc4 c4 disps25 */                                              \
-  {NAME, 3, (OPC<<4), 16, ..., {{cc,4}, {disps25,16}}}
+number = (relative ? memaddr : 0)
+       + (sign_flag ? ((- a->constant) & 0xffffffe) : a->constant);
 ```
 
-`bal` is `{2, 0x00C0, ...}`.  The rule:
+and prints `*-X` whenever `sign_flag` is set — the `-` is the **sign of the
+displacement**, and the number printed is still the absolute target
+`memaddr + displacement`.  So `*-0x25f9a` at address `0x25FA8` means
+“target `0x25F9A`, reached by a negative displacement”, not
+“`0x25FA8 - 0x25F9A`”.  The decoder was applying the right arithmetic but
+the documentation was re-reading the printed text as a subtraction.
+
+Proof that the print path adds `memaddr`: the same two bytes at base 0 print
+the displacement itself.
 
 ```text
-p = bits[31:8] of (word1 << 16 | word0)          /* EXTRACT(allWords,16,24) */
-sign is bit 0 of p
-target = addr + ((-((~p + 1) & 0xFFFFFF)) & 0xFFFFFE)   if sign
-target = addr + p                                      otherwise
-target &= 0xFFFFFF ; addr = address of the instruction itself
+base 0x000000  49 1f -> *-0xfffff2:s        ( = -0x0E as a 24-bit value )
+base 0x001000  49 1f -> *-0xff2:s           ( = 0x1000 - 0x0E )
+base 0x025fa8  49 1f -> *-0x25f9a:s         ( = 0x25FA8 - 0x0E )
 ```
 
-**Validation:** all 1 490 `bal` instructions of
-`dectfw_secondlevel_441.hex`, re-disassembled with `--adjust-vma=0`, matched
-with 0 mismatches.
+## 2. `dispe9`, field by field
 
-| Address | Bytes | Target |
+Three independent sources agree on the field placement:
+
+| Source | Statement |
+|---|---|
+| `cr16-opc.c` | `BRANCH_INST`: `{{cc,20},{dispe9,16}}`, `match_bits` 28 |
+| `cr16-dis.c` | `case 8: p = makelongparameter(allWords,0,start_bits)` then `((p & 0xF00) >> 4) \| (p & 0x0F)` |
+| assembler round trip | changing bits 7..4 changes only the mnemonic, never the printed displacement |
+
+In machine bytes `[b0, b1]` of a 2-byte instruction:
+
+```text
+d1..d4 = b0 & 0x0F        low nibble of the FIRST byte
+d5..d8 = b1 & 0x0F        low nibble of the SECOND byte
+cc     = b1 >> 4          condition code
+constant  = (b1 & 0x0F) << 4 | (b0 & 0x0F)
+longdisp  = constant << 1
+sign      = longdisp & 0x100
+target    = addr + (-((~longdisp + 1) & 0xFF))   if sign
+            addr + (longdisp & 0xFF)            otherwise
+```
+
+`tools/cr16_branch.py` implements exactly this in `cond2_disp()` and
+`cond2_target()`; the CFG and the tests call those two functions and hold no
+second copy of the rule.
+
+Worked values:
+
+| Site | Bytes | constant | sign | displacement | target |
+|---|---|---|---|---|---|
+| `0x25FA8` | `49 1f` | `0x0E` | 1 | −0x0E | `0x25F9A` |
+| `0x25FB4` | `1d 1f` | `0x06` | 1 | −0x06 | `0x25FAE` |
+| `0x25E64` | `4d 19` | `0xC6` | 1 | −0xC6 | `0x25D9E` |
+| `0x28C00` | `3a 1f` | `0x0C` | 1 | −0x0C | `0x28BF4` |
+| `0x000EE` | `12 12` | `0x22` | 0 | +0x44 | `0x00132` |
+| `0x00294` | `40 11` | `0x10` | 0 | +0x20 | `0x002B4` |
+
+Boundaries: the displacement is an 8-bit even signed value, so the range is
+−254..+254 and the target is masked to 24 bits (`cond2_target(0xFFFF00,
+0x0010) == 0xFFFF00`; a backward branch from `0x10` wraps to `0xFFFFF2`).
+
+## 3. Other branch forms
+
+| Form | Rule | Status |
 |---|---|---|
-| `0x2570` | `00 c0 1c 17` | `0x3C8C` |
-| `0x257E` | `ff c0 7b ff` | `0x24F8` |
-| `0x25E2` | `02 c0 c8 66` | `0x28CAA` |
-| `0x0AF0` | `ff c0 a7 f9` | `0x0496` |
-| `0x1602` | `00 c0 f6 23` | `0x39F8` |
+| `bal`, 4 bytes, byte1 `0xC0` | 24-bit field over bits[31:8], sign in bit 0 | validated, 2 863 matches |
+| 4-byte conditional, byte1 low nibble `0x8` | `addr + word1` (forward); a word above `0x8000` is not decoded | 459 matches, 112 unsupported |
+| `beq0b/bne0b/beq0w/bne0w` | `2*(byte0>>4) + 2 (+0x20 if byte1 & 1)` | validated, 475 matches |
+| 6-byte conditional, byte1 `0x06` | not implemented | 1 unsupported (`0x92FC`, in a data region) |
+| `jump (rp)`, `jal (rp)` | no immediate | not a branch: 778 instructions |
 
-Note the condition byte: `00 c0` is the plain call, but `02 c0`, `ff c0`,
-`f1 c0` … also appear and are *conditional calls*; they use the same
-displacement layout.  A decoder that accepts only `00 c0` loses 717 calls.
+`objdump` prints the branch-if-zero family as `2*offset + 2` (a
+displacement), so the test converts that number by adding the instruction
+address before comparing.
 
-### 1.2 2-byte conditional branch (`dispe9`)
+## 4. Full validation (machine-readable)
 
-The 2-byte word carries, in its low byte, `cc:4 | disp_low:4`, and in bits
-[11:8] the high nibble of the field:
+`tools/reports/cr16-branch-validation.json` holds every case that is not a
+match; the full tables are reproduced by rerunning the test.
 
-```text
-disp   = ((word0 & 0x0F) | (((word0 >> 8) & 0x0F) << 4)) << 1
-target = (addr + disp) & 0xFFFFFF
-```
+| Image | sha256 (first 16) | form | MATCH | UNSUPPORTED | INVALID | MISMATCH |
+|---|---|---|---|---|---|---|
+| normal | `7cac33c72b222246` | bal32 | 1 490 | 0 | 0 | 0 |
+| normal | | dispe9 | 2 076 | 0 | 0 | 0 |
+| normal | | disps5 | 245 | 0 | 0 | 0 |
+| normal | | cond32 | 228 | 45 | 0 | 0 |
+| normal | | cond48 | 0 | 1 | 0 | 0 |
+| normal | | register-indirect | 0 | 0 | 382 | 0 |
+| p2test | `6361384d0e3b717e` | bal32 | 1 373 | 0 | 0 | 0 |
+| p2test | | dispe9 | 1 934 | 0 | 0 | 0 |
+| p2test | | disps5 | 230 | 0 | 0 | 0 |
+| p2test | | cond32 | 231 | 67 | 0 | 0 |
+| p2test | | register-indirect | 0 | 0 | 396 | 0 |
 
-The field is **unsigned and even**; a target below the instruction cannot be
-encoded, and the assembler confirms it (a backwards target forces the 4-byte
-form).  That is why objdump's `*-0x…` prefix on this family is cosmetic.
+`ORACLE_UNAVAILABLE` is 0 in both images.  “INVALID” here means “not a
+branch instruction”, not “malformed”.
 
-**Validation:** all 2-byte conditional branch instructions of the image
-(byte1 in `0x10..0x1f`): 1 755 decoded, 0 mismatches.
+## 5. What remains open
 
-| Address | Bytes | Mnemonic | Target |
-|---|---|---|---|
-| `0x0294` | `40 11` | `bhi` | `0x02B4` |
-| `0x10CE` | `9f 10` | `bfc` | `0x10EC` |
-| `0x28B12` | `b3 10` | `bhs` | `0x28B18` |
-| `0x00EE` | `12 12` | `bne` | `0x0132` |
-| `0x00F8` | `00 12` | `beq` | `0x0138` |
-| `0x19DA` | `53 11` | `bls` | `0x1A00` |
-
-Assembler cross-check (`bhi` at 0): `42 10` → +4, `44 10` → +8, `4f 10` →
-+0x1E, `40 12` → +0x40, `42 12` → +0x44.  All match the formula.
-
-**The mnemonic is the discriminator.**  The second byte selects the *spelling*
-of a 2-byte branch (e.g. `00 0c` `beq0b`, `40 10` `bhi`, `12 11` `bne`) while
-the low byte range is also used by non-branch instructions, and the two 2-byte
-families differ only in their second byte.  A bare 2-byte word therefore
-cannot be decoded safely: `decode()` refuses it (`UNSUPPORTED`) and
-`decode_insn(addr, mnemonic, raw)` is the entry point.
-
-### 1.3 2-byte branch-if-zero (`disps5`)
-
-```text
-nib    = byte0 >> 4
-extra  = 0x20 if (byte1 & 1) else 0
-target = (addr + 2*nib + 2 + extra) & 0xFFFFFF
-```
-
-Confirmed with the assembler/disassembler: `00 0c` → +0x2, `10 0c` → +0x4,
-`f0 0c` → +0x20, `00 0d` → +0x22, `ff 0f` → +0x40, `20 0d` → +0x26.
-All 245 occurrences in the image decode to an instruction boundary or to a
-boundary plus 0x20.
-
-### 1.4 4-byte conditional (`disps17`)
-
-```text
-target = (addr + words[1]) & 0xFFFFFF
-```
-
-Assembler: `bhi 0x300` at 0 encodes `40 18 00 03`.  A second word above
-`0x8000` would be a backward target that the validated set never shows; such
-bytes are reported `UNSUPPORTED` (45 occurrences, all in code regions whose
-decode is doubtful).
-
-### 1.5 6-byte conditional (`disps25`)
-
-One occurrence, `0x92FC` (`10 00 4d 00 07 4e`), inside a data region.  Its
-field layout in binutils differs from `bal`; nothing valid can be checked
-against it, so it stays `UNSUPPORTED` (`cond48`).
-
-### 1.6 Register-indirect and return
-
-`jump (ra)`, `jump (rp)`, `jal (rp)` carry **no immediate**.  Their bytes
-decoded as a branch would yield a meaningless number, so the CFG classifies
-them by mnemonic and operand shape and never assigns a target.
-
-| Form | Bytes | CFG category |
-|---|---|---|
-| `jump (ra)` | `ee 0a` | `INDIRECT_REGISTER` |
-| `jump (r8,r7)` | `e6 0a` | `INDIRECT_REGISTER` |
-| `jal (r7,r6)` | `d6 00` | `INDIRECT_REGISTER` |
-| `popret` | `e7 03` | return |
-
----
-
-## 2. What objdump prints
-
-`objdump` prints `base + displacement` masked to 24 bits, where `base` is the
-instruction address passed with `--adjust-vma`.  At `--adjust-vma=0` the
-printed number is therefore the **displacement**, which is why the test
-harness uses the instruction's own address for a cross-check.  The `*+`/`*-`
-character is derived from the sign flag and is purely cosmetic.
-
-Evidence: the same bytes `40 11` print `*+0x20:s` at vma 0 and
-`*+0x2b4:s` at vma `0x294`.
-
----
-
-## 3. Open decoder questions
-
-* **2-byte conditional layout disagrees with the CR16A documentation.**  The
-  CR16A Programmer's Reference Manual (App. A.2.3) places the condition in
-  bits 5..8 and the displacement in bits 0..4 and 9..12, stored halved:
-
-  ```text
-  disp = sign_extend( (word & 0x1F) | ((word >> 4) & 0x1E0) ) * 2
-  ```
-
-  The rule used here and in binutils is shifted one bit:
-
-  ```text
-  disp = ((word & 0x0F) | (((word >> 8) & 0x0F) << 4)) << 1
-  ```
-
-  On the image the two disagree on 260 of 2 076 occurrences.  Both were
-  checked against binutils at the instruction's own address:
-
-  | Rule | Matches binutils |
-  |---|---|
-  | rule used here | 1 816 / 2 076 |
-  | CR16A documented layout | 0 / 2 076 |
-
-  and the CR16A layout leaves 522 branches of 2 076 without an instruction
-  boundary at all, while the rule used here leaves 7.  On the specific chain
-  links this rule reproduces binutils exactly:
-
-  | Site | Bytes | Mnemonic | Target |
-  |---|---|---|---|
-  | `0x25FA8` | `49 1f` | `bhi` | `0x25F9A` |
-  | `0x25FB4` | `1d 1f` | `bne` | `0x25FAE` |
-  | `0x25E64` | `4d 19` | `bhi` | `0x25D9E` |
-
-  Neither rule can be declared correct yet; the open question is Q50.
-* 260 two-byte conditionals have a `byte1` below `0x10` (`00 1c`, `06 1a`,
-  `47 1e`, `a2 15`).  They are decoded by the same rule and therefore share
-  the same uncertainty.
-* The 45 four-byte conditionals with a high second word are unexplained.
-* The 6-byte conditional has no validated example.
-
-The two conditionals inside `0x25F90` (`0x25FA8`, `0x25FB4`) are in the set
-where this rule and binutils agree, so the chain links are reproducible
-with either tool.
-
----
-
-## 4. Peripheral-map note
-
-The earlier version of this document concluded from `0xf6400:m` that the
-small-data area is sign-extended to `0x000F6400`.  That is **not established**:
-the firmware never reads back such an address, and a `:m` operand only proves
-that the encoded value is 16-bit.  The register table is now kept in
-`fon-dialog-peripheral-init.md` §5 together with what is unknown about it.
+* 45 (normal) and 67 (`p2test`) four-byte conditionals whose second word is
+  above `0x8000`.  The assembler produces `40 18` + a forward word for a
+  forward target; no backward case could be assembled, so the encoding of a
+  backward 4-byte conditional is still unknown (Q51).
+* one 6-byte conditional at `0x92FC` inside a data region.
+* the CR16A manual places `d1..d4` in bits 4..0 and `cc` in bits 8..5, one
+  bit away from what binutils implements and what all firmware evidence
+  supports.  The CR16C/B manuals could not be read offline, so the difference
+  is recorded, not explained (Q50).
