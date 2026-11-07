@@ -138,6 +138,6 @@ license:        GPL
 depends:        
 name:           fon_tdm_drv
 vermagic:       6.12.112 SMP mod_unload ARMv7 p2v8 
-parm:           probe_only:bool
+parm:           probe_only (bool)
 EOF
 }

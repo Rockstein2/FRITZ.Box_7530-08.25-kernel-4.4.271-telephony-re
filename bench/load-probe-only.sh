@@ -55,7 +55,7 @@ done
 case $MODULE in /*) ;; *) die "module path must be absolute" ;; esac
 [ ! -e "$OUT" ] || die "output dir already exists: $OUT"
 
-for t in sha256sum insmod rmmod modinfo lsmod uname dmesg cat grep tr find date mkdir awk head cmp diff; do
+for t in sha256sum insmod rmmod modinfo lsmod uname dmesg cat grep tr find date mkdir awk head cmp; do
 	command -v "$t" >/dev/null 2>&1 || die "missing tool: $t"
 done
 
@@ -70,7 +70,7 @@ meta=$(modinfo "$MODULE" 2>/dev/null) || die "modinfo failed"
 printf '%s\n' "$meta" | grep -q "^name:[[:space:]]*$MODNAME$" || die "bad module name"
 printf '%s\n' "$meta" | grep -q '^license:[[:space:]]*GPL$' || die "module is not GPL"
 printf '%s\n' "$meta" | grep -q "^vermagic:[[:space:]]*$KVER\." || die "unexpected vermagic"
-printf '%s\n' "$meta" | grep -q '^parm:[[:space:]]*probe_only:bool$' || die "no probe_only parameter"
+printf '%s\n' "$meta" | grep -q '^parm:[[:space:]]*probe_only[[:space:]]*[(][Bb][Oo][Oo][Ll][)]$' || die "no probe_only parameter"
 printf '%s\n' "$meta" | grep -q '^depends:[[:space:]]*$' || die "module has dependencies"
 
 got=$(sha256sum "$MODULE" | awk '{print $1}')
@@ -150,7 +150,9 @@ fi
 
 if ! cmp -s "$OUT/iomem-before.txt" "$OUT/iomem-after.txt"; then
 	printf 'FAIL: /proc/iomem changed\n'
-	diff "$OUT/iomem-before.txt" "$OUT/iomem-after.txt" >"$OUT/iomem.diff" 2>&1 || true
+	# diff may be absent in slim initramfs images; keep a byte-identical
+	# copy instead of failing the script on a missing diagnostic tool.
+	cp -f "$OUT/iomem-after.txt" "$OUT/iomem-after.changed.txt" 2>/dev/null || true
 	fail=1
 fi
 

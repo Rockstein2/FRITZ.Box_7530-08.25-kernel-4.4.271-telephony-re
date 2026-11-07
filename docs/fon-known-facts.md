@@ -256,15 +256,128 @@ probe-only test must not assume an unprogrammed chip.
 | Shared use | DECT loader and kernel console | OEM |
 | FON driver use | **none** | CODE |
 
-## 9. Our driver (offline state)
+## 9. Our driver — first hardware run
+
+### 9a. Boot path proven on hardware (2026-11-07)
+
+The probe-only initramfs was booted **into RAM over TFTP** on the real
+FRITZ!Box 7530.  NAND was not written at any point.
 
 | Fact | Value | Evidence |
 |---|---|---|
-| Probe-only diagnostics | `stage=0x23`, `mode=probe-only`, `resource_mask=0x3f`, `diag_valid=0`, `dma_prepared=0`, `dma_started=0`, `irq_spi=156/159`, `irq_intid=188/191`, `irq=-1` | CODE, OFFLINE |
-| Module build (SDK 25.12.6) | 73 980 bytes, sha256 `b867b8c5...ad870` | OFFLINE |
-| Offline test suites | mock 40, TDM/DMA, dialog (incl. real firmware), bench 29, prepare-tree 13, prepare-image 10 | OFFLINE |
+| Bootloader | `U-Boot 2012.07 [local,r35279-c2a758b16a]`, EVA `1.11581` | RUNTIME |
+| U-Boot environment | **`bad CRC, using default environment`** | RUNTIME |
+| NAND | `Macronix MX30LF1G18AC`, 128 MiB, 872 good PEBs, 0 bad | RUNTIME |
+| Recovery route | started from `(FRITZ7530) #`, `run tftpboot` | RUNTIME |
+| U-Boot net settings | `serverip=192.168.1.70`, `ipaddr=192.168.1.1` (RAM only, no `saveenv`) | RUNTIME |
+| TFTP | `Bytes transferred = 9129136` (matches the probe FIT exactly) | RUNTIME |
+| Kernel process | `Run /init as init process` — initramfs, not NAND rootfs | RUNTIME |
+| Shell after boot | `root@OpenWrt:~#` on `192.168.1.1`, SSH reachable | RUNTIME |
+| USB storage | `usb-storage` + `uas` + SCSI load; stick appears as `sda1` | RUNTIME |
+
+The stock NAND boot does **not** provide USB storage: on the production image
+`/lib/modules/6.12.112/` contains no `usb-storage`, `uas`, `scsi-core` or
+`ext4` modules, so the stick cannot be mounted there.  Only the test
+initramfs can read it.
+
+### 9b. Module ABI finding (important)
+
+| Module source | Result |
+|---|---|
+| SDK build (`openwrt-sdk-25.12.6-ipq40xx-generic`), 73 980 B, `b867b8c5…ad870` | **rejected**: `struct module section size must match the kernel's built struct module size at run time` |
+| Same build tree as the kernel (`openwrt-25.12.6-source`), 74 796 B, `cd5c05fb…aff6` | **loads and probes correctly** |
+
+Both report `vermagic: 6.12.112 SMP mod_unload ARMv7 p2v8`; only the tree
+matches the kernel ABI.  A module built in the SDK is therefore **not usable**
+with a kernel built from the full source tree, even for the same release.
+The kernel in the test image is built from the workspace tree
+(`gcc` owner `rck@Rck-1`), not from the SDK.
+
+### 9c. Stage A result (passive, no module)
+
+| Observation | Value |
+|---|---|
+| `model` / `compatible` | `AVM FRITZ!Box 7530` / `avm,fritzbox-7530` |
+| FON node | `fon-tdm@7700000` present, `status = okay` |
+| `/proc/iomem` | no `0x77xxxxxx` owner entries |
+| `/proc/interrupts` | no SPI 156/159 rows |
+| `dmesg` | no FON/ADSS/TDM messages |
+| Audio clocks | `gcc_audio_ahb_clk`, `audio_clk_src`, `gcc_audio_pwm_clk` all present, **`deviceless`**, enable count 0 |
+| GPIO40 | `pin 40 (GPIO_40): (MUX UNCLAIMED) (GPIO UNCLAIMED)` |
+| Console | `ttyMSM0` holds the console |
+
+Evidence: `../../restore/stage-a/stage-a.tar.gz` and the console boot log.
+
+### 9d. Stage B result (probe-only, verified)
+
+`load-probe-only.sh --yes` passed.  Console and `dmesg`:
+
+```text
+fon-tdm 7700000.fon-tdm: probe-only: resources=0x3f irq_spi=156/159
+    irq_intid=188/191 clock_refs=0 reset_refs=0 pinctrl_ref=0 dt_overlap=0
+fon-tdm 7700000.fon-tdm: FON probe-only ready;
+    no MMIO/clock/reset/IRQ/DMA access
+```
+
+| Diagnostic | Expected | Observed |
+|---|---|---|
+| `stage` | `0x23` | `0x23` |
+| `resource_mask` | `0x3f` | `0x3f` |
+| `irq_spi` | `156/159` | `156/159` |
+| `irq_intid` | `188/191` | `188/191` |
+| `irq` | `-1` | `-1` |
+| `diag_valid` / `dma_prepared` / `dma_started` | `0` | `0` |
+| `clock_refs` / `reset_refs` / `pinctrl_ref` | `0` | `0` |
+| `slots` | `8` | `8` |
+| `dt_overlap` | `0` | `0` |
+
+Resources parsed from the live DTB (not from documentation):
+
+| Index | Name | Start | End |
+|---|---|---|---|
+| 0 | `adss` | `0x07700000` | `0x07700033` |
+| 1 | `pcm` | `0x07704000` | `0x07705fff` |
+| 2 | `mbox_tx` | `0x07708000` | `0x07708fff` |
+| 3 | `mbox_rx` | `0x0770e000` | `0x0770efff` |
+| 4 | `stereo_tx` | `0x07709000` | `0x07709fff` |
+| 5 | `stereo_rx` | `0x0770f000` | `0x0770ffff` |
+
+No register was read: `audio_mode`, `tdm_ctrl`, `clk_ctrl`, `i2s_rst`,
+`stereo_tx_cfg`, `stereo_rx_cfg` all report `0x00000000`.
+
+Isolation checks:
+
+- `/proc/iomem` byte-identical before and after the load;
+- `/proc/interrupts` shows only counter growth for pre-existing IRQs, **no
+  new rows**, so no IRQ was requested;
+- after `unload.sh --yes`: `lsmod` has no `fon_tdm_drv`, no `driver` link and
+  no `stage`/`diagnostics` attributes remain; the `7700000.fon-tdm` entry in
+  `/sys/bus/platform/devices` is the DT node itself.
+
+Evidence: `../../restore/stage-b/stage-b-2/`.
+
+## 9e. Offline state of the driver
+
+| Fact | Value | Evidence |
+|---|---|---|
+| Probe-only diagnostics | `stage=0x23`, `mode=probe-only`, `resource_mask=0x3f`, `diag_valid=0`, `dma_prepared=0`, `dma_started=0`, `irq_spi=156/159`, `irq_intid=188/191`, `irq=-1` | CODE, OFFLINE, **RUNTIME (9d)** |
+| **Loadable module** (build tree) | 74 796 bytes, sha256 `cd5c05fb...6aff6` | RUNTIME |
+| SDK-built module | 73 980 bytes, sha256 `b867b8c5...ad870` — rejected by the kernel (`struct module` size) | RUNTIME |
+| Offline test suites | mock 40, TDM/DMA, dialog (incl. real firmware), bench 32, prepare-tree 13, prepare-image 10 | OFFLINE |
 | checkpatch | 0 errors, 4 intentional warnings | OFFLINE |
 | sparse | no diagnostics | OFFLINE |
+
+## 9f. Bench-script fixes found by the hardware run
+
+Two script defects only surfaced on the device and are fixed:
+
+| Defect | Effect | Fix |
+|---|---|---|
+| `diff` listed as a required tool | pre-flight aborted on the slim initramfs, which has `cmp` but no `diff` | `diff` dropped from the requirement list; the diagnostic copy uses `cp` |
+| `probe_only` parameter regex expected `probe_only:bool` | `modinfo` actually prints `probe_only (bool)`, so pre-flight rejected the correct module | regex accepts `[(]bool[)]` |
+
+`bench/tests/run.sh` was updated to fake the real `modinfo` wording and is back
+to **32 passed, 0 failed**.
 
 ## 10. What this document deliberately excludes
 
