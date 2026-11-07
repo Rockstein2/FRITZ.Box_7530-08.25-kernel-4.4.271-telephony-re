@@ -122,8 +122,8 @@ The package manager is `apk`, so the package is `.apk`, not `.ipk`.
 Artifact hash for the runbook:
 
 ```text
-module sha256:  b867b8c5e362c397bc2ce5f8120cfc069d9eacd09dae2534e6343dc5dcdad870
-module size:    73980 bytes
+module sha256:  cd5c05fb408f7f928fd7f6a786a189d22992fe5e12c2c44d9f61fe94c726aff6
+module size:    74796 bytes   (built from openwrt-25.12.6-source)
 package sha256: 69373c99c93490f5baea6622e716cf62e35ad892104701acfc610450ad49c09b
 package size:   8198 bytes
 ```

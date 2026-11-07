@@ -218,8 +218,13 @@ file /tmp/fon_tdm_drv.ko
 Expected hash for this build:
 
 ```text
-b867b8c5e362c397bc2ce5f8120cfc069d9eacd09dae2534e6343dc5dcdad870
+cd5c05fb408f7f928fd7f6a786a189d22992fe5e12c2c44d9f61fe94c726aff6
 ```
+
+This module is built from `openwrt-25.12.6-source`, the same tree as the
+boot kernel.  A module built in the SDK (`b867b8c5...ad870`) is rejected at
+load time with a `struct module` size mismatch, see
+`../fon-known-facts.md` section 9b.
 
 The hash must be regenerated and re-recorded whenever the source changes.
 Expected metadata:

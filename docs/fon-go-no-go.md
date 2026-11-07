@@ -10,12 +10,12 @@ stage at a time.  Do not skip from probe-only to DMA or line control.
 
 | Gate | Evidence required | Produced by | Status |
 |---|---|---|---|
-| Target artifact integrity | `sha256sum` matches `bench/fon_tdm_drv.sha256` (`b867b8c5…ad870`) | workstation + router | **pending** |
-| Probe-only module loads (Q6) | `bench/load-probe-only.sh` PASS + dmesg | Stage B | **pending** |
-| FON DT node binds (Q6) | `stage = 0x23`, `mode=probe-only` | Stage B | **pending** |
-| IRQ not requested in probe-only (Q7) | `irq_spi=156/159`, `irq_intid=188/191`, `irq=-1` | Stage B diagnostics | **pending** |
-| No resource overlap (Q1) | `/proc/iomem` identical before/after | Stage A/B | **pending** |
-| Clock/reset/pinctrl ownership (Q2, Q3, Q14) | `/proc/iomem`, `/proc/interrupts`, pinctrl/clk export | Stage A + review | **pending** |
+| Target artifact integrity | `sha256sum` matches `bench/fon_tdm_drv.sha256` (`cd5c05fb…aff6`) | workstation + router | **PASS 2026-11-07** |
+| Probe-only module loads (Q6) | `bench/load-probe-only.sh` PASS + dmesg | Stage B | **PASS 2026-11-07** |
+| FON DT node binds (Q6) | `stage = 0x23`, `mode=probe-only` | Stage B | **PASS 2026-11-07** |
+| IRQ not requested in probe-only (Q7) | `irq_spi=156/159`, `irq_intid=188/191`, `irq=-1` | Stage B diagnostics | **PASS 2026-11-07** |
+| No resource overlap (Q1) | `/proc/iomem` identical before/after | Stage A/B | **PASS 2026-11-07** |
+| Clock/reset/pinctrl ownership (Q2, Q3, Q14) | `/proc/iomem`, `/proc/interrupts`, pinctrl/clk export | Stage A + review | **PARTIAL 2026-11-07** — probe-only holds `clock_refs=0 reset_refs=0 pinctrl_ref=0`, GPIO40 unclaimed; real ownership under DMA still open |
 | TDM clocks present (Q4, Q5) | passive FSC/DCL/MCL measurement | scope/logic analyzer | **pending** |
 | SC14448 running (Q4) | passive UART/clock evidence | scope/logic analyzer | **pending** |
 | GPIO40 not owned/unsafe (Q13, Q14, Q15) | DT/pinctrl export + bench review | Stage D0 | **pending** |
