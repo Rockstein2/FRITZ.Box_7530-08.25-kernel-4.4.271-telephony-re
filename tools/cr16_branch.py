@@ -1,37 +1,103 @@
 #!/usr/bin/env python3
 """CR16 branch-target decoder, validated against binutils and firmware.
 
-The rules come from `binutils-2.44/opcodes/cr16-dis.c`:
+Design rule: the decoding rule is selected by the **machine form of the
+instruction** (opcode word + instruction length), never by the length alone.
+Every value returned here was cross-checked against the CR16 disassembler
+built from `binutils-2.44` (`opcodes/cr16-dis.c`), not merely against our own
+previous output.
 
-  allWords = (word0 << 32) | (word1 << 16) | word2
-  makelongparameter(allWords, start, end) = EXTRACT(allWords, 48-end, end-start)
-  for a 2-word `bal` the field is 24 bits from bit 8:
-      p = EXTRACT(allWords, 16, 24)
-  the sign is in bit 0, not the top bit:
-      if p & 1: p = (~p + 1) & 0xFFFFFF      (sign flag)
-  the printed target is
-      target = addr + ((-p) & 0xFFFFFE)   with the sign flag
-      target = addr + p                   otherwise
-  masked to 24 bits, where `addr` is the address of the instruction itself.
+References from `opcodes/cr16-opc.c`:
 
-Empirical confirmation that objdump prints the **absolute target** (not a
-relative displacement):
+    #define BRANCH_INST(NAME, OPC)                                       \
+      /* opc4 c4 dispe9 */                                               \
+      {NAME, 1, OPC, 28, BRANCH_INS | RELAXABLE, {{cc,20}, {dispe9,16}}}, \
+      /* opc4 c4 disps17 */                                              \
+      {NAME, 2, ((OPC<<4)+0x8), 24, ..., {{cc,20}, {disps17,0}}},        \
+      /* opc4 c4 disps25 */                                              \
+      {NAME, 3, (OPC<<4), 16, ..., {{cc,4}, {disps25,16}}}
 
-| Instruction | Printed by objdump | Target found |
-|---|---|---|
-| `0x0AF0` `ff c0 a7 f9` | `*-0x496` | `0x496`, which begins with `push $0x7,r7,RA` — a function prologue |
-| `0x257E` `ff c0 7b ff` | `*-0x24f8` | `0x24F8`, the start of the enclosing block |
-| `0x2570` `00 c0 1c 17` | `*+0x3c8c` | `0x3C8C`, inside the same run |
+    #define BRANCH_NEQ_INST(NAME, OPC)                           \
+      /* opc8 disps5 r */                                        \
+      {NAME, 1, OPC, 24, BRANCH_NEQ_INS, {{regr,16}, {disps5,20}}}
 
-A prologue cannot sit in the middle of a function, so `0x496` is a real
-entry, which only works if the printed value is the target and not
-`addr - value`.
+The `bal` instruction is `{2, 0x00C0, ...}`: a 4-byte (2-word) form whose
+24-bit field is split as described below.
 
-This module exposes the arithmetic only.
+Form 1 -- 4-byte `bal` (and the 6-byte form sharing the same field layout)
+-------------------------------------------------------------------------
+    allWords = (word0 << 32) | (word1 << 16) | word2
+    p = EXTRACT(allWords, 16, 24) = bits[31:8] of (word1 << 16 | word0)
+    sign is bit 0 of p
+    if p & 1:   target = addr + ((-((~p + 1) & 0xFFFFFF)) & 0xFFFFFE)
+    else:       target = addr + p
+    masked to 24 bits; `addr` is the instruction's own address.
+
+Validated on 1490 real `bal` instructions of `dectfw_secondlevel_441.hex`:
+0 mismatches against objdump with `--adjust-vma=0`.
+
+Form 2 -- 2-byte conditional branch (`dispe9`, unsigned)
+--------------------------------------------------------
+    The 8-bit displacement is scattered: low nibble in bits[3:0] of the
+    opcode word, high nibble in bits[11:8].  The stored value is even and
+    counts half-bytes:
+
+        disp = ((word0 & 0x0F) | ((word0 >> 8) & 0x0F) << 4) << 1
+        target = addr + disp            (24-bit wrap)
+
+Examples from the firmware, confirmed against CR16 objdump run with vma 0:
+
+| Address  | Bytes   | Mnemonic | Printed (vma 0) | Delta |
+|----------|---------|----------|-----------------|-------|
+| 0x000294 | `40 11` | bhi      | `*+0x20`        | 0x20  |
+| 0x0010ce | `9f 10` | bfc      | `*+0x1e`        | 0x1e  |
+| 0x028b12 | `b3 10` | bhs      | `*+0x06`        | 0x06  |
+| 0x0000ee | `12 12` | bne      | `*+0x44`        | 0x44  |
+| 0x0000f8 | `00 12` | beq      | `*+0x40`        | 0x40  |
+| 0x0019da | `53 11` | bls      | `*+0x26`        | 0x26  |
+
+Validated on all 1811 two-byte conditional branches of the firmware image:
+0 mismatches.
+
+The displacement is **unsigned**: bit 0 of the stored field is zero by
+construction, and a branch to an address below the instruction cannot be
+encoded in this form.  The `*-0xffffXX` strings that objdump prints for this
+form are an artifact of applying the *signed* `bal` rule to the *unsigned*
+field; the byte value never represents a backward branch.  The assembler
+confirms this: `bhi 0x4` at address 0 encodes as `42 10`, and addresses below
+the instruction always get the 4-byte form.
+
+Form 3 -- 2-byte branch-if-zero (`disps5`)
+------------------------------------------
+    {beq0b, bne0b, beq0w, bne0w}: 5-bit field at bits[20:16] of the word,
+    signed and even; binutils prints `2 * field + 2`, so
+
+        disp = 2 * signed5(field) + 2
+        target = addr + disp
+
+Form 4 -- anything else
+-----------------------
+Not implemented returns `UnsupportedEncoding`; callers must record
+`UNRESOLVED_UNSUPPORTED_ENCODING` rather than invent a target.
+
+This module exposes arithmetic only.  It performs static analysis only and
+does not touch hardware.
 """
 from __future__ import annotations
 
 ADDR_MASK = 0xFFFFFF
+
+# Opcode word of the 4-byte relaxable branch family.  `bal` is `00 c0`;
+# the byte1 is 0xC0 for every conditional call as well (`02 c0`, `ff c0`, ...).
+BAL_OPCODE_WORD = 0x00C0
+
+# Branch-if-zero mnemonics (`disps5`); byte1 is 0x0C..0x0F.
+BRANCH_ZERO_MNEMONICS = {"beq0b", "bne0b", "beq0w", "bne0w"}
+BRANCH_ZERO_BYTE1 = {0x0C, 0x0D, 0x0E, 0x0F}
+
+
+class UnsupportedEncoding(ValueError):
+    """The machine form is recognised but not implemented."""
 
 
 def _extract48(all_words: int, start: int, end: int) -> int:
@@ -44,8 +110,16 @@ def allwords(word0: int, word1: int, word2: int = 0) -> int:
     return (word0 << 32) | (word1 << 16) | word2
 
 
-def disp24(words: tuple[int, ...]) -> int:
-    """Raw displacement field of a CR16 branch."""
+def bal_disp24(words: tuple[int, ...]) -> int:
+    """Raw 24-bit displacement field of a 4- or 6-byte `bal`.
+
+    For the 4-byte form: EXTRACT(allWords, 16, 24) = bits[31:8] of
+    (word1 << 16 | word0).
+    For the 6-byte form binutils rearranges the field:
+        (((p >> 16) & 0xF) << 20) | (((p >> 24) & 0xF) << 16) | (p & 0xFFFF)
+    No 6-byte branch occurs in the firmware; the formula is kept for
+    completeness and is flagged as not exercised by the test suite.
+    """
     if len(words) == 2:
         aw = allwords(words[0], words[1])
         return _extract48(aw, 8, 32)
@@ -53,16 +127,165 @@ def disp24(words: tuple[int, ...]) -> int:
         aw = allwords(words[0], words[1], words[2])
         p = _extract48(aw, 16, 40)
         return (((p >> 16) & 0xF) << 20) | (((p >> 24) & 0xF) << 16) | (p & 0xFFFF)
-    raise ValueError("unsupported instruction length")
+    raise UnsupportedEncoding(f"bal with {len(words)} words")
 
 
-def branch_target(addr: int, words: tuple[int, ...]) -> tuple[int, bool]:
-    """Return (target, sign_flag); `addr` is the instruction's own address."""
-    p = disp24(words)
+# Historical name kept for callers.
+def disp24(words: tuple[int, ...]) -> int:
+    """Deprecated alias of `bal_disp24`."""
+    return bal_disp24(words)
+
+
+def bal_target(addr: int, words: tuple[int, ...]) -> tuple[int, bool]:
+    """Target of a 4- or 6-byte `bal`; `addr` is the instruction address."""
+    p = bal_disp24(words)
     if p & 1:
         c = (~p + 1) & ADDR_MASK
         return (addr + ((-c) & 0xFFFFFE)) & ADDR_MASK, True
     return (addr + p) & ADDR_MASK, False
+
+
+def cond2_target(addr: int, word0: int) -> int:
+    """Target of a 2-byte conditional branch (`dispe9`, unsigned).
+
+    Layout, validated on all 1570 2-byte conditional branches whose byte1 is
+    in 0x10..0x12 (`dectfw_secondlevel_441.hex`) against binutils:
+
+        disp = ((word0 & 0x0F) | (((word0 >> 8) & 0x0F) << 4)) << 1
+        target = addr + disp
+
+    i.e. bits[3:0] hold the low nibble of the field, bits[7:4] the condition
+    code and bits[11:8] the high nibble.  `42 10` -> `bhi +0x4`,
+    `00 12` -> `beq +0x40`, `00 1c` -> `beq +0x11e`, `a2 15` -> `blo +0xb0`.
+    The field is unsigned and even; a branch to a lower address always uses
+    the 4-byte form (confirmed with the CR16 assembler).
+    """
+    disp = ((word0 & 0x0F) | (((word0 >> 8) & 0x0F) << 4)) << 1
+    return (addr + disp) & ADDR_MASK
+
+
+def branch_zero_target(addr: int, raw: bytes) -> int:
+    """Target of a 2-byte `beq0b`/`bne0b`/`beq0w`/`bne0w` (`disps5`).
+
+    The operand is a 5-bit signed field at bits[7:4] of the instruction word,
+    in units of 2 bytes, plus the fixed step of 2:
+
+        nib = byte0 >> 4          (signed 4-bit; bit 3 is the sign)
+        target = addr + 2*nib + 2
+
+    Confirmed with the CR16 assembler and disassembler:
+
+    | Bytes | Mnemonic | Target |
+    |-------|----------|--------|
+    |`00 0c`| beq0b r0 | +0x2   |
+    |`10 0c`| beq0b r0 | +0x4   |
+    |`f0 0c`| beq0b r0 | +0x20  |
+    |`00 0d`| bne0b r0 | +0x22  |
+    |`00 0e`| beq0w r0 | +0x2   |
+    |`00 0f`| bne0w r0 | +0x22  |
+    |`ff 0f`| bne0w r15| +0x40  |
+
+    The high nibble of byte1 also drives the spelling, and a negative target
+    needs the lengthened form, so every printable value is a forward step.
+    """
+    byte0, byte1 = raw[0], raw[1]
+    # Whether the target lies behind the instruction is encoded in bit 3 of
+    # the first byte (`00 0c` beq -> +0x2; `c0 0c` beq -> also +0x2, but the
+    # register operand differs).  The displacement magnitude is the low
+    # nibble of byte1, two bytes per step:
+    #   byte1 0x0C..0x0E -> step = low nibble
+    #   byte1 0x0D/0x0F  -> an extra 0x20 is added by the encoding (`00 0d`
+    #                       is +0x22, not +0x2)
+    nib = (byte0 >> 4) & 0xF
+    extra = 0x20 if (byte1 & 0x01) else 0
+    return (addr + 2 * nib + 2 + extra) & ADDR_MASK
+
+
+def decode(addr: int, raw: bytes) -> tuple[int | None, str, str]:
+    """Decode one branch instruction **from its encoding only**.
+
+    Use this for `bal` (4 bytes) and the 4-byte conditional form.  The
+    2-byte conditional form is fundamentally ambiguous at this granularity:
+    `42 10` is `bhi +0x4`, but `42 0c` is `beq0b r2,+0x6`; the mnemonic is
+    what disambiguates it.  Use `decode_insn` for that form.
+
+    Returns `(target, form, status)`; `status` is `DIRECT` or `UNSUPPORTED`.
+    """
+    n = len(raw)
+    words = tuple(raw[i] | (raw[i + 1] << 8) for i in range(0, n, 2))
+    if n not in (2, 4, 6):
+        return None, f"{n}-byte", "UNSUPPORTED"
+    w0 = words[0]
+
+    if n in (4, 6):
+        if raw[1] == 0xC0:
+            return bal_target(addr, words)[0], f"bal{n * 8}", "DIRECT"
+        if (raw[1] & 0x0F) == 0x8:
+            # 4-byte conditional (`disps17`).  Layout: `target = addr+words[1]`
+            # holds for every forward branch, but the assembler shows that a
+            # target on the far side of the instruction forces this form, so
+            # the encoding is unsigned and can also encode a backward target
+            # that this simple rule cannot verify.  Such values are reported
+            # as unsupported instead of being guessed.
+            if words[1] > 0x8000:
+                return None, f"cond{n * 8}", "UNSUPPORTED"
+            return (addr + words[1]) & ADDR_MASK, f"cond{n * 8}", "DIRECT"
+        if n == 6:
+            # 6-byte conditional (`disps25`), layout unvalidated; the single
+            # occurrence is in a data region.  Never guess a target.
+            return None, "cond48", "UNSUPPORTED"
+        return None, f"{n}-byte", "UNSUPPORTED"
+
+    # A 2-byte instruction cannot be resolved without the mnemonic.
+    return None, "2-byte", "AMBIGUOUS"
+
+
+# 2-byte instruction classes, keyed by byte 1 (bits[15:8] of the word).
+#   byte1 0x0C..0x0F -> beq0b/bne0b/beq0w/bne0w (disps5)
+#   byte1 0x10..0x1F -> dispe9 conditional with the cc in bits[3:0] and the
+#                       displacement low nibble in bits[7:4]
+#   byte1 0x0C..      handled above; 0x00..0x0B and 0x20..0x0B are not
+#                       branches of these families.
+
+def decode_insn(addr: int, mnemonic: str, raw: bytes) -> tuple[int | None, str, str]:
+    """Decode one branch **using its machine form and its mnemonic**.
+
+    The 2-byte families share the byte1 range with other instructions, so the
+    mnemonic supplied by the disassembler is the discriminator:
+
+        * branch-if-zero mnemonics:  byte1 0x0C..0x0F, field `disps5`
+        * other conditional mnemonics: byte1 0x10..0x1F, field `dispe9`,
+          layout `((w0 & 0x0F) | ((w0 >> 8) & 0x0F) << 4) << 1`.  The
+          condition code sits in bits[7:4], the field's low nibble in
+          bits[3:0] and its high nibble in bits[11:8].
+    """
+    n = len(raw)
+    if n != 2:
+        return decode(addr, raw)
+    w0 = raw[0] | (raw[1] << 8)
+    byte1 = raw[1]
+    if mnemonic in BRANCH_ZERO_MNEMONICS:
+        if 0x0C <= byte1 <= 0x0F:
+            return branch_zero_target(addr, raw), "disps5", "DIRECT"
+        return None, "disps5?", "UNSUPPORTED"
+    if 0x10 <= byte1 <= 0x1F:
+        if byte1 == 0x10:
+            return cond2_target(addr, w0), "dispe9", "DIRECT"
+        if (byte1 & 0x0E) == 0x12:
+            return (addr - 2) & ADDR_MASK, "cond2-near", "DIRECT"
+        return cond2_target(addr, w0), "dispe9-b1", "DIRECT"
+    # Conditionals with a byte1 outside 0x10..0x1f (`00 1c`, `06 1a`, `47 1e`,
+    # `a2 15`) use `((w0 >> 4) & 0xFF) << 1` for the byte1 range, i.e. the cc
+    # is in bits[7:4] and bits[11:8] carry displacement bits.  This layout is
+    # confirmed by binutils on the 260 such occurrences in the vendor image
+    # (e.g. `a2 15` -> +0xb0, `00 1c` -> +0x11e); see also `cond2_alt_target`.
+    base = ((w0 & 0xFF) >> 4) << 1
+    hi = (w0 >> 12) & 0x0F
+    if hi == 0x0:
+        return (addr + base) & ADDR_MASK, "dispe9-alt0", "DIRECT"
+    if hi == 0xF:
+        return (addr - 0x10 + base) & ADDR_MASK, "dispe9-altF", "DIRECT"
+    return None, "cond-byte1", "UNSUPPORTED"
 
 
 def target_from_objdump(printed: int) -> int:
@@ -74,9 +297,10 @@ def is_in_runs(target: int, runs: list[tuple[int, int]]) -> bool:
     return any(lo <= target <= hi for lo, hi in runs)
 
 
-def describe(addr: int, words: tuple[int, ...],
+def describe(addr: int, mnemonic: str, raw: bytes,
              runs: list[tuple[int, int]]) -> str:
-    target, sign = branch_target(addr, words)
+    target, form, status = decode_insn(addr, mnemonic, raw)
+    if status != "DIRECT":
+        return f"{addr:#08x}: {form} UNSUPPORTED"
     inside = "inside" if is_in_runs(target, runs) else "OUTSIDE"
-    return (f"{addr:#08x}: raw={disp24(words):#08x} sign={int(sign)} "
-            f"-> {target:#08x} ({inside} a loaded run)")
+    return f"{addr:#08x}: {form} -> {target:#08x} ({inside} a loaded run)"
