@@ -98,16 +98,8 @@ def find_objdump():
     return None
 
 
-def objdump_version(od):
-    try:
-        out = subprocess.run([str(od), "--version"], capture_output=True,
-                             text=True, check=False).stdout
-    except OSError:
-        return "unknown"
-
-
 def usable_objdump(path):
-    """A supplied path must exist and run, otherwise the run is SKIP."""
+    """A supplied path must exist and run, otherwise the run is a SKIP."""
     if path is None:
         return None
     try:
@@ -116,6 +108,16 @@ def usable_objdump(path):
     except OSError:
         return None
     return path
+
+
+def objdump_version(od):
+    if od is None:
+        return "unknown"
+    try:
+        out = subprocess.run([str(od), "--version"], capture_output=True,
+                             text=True, check=False).stdout
+    except OSError:
+        return "unknown"
     first = out.splitlines()[0] if out else ""
     m = re.search(r"(\d+\.\d+(?:\.\d+)?)", first)
     return m.group(1) if m else first.strip()
