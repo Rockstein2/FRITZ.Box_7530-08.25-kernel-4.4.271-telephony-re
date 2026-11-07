@@ -4,21 +4,24 @@
 > This is a runbook, not an evidence record.  Hardware facts are maintained in
 > `../fon-known-facts.md`; unresolved items in `../fon-open-questions.md`.
 
-Status: **procedure written, never executed on hardware**
+Status: **procedure written; serial console and NAND layout verified on the
+single 7530, EVA/TFTP path never executed**
 
 This document covers the RAM-only test path: boot a self-built initramfs over
 TFTP, run the FON probe-only test, power-cycle, NAND untouched.  It is the
 recommended first hardware contact because the rollback path is "remove
 power" rather than "write flash".
 
-Nothing here has been run on a real 7530 in this workspace.  Every step is
-marked with its evidence level:
+Nothing in the EVA/TFTP path has been run on a real 7530 in this workspace.
+Every step is marked with its evidence level:
 
 - **DOC** — documented by upstream OpenWrt or AVM material;
 - **STATIC** — confirmed from source/DTS/binaries in this repository;
 - **UNVERIFIED** — plausible but not confirmed for this unit.
 
-The production router `RckBox` is not a test target.
+The workspace has one FRITZ!Box 7530 (`RckBox`).  It may be used for this
+RAM-only procedure only after production service is moved to another router,
+with explicit per-step authorization, and with NAND left untouched.
 
 ---
 
@@ -57,6 +60,12 @@ and asks it to load the image to the given offset with
 
 Record SHA-256 of every asset before the test.
 
+Verified on 2026-11-07 over the serial console, read-only: the board boots
+OpenWrt 25.12.6 `r33311-981c978eff` with kernel 6.12.112; the console is
+`/dev/ttyUSB0` at 115200 8N1 with a root shell; NAND uses the AVM UBI layout
+with `urlader0`/`urlader1` present.  Full layout: `../fon-known-facts.md`
+section 1a.  The EVA/TFTP path itself is still unexecuted.
+
 ---
 
 ## 3. Network addresses
@@ -76,7 +85,8 @@ U-Boot is normal and is the reason two static PC configurations are needed.
 
 ### 4.1 Before touching the bench unit
 
-- [ ] Bench unit is **not** the production router.
+- [ ] Production service has been moved to another router; the bench unit is
+      `RckBox` (the only 7530) and NAND will not be written.
 - [ ] Analog line disconnected.
 - [ ] The unit is disconnected from any production network.
 - [ ] Assets hashed and recorded.

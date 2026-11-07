@@ -4,10 +4,11 @@
 > This is a runbook, not an evidence record.  Hardware facts are maintained in
 > `../fon-known-facts.md`; unresolved items in `../fon-open-questions.md`.
 
-Status: **prepared, not executed**
+Status: **prepared, not executed on hardware**
 
-This plan is for a separate bench/test image only.  The production router
-`RckBox` is not a test target unless the user explicitly authorizes it.
+This workspace contains one FRITZ!Box 7530 (`RckBox`).  A RAM-only test may
+use it only after production service has been moved to another router, with
+explicit per-step authorization and with NAND left untouched.
 
 ## 1. Which image is running
 
@@ -38,15 +39,41 @@ a verified recovery route, and a known-good image.
 
 ### Returning to production
 
-The exact FRITZ!Box 7530 OpenWrt rollback/flash route is **UNVERIFIED** in
-this workspace.  It depends on the currently installed OpenWrt boot
-layout/FIT image and the available recovery method.  Do not invent a
-`sysupgrade`/EVA command.
+Verified on `RckBox` on 2026-11-07 over the serial console, read-only:
 
-Before Stage B, the operator must have a tested, documented procedure to
-return to the known-good production image, including any required bootloader
-or recovery-tool steps.  The procedure is outside this repository until it
-has been verified on the bench.
+- installed firmware: official OpenWrt 25.12.6 `r33311-981c978eff`;
+- installed kernel content is **byte-identical** to the official 25.12.6
+  `avm_fritzbox-7530` kernel;
+- installed rootfs is the same release but **not byte-identical** (132 bytes
+  more squashfs data; same build time and inode count);
+- flash layout is AVM UBI: kernel in `ubi0_0`, squashfs rootfs in `ubi0_1`
+  (`ubiblock0_1`), overlay in `ubi0_4`, AVM volumes in `ubi0_2`/`ubi0_3`;
+- `urlader0`/`urlader1` partitions are present, so the AVM EVA recovery
+  partitions exist (their runtime behaviour is still unverified);
+- `/sbin/sysupgrade` is available;
+- configuration backups live outside the repository in `../../backups/`.
+
+Return paths, in order of preference:
+
+1. **RAM-only test (planned):** NAND is never written.  Rollback is "remove
+   power" and boot the normal image.  This is the only path that needs no
+   flash restore.
+2. **If NAND is ever modified:** flash the verified official sysupgrade image
+   from `../../restore/` (SHA-256 `011e020205fed455c79ee68ebb4d9ce43e6b05698bd99b05ebfc5c851f7ceb73`)
+   and restore the latest configuration tarball from `../../backups/`.  This
+   restores the same release and settings, not a byte-identical rootfs.
+3. **If the bootloader is damaged:** use the AVM EVA recovery route.  It is
+   **not verified on this unit** and must not be attempted without a separate
+   decision.
+
+Do not run `sysupgrade`, `mtd`, `ubi` or `ubirmvol` during the RAM test.
+
+Byte-exact recovery of the current rootfs would require reading `/dev/ubi0_1`
+(5 374 478 bytes) before any change.  That dump was deliberately not taken,
+because the planned procedure does not write NAND.
+
+Before Stage B the operator must still move production service to another
+router, disconnect the analog line, and have physical power-cycle access.
 
 ### C. RAM-only boot (recommended first contact)
 

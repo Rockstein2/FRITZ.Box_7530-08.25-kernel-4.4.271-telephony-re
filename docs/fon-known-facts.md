@@ -13,6 +13,7 @@ Every row names its evidence class:
 | **OEM** | observed in `history/wiki-fritzos-oem-bootlog-reference.txt` (FRITZ!OS, kernel **4.4.60**, build 2021-04-26) |
 | **CODE** | implemented and offline-tested in `src/fon-driver/` |
 | **OFFLINE** | verified on this workstation, no hardware |
+| **RUNTIME** | read from the real board over the serial console; no writes, no module load |
 
 **A row marked GPL/DT/OEM is not automatically true for our kernel.**  The OEM
 log comes from 4.4.60, we run 6.12/4.4.271-OpenWrt.  Rows needing runtime
@@ -35,7 +36,96 @@ confirmation on our build are marked `(runtime)`.
 analog FON is absent.  The analog line is driven by `isdn_fbox_fon5` over the
 same TDM transport.
 
-## 2. Register blocks (FON / ADSS)
+## 1a. Production router baseline (RckBox, 2026-11-07)
+
+This workspace contains **one** FRITZ!Box 7530, hostname `RckBox`.  It is the
+only unit available for the bench, so a RAM-only test would use it after
+production service is moved to another router.  The NAND must stay untouched.
+
+All rows below were read over `/dev/ttyUSB0` at 115200 8N1 and a root shell,
+with read-only commands only.  No module was loaded and no flash write was
+performed.
+
+| Fact | Value | Evidence |
+|---|---|---|
+| Board | `AVM FRITZ!Box 7530`, compatible `avm,fritzbox-7530` | RUNTIME |
+| Firmware | OpenWrt 25.12.6 `r33311-981c978eff` (official release) | RUNTIME |
+| Kernel | 6.12.112, `#0 SMP Sat Oct 17 21:45:38 2026` | RUNTIME |
+| Kernel command line | ` coherent_pool=4M` only; **no `root=`** | RUNTIME |
+| Root filesystem | squashfs `/dev/ubiblock0_1`, read-only, mounted on `/rom` | RUNTIME |
+| Overlay | UBIFS `/dev/ubi0_4`, mounted on `/overlay` (71.5 MiB, 16.6 MiB used) | RUNTIME |
+| Console | `/dev/ttyUSB0`, 115200 8N1, root shell `root@RckBox:~#` | RUNTIME |
+| `sysupgrade` | `/sbin/sysupgrade` present | RUNTIME |
+| NAND health | 872 good PEBs, 0 bad, 0 corrupted, max erase counter 10 | RUNTIME |
+| Recovery partitions | `urlader0` / `urlader1` present (`mtd5`/`mtd6`) | RUNTIME |
+
+MTD layout (size / erasesize 128 KiB):
+
+| MTD | Size | Name |
+|---|---|---|
+| mtd0 | 0x00080000 | SBL1 |
+| mtd1 | 0x00080000 | MIBIB |
+| mtd2 | 0x00080000 | QSEE |
+| mtd3 | 0x00040000 | CDT |
+| mtd4 | 0x00080000 | QSEE_B |
+| mtd5 | 0x00040000 | urlader0 |
+| mtd6 | 0x00040000 | urlader1 |
+| mtd7 | 0x00840000 | nand-tffs |
+| mtd8 | 0x00400000 | uboot0 |
+| mtd9 | 0x00400000 | uboot1 |
+| mtd10 | 0x06d00000 | ubi |
+
+UBI volumes on `mtd10` (LEB 126 976 B, 872 PEBs, 20 reserved):
+
+| ID | Name | Size | Use |
+|---|---|---|---|
+| 0 | `kernel` | 29 LEB (3 682 304 B) | bootloader loads the FIT kernel from here |
+| 1 | `rootfs` | 43 LEB (5 459 968 B) | squashfs, exposed as `ubiblock0_1` + `/rom` |
+| 2 | `avm_config` | 17 LEB (2 158 592 B) | AVM data, not used by OpenWrt |
+| 3 | `avm_userdata` | 103 LEB (13 078 528 B) | AVM data, not used by OpenWrt |
+| 4 | `rootfs_data` | 656 LEB (83 296 256 B) | UBIFS overlay (`/overlay`) |
+
+The boot chain has no `root=` argument: OpenWrt preinit attaches UBI, creates
+`ubiblock0_1`, and `mount_root` switches to the UBIFS overlay.  This is the
+standard UBI boot flow, not a custom AVM one.
+
+### Restore-image comparison
+
+The installed kernel is byte-identical to the official 25.12.6 image:
+
+| Item | SHA-256 |
+|---|---|
+| `kernel` volume, first 3 638 736 B | `278f42934b35cb41a2956c2344c554808de5b2011c8143fd403ebb8927252db6` |
+
+The installed rootfs is **not** byte-identical to the official image.  It has
+the same build time, same inode count and same file set size, but 132 bytes
+more squashfs data:
+
+| Item | Value |
+|---|---|
+| Installed squashfs `bytes_used` | 5 374 478 B |
+| Official image squashfs `bytes_used` | 5 374 346 B |
+| Both `mkfs_time` | 2026-10-17 23:45:38 |
+| Both inode count | 1281 |
+| Installed rootfs (volume, full) | `84b6c1a5a3b3b1a2f891f9a7aca1bde7462cfaa3fdb04795e6346e6493149492` |
+| Installed rootfs first 5 374 976 B | `564c6af007371ab564436a73c4b52c8106de0ef04de50374535cdd9dbbcb007c` |
+
+This is consistent with a locally built/ImageBuilder image derived from the
+same release, not with a different release.  It is functionally the same
+firmware, but reflashing the official image would not reproduce the current
+rootfs byte for byte.  A byte-exact rootfs could only be preserved by reading
+`/dev/ubi0_1` first; that dump was deliberately **not** taken because the
+bench procedure never writes NAND.
+
+Verified restore assets outside the repository:
+
+| Asset | Hash / note |
+|---|---|
+| `../../restore/openwrt-25.12.6-ipq40xx-generic-avm_fritzbox-7530-squashfs-sysupgrade.bin` | `011e020205fed455c79ee68ebb4d9ce43e6b05698bd99b05ebfc5c851f7ceb73` |
+| `../../restore/version.buildinfo` | `r33311-981c978eff` (matches the board) |
+| `../../backups/RckBox-config-*.tar.gz` | configuration only; newest 2026-11-06 21:31 |
+
+
 
 | Block | Address | Size | Evidence |
 |---|---|---|---|
