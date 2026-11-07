@@ -76,3 +76,21 @@ These were open before the OEM bootlog was cross-checked; see
 
 They still need runtime confirmation on our kernel, which is what the gates
 above ask for; the *expectation* is no longer unknown.
+
+### Stage C gates
+
+| Gate | Evidence required | Produced by | Status |
+|---|---|---|---|
+| C0 collector runs and archives | `bench/collect-stage-c0.sh` exits 0, summary archived | Stage C0 | **ready, not run on hardware** |
+| C0 shows no ADSS owner | `adss-ranges.txt` = "no ADSS ranges claimed" | Stage C0 | pending |
+| C0 shows audio clocks at enable 0 | `audio-clocks.txt` | Stage C0 | pending |
+| Passive TDM measurement | FSC 8 kHz / BCLK 1.0257 MHz present or absent | scope | **not done** |
+| FON node has clock/reset links | DT contains `clocks` and `resets` | DT change + review | **not done** |
+| C1 module built in kernel tree | new SHA-256 recorded, Stage B still passes | build | **not done** |
+| Physical power-cycle path | operator confirms | operator | pending |
+
+Stage C0: **GO** (read-only, prepared, unrun).
+Stage C1: **NO-GO** until the clock/reset DT links exist and the passive
+measurement is done.
+Dialog firmware upload: **NO-GO** until C0 and the passive measurement
+separate "no firmware" from "no clocks".

@@ -74,9 +74,21 @@ build must confirm.
 | # | Question | Closes with | Stage |
 |---|---|---|---|
 | Q23 | Does a self-built stock initramfs boot on the bench unit? | TFTP boot, `runbook/fon-recovery-ram-boot.md` | bench |
-| Q24 | Does our probe-only initramfs boot and reach a shell? | same | bench |
+| Q24 | Does our probe-only initramfs boot and reach a shell? | same | **answered: yes, 2026-11-07** |
 | Q25 | Is the FIT DTB inside the image byte-identical to our prepared probe DTB? | offline FIT extraction + hash | offline |
-| Q26 | Is `FRITZ7530.bin` the file name this bootloader expects (vs `FRITZ7520.bin`)? | bench observation | bench |
+| Q26 | Is `FRITZ7530.bin` the file name this bootloader expects (vs `FRITZ7520.bin`)? | bench observation | **answered: yes, 2026-11-07** |
+
+### Stage C questions (opened 2026-11-07)
+
+| # | Question | How to answer | Stage |
+|---|---|---|---|
+| Q27 | Does the SC14448 currently emit FSC/BCLK, i.e. is it running? | passive scope measurement, `fon-tdm-passive-test.md` | C0/probe |
+| Q28 | Is `GCC_AUDIO_AHB_CLK` required to read the ADSS registers? | C1 with clock enabled, then a controlled negated run | C1 |
+| Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
+| Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |
+| Q31 | Which mux group is live on HW236, PINMUX2 or PINMUX3? | passive probe of GPIO20/21/22 vs 24/25/26 | C0/probe |
+| Q32 | Does the console UART tolerate a userspace uploader without corrupting the stream? | C-controlled test with `quiet loglevel=0` | D |
+| Q33 | What are the SC14448 boot reply timings on this unit? | measurement during a controlled handshake | D |
 
 ## 7. Explicitly out of scope
 
