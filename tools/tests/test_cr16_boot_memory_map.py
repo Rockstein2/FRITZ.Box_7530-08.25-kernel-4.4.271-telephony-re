@@ -391,6 +391,88 @@ if IMAGES["normal"].is_file() and IMAGES["p2test"].is_file() and \
 else:
     skip("missing-byte end-to-end", "firmware or objdump missing")
 
+
+# ---------------------------------------------------------------------------
+# 13. a real Intel HEX file with a removed byte and recomputed checksums
+# ---------------------------------------------------------------------------
+# The test above drops a byte from an already-parsed map.  This one starts from
+# the actual .hex file: it rewrites every data record that contains 0x9 as two
+# records that skip it, recomputes each record checksum, and parses the result
+# with the normal parser.  A data record is a contiguous run, so a byte cannot
+# simply be deleted: the record must be split around the hole.
+def hole_ihex(src, hole, dst):
+    out = []
+    upper = 0
+    removed = []
+    for line in src.read_text().splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        raw = bytes.fromhex(line[1:])
+        count, addr, kind = raw[0], (raw[1] << 8) | raw[2], raw[3]
+        if kind == 0x04:
+            upper = ((raw[4] << 8) | raw[5]) << 16
+            out.append(line)
+            continue
+        if kind != 0x00:
+            out.append(line)
+            continue
+        run = []
+
+        def flush():
+            if not run:
+                return
+            start = run[0][0]
+            body = bytes(b for _, b in run)
+            rec = bytes([len(body), (start >> 8) & 0xFF, start & 0xFF, 0]) + body
+            out.append(":" + (rec + bytes([(-sum(rec)) & 0xFF])).hex().upper())
+
+        for i, b in enumerate(raw[4:4 + count]):
+            absolute = upper + addr + i
+            if absolute == hole:
+                flush()
+                run = []
+                removed.append(absolute)
+                continue
+            run.append((addr + i, b))
+        flush()
+    dst.write_text("\n".join(out) + "\n")
+    return removed
+
+
+print("== a real Intel HEX with a removed trampoline byte")
+if IMAGES["normal"].is_file() and IMAGES["p2test"].is_file() and \
+        M.OBJDUMP.is_file():
+    import tempfile
+    from pathlib import Path as _P
+    for image in ("normal", "p2test"):
+        with tempfile.TemporaryDirectory() as td:
+            dst = _P(td) / f"{image}_hole.hex"
+            removed = hole_ihex(IMAGES[image], 0x9, dst)
+            check(f"hex {image}: exactly one byte removed", removed, [0x9])
+            mem, _, _, errs, _ = M.parse_ihex(dst, strict=True)
+            check(f"hex {image}: the rewritten file is valid Intel HEX",
+                  errs, [])
+            check(f"hex {image}: 0x9 is genuinely absent", 0x9 in mem, False)
+            check(f"hex {image}: neighbours survive",
+                  (0x8 in mem, 0xA in mem), (True, True))
+            maps = {
+                "first": M.parse_ihex(IMAGES["first"])[0],
+                "normal": M.parse_ihex(IMAGES["normal"])[0],
+                "p2test": M.parse_ihex(IMAGES["p2test"])[0],
+            }
+            maps[image] = mem
+            broken = M.decode_handoff(memory=maps)
+            iso = broken["second_level"][image]["decoded_in_isolation"]
+            check(f"hex {image}: status is INCOMPLETE",
+                  iso["status"], "INCOMPLETE")
+            check(f"hex {image}: missing_bytes names 0x9",
+                  iso["missing_bytes"], ["0x00000009"])
+            check(f"hex {image}: chain becomes INCOMPLETE",
+                  broken["chain"]["status"], "INCOMPLETE")
+else:
+    skip("real holey Intel HEX", "firmware or objdump missing")
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)
