@@ -730,6 +730,49 @@ Branch targets in the firmware analysis are therefore **provisional**.
 Instruction bytes, instruction boundaries and all immediate constants are
 unaffected.
 
+### 9d-11. CR16 branch decoding solved; call graph re-derived (2026-11-07)
+
+**The encoding is now established from the binutils source and confirmed on
+firmware:**
+
+```text
+allWords = (w0 << 32) | (w1 << 16) | w2
+p        = EXTRACT(allWords, 16, 24)          for a 2-word bal
+sign     = p & 1                              <- bit 0, not the top bit
+target   = addr + ((-p) & 0xFFFFFE)           when sign
+target   = addr + p                           otherwise, mod 2^24
+```
+
+`addr` is the address of the instruction itself.  `objdump` prints the
+**absolute target**; its `*-` prefix only reflects the sign flag.
+
+Independent proof: `0x0AF0` prints `*-0x496` and `0x496` starts with
+`push $0x7,r7,RA`, a prologue.  `0x131E` prints `*-0x11CE` and `0x11CE`
+starts with `push $0x1,r7`.  `0x257E` prints `*-0x24f8` and `0x24F8` is the
+block entry.  A prologue cannot appear mid-function, so the printed
+magnitude is the target.
+
+**Validated call targets:**
+
+| Call | Target | Content |
+|---|---|---|
+| `0x2570` | `0x3C8C` | `push $0x3,r7,RA`; copies or clears an array through `0x28CF4` / `0x28D3C` |
+| `0x257E` | `0x24F8` | the enclosing block itself — **recursive re-entry** |
+
+**Caller of `0x24F8`:** none outside the block.  No `bal` targets it, no
+aligned 16-bit word equals it, and the two 3-byte matches (`0x318D`,
+`0x287C7`) lie inside `movb $0x25:m,rN` instructions, so they are not table
+entries.
+
+**Cross-block graph:** 1298 `bal` candidates, 1289 resolve inside a loaded
+run.  Edges exist in both directions between `0x2b4-0x1aad` and
+`0x24f8-0x3cfd`, so the block is connected — but its entry address still has
+no external caller.
+
+**Peripheral note:** `0xf6400:m` is a 16-bit absolute operand whose
+effective address is `0x000F6400` unless a segment is implied; whether the
+hardware decodes it as `0xFF6400` is **not established**.
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |

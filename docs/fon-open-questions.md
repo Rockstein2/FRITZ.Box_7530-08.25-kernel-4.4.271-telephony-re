@@ -90,9 +90,11 @@ build must confirm.
 | Q37 | Can FSC/BCLK be measured with a passive GPIO read (no pinmux change)? | **the shell method is too slow** (process per sample, GPIO subsystem); a kernel edge counter validated against a known signal is required | C0+ |
 | Q38 | Do the SC14448 firmware PCM accesses (0xFF6006/0xFF600E) reveal the slave clock format? | **answered for 0xFF6006**: the function at `0x2558` writes `0x80` and then clears it to `0`, so it is a trigger, not a format; `0xFF600E` not decoded | research |
 | Q40 | Which dispatch key reaches the `0x2558` arm? | data-flow across blocks; no symbol table in the image | research |
-| Q41 | What does the printed branch target from `objdump` mean (absolute vs displacement)? | one known-good call whose callee has an unmistakable prologue | research |
-| Q42 | Who calls the `0x24F8` selector and what value does it pass in `r2`? | indirect-jump tracing | research |
+| Q41 | What does the printed branch target from `objdump` mean (absolute vs displacement)? | **answered**: absolute; sign prefix is cosmetic, sign is in bit 0 of the field | answered |
+| Q42 | Who calls the `0x24F8` selector? | **answered for this image**: only `0x257E`, i.e. recursive re-entry; no external caller exists | answered |
 | Q43 | What does `BIT(7)` of `0xFF6006` do on the SC14448? | dynamic test once firmware runs | D |
+| Q44 | Is `0xf6400:m` decoded as `0x000F6400` or `0xFF6400`? | needs the Dialog address map or a dynamic trace | research |
+| Q45 | How is the `0x24F8` block entered if no caller exists? | run-time vector, or code outside the loaded image | research |
 | Q39 | Is the SC14448 currently held in reset (GPIO40 = 0, pad is input)? | release GPIO40 under explicit approval and re-run the pin probe | D |
 | Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
 | Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |
