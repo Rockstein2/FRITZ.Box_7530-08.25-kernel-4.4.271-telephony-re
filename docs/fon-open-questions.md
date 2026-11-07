@@ -87,8 +87,9 @@ build must confirm.
 | Q34 | Does the audio AHB gate actually close when disabled? | one post-disable `readl()` of `0x181b010` (bit 31 + FSM bits) | C2.2 |
 | Q35 | Which TX/RX port pairing does the FON need (AVM uses 3 for TX, our node uses 0)? | C3 comparison against `pcmlink.ko` | C3 |
 | Q36 | Which SC14448 revision is on HW236 (A or B), and how many audio codecs does it have? | die/package marking, or the exact-variant datasheet | research |
-| Q37 | Can FSC/BCLK be measured with a passive GPIO read (no pinmux change)? | C0+ sampling of pins 20/21/22/24/25/26, `fon-tdm-clock-software-check.md` | C0+ |
-| Q38 | Do the SC14448 firmware PCM accesses (0xFF6006/0xFF600E) reveal the slave clock format? | **partly answered**: one access to `0xFF6006` with the constant `0x80`, inside an interrupts-disabled critical section; `0xFF600E` never decoded. Meaning of `0x80` unknown | research |
+| Q37 | Can FSC/BCLK be measured with a passive GPIO read (no pinmux change)? | **the shell method is too slow** (process per sample, GPIO subsystem); a kernel edge counter validated against a known signal is required | C0+ |
+| Q38 | Do the SC14448 firmware PCM accesses (0xFF6006/0xFF600E) reveal the slave clock format? | **answered for 0xFF6006**: the function at `0x2558` writes `0x80` and then clears it to `0`, so it is a trigger, not a format; `0xFF600E` not decoded | research |
+| Q40 | Which dispatch key reaches the `0x2558` arm? | data-flow across blocks; no symbol table in the image | research |
 | Q39 | Is the SC14448 currently held in reset (GPIO40 = 0, pad is input)? | release GPIO40 under explicit approval and re-run the pin probe | D |
 | Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
 | Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |

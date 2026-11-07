@@ -46,6 +46,7 @@ Stage C research additions:
 | `fon-adss-avm-init-sequence.md` | AVM's real ADSS/TDM order and a register table |
 | `fon-tdm-clock-software-check.md` | The recovered `pcmlink` FSC/DCL count algorithm, and whether a passive GPIO read can replace a scope |
 | `fon-dialog-firmware-pcm.md` | What the SC14448 firmware actually programs, with a validated immediate decoder |
+| `fon-dialog-cr16-disasm.md` | Real CR16 disassembly of the PCM function; supersedes the byte-level reading |
 
 ## Layer 3 — history (`history/`)
 

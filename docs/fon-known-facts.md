@@ -252,12 +252,16 @@ pad direction was already `in`, so reading changed nothing.
 | GPIO26 (FSC, mux3) | 1 | 0 |
 | GPIO27 (DO) | 1 | 0 |
 
-**No TDM activity on either pinmux group.**  This answers Q27 for the
-current boot: the SC14448 is not producing FSC/BCLK.
+No transitions were observed on either pinmux group.
 
-Method limit: the shell cannot resolve 1 MHz, but 8 kHz would produce about
-16 000 periods in the window, so a flat line is a reliable result for FSC
-and a strong indication for BCLK.
+**This does not prove the clocks are absent.**  Each sample spawned a
+separate process to read a sysfs file, so the effective sampling rate is at
+most tens of kHz, and it reads through the GPIO subsystem rather than the
+TLMM register.  A signal at 8 kHz or above can be completely invisible to
+this method.  The measurement only rules out a slow, steady oscillation.
+
+A kernel-side edge counter validated against a known signal is required
+before anything can be said about FSC or BCLK.
 
 Reset line:
 

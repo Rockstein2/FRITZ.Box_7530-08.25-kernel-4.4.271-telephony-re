@@ -1,5 +1,15 @@
 # SC14448 firmware: what it programs, and what that means for FON
 
+> **Correction (2026-11-07, later the same day).**
+> A working CR16 disassembler showed that the function starting at
+> `0x2558` **writes `0x80` and then clears the same register to `0`**, so
+> `0xFF6006` is a trigger, not a configuration.  The claim below that
+> "there is exactly one PCM register access" is also too strong: the scan
+> only found one *immediate*, while that function performs three accesses.
+> See `fon-dialog-cr16-disasm.md` for the full disassembly.  The rest of
+> this document remains valid as the byte-level record.
+
+
 > **Status: static analysis of the AVM firmware images.**
 > No firmware was executed and no hardware was touched.  The decoder used
 > here is validated against a known-good snippet, not assumed.
@@ -18,14 +28,18 @@ GPIO22 1 0 edges   GPIO26 1 0 edges
 GPIO23 1 0 edges   GPIO27 1 0 edges
 ```
 
-**No pin toggles, in either pinmux group.**  Levels are stable, so the pads
-are connected to something that is silent.  That answers Q27 for the current
-boot: the SC14448 is not generating FSC/BCLK.
+**No pin toggles were observed, in either pinmux group.**
 
-Caveat recorded honestly: the shell-driven sampler cannot resolve 1 MHz.  It
-can resolve 8 kHz with a large margin (about 16 000 periods in two seconds),
-so the conclusion is sound for FSC and strongly suggestive, but not exact,
-for BCLK.
+**This result does NOT prove the clocks are absent.**  The sampler ran `cat`
+on a sysfs file once per sample, i.e. one process per measurement, which is
+in the 10-100 kHz range at best and additionally goes through the GPIO
+subsystem rather than the TLMM register directly.  A fast periodic signal
+can change state several times between two reads and be invisible.
+
+What the measurement does support: no steady low-frequency oscillation and no
+glitchy/floating behaviour.  Anything about 8 kHz or 1 MHz is **outside the
+resolution of this method**.  A kernel-side edge counter, validated against a
+known signal, is required; see `fon-tdm-clock-software-check.md`.
 
 ---
 
@@ -70,9 +84,10 @@ peripheral window:
 The `p2test` image shows the same set with two extra GPIO addresses
 (`0xff4860`, `0xff4960`) and the same single `0xff6006`.
 
-**There is exactly one PCM register access in the whole image.** That is the
-single most useful negative result here: the SC14448 does not run a
-complicated PCM setup loop.  Whatever the PCM block needs is programmed once.
+**One `movd` immediate targets the PCM block.**  This does **not** mean the
+firmware touches PCM only once: the function that uses it reads, writes and
+clears the register, and other forms of addressing were not searched.  See
+the correction banner and `fon-dialog-cr16-disasm.md`.
 
 ### 3.1 The PCM block, byte by byte
 
