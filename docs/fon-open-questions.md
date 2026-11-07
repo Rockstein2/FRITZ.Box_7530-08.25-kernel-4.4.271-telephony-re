@@ -84,6 +84,8 @@ build must confirm.
 |---|---|---|---|
 | Q27 | Does the SC14448 currently emit FSC/BCLK, i.e. is it running? | scope measurement, `fon-tdm-passive-test.md`; C0 already proved the ADSS pads are not muxed, so Linux cannot see them | probe |
 | Q28 | Is `GCC_AUDIO_AHB_CLK` required to read the ADSS registers? | C1 with clock enabled, then a controlled negated run | C1 |
+| Q34 | Does the audio AHB gate actually close when disabled? | one post-disable `readl()` of `0x181b010` (bit 31 + FSM bits) | C2.2 |
+| Q35 | Which TX/RX port pairing does the FON need (AVM uses 3 for TX, our node uses 0)? | C3 comparison against `pcmlink.ko` | C3 |
 | Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
 | Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |
 | Q31 | Which mux group is live on HW236, PINMUX2 or PINMUX3? | **partly answered**: C0 shows every PCM pin unclaimed by Linux, so neither group is driven by software; the board wiring itself is still unknown | probe |

@@ -103,3 +103,18 @@ slave.  A clock-framework warning on the disable path means the gate stop
 is unconfirmed.
 Dialog firmware upload: **NO-GO** until C0 and the passive measurement
 separate "no firmware" from "no clocks".
+
+### Stage C2.1 gates (code only, no hardware run)
+
+| Gate | Evidence | Status |
+|---|---|---|
+| C1 returns real errors | offline review + header contract | **done** |
+| C2 readback is strict | `src/fon-driver/tests/fon_c2_test.c`, 19 checks | **done** |
+| C2 follows AVM order | `docs/fon-adss-avm-init-sequence.md` | **done** (code), not run |
+| Clock warning explained | `docs/fon-audio-ahb-clock-warning.md` | **partly**: cause identified, gate state unproven |
+| STEREO/MBOX map correct | `docs/fon-adss-clock-reset.md` correction | **done** |
+| Stage C3 prepared | this iteration only documents; no code | **not started** |
+
+**Stage C3 is NO-GO** until the clock-disable warning is understood well
+enough to know whether the gate closes.  Running C3 with an unclosed gate
+would leave the ADSS clocked while software believes it is off.

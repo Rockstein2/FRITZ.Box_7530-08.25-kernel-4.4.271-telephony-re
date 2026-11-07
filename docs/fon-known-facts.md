@@ -614,6 +614,35 @@ The clock-framework warning on the disable path appeared again (same
 `clk_branch_toggle` path).  After `rmmod`: no module, `gcc_audio_ahb_clk`
 back to enable 0, no `0x77000000` region.
 
+### 9d-9. C1/C2 error handling and the AVM order (2026-11-07, code only)
+
+Review of the executed C1/C2 found four defects, all fixed without a new
+hardware run:
+
+| Defect | Effect | Fix |
+|---|---|---|
+| C1 returned 0 after a failed step | false success | every failure stored in `err` and returned |
+| C1 overwrote `step` with a cleanup number | misleading trace | `step` is the last completed step |
+| C2 did not save reset assert/deassert errors | false success | the errno is kept; `cleanup_err` is separate |
+| `stereo_ok` accepted a readback with only `ENABLE` | false success | all four registers compared, mismatch returns `-EIO` |
+
+Order corrections against AVM's `ipq-adss-avm.c`:
+
+- `ADSS_GLB_CHIP_CTRL_I2S` (`0x10`, bit 0) must be enabled during the ADSS
+  probe, before TDM configuration; the executed C2 never wrote it;
+- `ADSS_GLB_I2S_RST` (`0x14`) is pulsed (`0xF`, 4-5 ms, then `0`);
+- STEREO uses `DATA_WORD_SIZE(1)`, which sets `BIT(12)`; the executed C2
+  left it at zero.
+
+The executed hardware values remain valid as observations (C1 and C2 both
+ran, registers were written and read back), but they were produced by a
+sequence that was **incomplete**, so they do not prove a working FON setup.
+
+Address correction: `STEREO0_CONFIG` is at `0x07709000` and
+`STEREO3_CONFIG` at `0x0770f000`.  The earlier `0x07708000`/`0x0770c000`
+were MBOX windows.  The executed C2 therefore wrote the right STEREO
+blocks.
+
 ## 9e. Offline state of the driver
 
 | Fact | Value | Evidence |
