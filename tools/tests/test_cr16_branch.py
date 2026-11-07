@@ -104,6 +104,18 @@ def objdump_version(od):
                              text=True, check=False).stdout
     except OSError:
         return "unknown"
+
+
+def usable_objdump(path):
+    """A supplied path must exist and run, otherwise the run is SKIP."""
+    if path is None:
+        return None
+    try:
+        subprocess.run([str(path), "--version"], capture_output=True,
+                       text=True, check=False)
+    except OSError:
+        return None
+    return path
     first = out.splitlines()[0] if out else ""
     m = re.search(r"(\d+\.\d+(?:\.\d+)?)", first)
     return m.group(1) if m else first.strip()
@@ -330,7 +342,7 @@ def main():
 
     run_unit_checks()
 
-    od = args.objdump or find_objdump()
+    od = usable_objdump(args.objdump) if args.objdump else find_objdump()
     missing = [str(p) for _, p in IMAGES if not p.is_file()]
     if od is None or missing:
         why = ("CR16 objdump not found" if od is None
