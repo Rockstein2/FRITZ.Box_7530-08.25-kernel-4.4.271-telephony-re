@@ -16,8 +16,11 @@ procedure you run or a record of how we got here.
 | File | What it is |
 |---|---|
 | `fon-known-facts.md` | Every confirmed fact with its evidence class (GPL / DT / OEM / CODE / OFFLINE). **Start here.** |
-| `fon-open-questions.md` | Every unresolved item (Q1–Q26) and the stage that closes it. The only open-questions list. |
+| `fon-open-questions.md` | Every unresolved item (Q1–Q33) and the stage that closes it. The only open-questions list. |
 | `fon-go-no-go.md` | Which questions must be closed before each hardware stage. |
+| `fon-adss-clock-reset.md` | What gates ADSS register access: GCC audio clocks, the audio reset, and what AVM does. |
+| `fon-tdm-passive-test.md` | Passive FSC/BCLK measurement, pin candidates and what it can distinguish. |
+| `fon-dialog-minimal-loader.md` | Minimal SC14448 boot firmware loader: design, UART sharing, blockers. |
 
 If these three disagree with any other document, **these three win**.
 
@@ -33,6 +36,7 @@ Procedures and build records.  Executable, dated, not arguments.
 | `runbook/fon-test-image-safety.md` | Rules for a test image |
 | `runbook/fon-test-image-build.md` | Preparing the probe-only DTB/image |
 | `runbook/fon-build-validation.md` | Build, test and artifact results |
+| `runbook/fon-stage-c1.md` | Stage C1 ADSS MMIO read plan (currently NO-GO) |
 
 ## Layer 3 — history (`history/`)
 
