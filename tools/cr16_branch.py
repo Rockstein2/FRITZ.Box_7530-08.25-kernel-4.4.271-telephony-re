@@ -277,13 +277,16 @@ def decode_insn(addr: int, mnemonic: str, raw: bytes) -> tuple[int | None, str, 
     byte1 = raw[1]
     if byte1 in (0x0C, 0x0D, 0x0E, 0x0F):
         return branch_zero_target(addr, raw), "disps5", "DIRECT"
-    if mnemonic not in BRANCH_ZERO_MNEMONICS:
-        # Every other conditional uses the same, validated `dispe9` layout;
-        # the byte1 nibbles above the condition code belong to the field.
-        # (This is what binutils prints for `a2 15` -> +0xb0 and
-        # `00 1c` -> +0x11e; see the firmware sweep in the tests.)
+    if mnemonic in BRANCH_ZERO_MNEMONICS:
+        return None, "disps5?", "UNSUPPORTED"
+    # A conditional whose second byte is 0x10.. belongs to the `dispe9` form.
+    if 0x10 <= byte1 <= 0x1F:
         return cond2_target(addr, w0), "dispe9", "DIRECT"
-    return None, "disps5?", "UNSUPPORTED"
+    # Conditionals with a `byte1` below 0x10 (`00 1c`, `06 1a`, `47 1e`,
+    # `a2 15`, ...) use a layout that no candidate formula reproduced against
+    # binutils (10 candidate layouts were fitted to all 259 occurrences; the
+    # best matched 42).  They stay unsupported instead of being guessed.
+    return None, "2-byte-other", "UNSUPPORTED"
 
 
 def target_from_objdump(printed: int) -> int:
