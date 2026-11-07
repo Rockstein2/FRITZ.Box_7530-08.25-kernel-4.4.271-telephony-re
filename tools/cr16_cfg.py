@@ -73,11 +73,15 @@ COND = {
     "beq", "bne", "blt", "ble", "bgt", "bge", "bhi", "bls", "blo", "bhs",
     "beq0b", "beq0w", "bne0b", "bne0w", "bcs", "bcc", "bvs", "bvc",
     "bfc", "bfs",
-    # `br` is printed by objdump for the `dispe9` form (`ee 10` = br *+0x20),
-    # so it is a conditional-style branch, not a plain jump.
-    "br",
 }
-JUMPS = {"jump", "jmp", "bral"}
+# `br` is the unconditional relative branch: CR16A manual, "BR (Unconditional
+# Branch)" — it loads the sign-extended displacement plus PC into PC and
+# execution continues at the destination.  It carries no link register, so it
+# is a jump, not a call, and it has no fall-through.  objdump prints it with
+# the same `dispe9`/`disps17` field as the conditionals because `br` is the
+# condition code 14 (0xE) of the same Bcond opcode family; the encoding is
+# shared, the control-flow meaning is not.
+JUMPS = {"br", "jump", "jmp", "bral"}
 CALLS = {"bal", "jal", "jalr"}
 RETS = {"popret", "ret", "retx"}
 # Indirect forms: call or jump through a register operand.

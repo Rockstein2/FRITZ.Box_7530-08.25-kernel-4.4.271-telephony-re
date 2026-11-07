@@ -124,6 +124,12 @@ def test_fallthrough_rules():
           C.has_fallthrough(C.Insn(0, 2, "beq", "*+0x4:s", b"")), True)
     check("unconditional jump does not",
           C.has_fallthrough(C.Insn(0, 2, "jump", "(ra)", b"")), False)
+    # `br` is the unconditional relative branch (CR16A "BR (Unconditional
+    # Branch)"); it must not get a return-site or next-instruction edge.
+    check("unconditional br does not fall through",
+          C.has_fallthrough(C.Insn(0, 2, "br", "*+0x20:s", b"")), False)
+    check("unconditional 4-byte br does not fall through",
+          C.has_fallthrough(C.Insn(0, 4, "br", "*+0x300:m", b"")), False)
     check("return does not",
           C.has_fallthrough(C.Insn(0, 2, "popret", "$0x1,r0", b"")), False)
     check("retx does not",
@@ -152,6 +158,47 @@ def test_fallthrough_rules():
           [("fallthrough", 0x04)])
     check("popret has no fallthrough",
           [e for e in edges if e.src == 4 and e.kind == "fallthrough"], [])
+
+    # A synthetic image for the four unconditional-branch cases plus the two
+    # contrasting forms (bal with a return site, bne with two branches).
+    # Layout, 2-byte instruction grid:
+    #   0x00: br *+0x10      (forward, inside this run)
+    #   0x02: br *-0x02      (backward; lands on 0x00)
+    #   0x04: bne *+0x04     (conditional, two branches)
+    #   0x06: bal *+0x0E     (call to 0x14, returns to 0x0A)
+    #   0x08: popret RA
+    #   0x0a: popret RA
+    #   0x14: popret RA
+    img = bytearray(b"\x1e\x03" * 24)
+    # Real `br` bytes from the vendor image, relocated to the synthetic base:
+    #   `e4 10` is `br *+0x08` (firmware 0x13F6 -> 0x13FE) and
+    #   `e5 1f` is `br *-0x16` (firmware 0x19F2 -> 0x19DC).
+    img[0x00:0x02] = bytes([0xE4, 0x10])   # br forward (+0x08) -> 0x08
+    # 0x08 must be an instruction start of the same 2-byte grid:
+    # `e4 10` at 0x00 jumps to 0x08, which the popret grid already fills.
+    img[0x02:0x04] = bytes([0xE5, 0x1F])   # br backward (-0x16) -> wraps
+    img[0x04:0x06] = bytes([0x12, 0x12])   # bne, two branches
+    img[0x06:0x0A] = bytes([0x00, 0xC0, 0x0E, 0x00])   # bal *+0x0E
+    path = hexfile([(0x0000, bytes(img))])
+    fw = C.load(path)
+    C.disassemble(fw, od)
+    e2 = C.build(fw)
+    br = [e for e in e2 if e.src == 0x00]
+    check("synthetic br forward: one jump edge, no fallthrough",
+          [(e.kind, e.dst) for e in br], [("jump", 0x08)])
+    brb = [e for e in e2 if e.src == 0x02]
+    check("synthetic br backward: one jump edge, no fallthrough",
+          [(e.kind, e.dst, e.category) for e in brb],
+          [("jump", (0x02 - 0x16) & 0xFFFFFF, C.OUTSIDE_LOADED_IMAGE)])
+    bne = [e for e in e2 if e.src == 0x04]
+    check("synthetic bne keeps both branches",
+          sorted((e.kind, e.dst) for e in bne),
+          [("cond", 0x48), ("fallthrough", 0x06)])
+    bal = [e for e in e2 if e.src == 0x06]
+    check("synthetic bal keeps call target and return site",
+          sorted((e.kind, e.dst, e.category) for e in bal),
+          [("call", 0x14, C.DIRECT_RESOLVED),
+           ("fallthrough", 0x0A, C.DIRECT_RESOLVED)])
 
 
 # ---------------------------------------------------------------------------
@@ -215,7 +262,7 @@ def test_category_stats():
           st[C.INDIRECT_UNRESOLVED], 0)
     check("DIRECT_UNSUPPORTED is 46", st[C.DIRECT_UNSUPPORTED], 46)
     check("FALLTHROUGH_UNRESOLVED is 9", st[C.FALLTHROUGH_UNRESOLVED], 9)
-    check("TOTAL edges", st["TOTAL"], 23284)
+    check("TOTAL edges", st["TOTAL"], 22669)
 
 
 # ---------------------------------------------------------------------------
