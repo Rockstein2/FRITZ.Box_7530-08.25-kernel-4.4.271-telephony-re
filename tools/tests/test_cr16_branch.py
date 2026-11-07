@@ -202,6 +202,9 @@ ZERO_CASES = [
     (0x0100, "beq0b", "f0 0c", 0x0120),
     (0x0100, "beq0w", "00 0e", 0x0102),
     (0x0100, "bne0w", "ff 0f", 0x0140),
+    (0x0100, "bne0b", "20 0d", 0x0126),
+    (0x0100, "bne0b", "10 0d", 0x0124),
+    (0x0100, "bne0w", "10 0f", 0x0124),
 ]
 for addr, mn, hx, want in ZERO_CASES:
     raw = bytes.fromhex(hx.replace(" ", ""))
