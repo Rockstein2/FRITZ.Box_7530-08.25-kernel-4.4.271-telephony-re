@@ -1020,7 +1020,9 @@ Documents: `fon-dialog-firstlevel-cfg.md`, `fon-dialog-uart-boot-protocol.md`,
 | `0x7C` | **inside** block 1 (`0x0`–`0xD4`), holds `0x00014668` | L1 |
 | first-level load address | `0x10080` | L1 |
 | first-level execution entry | **UNKNOWN** | — |
-| first-level hand-off targets | with `signed16(word1 & 0xFFFE)` all three four-byte branches (`0x1017C`, `0x10250`, `0x10298`) reach `0x010100`, the retry loop; `0x10284` (6-byte form) unresolved | L2 |
+| first-level hand-off targets | with `signed16(word1 & 0xFFFE)` all three four-byte branches (`0x1017C`, `0x10250`, `0x10298`) reach `0x010100`, the retry loop | L2 |
+| `0x10284` (`disps25`) | unresolved: only 2 occurrences exist in all images, both decode incoherently; no validated encoding, no linked fixture | UNKNOWN |
+| immediate tracking | a register value is invalidated by any write other than the `movw` that loaded it | L2 |
 | `0x01000000` region | not present in any uploaded image | L1 |
 | `CFG` bit 8 | cleared by the loader, set before its hand-off wait and by the second-level start-up | L2 |
 

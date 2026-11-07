@@ -146,6 +146,7 @@ DECT, ISDN, CAPI, DSL.  Not needed for one FXS port; recorded in
 | Q68 | **narrowed**: the cleared range ends exactly at the next block start in both images, which is the classic `.bss` clear.  Confirming it needs a memory map | a SC14448 map | research |
 | Q70 | Which SC14448 sources raise vectors 24, 26 and 29?  The SC14441 names (tim1/dip/dsp) do not fit three `0x5402` pending bits | a SC14448 interrupt chapter, or a capture of the pending bits | research |
 | Q71 | Is `CFG` bit 8 really "32-bit exception table format"?  The reference says so; no SC14448 document confirms it | a CR16C `CFG` description | research |
+| Q73 | What is the `disps25` field layout? No validated example exists offline: gas emits a relocation placeholder, and both firmware occurrences decode incoherently | a CR16C branch table, or a linked binary with a known `disps25` target | research |
 | Q72 | Does the second-level start-up program a PLL?  `0x00FF4010` (`CLK_PLL_CTRL_REG`) is read-modify-written at `0x1896` | a clock-tree description, or a measurement of the resulting clock | research |
 | Q69 | Is `0x10080` the CPU execution entry, or only the image load address? | ROM boot description or the loader's entry mechanism | research |
 | Q61 | What exactly do `loadm`/`loadmp`/`storm`/`stormp` address (base register, register list semantics, post-increment)? | CR16B/C manual, or an assembler round trip for the register-list operand form; until then they stay `MEMORY_UNSUPPORTED` (16 + 2 instructions) | offline |

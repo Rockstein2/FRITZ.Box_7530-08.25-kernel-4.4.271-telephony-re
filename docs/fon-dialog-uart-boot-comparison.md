@@ -31,6 +31,26 @@ class Bootrom:
 The ROM passes the length as **little-endian `u16`**, which is a different
 field width and byte order from B's big-endian `u32`.
 
+### The ROM checksum, precisely
+
+`dialogtool.py` separates three things that are easy to confuse:
+
+| Item | Direction | What happens |
+|---|---|---|
+| the payload | host → device | sent verbatim, **without** a trailing checksum field |
+| the XOR | computed by the host | `checksum ^= byte` over the whole payload |
+| the device's answer | device → host | one byte, which the host compares with its XOR |
+| the confirmation | host → device | `struct.pack("<H", ACK)` (`0x06`, little-endian) only if the bytes match |
+
+So the ROM protocol **does** have an XOR check; it is a *challenge–response*
+against the device's own byte, not a checksum the host appends.  A capture
+would show the payload immediately followed by the device's checksum byte
+and then `06 00`.
+
+This protocol is implemented for the SC14441/SC14481 family and demonstrably
+works there.  Nothing offline shows that the FRITZ!Box 7530 SC14448 uses the
+same ROM loader, so it is a *candidate* for phase A.
+
 The device side of A is not in any image we hold — `dialogtool.py` is the
 only description.  Using it is legitimate: it is a working host
 implementation for the same core family.
@@ -144,7 +164,7 @@ address happens to match.
 | address field | none (the payload is one blob) | `u32be` per block | little-endian |
 | start baud | 9600 | field `0xC` = 115200 | settable |
 | handshake | device sends `STX`, host sends `SOH`+len, device `ACK`/`NACK` | host sends, device replies `0x06`/`0x15` | `0xA5` frames |
-| checksum | none in `dialogtool.py` | XOR, echoed | CRC32 |
+| checksum | host computes XOR of the payload, the **device returns** a checksum byte, the host compares and only then sends `ACK` | host sends the XOR, device echoes/answers, host requires `0x06` | CRC32 over the frame |
 | entry into payload | device-specific | `0x10284` (target unresolved) | `br _c_entry` |
 
 **Do not treat B and C as the same protocol.**  They agree on nothing except

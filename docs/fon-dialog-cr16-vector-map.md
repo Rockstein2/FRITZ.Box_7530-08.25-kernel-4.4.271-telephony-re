@@ -92,9 +92,10 @@ reference are unused here, and the three that are used (24, 26, 29) would be
 
 | Claim | Level |
 |---|---|
-| the table is at `0x24` and has 32 entries of `u32le` | L1 |
+| **our images** carry 31 consecutive entries of `u32le` at `0x24`–`0x9F` | L1 |
+| the core may support more vectors; the reference generates 32 slots | external only — our firmware does not fill a 32nd slot, and `0xA0` is TLV data |
 | the value is a handler address ÷ 2 | L2 (reference + our boundaries) |
 | vectors 24, 26, 29 are real handlers | L2 |
 | they acknowledge three different bits of `0x000F5402` | L2 |
 | their *names* (tim1/dip/dsp) | **candidate only** — SC14441 numbering |
-| UART/SPI are vectors 20/22 | **refuted for this firmware** |
+| UART/SPI are vectors 20/22 | **not confirmed**: those indices hold the stub in both images.  Stub entries do not prove the *numbering* differs — they only show these sources are unused here |

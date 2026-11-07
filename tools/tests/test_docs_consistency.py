@@ -430,8 +430,8 @@ for name, path in EXT.items():
 VEC = EXT["fon-dialog-cr16-vector-map.md"]
 if VEC.is_file():
     t = VEC.read_text()
-    check("vector doc refutes the UART=20/SPI=22 reading",
-          "refuted" in t.lower(), True)
+    check("vector doc does not confirm the UART=20/SPI=22 reading",
+          "not confirmed" in t, True)
     check("vector doc records the /2 encoding", "divided by 2" in t, True)
 
 EXTMAP = EXT["fon-dialog-external-register-map.md"]
@@ -449,6 +449,45 @@ if UART.is_file():
           "A. Dialog ROM loader" in t or "A (ROM)" in t, True)
     check("comparison warns not to treat B and C as identical",
           "Do not treat B and C as the same protocol" in t, True)
+
+# ---------------------------------------------------------------------------
+# 12. EXTREF-1.2 document checks
+# ---------------------------------------------------------------------------
+SYSREG = ROOT / "docs" / "fon-dialog-cr16-system-registers.md"
+if SYSREG.is_file():
+    t = SYSREG.read_text()
+    check("sysreg: table bytes are the real ones",
+          "0x24: e5 46 01 00" in t, True)
+    check("sysreg: old big-endian table bytes are gone",
+          "16 42 17 5b" not in t, True)
+    check("sysreg: no {u32be addr,len} description of 0x28d56",
+          "{u32be addr,len}" not in t, True)
+    check("sysreg: states the 31-entry extent", "0x24`–`0x9F`" in t, True)
+    check("sysreg: mentions the TLV block at 0xa0", "TLV" in t, True)
+
+VEC = ROOT / "docs" / "fon-dialog-cr16-vector-map.md"
+if VEC.is_file():
+    t = VEC.read_text()
+    check("vector doc: no '32 entries' claim",
+          "has 32 entries" not in t, True)
+    check("vector doc: 31 entries stated", "31 consecutive entries" in t,
+          True)
+    check("vector doc: stub does not prove different numbering",
+          "do not prove the *numbering* differs" in t, True)
+
+ROM = ROOT / "docs" / "fon-dialog-uart-boot-comparison.md"
+if ROM.is_file():
+    t = ROM.read_text()
+    check("rom doc: XOR check described", "challenge–response" in t, True)
+    check("rom doc: no 'checksum none' claim",
+          "none in `dialogtool.py`" not in t, True)
+    check("rom doc: ACK after the comparison", "only if the bytes match" in t,
+          True)
+
+HELPER = ROOT / "docs" / "fon-dialog-copy-helper-28d56.md"
+if HELPER.is_file():
+    t = HELPER.read_text()
+    check("helper doc: p2test range ends 0x9b43", "0x9B43" in t, True)
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")

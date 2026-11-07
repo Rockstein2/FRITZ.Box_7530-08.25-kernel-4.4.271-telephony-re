@@ -153,9 +153,10 @@ supported** but still not documented in any offline CR16C source, so
 
 ## 5b. `0x10284` remains open
 
-The 6-byte `disps25` form at this site does not decode with the same method.
-It is now the **only** candidate for the actual hand-off, since the three
-four-byte branches all return to the retry loop.
+The 6-byte `disps25` form at this site does not decode with any validated
+method; it is analysed separately in `fon-dialog-boot-disps25.md`.  It is the
+**only** candidate for the actual hand-off, since the three four-byte
+branches all return to the retry loop.
 
 ## 6. What would settle it
 

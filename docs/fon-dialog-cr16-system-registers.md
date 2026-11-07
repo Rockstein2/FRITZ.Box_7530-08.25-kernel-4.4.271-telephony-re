@@ -78,7 +78,11 @@ for the SC14448 and it is **not** evidence about address aliasing.
 image holds:
 
 ```text
-0x24: 16 42 17 5b 07 2b b7 22 00 80 07 52 04 1f 60 5b
+0x24: e5 46 01 00 e5 46 01 00 e5 46 01 00 e5 46 01 00
+0x74: e5 46 01 00 e5 46 01 00 e5 46 01 00 e5 46 01 00
+0x84: cb 44 01 00 ...
+0x8C: 68 46 01 00 ...
+0x98: 4a 45 01 00 ...
 ```
 
 Read as **little-endian 32-bit values** the region contains
@@ -91,18 +95,20 @@ That is a word-offset encoding, so the entries do **not** point outside the
 image.  Derivation and the probability argument are in
 `fon-dialog-low-memory-analysis.md`.
 
-Status: **UNKNOWN**, with two possibilities that cannot be separated
-offline:
+**Confirmed.**  The table is 31 entries at `0x24`–`0x9F`; entry *n* is at
+`0x24 + 4n`, and the stored value is the handler byte address **divided by
+two**.  From `0xA0` the bytes `01 05 ff ff …` begin a TLV block
+(`tag 1 = RFPI`, length 5, per `include/piglet_protocol.h`), so `0xA0` is
+data and not a 32nd vector.
 
-1. the copy at `0x15F6` walks the list at `0x24` as `{u32be addr,len}`
-   pairs and writes elsewhere (`(r3,r2) = 0x1C`), so the region at `0x24` is
-   itself a *descriptor list*, not the table;
-2. the pointers in the table are resolved once the missing code is uploaded.
+The start-up call at `0x15F6` does **not** touch this table: it is
+`fn_28d56(0x1C, 0x24)`, which processes the single record at `0x1C`
+(`{count = 0x8F2, destination = 0x936C}`) and clears `0x8F2` zero bytes
+there.  See `fon-dialog-copy-helper-28d56.md`.
 
-No `retx` handler is reachable from `0x1602` (`0x28996`, `0x28AFA`,
-`0x28CF0`, `0x28DCA` are all unreachable in mode A).  That is consistent
-with the handlers existing but being entered only through a dispatch the
-analysis does not resolve, and it is **not** evidence that they are absent.
+No `retx` handler is reachable from `0x1602` in mode A.  That is consistent
+with the handlers being entered through the dispatch the core performs, not
+through a call, and it is **not** evidence that they are absent.
 
 ## 4. Reset entry
 
