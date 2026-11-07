@@ -240,7 +240,10 @@ def firstlevel_facts(fw):
                  "header address; (r12) advances at 0x10234")
     add(0x10254, "0xf4836 writes and cbitw on 0xf4838")
     add(0x10278, "set CFG bit 8 (orw $0x100)")
-    add(0x10284, "6-byte br, target form not decoded (Q51)")
+    # the hand-off itself is described by decode_handoff() from the bytes;
+    # this entry only records that the instruction exists at that boundary
+    add(0x10284, "6-byte disps25 branch out of the loader; its target is "
+                 "reported in `handoff`, decoded from the bytes")
     add(0x1028A, "send 0x15 then r3")
     add(0x1029C - 0, "shared RX/TX entry points")
     return facts
@@ -273,6 +276,25 @@ def _decode_site(fw, mem, site):
         row["target_in_image"] = target in mem
         row["target_is_instruction"] = target in fw.insns
     return row
+
+
+def link_is_valid(entry):
+    """True only when a second-level entry really leads into code.
+
+    An isolated decode is accepted only if all six bytes are present, the
+    form is `disps25`, the status is DIRECT and the target is an instruction.
+    """
+    if not entry:
+        return False
+    iso = entry.get("decoded_in_isolation")
+    if iso:
+        return bool(iso.get("all_six_bytes_present")
+                    and iso.get("form_is_disps25")
+                    and iso.get("decode_status") == "DIRECT"
+                    and iso.get("target")
+                    and iso.get("target_is_instruction"))
+    return bool(entry.get("target_is_instruction")
+                and entry.get("target_in_image"))
 
 
 def decode_handoff():
@@ -315,16 +337,30 @@ def decode_handoff():
                 # linear disassembly, which starts at 0x0.  Decode the bytes
                 # at that address in isolation so the branch is still read
                 # from the image, not assumed.
-                raw = bytes(mem.get(site + k, 0) for k in range(6))
-                target, form, status = C.decode_insn(site, "br", raw)
-                entry["decoded_in_isolation"] = {
-                    "bytes": raw.hex(),
-                    "form": form,
-                    "target": f"0x{target:08x}" if target is not None
-                              else None,
-                    "target_is_instruction":
-                        target in fw.insns if target is not None else False,
-                }
+                # every byte must really be in the Intel HEX: a missing byte
+                # must not be silently replaced by zero
+                missing = [site + k for k in range(6) if site + k not in mem]
+                if missing:
+                    entry["decoded_in_isolation"] = {
+                        "status": "INCOMPLETE",
+                        "missing_bytes": [f"0x{a:08x}" for a in missing],
+                    }
+                else:
+                    raw = bytes(mem[site + k] for k in range(6))
+                    target, form, status = C.decode_insn(site, "br", raw)
+                    entry["decoded_in_isolation"] = {
+                        "bytes": raw.hex(),
+                        "all_six_bytes_present": True,
+                        "form": form,
+                        "decode_status": status,
+                        "target": f"0x{target:08x}" if target is not None
+                                  else None,
+                        "target_is_instruction":
+                            target in fw.insns if target is not None else False,
+                        # the reported target is only trusted when the
+                        # decoder says DISP25 form and DIRECT
+                        "form_is_disps25": form == "disps25",
+                    }
                 entry["note"] = ("the address is inside the linear "
                                  "disassembly of an instruction that "
                                  "starts before it; it is decoded "
@@ -332,16 +368,9 @@ def decode_handoff():
                                  "there")
         handoff["second_level"][name] = entry
 
-    def linked(name):
-        e = handoff["second_level"][name]
-        if not e:
-            return False
-        iso = e.get("decoded_in_isolation")
-        if iso:
-            return bool(iso["target"] and iso["target_is_instruction"])
-        return bool(e.get("target_is_instruction") and e.get("target_in_image"))
-
-    ok = branch is not None and all(linked(n) for n in ("normal", "p2test"))
+    ok = branch is not None and all(
+        link_is_valid(handoff["second_level"][n])
+        for n in ("normal", "p2test"))
     handoff["chain"] = {
         "status": "STATICALLY_RESOLVED" if ok else "INCOMPLETE",
         "hardware_observed": False,

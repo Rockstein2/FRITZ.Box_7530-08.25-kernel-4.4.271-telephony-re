@@ -91,8 +91,11 @@
   "second_level": {
    "normal": {
     "decoded_in_isolation": {
+     "all_six_bytes_present": true,
      "bytes": "1000e000a215",
+     "decode_status": "DIRECT",
      "form": "disps25",
+     "form_is_disps25": true,
      "target": "0x000015aa",
      "target_is_instruction": true
     },
@@ -103,8 +106,11 @@
    },
    "p2test": {
     "decoded_in_isolation": {
+     "all_six_bytes_present": true,
      "bytes": "1000e0001e10",
+     "decode_status": "DIRECT",
      "form": "disps25",
+     "form_is_disps25": true,
      "target": "0x00001026",
      "target_is_instruction": true
     },
@@ -254,7 +260,7 @@
      "site": "0x010278"
     },
     {
-     "fact": "6-byte br, target form not decoded (Q51)",
+     "fact": "6-byte disps25 branch out of the loader; its target is reported in `handoff`, decoded from the bytes",
      "level": "L2",
      "site": "0x010284"
     },
