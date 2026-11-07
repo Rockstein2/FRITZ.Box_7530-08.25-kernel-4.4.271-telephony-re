@@ -837,16 +837,11 @@ bring-up is the same code in both builds.
 
 ## 9g. CR16 control-flow graph, second iteration (OFFLINE, 2026-11-07)
 
-Branch decoding is now chosen by machine form, not by length.  Every rule is
-validated against the CR16 binutils built from 2.44:
-
-| Form | Rule | Checked |
-|---|---|---|
-| 4-byte `bal` (all condition bytes, `00 c0`…`ff c0`) | 24-bit field, sign in bit 0 | 1 490 / 1 490 |
-| 2-byte conditional, `byte1` 0x10..0x1f | `((w0 & 0xF) \| ((w0>>8) & 0xF) << 4) << 1`, unsigned | 1 755 / 1 755 |
-| 2-byte `beq0*/bne0*` | `2*nib + 2 (+0x20 if byte1 & 1)` | assembler |
-| 4-byte conditional | `addr + words[1]` | assembler |
-| 6-byte conditional, `0x92FC` | not implemented | — |
+Branch decoding is chosen by machine form, not by length.  The 2-byte
+conditional layout is still disputed (Q50): the rule used here and in
+binutils differs from the CR16A manual by one bit position, matches binutils
+on 1 816 of 2 076 occurrences, and is the only rule that keeps the two
+loop branches inside `0x25F90` pointing backwards.
 
 Edge statistics of `dectfw_secondlevel_441.hex` (total 23 284):
 
@@ -855,6 +850,7 @@ Edge statistics of `dectfw_secondlevel_441.hex` (total 23 284):
 | `DIRECT_RESOLVED` | 22 714 |
 | `DIRECT_UNSUPPORTED` | 46 |
 | `INDIRECT_REGISTER` | 382 |
+| `INDIRECT_UNRESOLVED` | 0 |
 | `INDIRECT_TABLE_RESOLVED` | 0 |
 | `FALLTHROUGH_UNRESOLVED` | 9 |
 | `OUTSIDE_LOADED_IMAGE` | 42 |
@@ -864,14 +860,27 @@ Reachability: mode A (`0x1602`) reaches **10 730** instructions; mode B
 (386 heuristic candidates) reaches 17 652; mode C (verified entries) is
 **empty** because no loader or vector table has been read.
 
-Corrections to the previous section (§9d-12) that this iteration establishes:
+`0x25F90`, proven from the decoded control flow (all links checked against
+binutils at the instruction's own address):
+
+| Fact | Value |
+|---|---|
+| counter location | `0x0000937C`, reset to 1 at `0x25F98` |
+| fill value | `0x1001` (`0x25F9A`), the only use of that constant in the image |
+| fill helper | `0x25BA`: one word at `0x01000000 + 2·index`, then `index + 1` |
+| loop condition | `bhi` at `0x25FA8` → `0x25F9A` while `counter > 0x200` |
+| words written | indices 1..`0x200` = **512 words**, `0x01000002`..`0x01000400` |
+| after the loop | `bal 0x2558` (`0x25FAA`): `0xF6400 <- 0`, `0xF6402 <- 0xF0`, `bal 0x3C8C` |
+| wait | `loadw 0xF6002` / `cmpw 1` / `bne 0x25FAE`; no timeout or alternative exit in the body |
+| pulse | `0x257E`: `0xFF6006 <- 0x80`, `0xFF5406 &= 0xF0FF` with IRQ disabled, `0xF5402 <- 0x400`, `0xFF6006 <- 0` |
+
+Corrections to §9d-12 that this iteration establishes:
 
 | Old statement | Now |
 |---|---|
 | "2 706 unresolved indirect edges" | 382 register-indirect edges; the rest were unsupported direct forms or off-image targets |
-| "512 words filled at `0x01000000`" | `0x25BA` writes **one** word per call; the loop is unproven |
-| "poll `0xF6002` until ready" | the loop conditional at `0x25FA8` decodes forward to `0x2619A`, outside the function |
-| "`0x257E` re-enters, recursion depth 1" | no recursion: `0x24F8` has no call to itself |
+| "the two conditionals decode outside the function" (intermediate state of this iteration) | they are backward branches `0x25FA8 → 0x25F9A` and `0x25FB4 → 0x25FAE`, confirmed with binutils |
+| "`0x257E` re-enters, recursion depth 1" | no recursion: `0x24F8` has no call to itself; `0x257E` has no caller and follows `0x2558` |
 | "`0x2558 → 0x257E`" as a call | `0x2558` calls `0x3C8C`; `0x257E` is a separate entry |
 | "404 candidate entries" | 386 heuristic candidates, all `verified=False` |
 

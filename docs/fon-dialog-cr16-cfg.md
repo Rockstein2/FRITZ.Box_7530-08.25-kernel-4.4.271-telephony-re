@@ -99,55 +99,42 @@ Mode C is empty on purpose: `verified=True` is never set heuristically.
 
 ### 3.1 The chain to `0x25F90`
 
-Every link is a `bal` or conditional whose bytes are shown.  All addresses are
-instruction boundaries in the image.
+Every link is an instruction boundary and is reachable in mode A.
 
 ```text
 0x1602  00 c0 f6 23  bal -> 0x39F8
-0x39F8  (entry)      reached by the CFG from 0x1602
-0x3A2C  (call site)  reached
-0x25FB8  87 01        push $0x1,r7,RA       <- 0x25FBA bal -> 0x25F90
-0x25F90  97 01        push $0x2,r7,RA
-0x25F9E  fd c0 1d c6  bal -> 0x25BA   (fill helper)
-0x25FAA  fd c0 af c5  bal -> 0x2558   (two-register sequence)
-0x2558  1e 01        push RA
-0x2570  00 c0 1c 17  bal -> 0x3C8C   (returns a word)
-0x257E  ff c0 7b ff  bal -> 0x24F8   (pulse sequence entry)
-0x24F8  02 50        cmpb $0x0:s,r2 ; beq -> 0x2556 when r2 == 0
+0x3A2C  02 c0 8c 25  bal -> 0x25FB8
+0x25FBA ff c0 d7 ff  bal -> 0x25F90
+0x25F9E fd c0 1d c6  bal -> 0x25BA   (fill helper, loop body)
+0x25FAA fd c0 af c5  bal -> 0x2558   (after the loop)
+0x2570  00 c0 1c 17  bal -> 0x3C8C   (inside 0x2558)
+0x257E  ff c0 7b ff  bal -> 0x24F8   (next function, run-off entry)
 ```
 
-`0x257E` is a separate entry.  Its first instruction is a `bal` to `0x24F8`,
-and in this image **no `bal` targets `0x257E` at all**; it is reached only
-when execution arrives there linearly.  The chain
-`0x25FAA → 0x2558 → 0x257E → 0x24F8` that older documents printed is a
-sequence of *code addresses*, not of call edges; only
-`0x25FAA → 0x2558` and `0x257E → 0x24F8` are `bal` edges, and the first of
-those lands on `0x2558`, not on `0x257E`.
+Inside `0x25F90` the two conditionals are backward branches:
+`0x25FA8` `49 1f` → `0x25F9A`, `0x25FB4` `1d 1f` → `0x25FAE` (both confirmed
+with binutils at the instruction's own address).  That makes
+`0x25F9A`–`0x25FA8` a loop and `0x25FAE`–`0x25FB4` a wait loop.
 
-The CFG still records the address after `0x25B8` (`0x25BA`) as a fall-through
-edge of the `push RA` body, because the image contains a decoded instruction
-there.  That address is in fact the entry of a separate function (16 `bal`
-sites call it), which shows a limit of linear-sweep decoding that the CFG
-does not yet model: a `bal` target can also be reached by falling into
-another function's body.
+`0x2558` does **not** call `0x257E`: its `bal` goes to `0x3C8C`.  `0x257E`
+directly follows `0x2558`'s last instruction and is entered only by running
+off its end; no `bal` in the image targets it.  The chain
+`0x25FAA → 0x2558 → 0x257E → 0x24F8` printed in earlier reports is therefore a
+sequence of *code addresses*, not of call edges.
 
-`0x24F8` is reached from `0x257E`'s first instruction.  Its `beq` at `0x24FA`
-(decoded target `0x2556`, i.e. the `jump (ra)` just before `0x24F8`'s end)
-returns immediately when `r2 == 0`; otherwise it loops over bits 8..10 of the
-word at `0xFF400A`.  The recursion claimed earlier does not exist: `0x24F8`
-contains no call back to itself.
+A limit of linear-sweep decoding that the CFG does not model: a `bal` target
+can also be reached by falling into another function's body, which is what
+happens between `0x2558` and `0x257E`.
 
 ### 3.2 Functions whose status changed
 
 | Address | Previous status | Now |
 |---|---|---|
-| `0x1602` | "candidate top level / root" | candidate only; it is reached by fall-through from `0x15FE`, so it is **not** a heuristic root |
-| `0x2558` | "same function as `0x257E`" | own function, own entry; the `bal` in its body goes to `0x3C8C`, not to `0x257E`, and no `bal` targets `0x257E` |
-| `0x24F8` | "recursive re-entry" | no recursion; a bounded bit-loop with an early return |
-| `0x25F90` | "512-word fill then poll" | fill helper writes one word; loop/poll unproven |
-| 404 roots | counted as candidate entries | 386 heuristic candidates, all `verified=False` |
-
----
+| `0x1602` | "candidate top level / root" | candidate only; reached by fall-through from `0x15FE`, so **not** a heuristic root |
+| `0x25F90` | "512-word fill then poll" (unproven) | loop decoded and confirmed with binutils; 512 words, 7 links checked |
+| `0x2558` | "same function as `0x257E`" | own function; calls `0x3C8C`; no caller of `0x257E` exists |
+| `0x24F8` | "recursive re-entry" | not recursive; returns when `r2 == 0` |
+| 404 roots | candidate entries | 386 heuristic candidates, all `verified=False` |
 
 ## 4. Indirect calls
 
