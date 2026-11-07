@@ -16,6 +16,9 @@
 #define FON_C2_TDM_TX_DELAY            BIT(25)
 #define FON_C2_TDM_RX_DELAY            BIT(26)
 
+/* I2S_RST: AVM writes 0xF, waits 4-5 ms, then writes 0. */
+#define FON_C2_I2S_RESET_VAL           0xFu
+
 /* CHIP_CTRL_I2S. */
 #define FON_C2_CHIP_I2S_INTERFACE_EN   BIT(0)
 

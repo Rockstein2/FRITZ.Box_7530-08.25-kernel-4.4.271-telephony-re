@@ -37,6 +37,7 @@ struct fon_c2_result {
 	bool clk_enabled;
 	bool clk_released;
 	bool reset_pulsed;
+	bool i2s_rst_pulsed;
 	bool reset_restored;
 	bool cleaned;
 	struct fon_c2_snapshot before;

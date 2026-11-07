@@ -44,7 +44,8 @@ enum {
 	C2_STEP_MAPPED = 5,
 	C2_STEP_SNAPSHOT = 6,
 	C2_STEP_CHIPCTRL = 7,
-	C2_STEP_TDM = 8,
+	C2_STEP_I2S_RST = 8,
+	C2_STEP_TDM = 9,
 	C2_STEP_STEREO = 9,
 	C2_STEP_MODE = 10,
 	C2_STEP_VERIFIED = 11,
@@ -194,9 +195,25 @@ int fon_c2_run(struct platform_device *pdev, struct fon_c2_result *out)
 	out->chip_ctrl_written = chip;
 	out->step = C2_STEP_CHIPCTRL;
 
+	/*
+	 * AVM's adss_config_clk() pulses ADSS_GLB_I2S_RST (0x14) BEFORE the TDM
+	 * configuration: write the reset value, wait 4-5 ms, write zero.  This
+	 * is a write, and it must come before TDM_CTRL, otherwise the block is
+	 * configured while its sub-blocks are still held.
+	 */
+	c2_log(&c, "step 7: pulse I2S_RST");
+	dev_info(&pdev->dev, "C2:   i2s_rst <- 0x%08x\n",
+		 FON_C2_I2S_RESET_VAL);
+	writel(FON_C2_I2S_RESET_VAL, c.adss + FON_C2_ADSS_I2S_RST);
+	usleep_range(4000, 5000);
+	dev_info(&pdev->dev, "C2:   i2s_rst <- 0x00000000\n");
+	writel(0, c.adss + FON_C2_ADSS_I2S_RST);
+	out->i2s_rst_pulsed = true;
+	out->step = C2_STEP_I2S_RST;
+
 	/* Eight slots, 1-bit delays, exactly as AVM computes them. */
 	tdm = fon_c2_tdm_value(8);
-	c2_log(&c, "step 7: program TDM_CTRL for 8 slots");
+	c2_log(&c, "step 8: program TDM_CTRL for 8 slots");
 	dev_info(&pdev->dev, "C2:   tdm_ctrl <- 0x%08x\n", tdm);
 	writel(tdm, c.adss + FON_C2_ADSS_TDM_CTRL);
 	out->tdm_written = tdm;
@@ -209,7 +226,7 @@ int fon_c2_run(struct platform_device *pdev, struct fon_c2_result *out)
 	 * The read-modify-write preserves the reserved bits.
 	 */
 	st = fon_c2_stereo_value(out->before.stereo_tx, true);
-	c2_log(&c, "step 8: program STEREO0/3 (slave, 16-bit, ext clock)");
+	c2_log(&c, "step 9: program STEREO0/3 (slave, 16-bit, ext clock)");
 	dev_info(&pdev->dev, "C2:   stereo_tx <- 0x%08x\n", st);
 	writel(st, c.stereo_tx + FON_C2_STEREO_CONFIG);
 	out->stereo_tx_written = st;
@@ -222,7 +239,7 @@ int fon_c2_run(struct platform_device *pdev, struct fon_c2_result *out)
 
 	mode = fon_c2_audio_mode_value(out->before.audio_mode, true, true,
 				       true);
-	c2_log(&c, "step 9: program AUDIO_MODE for TDM");
+	c2_log(&c, "step 10: program AUDIO_MODE for TDM");
 	dev_info(&pdev->dev, "C2:   audio_mode <- 0x%08x\n", mode);
 	writel(mode, c.adss + FON_C2_ADSS_AUDIO_MODE);
 	out->audio_mode_written = mode;
@@ -230,7 +247,7 @@ int fon_c2_run(struct platform_device *pdev, struct fon_c2_result *out)
 
 	usleep_range(2000, 3000);
 
-	c2_log(&c, "step 10: read back and verify");
+	c2_log(&c, "step 11: read back and verify");
 	c2_snapshot(&c, &out->after);
 	fon_c2_compare(&out->check,
 		       out->tdm_written, out->after.tdm_ctrl,

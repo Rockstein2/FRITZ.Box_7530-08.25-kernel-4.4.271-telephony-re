@@ -762,8 +762,8 @@ static int fon_tdm_probe(struct platform_device *pdev)
 			 "C2: programming TDM for 8 slots and stereo for slave mode, then reading back\n");
 		c2_ret = fon_c2_run(pdev, &c2);
 		dev_warn(&pdev->dev,
-			 "C2 finished: step=%d err=%d cleanup_err=%d tdm=%d mode=%d tx=%d rx=%d\n",
-			 c2.step, c2.err, c2.cleanup_err,
+			 "C2 finished: step=%d err=%d cleanup_err=%d i2s_rst=%d tdm=%d mode=%d tx=%d rx=%d\n",
+			 c2.step, c2.err, c2.cleanup_err, c2.i2s_rst_pulsed,
 			 c2.check.tdm_ok, c2.check.audio_mode_ok,
 			 c2.check.stereo_tx_ok, c2.check.stereo_rx_ok);
 		if (c2_ret)
