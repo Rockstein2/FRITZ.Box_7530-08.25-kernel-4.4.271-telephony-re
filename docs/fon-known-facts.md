@@ -280,15 +280,28 @@ unverified (Q15).
 |---|---|
 | `serial0` = `blsp_uart0` = `serial@78af000` | `Fritz_qcom-ipq4019.dtsi` |
 | its pins are `serial_pins` | same file, `pinctrl-0` |
-| the base mux entry uses `gpio60`/`gpio61` with `function = "blsp_uart0"` | same file |
-| HW236 **replaces** that entry with `gpio16`/`gpio17` and **no** `function`, **no** `bias` | `Fritz_Box_HW236.dtsi` |
-| `serial@78b0000` is disabled | same file |
-| the DECT loader attaches to the first probed port when no `avm,dectstub_uart` node exists | `msm_serial.c:1886-1908` |
-| GPIO16 is also the board's `gpio_avm_dect_rd` | `Fritz_Box_HW236.dtsi` |
+| the base mux entry uses `gpio60`/`gpio61` with `function = "blsp_uart0"` and `bias-disable` | same file |
+| HW236 redeclares the entry with `pins = "gpio16","gpio17"`; `dtc` **merges** node properties, so `function = "blsp_uart0"` and `bias-disable` survive | `Fritz_Box_HW236.dtsi` + **compiled DTB** `3083e2ac…bb841f` |
+| `serial@78b0000` is `disable` in the HW236 DTB | same DTB |
+| the DECT loader attaches to the first probed port when no `avm,dectstub_uart` node exists (there is none) | `msm_serial.c:1886-1908` |
+| GPIO16 is also the board's `gpio_avm_dect_rd` (DTB `value = <0x10>`) | `Fritz_Box_HW236.dtsi` + DTB |
 
-Consequence: **one UART**, not two.  The console and the DECT loader share
-`blsp_uart0`.  How `gpio16`/`gpio17` reach it is uncertain (the HW236 override
-drops `function`), and **no source states the voltage on the Dialog side**.
+Compiled-DTB facts (AVM HW236, SHA256 `3083e2acedc8…bb841f`): `serial_pinmux`
+→ `mux { pins="gpio16","gpio17"; function="blsp_uart0"; bias-disable; }`;
+`serial@78af000` is `status="ok"` with `pinctrl-0 = <that node>`;
+`serial@78b0000` is `disable`; no `avm,dectstub_uart` node.  OpenWrt's DTB
+(SHA256 `cd6c5dec…3f4522e`) has the same pinmux; it differs in that it has no
+`serial0` alias / `stdout-path`.
+
+Consequence: **the DECT loader and the console use the same known UART
+controller.**  No independent second UART path was found in this
+configuration.  This does **not** prove that the four pads or
+`gpio16`/`gpio17` reach the SC14448, nor that no other UART hardware exists on
+the board, and **no source states the voltage on the Dialog side**.
+
+Correction: an earlier revision of this section claimed the HW236 override
+*drops* `function` and `bias-disable`.  That was wrong; `merge_nodes()` keeps
+them, as the decompiled DTB shows.
 
 ## 6. Boot order on FRITZ!OS
 

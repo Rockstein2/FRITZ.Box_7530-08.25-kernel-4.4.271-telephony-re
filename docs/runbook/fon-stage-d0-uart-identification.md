@@ -4,24 +4,32 @@ Status: **plan only.**  Nothing in this runbook has been executed.  Every
 step needs the owner's explicit go-ahead, and the active steps need a
 separate one.
 
-**Read §0 first.**  The most important finding of the source analysis is that
-there is probably **no separate SC14448 UART to find**: the DECT loader uses
-the same `blsp_uart0` as the OpenWrt console (`docs/fon-dialog-board-uart-identification.md`).
+**Read §0 first.**  The source and compiled-DTB analysis
+(`docs/fon-dialog-board-uart-identification.md`) shows that the AVM DECT
+loader and the OpenWrt console use the **same known UART controller**
+(`blsp_uart0` @ `0x78AF000` on `gpio16`/`gpio17`).  No independent second UART
+path was found in this configuration.  That is **not** proof that the four
+pads or those pins reach the SC14448, and it is **not** proof that no other
+UART hardware exists on the board.
 
 ---
 
-## 0. What this changes
+## 0. What is known, and what is not
 
 | Assumption | Status |
 |---|---|
-| there is a second UART for the Dialog | **not supported** by the sources: `serial@78b0000` is disabled and the DECT driver attaches to the first probed port |
-| the four console pads are the Dialog UART | **plausible** — the port *is* the console — but the physical path from the pads to the SoC and to the Dialog is untraced |
-| the Dialog side is 1.8 V | **UNKNOWN** |
-| GPIO40 is active-low at the chip | **UNKNOWN** — `OUT_ACTIVE_HIGH` is a software convention |
+| the DECT loader and the console share one UART controller | **confirmed for this DTS** (`msm_serial.c` fallback + DTB) |
+| a second *enabled* UART exists in the HW236 DTB | **ruled out** (`serial@78b0000` `disable`) |
+| a mux/buffer/level shifter sits between SoC and Dialog | **UNKNOWN** |
+| the four console pads are the Dialog UART | **plausible but unproven** — the port *is* the console, the physical path is untraced, and the pads sit near the SC14448 |
+| the voltage on the pads | **UNKNOWN — not measured** |
+| the voltage on the SC14448 side | **UNKNOWN** |
+| GPIO16/GPIO17 TX vs RX | **UNKNOWN** — not encoded in DT |
+| GPIO40 electrical polarity at the chip | **UNKNOWN** |
 
-If the pads are the shared port, a capture there will show **console traffic
-and any Dialog traffic on the same pair of wires**.  Distinguishing them is
-§4.
+Because the port may be shared, a capture on the pads will show **console
+traffic and any Dialog traffic on the same pair of wires**.  Distinguishing
+them is §4.
 
 ## 1. Before touching anything
 
@@ -44,28 +52,39 @@ All of this with the board **disconnected** from power and from USB.
 | 4 | pad ↔ any level-shifter package pin | whether a shifter exists at all |
 
 **Never** probe a BGA ball directly.  If a net can only be reached under the
-package, record it as UNKNOWN and stop.
+package, record it as UNKNOWN and stop.  Never use a continuity tester on a
+powered board.
 
 ## 3. Powered: high-impedance only
 
 Permitted equipment: an oscilloscope with a ×10 probe, or a logic analyser
-that supports a **1.8 V** threshold.  Only one ground connection, to a
-verified board ground.
+that supports a **1.8 V** threshold (input range safe for both 1.8 V and
+3.3 V signals).  Only one ground connection, to a **verified** ground on the
+low-voltage side of the board.
 
 **Not permitted at this stage:**
 
-* connecting the TX output of a USB-UART adapter to any unknown pad;
+* connecting the TX output of a USB-UART adapter to any pad — **not even if
+  the same adapter already works as a console**, because the pad's electrical
+  role at the Dialog end is unknown;
 * connecting the adapter's VCC;
 * applying any external 1.8 V or 3.3 V;
 * touching the FON/DSL side or the telephone line.
 
-| # | Measurement | Expected if the pad is the console TX | Do not conclude from |
+### Measurement table
+
+| Point | What to measure | Expected variants | Conclusion |
 |---|---|---|---|
-| 1 | idle level on each pad | a steady high (UART idle) | a low level does not prove "not UART" — it may be held low or be RX |
-| 2 | waveform during boot | 115200 8N1 console text | absence during a quiet period |
-| 3 | the other pad | the RX line: idle high, brief activity only while the host sends | |
-| 4 | any third pad | possibly GND or a boot strap | |
-| 5 | GPIO40 level | a steady level, most likely low | this does **not** prove reset is asserted — a pull resistor could hold it |
+| Console TX (as identified by §2 / owner) | idle voltage, scope ×10 | 1.8 V or 3.3 V steady-high | confirms the logic level of the console TX |
+| Console RX | idle voltage, scope ×10 | 0 V / 1.8 V / 3.3 V; activity only while the host sends | preliminary identification of the RX pad |
+| Suspected series resistor | resistance, board **unpowered** | direct (~0 Ω) or a series value | whether the pad is separated from the SoC |
+| GPIO40 net (if located) | voltage only, scope ×10 | 0 V / 1.8 V / 3.3 V | level only — **not** reset polarity |
+| Dialog-side UART (if a separate point is found) | level and activity | **UNKNOWN** | only after physical identification |
+
+**Never** push a TX into an unknown pad.  A low/high idle reading alone is not
+proof of "not UART": a line can be held low or be the receive side.
+
+Do **not** toggle GPIO40 in this stage.
 
 ## 4. Capturing, and telling console from loader traffic
 
@@ -98,14 +117,15 @@ carried nothing else during the window.
 * Record the level at boot and after the system settles.
 * A steady low level is consistent with "reset asserted" but also with a
   pull-down and an inactive chip; the two cannot be separated without the
-  schematic.
+  schematic.  `OUT_ACTIVE_HIGH` in the AVM table is a software convention and
+  must not be read as the electrical polarity.
 
 ## 6. GO / NO-GO
 
 | Point | Decision | Condition |
 |---|---|---|
 | the four console pads, passive continuity | **GO** | board unpowered, multimeter only |
-| the same pads, scope/logic analyser | **GO** | 1.8 V-capable analyser, single verified GND, probe only |
+| the same pads, scope/logic analyser | **GO** | 1.8 V-capable analyser, single verified GND, high-impedance probe only |
 | GPIO40 test point, voltage only | **GO if the net is identified** | otherwise NO-GO |
 | Dialog BGA balls | **NO-GO** | no probing under the package |
 | any TX injection into the UART | **NO-GO at Stage D0** | requires a later stage and separate approval |

@@ -601,8 +601,17 @@ if UARTID.is_file():
     check("uart doc names blsp_uart0", "blsp_uart0" in t, True)
     check("uart doc records gpio16/gpio17", "gpio16" in t and "gpio17" in t,
           True)
-    check("uart doc does not claim a second UART",
-          "no evidence of a second UART" in t, True)
+    check("uart doc cites the compiled DTB",
+          "3083e2acedc800015fea5ee7e57fa6cc8da551e21ee792095cbd8a7224bb841f"
+          in t, True)
+    check("uart doc records the merged function survives",
+          'function = "blsp_uart0";' in t, True)
+    check("uart doc no longer claims the override drops function",
+          "drops both" not in t, True)
+    check("uart doc withdraws the old reading",
+          "was **wrong**" in t, True)
+    check("uart doc does not overclaim absence of a second UART",
+          "That is *not* a proof that no other" in t, True)
     check("uart doc keeps the Dialog-side voltage UNKNOWN",
           "UNKNOWN" in t, True)
     check("uart doc does not assume 1.8 V on the Dialog side",
@@ -617,7 +626,7 @@ if D0.is_file():
     check("runbook requires a 1.8 V-capable analyser",
           "1.8 V" in t, True)
     check("runbook states console and loader share the port",
-          "share one port" in t, True)
+          "share one UART controller" in t, True)
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
