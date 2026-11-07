@@ -122,7 +122,7 @@ else:
     # 0x0a storw $0x0:s,0x0:s(r1,r0)  00 c2
     path = synth([0x70, 0x00, 0xFF, 0x00, 0x06, 0x60,
                   0x20, 0xD0, 0x20, 0x90, 0x00, 0xC2])
-    rows, stats, unc = scan_image(path)
+    rows, stats, unc, unsup = scan_image(path)
     for addr, kind in ((0x06, "WRITE"), (0x08, "READ"), (0x0A, "WRITE")):
         hit = find(rows, addr, kind)
         check(f"known pair {addr:#04x} is RESOLVED", 
@@ -136,7 +136,7 @@ else:
     print("== synthetic: unknown pair")
     # storw r2,0x0:s(r5,r4) with no prior assignment
     path = synth([0x24, 0xD0])
-    rows, stats, unc = scan_image(path)
+    rows, stats, unc, unsup = scan_image(path)
     hit = find(rows, 0x00, "WRITE")
     check("unknown pair is UNKNOWN",
           hit[0]["address_kind"] if hit else None, "UNKNOWN")
@@ -150,7 +150,7 @@ else:
     path = synth([0x70, 0x00, 0xFF, 0x00, 0x06, 0x60,
                   0x00, 0x5A,          # movw $0x0:s,r0
                   0x20, 0xD0])
-    rows, stats, unc = scan_image(path)
+    rows, stats, unc, unsup = scan_image(path)
     hit = find(rows, 0x08, "WRITE")
     check("pair invalidated by writing r0",
           hit[0]["address_kind"] if hit else None, "UNKNOWN")
@@ -163,7 +163,7 @@ else:
                   0x16, 0x4C,          # ashud $1:s,(r7,r6)
                   0x64, 0x61,          # addd (r7,r6),(r5,r4)
                   0x24, 0xD0])
-    rows, stats, unc = scan_image(path)
+    rows, stats, unc, unsup = scan_image(path)
     hit = find(rows, 0x0C, "WRITE")
     check("indexed store is SYMBOLIC",
           hit[0]["address_kind"] if hit else None, "SYMBOLIC")
@@ -186,7 +186,7 @@ else:
                   0x74, 0x00, 0xFF, 0x00, 0x06, 0x60,   # 0x04 movd
                   0xE4, 0x10,                          # 0x0A br *+0x02
                   0x24, 0xD0])                         # 0x0C storw
-    rows, stats, unc = scan_image(path)
+    rows, stats, unc, unsup = scan_image(path)
     hit = find(rows, 0x0C, "WRITE")
     check("merge block reached via two paths is UNKNOWN",
           hit[0]["address_kind"] if hit else None, "UNKNOWN")
@@ -198,7 +198,7 @@ else:
     path = synth([0x74, 0x00, 0xFF, 0x00, 0x06, 0x60,
                   0x64, 0x61,              # addd (r7,r6),(r5,r4)
                   0x24, 0xD0])
-    rows, stats, unc = scan_image(path)
+    rows, stats, unc, unsup = scan_image(path)
     hit = find(rows, 0x08, "WRITE")
     check("addd with unknown source is UNKNOWN",
           hit[0]["address_kind"] if hit else None, "UNKNOWN")
@@ -209,7 +209,7 @@ else:
     path = synth([0x74, 0x00, 0xFF, 0x00, 0x06, 0x60,
                   0x40, 0xA0,              # loadd 0x0:s(r1,r0),(r5,r4)
                   0x24, 0xD0])
-    rows, stats, unc = scan_image(path)
+    rows, stats, unc, unsup = scan_image(path)
     hit = find(rows, 0x08, "WRITE")
     check("loadd into the pair invalidates it",
           hit[0]["address_kind"] if hit else None, "UNKNOWN")
@@ -218,7 +218,7 @@ else:
     path = synth([0x74, 0x00, 0xFF, 0x00, 0x06, 0x60,
                   0x05, 0x5A,              # movw $0x0:s,r5
                   0x24, 0xD0])
-    rows, stats, unc = scan_image(path)
+    rows, stats, unc, unsup = scan_image(path)
     hit = find(rows, 0x08, "WRITE")
     check("writing r5 invalidates the pair",
           hit[0]["address_kind"] if hit else None, "UNKNOWN")
@@ -236,7 +236,7 @@ else:
                   0x74, 0x00, 0x01, 0x00, 0x00, 0x00,
                   0x04, 0x61,
                   0x24, 0xD0])
-    rows, stats, unc = scan_image(path)
+    rows, stats, unc, unsup = scan_image(path)
     hit = find(rows, 0x0E, "WRITE")
     check("addd of two constants stays RESOLVED",
           hit[0]["address_kind"] if hit else None, "RESOLVED")
@@ -250,7 +250,7 @@ else:
                   0x64, 0x61,                           # addd (r7,r6),(r5,r4)
                   0x04, 0x5A,                           # movw $0x0:s,r4
                   0x24, 0xD0])                          # storw
-    rows, stats, unc = scan_image(path)
+    rows, stats, unc, unsup = scan_image(path)
     hit = [r for r in rows if r["instruction"] == "0x00000e"
            and r["operation"] == "WRITE"]
     check("symbolic link does not survive a half overwrite",
@@ -260,10 +260,77 @@ else:
     path = synth([0x74, 0x00, 0xFF, 0x00, 0x06, 0x60,
                   0x00, 0xC0, 0x00, 0x00,   # bal (ra),*+0:m
                   0x24, 0xD0])
-    rows, stats, unc = scan_image(path)
+    rows, stats, unc, unsup = scan_image(path)
     hit = find(rows, 0x0A, "WRITE")
     check("bal drops the register state",
           hit[0]["address_kind"] if hit else None, "UNKNOWN")
+
+    print("== synthetic: MOVZW writes the pair, not the source")
+    # movd $0xff6006:l,(r7,r6) ; movzw r3,(r7,r6) ; storw r2,0x0:s(r7,r6)
+    # bytes from the CR16 assembler (6-byte movd, 36 5f, 26 d0)
+    path = synth([0x76, 0x00, 0xFF, 0x00, 0x06, 0x60,
+                  0x36, 0x5F,
+                  0x26, 0xD0])
+    rows, stats, unc, unsup = scan_image(path)
+    hit = find(rows, 0x08, "WRITE")
+    check("movzw invalidates the destination pair",
+          hit[0]["address_kind"] if hit else None, "UNKNOWN")
+    check("movzw leaves no stale address",
+          hit[0]["effective_address"] if hit else None, None)
+
+    print("== synthetic: MOVZW source register is not touched")
+    # stored address uses (r1,r0), which movzw does not write
+    path = synth([0x70, 0x00, 0xFF, 0x00, 0x06, 0x60,   # movd -> (r1,r0)
+                  0x36, 0x5F,                            # movzw r3,(r7,r6)
+                  0x20, 0xD0])                           # storw (r1,r0)
+    rows, stats, unc, unsup = scan_image(path)
+    hit = find(rows, 0x08, "WRITE")
+    check("movzw does not clobber an unrelated pair",
+          hit[0]["effective_address"] if hit else None, "0x00ff6006")
+
+    print("== synthetic: movzb writes its second operand")
+    # movzb r3,r4 then a store through (r3,r4) must not be the old constant
+    path = synth([0x74, 0x00, 0xFF, 0x00, 0x06, 0x60,   # movd -> (r5,r4)
+                  0x34, 0x5D,                            # movzb r3,r4
+                  0x24, 0xD0])                           # storw (r5,r4)
+    rows, stats, unc, unsup = scan_image(path)
+    hit = find(rows, 0x08, "WRITE")
+    check("movzb into a half invalidates the pair",
+          hit[0]["address_kind"] if hit else None, "UNKNOWN")
+
+    print("== synthetic: write_registers for widening forms")
+    from types import SimpleNamespace
+
+    def wr(mn, ops):
+        return sorted(X.written_registers(SimpleNamespace(
+            mnemonic=mn, operands=ops, raw=b"")))
+
+    check("movzw r3,(r7,r6)", wr("movzw", "r3,(r7,r6)"), ["r6", "r7"])
+    check("movxw r5,(r1,r0)", wr("movxw", "r5,(r1,r0)"), ["r0", "r1"])
+    check("movzb r8,r0", wr("movzb", "r8,r0"), ["r0"])
+    check("movxb r8,r0", wr("movxb", "r8,r0"), ["r0"])
+    check("mulsw r3,(r7,r6)", wr("mulsw", "r3,(r7,r6)"), ["r6", "r7"])
+    check("muluw r3,(r7,r6)", wr("muluw", "r3,(r7,r6)"), ["r6", "r7"])
+    check("mulsb r3,r4", wr("mulsb", "r3,r4"), ["r4"])
+
+    print("== synthetic: unsupported memory instructions are counted")
+    # a000 = loadm $0x1,r0
+    path = synth([0xA0, 0x00])
+    rows, stats, unc, unsup = scan_image(path)
+    check("loadm is reported as MEMORY_UNSUPPORTED",
+          [u["mnemonic"] for u in unsup], ["loadm"])
+    check("loadm records its bytes",
+          unsup[0]["bytes"] if unsup else None, "a000")
+
+    print("== synthetic: sbit is a read-modify-write at an absolute address")
+    # sbitw $0x3:s,0xf5806:m -> RMW at 0x000f5806 (bytes from 0x1224)
+    path = synth([0x3F, 0x77, 0x06, 0x58])
+    rows, stats, unc, unsup = scan_image(path)
+    hit = find(rows, 0x00)
+    check("sbitw is classified as RMW",
+          hit[0]["operation"] if hit else None, "RMW")
+    check("sbitw resolves its absolute address",
+          hit[0]["effective_address"] if hit else None, "0x000f5806")
 
 # ---------------------------------------------------------------------------
 # 3. real images
@@ -275,7 +342,7 @@ else:
     for path, label in ((FW, "normal"), (FW2, "p2test")):
         fw = C.load(str(path))
         C.disassemble(fw, str(OBJDUMP))
-        rows, stats, unc = X.scan(fw, label)
+        rows, stats, unc, unsup = X.scan(fw, label)
         by = {(r["instruction"], r["address_kind"])
               for r in rows}
         print(f"== {label}: {len(rows)} operations")
@@ -291,7 +358,7 @@ else:
     # the four required checks on the real image
     fw = C.load(str(FW))
     C.disassemble(fw, str(OBJDUMP))
-    rows, stats, unc = X.scan(fw, "normal")
+    rows, stats, unc, unsup = X.scan(fw, "normal")
 
     def op(addr, kind):
         h = find(rows, addr, kind)
@@ -335,6 +402,24 @@ else:
           op(0x25FAE, "READ"), ("RESOLVED", "0x000f6002"))
     check("every memory instruction is classified",
           unc, [])
+
+    # summary invariants: ADDRESS_LOAD must never be part of the memory sum
+    for image in ("normal", "p2test"):
+        sm = json.loads(REPORT.read_text())["images"][image]["summary"] \
+            if REPORT.is_file() else None
+        if sm is None:
+            continue
+        parts = (sm["memory_READ"] + sm["memory_WRITE"]
+                 + sm["memory_READ_MODIFY_WRITE"])
+        check(f"{image}: READ+WRITE+RMW equals classified operations",
+              parts, sm["memory_operations_classified"])
+        check(f"{image}: address kinds sum to the operation total",
+              sm["address_total"], sm["memory_operations_classified"])
+        check(f"{image}: ADDRESS_LOAD is outside the memory total",
+              sm["ADDRESS_LOAD_non_memory"] > 0
+              and parts == sm["memory_operations_classified"], True)
+        check(f"{image}: unsupported memory instructions are listed",
+              isinstance(sm["memory_instructions_unsupported"], int), True)
 
 # ---------------------------------------------------------------------------
 # 4. the committed report is reproducible

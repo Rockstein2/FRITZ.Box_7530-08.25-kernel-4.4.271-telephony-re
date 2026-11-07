@@ -291,16 +291,39 @@ else:
         return sum(v for k, v in xr["images"][image]["stats"].items()
                    if k.endswith("/" + kind))
 
-    text = (ROOT / "docs" / "fon-dialog-peripheral-xrefs.md").read_text()
+    doc = ROOT / "docs" / "fon-dialog-peripheral-xrefs.md"
+    doc_text = doc.read_text()
     for image in ("normal", "p2test"):
-        row = find_row(ROOT / "docs" / "fon-dialog-peripheral-xrefs.md",
-                       f"| {image} |")
-        if row:
-            nums = [number(cell) for cell in row]
-            check(f"xrefs doc: {image} UNKNOWN matches report",
-                  total(image, "UNKNOWN") in nums, True)
-            check(f"xrefs doc: {image} unclassified is 0",
-                  len(xr["images"][image]["unclassified"]), 0)
+        sm = xr["images"][image]["summary"]
+        # the statistics table lists one counter per row; find the row by
+        # its label and compare the cell for this image
+        col = 1 if image == "normal" else 2
+        for key, label in (("address_RESOLVED", "address RESOLVED"),
+                           ("address_UNKNOWN", "address UNKNOWN"),
+                           ("memory_READ_MODIFY_WRITE",
+                            "READ_MODIFY_WRITE")):
+            value = None
+            for line in doc_text.splitlines():
+                cells = [c.strip() for c in line.strip().strip("|").split("|")]
+                if len(cells) > col and cells[0] == label:
+                    value = number(cells[col])
+                    break
+            check(f"xrefs doc: {image} {label} matches report",
+                  value, sm[key])
+        check(f"xrefs doc: {image} reports unsupported memory count",
+              str(sm["memory_instructions_unsupported"]) in doc_text, True)
+        check(f"xrefs doc: {image} unclassified is 0",
+              len(xr["images"][image]["unclassified"]), 0)
+
+    # register-effects document must exist and name the corrected semantics
+    eff = ROOT / "docs" / "fon-dialog-cr16-register-effects.md"
+    check("register-effects doc exists", eff.is_file(), True)
+    if eff.is_file():
+        t = eff.read_text()
+        check("register-effects doc: movzw writes the pair",
+              "pair `(r7,r6)`" in t and "`r3`" in t, True)
+        check("register-effects doc: MOVZB src,dest cited",
+              "MOVZB src, dest" in t, True)
 
 # ---------------------------------------------------------------------------
 # 8. Fill-loop indices and the position of the 0x2558 call
