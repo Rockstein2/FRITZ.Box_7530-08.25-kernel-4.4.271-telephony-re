@@ -18,10 +18,14 @@
 #define FON_C1_STEREO_CONFIG       0x00
 
 struct fon_c1_result {
-	int step;              /* last step reached, -1 if none */
-	int err;
-	bool clk_enabled;
-	bool reset_pulsed;
+	int step;              /* last COMPLETED step, -1 if none */
+	int err;               /* status of the main sequence */
+	int cleanup_err;       /* status of the cleanup, 0 if it was clean */
+	bool clk_enabled;      /* clock currently held by the driver */
+	bool clk_released;     /* clk_disable_unprepare() was called */
+	bool reset_pulsed;     /* assert+deassert were attempted */
+	bool reset_restored;   /* the final assert succeeded */
+	bool cleaned;          /* cleanup ran */
 	unsigned long rate;
 	u32 audio_mode;
 	u32 tdm_ctrl;
@@ -32,9 +36,13 @@ struct fon_c1_result {
 };
 
 /*
- * Run the bounded C1 sequence.  Returns 0 when the six reads completed,
- * a negative errno when a resource was missing or a step failed.  A bus
- * hang inside a readl() never returns here.
+ * Run the bounded C1 sequence.  Returns 0 when the six reads completed and
+ * the cleanup was clean, a negative errno otherwise.  A bus hang inside a
+ * readl() never returns here.
+ *
+ * The reset state before the call cannot be read back through the API, so a
+ * zero return means "the sequence ran and the cleanup reported success", not
+ * "the block is in its original state".
  */
 int fon_c1_run(struct platform_device *pdev, struct fon_c1_result *out);
 
