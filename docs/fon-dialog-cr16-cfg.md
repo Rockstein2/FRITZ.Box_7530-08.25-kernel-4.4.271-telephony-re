@@ -48,13 +48,17 @@ Toolchain: CR16 binutils 2.44, built locally at
 | Instruction | Edges |
 |---|---|
 | `bal` | call target **and** next address (return site) |
-| conditional (`beq`, `bne`, `bhi`, `br`, `bcc`, …) | branch target **and** next address |
-| unconditional `jump`, `jmp` | target only |
+| conditional (`beq`, `bne`, `bhi`, `bcc`, …) | branch target **and** next address |
+| `br` (unconditional relative branch) | target only — **no** fall-through |
+| `jump`, `jmp` (register-indirect) | none: the target is unknown |
 | `popret`, `retx` | none |
 | everything else | next address |
 
-`br` is the objdump mnemonic for the `dispe9` form and is classified with
-the conditionals.
+`br` shares the `dispe9`/`disps17` encoding with the conditionals (it is
+condition code `0xE` of the Bcond family), but its semantics are an
+unconditional jump: it stores no return address and execution continues only
+at the target.  Treating it as a conditional used to add 615 false
+fall-through edges; that was corrected and is covered by a test.
 
 ### 2.2 Statistics, second-level image
 
@@ -83,7 +87,7 @@ the same path:
 | Mode | Starts | What it answers | Reached (normal) |
 |---|---|---|---|
 | **A** | candidate `0x1602` | what can be reached if `0x1602` is an entry | **8 340** |
-| **B** | 386 heuristic candidates | what could be reached from any likely function root | **17 543** |
+| **B** | 403 heuristic candidates | what could be reached from any likely function root | **17 543** |
 | **C** | verified entries | what is proven to run at reset | 0 (none verified) |
 
 None of them is evidence that the SC14448 executes this code — see §8.
@@ -143,10 +147,16 @@ Every register-indirect transfer is one of:
 No **dispatch table** (a table of code addresses indexed by a register) was
 found: none of the 382 sites reads a pointer from memory before the indirect
 jump.  That is a statement about what was found, **not** a proof that no
-indirect dispatch exists anywhere.  The 4 567 instructions not reached from
-mode A (19 570 decoded − 8 340) are, until examined, a place where such a
-construct could still hide; they are also the place where the remaining
-non-content classification errors (data decoded as code) live.
+indirect dispatch exists anywhere.
+
+**11 230 instructions** are not reached from mode A (19 570 decoded −
+8 340).  This is arithmetic on a linear disassembly, not a count of code:
+the sweep decodes every aligned byte of a run, so constants, strings and
+jump tables are decoded as instructions too.  The real amount of *executed,
+unreached code* is unknown and is at most this number.  Two things can hide
+there: code reachable only through a dispatch the analysis has not found,
+and the data that mis-decodes into the off-boundary and unsupported
+categories.
 
 ---
 
@@ -177,7 +187,7 @@ the original SC14448 firmware so that the register meanings (`0x01000000`,
 | Level | Applies to |
 |---|---|
 | L1 BYTES | every address and byte quoted in §2 and §3.1 |
-| L2 DECODE | the branch forms and the `abs20` operand, validated against binutils (4 891 matches, 0 mismatches) |
+| L2 DECODE | the branch forms and the `abs20` operand, validated against binutils (7 807 matches over both images: 4 039 normal + 3 768 p2test; 0 mismatches) |
 | L3 CFG | the edges, the reachability counts and the function boundaries of `0x2558`–`0x25B8` |
 | L4 SEMANTICS | the loop count of `0x25F90` (see `fon-dialog-peripheral-init.md`) |
 | L5 HARDWARE | **nothing in this document** |

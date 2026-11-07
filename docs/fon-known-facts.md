@@ -757,12 +757,14 @@ magnitude is the target.
 | Call | Target | Content |
 |---|---|---|
 | `0x2570` | `0x3C8C` | `push $0x3,r7,RA`; copies or clears an array through `0x28CF4` / `0x28D3C` |
-| `0x257E` | `0x24F8` | the enclosing block itself — **recursive re-entry** |
+| `0x257E` | `0x24F8` | the `0xFF400A` bit loop — **corrected: not recursive**, `0x24F8` contains no call to itself |
 
-**Caller of `0x24F8`:** none outside the block.  No `bal` targets it, no
-aligned 16-bit word equals it, and the two 3-byte matches (`0x318D`,
-`0x287C7`) lie inside `movb $0x25:m,rN` instructions, so they are not table
-entries.
+> **Correction (2026-11-07).**  Earlier revisions of this section described
+> `0x257E → 0x24F8` as "recursive re-entry".  Decompiling `0x24F8` shows a
+> bounded loop over one bit mask with an early return when `r2 == 0`; there is
+> no self-call.  The recursion claim is withdrawn and must not be reused.
+
+**Caller of `0x24F8`:** `0x257E` is the only `bal` site that targets it.
 
 **Cross-block graph:** 1298 `bal` candidates, 1289 resolve inside a loaded
 run.  Edges exist in both directions between `0x2b4-0x1aad` and
@@ -841,8 +843,8 @@ bring-up is the same code in both builds.
 |---|---|---|
 | 2-byte conditional target for `49 1f` at `0x25FA8` | `0x25F9A` (−0x0E) | L2 |
 | 2-byte conditional target for `1d 1f` at `0x25FB4` | `0x25FAE` (−0x06) | L2 |
-| branch validation matches, both images | 4 891, **0 mismatches** | L2 |
-| unsupported branch forms | 113 (four-byte backwards, one six-byte) | L2 |
+| branch validation matches, both images | **7 807** (normal 4 039 + p2test 3 768), **0 mismatches** | L2 |
+| unsupported branch forms | 113 (normal 46 = 45 backward four-byte + 1 six-byte; p2test 67 four-byte) | L2 |
 | `br` semantics | unconditional jump, no link, no fall-through | L2 |
 | `0x25F90` loop | `cmpw $0x200` + `bhi` → 0x25F9A | L3 |
 | fill iterations | **511** (indices 1..511) | L4 |

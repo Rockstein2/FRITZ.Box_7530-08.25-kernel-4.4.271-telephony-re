@@ -150,16 +150,21 @@ sequence writes 32 bits to `0xFF6006` or `0xFF5406`.
 
 ## 4. Register table (L1/L2 only)
 
-| Address | Sites | Access | What is proven | What is not |
+“Access” gives the **bus width of the operation**, which is the mnemonic of
+the instruction, not the width of the address.  `0xFF6006` and `0xFF5406`
+are reached with `loadw`/`storw`, i.e. **16-bit** transfers; only the address
+itself is 32-bit and sits in a register pair (`movd …:l`).  See §3.
+
+| Address | Sites | Access (bus width) | What is proven | What is not |
 |---|---|---|---|---|
-| `0x0000937C` | `0x25BC`…`0x25FA2` | 16-bit R/W | fill counter | — |
-| `0x01000000` | `0x25C4` | 16-bit writes, `+2·idx` | fill base | what the area is |
-| `0x000F6400` | `0x255E` | write 0 | value sent | function |
-| `0x000F6402` | `0x2566` | write `0x00F0` | value sent | function |
-| `0x000F6002` | `0x25FAE` | read | polled for 1 | which event sets it |
-| `0x000F5402` | `0x25B0`, `0x3A28`, `0x1934` | write `0x400`, `0xFFFF`, … | values | function |
-| `0x00FF6006` | `0x2582`/`0x258C`/`0x25AA`/`0x25B4` | 32-bit R/W | `0x80` set then cleared | what bit 7 does |
-| `0x00FF5406` | `0x2596`/`0x25A2` | 32-bit RMW | bits 8..11 cleared | which block |
+| `0x0000937C` | `0x25BC`…`0x25FA2` | 16-bit R/W (`loadw`/`storw`) | fill counter | — |
+| `0x01000000` | `0x25C4` | 16-bit writes (`storw`), `+2·idx` | fill base | what the area is |
+| `0x000F6400` | `0x255E` | 16-bit write (`storw $0`) | value sent | function |
+| `0x000F6402` | `0x2566` | 16-bit write (`storw`) `0x00F0` | value sent | function |
+| `0x000F6002` | `0x25FAE` | 16-bit read (`loadw`) | polled for 1 | which event sets it |
+| `0x000F5402` | `0x25B0`, `0x3A28`, `0x1934` | 16-bit write (`storw`) `0x400`, `0xFFFF`, … | values | function |
+| `0x00FF6006` | `0x2582`/`0x258C`/`0x25AA`/`0x25B4` | **16-bit** R/W (`loadw`/`storw`) | `0x80` set then cleared | what bit 7 does |
+| `0x00FF5406` | `0x2596`/`0x25A2` | **16-bit** RMW (`loadw` + `andw` + `storw`) | bits 8..11 cleared | which block |
 
 No claim is made that `0x000F6400` and `0x00FF6400` are the same register.
 
