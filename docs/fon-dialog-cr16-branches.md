@@ -157,10 +157,9 @@ Evidence: the same bytes `40 11` print `*+0x20:s` at vma 0 and
 ## 3. Open decoder questions
 
 * 260 two-byte conditionals have a `byte1` below `0x10` (`00 1c`, `06 1a`,
-  `47 1e`, `a2 15`).  They clearly use a second layout; a tentative
-  `(byte1 >> 4) << 1` rule reproduces the binutils output in all 260 cases but
-  is not yet derived from a table.  All of them are marked as a distinct form
-  in the tests.
+  `47 1e`, `a2 15`).  Ten candidate layouts were fitted to all 259
+  occurrences against the binutils output; the best explained only 42, so no
+  rule is adopted and these forms stay `UNSUPPORTED` (Q50).
 * The 45 four-byte conditionals with a high second word are unexplained.
 * The 6-byte conditional has no validated example.
 
