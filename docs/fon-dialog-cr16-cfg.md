@@ -116,12 +116,20 @@ instruction boundaries in the image.
 0x24F8  02 50        cmpb $0x0:s,r2 ; beq -> 0x2556 when r2 == 0
 ```
 
-`0x2558` does **not** call `0x257E`.  The `bal` inside `0x2558` goes to
-`0x3C8C` (`0x2570`, `00 c0 1c 17`).  `0x257E` is a separate entry whose first
-instruction is its own `bal` to `0x24F8`.  The chain
+`0x257E` is a separate entry.  Its first instruction is a `bal` to `0x24F8`,
+and in this image **no `bal` targets `0x257E` at all**; it is reached only
+when execution arrives there linearly.  The chain
 `0x25FAA → 0x2558 → 0x257E → 0x24F8` that older documents printed is a
 sequence of *code addresses*, not of call edges; only
-`0x25FAA → 0x2558` and `0x257E → 0x24F8` are `bal` edges.
+`0x25FAA → 0x2558` and `0x257E → 0x24F8` are `bal` edges, and the first of
+those lands on `0x2558`, not on `0x257E`.
+
+The CFG still records the address after `0x25B8` (`0x25BA`) as a fall-through
+edge of the `push RA` body, because the image contains a decoded instruction
+there.  That address is in fact the entry of a separate function (16 `bal`
+sites call it), which shows a limit of linear-sweep decoding that the CFG
+does not yet model: a `bal` target can also be reached by falling into
+another function's body.
 
 `0x24F8` is reached from `0x257E`'s first instruction.  Its `beq` at `0x24FA`
 (decoded target `0x2556`, i.e. the `jump (ra)` just before `0x24F8`'s end)
@@ -134,7 +142,7 @@ contains no call back to itself.
 | Address | Previous status | Now |
 |---|---|---|
 | `0x1602` | "candidate top level / root" | candidate only; it is reached by fall-through from `0x15FE`, so it is **not** a heuristic root |
-| `0x2558` | "same function as `0x257E`" | own function, own entry |
+| `0x2558` | "same function as `0x257E`" | own function, own entry; the `bal` in its body goes to `0x3C8C`, not to `0x257E`, and no `bal` targets `0x257E` |
 | `0x24F8` | "recursive re-entry" | no recursion; a bounded bit-loop with an early return |
 | `0x25F90` | "512-word fill then poll" | fill helper writes one word; loop/poll unproven |
 | 404 roots | counted as candidate entries | 386 heuristic candidates, all `verified=False` |

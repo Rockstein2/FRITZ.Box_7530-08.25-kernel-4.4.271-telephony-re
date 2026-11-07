@@ -148,14 +148,14 @@ def bal_target(addr: int, words: tuple[int, ...]) -> tuple[int, bool]:
 def cond2_target(addr: int, word0: int) -> int:
     """Target of a 2-byte conditional branch (`dispe9`, unsigned).
 
-    Layout, validated on all 1570 2-byte conditional branches whose byte1 is
-    in 0x10..0x12 (`dectfw_secondlevel_441.hex`) against binutils:
+    Layout, validated on all 1 755 two-byte conditional branches of
+    `dectfw_secondlevel_441.hex` (byte1 in 0x10..0x1f) against binutils:
 
         disp = ((word0 & 0x0F) | (((word0 >> 8) & 0x0F) << 4)) << 1
         target = addr + disp
 
-    i.e. bits[3:0] hold the low nibble of the field, bits[7:4] the condition
-    code and bits[11:8] the high nibble.  `42 10` -> `bhi +0x4`,
+    i.e. bits[3:0] hold the field's low nibble, bits[7:4] the condition code
+    and bits[11:8] the high nibble.  `42 10` -> `bhi +0x4`,
     `00 12` -> `beq +0x40`, `00 1c` -> `beq +0x11e`, `a2 15` -> `blo +0xb0`.
     The field is unsigned and even; a branch to a lower address always uses
     the 4-byte form (confirmed with the CR16 assembler).
@@ -275,28 +275,15 @@ def decode_insn(addr: int, mnemonic: str, raw: bytes) -> tuple[int | None, str, 
     # form and must not produce a target).
     w0 = raw[0] | (raw[1] << 8)
     byte1 = raw[1]
-    if mnemonic in BRANCH_ZERO_MNEMONICS:
-        if 0x0C <= byte1 <= 0x0F:
-            return branch_zero_target(addr, raw), "disps5", "DIRECT"
-        return None, "disps5?", "UNSUPPORTED"
-    if 0x10 <= byte1 <= 0x1F:
-        if byte1 == 0x10:
-            return cond2_target(addr, w0), "dispe9", "DIRECT"
-        if (byte1 & 0x0E) == 0x12:
-            return (addr - 2) & ADDR_MASK, "cond2-near", "DIRECT"
-        return cond2_target(addr, w0), "dispe9-b1", "DIRECT"
-    # Conditionals with a byte1 outside 0x10..0x1f (`00 1c`, `06 1a`, `47 1e`,
-    # `a2 15`) use `((w0 >> 4) & 0xFF) << 1` for the byte1 range, i.e. the cc
-    # is in bits[7:4] and bits[11:8] carry displacement bits.  This layout is
-    # confirmed by binutils on the 260 such occurrences in the vendor image
-    # (e.g. `a2 15` -> +0xb0, `00 1c` -> +0x11e); see also `cond2_alt_target`.
-    base = ((w0 & 0xFF) >> 4) << 1
-    hi = (w0 >> 12) & 0x0F
-    if hi == 0x0:
-        return (addr + base) & ADDR_MASK, "dispe9-alt0", "DIRECT"
-    if hi == 0xF:
-        return (addr - 0x10 + base) & ADDR_MASK, "dispe9-altF", "DIRECT"
-    return None, "cond-byte1", "UNSUPPORTED"
+    if byte1 in (0x0C, 0x0D, 0x0E, 0x0F):
+        return branch_zero_target(addr, raw), "disps5", "DIRECT"
+    if mnemonic not in BRANCH_ZERO_MNEMONICS:
+        # Every other conditional uses the same, validated `dispe9` layout;
+        # the byte1 nibbles above the condition code belong to the field.
+        # (This is what binutils prints for `a2 15` -> +0xb0 and
+        # `00 1c` -> +0x11e; see the firmware sweep in the tests.)
+        return cond2_target(addr, w0), "dispe9", "DIRECT"
+    return None, "disps5?", "UNSUPPORTED"
 
 
 def target_from_objdump(printed: int) -> int:

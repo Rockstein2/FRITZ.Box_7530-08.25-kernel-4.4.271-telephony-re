@@ -19,12 +19,14 @@ Three small functions form the bring-up:
 |---|---|---|
 | `0x25F90` | top-level sequence: fill, start, poll | `0x25F90`–`0x25FB6` |
 | `0x25BA` | one fill step: stores one word and increments a counter | `0x25BA`–`0x25D6` (28 B) |
-| `0x2558` | writes two peripheral registers, then calls `0x3C8C` | `0x2558`–`0x257C` |
-| `0x257E` | writes `0xFF6006`, disables and restores `psr`, clears `0xFF6006` | `0x257E`–`0x25B8` |
+| `0x2558` | writes two peripheral registers, then calls `0x3C8C` | `0x2558`–`0x257C` (last instruction `0x257C`) |
+| `0x257E` | writes `0xFF6006`, disables and restores `psr`, clears `0xFF6006` | `0x257E`–`0x25B8` (last instruction `0x25B8`) |
 
 `0x2558` and `0x257E` are **separate functions**.  `0x2558` ends at `0x257C`
-by splitting the returned word into `r2`/`r3`; `0x257E` is its own entry and
-falls into the `0xFF6006` code only after its first call (§4).
+by splitting the returned word into `r2`/`r3`.  `0x257E` is its own entry and
+starts with a `bal` to `0x24F8` (§4).  In this image **no `bal` targets
+`0x257E`**: it directly follows `0x2558`'s last instruction, which is why older
+notes treated the two as one flow.
 
 ### 1.1 Exact listing of the main function
 
