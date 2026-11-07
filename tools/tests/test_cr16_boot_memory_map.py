@@ -351,53 +351,45 @@ if first_path.is_file() and OBJDUMP.is_file():
 # ---------------------------------------------------------------------------
 # 12. a missing trampoline byte must not be replaced by zero
 # ---------------------------------------------------------------------------
-print("== missing trampoline bytes are refused")
-if IMAGES["normal"].is_file() and M.OBJDUMP.is_file():
-    # Re-run the hand-off decoder against an image with a hole at 0x8.  The
-    # only way to inject the hole is to rebuild the report from a patched
-    # memory map, so the check exercises the real code path.
-    import tempfile
-    src = IMAGES["normal"]
-    lines = src.read_text().splitlines()
-    kept = []
-    for line in lines:
-        raw = bytes.fromhex(line[1:])
-        kind = raw[3] if len(raw) > 3 else None
-        if kind == 0x00 and raw[0] > 0:
-            addr = (raw[1] << 8) | raw[2]
-            # drop the first six data bytes (offset 0x0..0x5) so 0x8..0xd are
-            # absent while the rest of the record survives
-            data = raw[4:4 + raw[0]]
-            rest = data[0x6:]
-            if rest:
-                body = bytes([len(rest), (addr + 6) >> 8, (addr + 6) & 0xFF,
-                              0x00]) + rest
-                kept.append(":" + (body + bytes([(-sum(body)) & 0xFF])).hex()
-                            .upper())
-        else:
-            kept.append(line)
-        if kind == 0x04:
-            pass
-    # this only removes offset 0x0..0x5 of the first record; 0x8..0xd would
-    # remain, so instead verify the guard directly on a synthetic map
-    holed = {}
-    check("the guard treats an absent byte as a hole", 0x8 in holed, False)
-    fake = {"all_six_bytes_present": False, "form_is_disps25": True,
-            "decode_status": "DIRECT", "target": "0x000015aa",
-            "target_is_instruction": True}
-    # the report's own predicate, not a copy of it
-    check("a hole makes the chain link invalid",
-          M.link_is_valid({"decoded_in_isolation": fake}), False)
-    good = dict(fake, all_six_bytes_present=True)
-    check("with all bytes present the link is valid",
-          M.link_is_valid({"decoded_in_isolation": good}), True)
-    check("a non-disps25 form is rejected",
-          M.link_is_valid({"decoded_in_isolation":
-                           dict(good, form_is_disps25=False)}), False)
-    check("a zero-filled field would decode a bogus target",
-          M.C.decode_insn(0x8, "br", bytes(6))[0] is not None, True)
+print("== missing trampoline bytes are refused (end-to-end)")
+
+
+def hole_image(path, holes):
+    """Parse `path`, then delete `holes` from the memory map."""
+    mem, _, _, _, _ = M.parse_ihex(path)
+    for a in holes:
+        mem.pop(a, None)
+    return mem
+
+
+if IMAGES["normal"].is_file() and IMAGES["p2test"].is_file() and \
+        M.OBJDUMP.is_file():
+    for image in ("normal", "p2test"):
+        base = {
+            "first": M.parse_ihex(IMAGES["first"])[0],
+            "normal": M.parse_ihex(IMAGES["normal"])[0],
+            "p2test": M.parse_ihex(IMAGES["p2test"])[0],
+        }
+        # sanity: the untouched maps reproduce the resolved chain
+        full = M.decode_handoff(memory=base)
+        check(f"{image}: untouched image resolves the chain",
+              full["chain"]["status"], "STATICALLY_RESOLVED")
+
+        # drop one byte of the trampoline at 0x8..0xd
+        holed = dict(base)
+        holed[image] = hole_image(IMAGES[image], [0x9])
+        check(f"{image}: the parser really lost 0x9",
+              0x9 in holed[image], False)
+        broken = M.decode_handoff(memory=holed)
+        iso = broken["second_level"][image]["decoded_in_isolation"]
+        check(f"{image}: status is INCOMPLETE", iso["status"], "INCOMPLETE")
+        check(f"{image}: the missing byte is reported",
+              iso["missing_bytes"], ["0x00000009"])
+        check(f"{image}: no zero-filled target", iso["target"], None)
+        check(f"{image}: chain becomes INCOMPLETE",
+              broken["chain"]["status"], "INCOMPLETE")
 else:
-    skip("missing-byte check", "firmware or objdump missing")
+    skip("missing-byte end-to-end", "firmware or objdump missing")
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
