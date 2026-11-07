@@ -57,50 +57,74 @@ relocation in `bfd/elf32-cr16.c`):
 
 ### Statistics
 
-| Image | memory operations | RESOLVED | SYMBOLIC | UNKNOWN | STACK / INDEXED / PC_RELATIVE | ADDRESS_LOAD | unclassified |
-|---|---|---|---|---|---|---|---|
-| normal | 4 301 | 1 280 | 8 | 2 288 | 800 / 452 / 41 | 568 | **0** |
-| p2test | 4 062 | 1 253 | 10 | 2 244 | 688 / 326 / 21 | 480 | **0** |
-
-`normal` = `dectfw_secondlevel_441.hex`, `p2test` =
-`dectfw_secondlevel_441p2test.hex`; SHA-256 of both files is recorded in the
-JSON report.
-
-**Completeness statement.** Every memory instruction in the decoded image is
-classified; `unclassified` is empty.  That is *not* the same as "every
-access is known": 2 288 operations in `normal` are `UNKNOWN` and 8 are
-`SYMBOLIC`, and those could in principle touch any address at run time.
-
-**Version history of the numbers.**  Three changes moved these totals, and
-the earlier figures must not be compared with these:
-
-| Version | Change | `RESOLVED` (normal) |
+| Counter | normal | p2test |
 |---|---|---|
-| 2 | `disp:s(rp)` operands and per-block pairs | 1 346 |
-| 2.1 | correct `addd` destination, every register-writing instruction invalidated, symbolic state bound to a pair | 1 280 |
+| decoded instructions | 19 570 | 18 058 |
+| memory instructions, supported | 5 167 | 4 703 |
+| memory instructions, **unsupported** | 16 | 2 |
+| classified memory operations | 5 167 | 4 703 |
+| READ | 2 596 | 2 374 |
+| WRITE | 2 272 | 2 076 |
+| READ_MODIFY_WRITE | 299 | 253 |
+| address RESOLVED | 951 | 964 |
+| address SYMBOLIC | 8 | 10 |
+| address UNKNOWN | 2 812 | 2 631 |
+| address STACK | 826 | 697 |
+| address INDEXED | 529 | 380 |
+| address PC_RELATIVE | 41 | 21 |
+| ADDRESS_LOAD (not a memory access) | 568 | 480 |
 
-The drop from 1 346 to 1 280 is **not** a regression.  Version 2 had three
-defects that produced false `RESOLVED` addresses:
+`READ + WRITE + RMW` equals the classified total, and the address kinds sum
+to the same number; `ADDRESS_LOAD` is deliberately outside both.
 
-* `addd src,dst` invalidated the **source** pair instead of the destination,
-  so a pair kept a stale base and the following store was reported as
-  `RESOLVED` at that base;
-* only `load*` with a single-register destination invalidated its target, so
-  `loadd ...,(rp)` left the old 32-bit value in place;
-* a store whose address operand is the *second* operand
-  (`stord (rp),disp(rp2)`) took the **first** pair as the address, so the
-  destination pair was never treated as written.
+**Unsupported memory instructions** are listed individually in the report
+under `memory_unsupported`, with address, bytes, mnemonic, operands and the
+reason: `loadm` (13 / 1) and `loadmp` (3 / 0).  `storm`/`stormp` are known
+forms but do not occur in either image.
 
-Re-measured against version 2, 70 entries in `normal` and 58 in `p2test`
-changed: their address was no longer `RESOLVED`, or the instruction became
-`STACK`/`INDEXED` because the address operand is now identified by
-direction.  The remaining `RESOLVED` entries are those backed by an absolute
-field or by a pair that nothing overwrote inside its block.
+**Completeness statement.** Every decoded instruction within the supported
+memory forms is classified, and the forms this scanner does not decode are
+listed explicitly rather than dropped.  `unclassified` is empty because it
+only ever holds instructions inside `ACCESS` whose operand failed to parse.
 
-Two `RESOLVED` rows in `normal` still carry a note flagging an address
-outside the known internal ranges (`0x173A4`, `0x17D80`).  Both sit in
-blocks that decode as data, so the value is an artefact of that decoding and
-must not be read as a peripheral address.
+That is **not** the same as "every access is known":
+
+* 2 812 operations in `normal` are `UNKNOWN` and 8 are `SYMBOLIC`;
+* 16 instructions use `loadm`/`loadmp`, whose operand form is not decoded;
+* the implicit stack traffic of `push`/`pop` is not counted.
+
+**Version history.**
+
+| Version | Change | normal RESOLVED | normal operations |
+|---|---|---|---|
+| 2 | `disp:s(rp)` operands, per-block pairs | 1 346 | 4 301 |
+| 2.1 | correct `addd` destination; every register-writing instruction invalidated; address operand chosen by direction | 1 280 | 4 301 |
+| 2.2 | widening forms write the **second** operand (was the first); `sbit`/`cbit` counted as RMW; `tbit` counted as a bit read; unsupported memory forms listed | 951 | 5 167 |
+
+The two totals are not directly comparable, because version 2.2 counts
+operations that version 2.1 did not count at all.  Measured against the
+previous report, instruction by instruction:
+
+| Quantity | 2.1 | 2.2 | Comment |
+|---|---|---|---|
+| `RESOLVED` READ+WRITE rows | 712 | **885** | +173, all of them `tbitw`/`tbitb` that were previously not an access |
+| `RESOLVED` rows that changed or disappeared | — | **0** | no address was lost or altered |
+| memory operations counted | 4 301 | 5 167 | +866: 567 `tbit`, 299 `sbit`/`cbit` |
+
+So the arithmetic drop of the `RESOLVED` counter from 1 280 to 951 is the
+**denominator** growing, not addresses disappearing.  The `movzw` fix
+removed a way to *produce* a false address; it did not invalidate any
+address this firmware actually states.  Measured: of the 269 `movzw`/`movxw`
+pair-destination forms in `normal` and 206 in `p2test`, **none** uses that
+pair as an address base later in the same block (the pair is always a
+*literal* operand or a copy destination).  The fix is therefore a correctness
+fix for the rule, demonstrated by the synthetic counterexample in
+`fon-dialog-cr16-register-effects.md` §2, not a change to the map of this
+firmware.
+
+`0x258C`, `0x25AA`, `0x25B4`, `0x259C`, `0x25A2`, `0x25FAE` and `0x1348`
+keep their `RESOLVED` addresses; `0x25D0` remains `SYMBOLIC`
+(`0x01000000 + 2*r3`).
 
 ---
 

@@ -30,6 +30,25 @@ produced by `tools/cr16_peripheral_xrefs.py` version 3
 | `0x000F70xx` | 16-bit | `0xF7052`, `0xF7056` | two registers |
 | `0x01000000` | 16-bit writes only | 6 `movd` literals; 2 `SYMBOLIC` stores (`0x01000000 + 2*r3/r4`); no numeric reader | a data area |
 
+### Single-bit accesses (`sbit*`/`cbit*`, PERIPH-2.2)
+
+These instructions set or clear **one bit** in the state at an address; they
+are neither a read nor a whole-word write.  They were invisible to the
+scanner before PERIPH-2.2 and are now counted as `READ_MODIFY_WRITE`.
+
+| Block | Sites (normal) | Example |
+|---|---|---|
+| `0x00FF58xx` | `0x1258`–`0x1992` | `sbitw $0xf:s,0x0:s(r1,r0)` at `0x13AE` |
+| `0x00FF48xx` | `0x1200`–`0x14D4` | `cbitw` on `0xFF481E`, `0xFF4860`, `0xFF4868` |
+| `0x00FF40xx` | `0x14A8`, `0x1896` | `sbitw` on `0xFF401C`, `cbitw` on `0xFF4010` |
+| `0x000F40xx`–`0x000F58xx` | `0x1316`–`0x14E4` | `sbitw` on `0xF4000`, `0xF401A`, `0xF4970`, `0xF5804`, `0xF5806` |
+
+None of them touches `0x00FF6006`, `0x00FF5406`, `0x000F6002`,
+`0x000F6006` or `0x000F5402`.
+
+`tbit*` only reads a bit and is now classified as a bit `READ`
+(173 resolved sites in `normal`, e.g. `0x000F4900` at `0x9FD6`).
+
 Two families exist with overlapping low bits: `0x000Fxxxx` reached by
 `abs20`/`abs24` operands and `0x00FFxxxx` reached through register pairs (and,
 since PERIPH-2, also by two `abs24` operands).  Nothing in the code proves that
