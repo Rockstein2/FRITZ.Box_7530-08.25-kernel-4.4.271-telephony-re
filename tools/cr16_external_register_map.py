@@ -143,46 +143,66 @@ def our_accesses(xref):
     return out
 
 
-# Registers whose semantics were verified against our instructions by hand.
-# A name alone never qualifies: each entry names the evidence and the site.
+# Structured evidence.  Each observation names an image, a site, a mnemonic
+# and the operands that must be present.  `build()` re-reads the instruction
+# at that site and compares; if anything does not match, the entry is
+# reported as MANUALLY_CORRELATED (an expert annotation) instead of
+# FUNCTIONAL_REGISTER_MATCH (checked by the tool).
 MANUAL_EVIDENCE = {
     "UART_CTRL_REG": {
-        "level": "FUNCTIONAL_REGISTER_MATCH",
         "our_address": "0x000f4900",
-        "evidence": "status bits used by our code match the reference bit "
-                    "numbers: RI = bit 6 (0x102ac tbit $6) and TI = bit 5 "
-                    "(0x102da tbit $5); the baud field bits 2-4 is set to "
-                    "0xC at 0x100ee, i.e. 115200 as the reference defines",
+        "observations": [
+            {"image": "first", "site": "0x102ac", "mnemonic": "tbit",
+             "operands": "$0x6:s,r0",
+             "why": "receive status is bit 6, as UART_CTRL_REG_RI"},
+            {"image": "first", "site": "0x102da", "mnemonic": "tbit",
+             "operands": "$0x5:s,r0",
+             "why": "transmit status is bit 5, as UART_CTRL_REG_TI"},
+            {"image": "first", "site": "0x100ee", "mnemonic": "orw",
+             "operands": "$0xc:s,r0",
+             "why": "baud field bits 2-4 set to 3 (115200)"},
+        ],
+    },
+    "UART_RX_TX_REG": {
+        "our_address": "0x000f4902",
+        "observations": [
+            {"image": "first", "site": "0x102be", "mnemonic": "loadw",
+             "operands": "0xf4902:m,r2",
+             "why": "read returns the received byte"},
+            {"image": "first", "site": "0x102ce", "mnemonic": "storw",
+             "operands": "r2,0xf4902:m",
+             "why": "write sends a byte"},
+        ],
+    },
+    "UART_CLEAR_RX_INT_REG": {
+        "our_address": "0x000f4906",
+        "observations": [
+            {"image": "first", "site": "0x102ba", "mnemonic": "storw",
+             "operands": "$0x1:s,0xf4906:m",
+             "why": "a write of 1 clears the receive flag"},
+        ],
+    },
+    "UART_CLEAR_TX_INT_REG": {
+        "our_address": "0x000f4904",
+        "observations": [
+            {"image": "first", "site": "0x102e4", "mnemonic": "storw",
+             "operands": "$0x1:s,0xf4904:m",
+             "why": "a write of 1 clears the transmit flag"},
+        ],
     },
     "WATCHDOG_REG": {
-        "level": "FUNCTIONAL_REGISTER_MATCH",
         "our_address": "0x000f4c00",
         "expected_value": "0xff",
         "value_from_low_bits": "0x000f4c00",
-        "evidence": "written with the same value 0xFF as the reference "
-                    "(0x102a0, 0x102ca; the store at 0x28820 carries "
-                    "immediate 0xff in the report) inside a wait loop",
-        "width_note": "our 0x00FF4C00 uses storb (8-bit) and 0x000F4C00 "
-                      "uses storw (16-bit); the value 0xFF is the same, the "
+        "observations": [
+            {"image": "normal", "site": "0x28820", "mnemonic": "storw",
+             "operands": "r0,0xf4c00:m",
+             "why": "written with 0xff from the immediate tracked in the "
+                    "block"},
+        ],
+        "width_note": "our 0x00ff4c00 uses storb (8-bit) and 0x000f4c00 "
+                      "uses storw (16-bit); the value 0xff is the same, the "
                       "width is not",
-    },
-    "UART_CLEAR_TX_INT_REG": {
-        "level": "FUNCTIONAL_REGISTER_MATCH",
-        "our_address": "0x000f4904",
-        "evidence": "written with 1 to clear the transmit flag (0x102e4), "
-                    "as the reference does",
-    },
-    "UART_CLEAR_RX_INT_REG": {
-        "level": "FUNCTIONAL_REGISTER_MATCH",
-        "our_address": "0x000f4906",
-        "evidence": "written with 1 to clear the receive flag (0x102ba), "
-                    "as the reference does",
-    },
-    "UART_RX_TX_REG": {
-        "level": "FUNCTIONAL_REGISTER_MATCH",
-        "our_address": "0x000f4902",
-        "evidence": "read and written as a 16-bit data word (0x102be, "
-                    "0x102ce) between the status polls",
     },
 }
 
@@ -191,6 +211,31 @@ def written_constants(rows):
     """Immediate values our code stores, as seen in the report."""
     return [r["immediate"] for r in rows
             if r["operation"] in ("WRITE", "RMW") and r.get("immediate")]
+
+
+def verify_observations(observations, firmware):
+    """Re-read each named instruction; return (ok, [problems])."""
+    problems = []
+    for obs in observations:
+        fw = firmware.get(obs["image"])
+        if fw is None:
+            problems.append(f"{obs['site']}: image {obs['image']} not loaded")
+            continue
+        addr = int(obs["site"], 16)
+        insn = fw.insns.get(addr)
+        if insn is None:
+            problems.append(f"{obs['site']}: no instruction at that address")
+            continue
+        if insn.mnemonic != obs["mnemonic"]:
+            problems.append(f"{obs['site']}: mnemonic is {insn.mnemonic}, "
+                            f"expected {obs['mnemonic']}")
+            continue
+        want = obs["operands"].replace(" ", "")
+        have = insn.operands.replace(" ", "")
+        if have != want:
+            problems.append(f"{obs['site']}: operands are {have!r}, "
+                            f"expected {want!r}")
+    return not problems, problems
 
 
 def functional_notes(name, rows):
@@ -210,9 +255,30 @@ def functional_notes(name, rows):
     return notes
 
 
-def build(device_dir, xref_path):
+def load_firmware():
+    """Load and disassemble every image whose observations may be checked."""
+    if not OBJDUMP.is_file():
+        return {}
+    sys.path.insert(0, str(ROOT / "src" / "mock"))
+    import cr16_cfg as C
+    out = {}
+    for name, path in (("first", FIRST_LEVEL),
+                       ("normal", ROOT / "firmware" /
+                        "dectfw_secondlevel_441.hex"),
+                       ("p2test", ROOT / "firmware" /
+                        "dectfw_secondlevel_441p2test.hex")):
+        if path.is_file():
+            fw = C.load(str(path))
+            C.disassemble(fw, str(OBJDUMP))
+            out[name] = fw
+    return out
+
+
+def build(device_dir, xref_path, firmware=None):
     if not xref_path.is_file():
         return None
+    if firmware is None:
+        firmware = load_firmware()
     xref = json.loads(xref_path.read_text())
     ours = our_accesses(xref)
     defines = extract_defines(device_dir)
@@ -252,42 +318,70 @@ def build(device_dir, xref_path):
             all_rows = [r for rows in same.values() for r in rows]
             notes = functional_notes(d["name"], all_rows)
             manual = MANUAL_EVIDENCE.get(d["name"])
-            entry["evidence"] = level
             entry["manual_verification"] = manual
             entry["functional_notes"] = notes
-            if manual and manual.get("expected_value"):
-                consts = written_constants(all_rows)
-                alt = manual.get("value_from_low_bits")
-                if alt:
-                    # the exact address may be written from a register while
-                    # the same value is written at the low-bit twin
-                    for a, by_image in ours.items():
-                        if f"0x{a:08x}" == alt:
-                            consts += written_constants(
-                                [r for rows in by_image.values()
-                                 for r in rows])
-                expected = manual["expected_value"]
-                if expected in consts:
-                    entry["evidence"] = manual["level"]
-                    entry["functional_notes"].append(
-                        f"written value {expected} matches the reference")
-                else:
-                    entry["functional_notes"].append(
-                        f"expected {expected}, observed {sorted(set(consts))}")
-            elif manual:
-                entry["evidence"] = manual["level"]
-        elif entry["low_bit_matches"]:
-            # the exact address is absent, but the low 20 bits appear
-            # under another high half: that is the aliasing question
-            manual = MANUAL_EVIDENCE.get(d["name"])
+            entry["evidence"] = level
             if manual:
-                entry["evidence"] = manual["level"]
-                entry["functional_notes"] = [manual["evidence"]]
-                entry["manual_verification"] = manual
+                ok, problems = verify_observations(
+                    manual.get("observations", []), firmware)
+                values_ok = True
+                if manual.get("expected_value"):
+                    consts = written_constants(all_rows)
+                    alt = manual.get("value_from_low_bits")
+                    if alt:
+                        for a, by_image in ours.items():
+                            if f"0x{a:08x}" == alt:
+                                consts += written_constants(
+                                    [r for rows in by_image.values()
+                                     for r in rows])
+                    expected = manual["expected_value"]
+                    values_ok = expected in consts
+                    entry["functional_notes"].append(
+                        f"written value {expected} "
+                        f"{'matches' if values_ok else 'does not match'}; "
+                        f"observed {sorted(set(consts))}")
+                entry["observation_check"] = {
+                    "instructions_verified": ok,
+                    "problems": problems,
+                }
+                if ok and values_ok:
+                    entry["evidence"] = "FUNCTIONAL_REGISTER_MATCH"
+                else:
+                    entry["evidence"] = "MANUALLY_CORRELATED"
+                    entry["functional_notes"].append(
+                        "the annotation is not confirmed by the instructions "
+                        "at the named sites, so the automatic level is not "
+                        "granted")
+        elif entry["low_bit_matches"]:
+            # the exact address is absent, but the low 20 bits appear under
+            # another high half: that is the aliasing question
+            manual = MANUAL_EVIDENCE.get(d["name"])
+            entry["manual_verification"] = manual
+            if manual:
+                ok, problems = verify_observations(
+                    manual.get("observations", []), firmware)
+                values_ok = True
+                if manual.get("expected_value"):
+                    consts = written_constants(rows)
+                    alt = manual.get("value_from_low_bits")
+                    if alt:
+                        for a, by_image in ours.items():
+                            if f"0x{a:08x}" == alt:
+                                consts += written_constants(
+                                    [r for rows in by_image.values()
+                                     for r in rows])
+                    values_ok = manual["expected_value"] in consts
+                entry["observation_check"] = {
+                    "instructions_verified": ok, "problems": problems}
+                entry["functional_notes"] = [o["why"] for o in
+                                             manual.get("observations", [])]
+                entry["evidence"] = ("FUNCTIONAL_REGISTER_MATCH"
+                                     if ok and values_ok
+                                     else "MANUALLY_CORRELATED")
             else:
                 entry["evidence"] = "LOW_BITS_ONLY"
                 entry["functional_notes"] = []
-                entry["manual_verification"] = None
+                entry["observation_check"] = None
         else:
             entry["evidence"] = "NOT_FOUND_IN_OUR_IMAGE"
             entry["functional_notes"] = []

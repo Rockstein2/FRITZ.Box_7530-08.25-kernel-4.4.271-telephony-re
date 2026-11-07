@@ -286,6 +286,7 @@
    },
    "manual_verification": null,
    "name": "CLK_CODEC_DIV_REG",
+   "observation_check": null,
    "our_accesses": {},
    "width": 16
   },
@@ -318,6 +319,7 @@
    },
    "manual_verification": null,
    "name": "CLK_PER_DIV_REG",
+   "observation_check": null,
    "our_accesses": {},
    "width": 16
   },
@@ -362,6 +364,7 @@
    },
    "manual_verification": null,
    "name": "CLK_PER10_DIV_REG",
+   "observation_check": null,
    "our_accesses": {},
    "width": 16
   },
@@ -425,6 +428,7 @@
    },
    "manual_verification": null,
    "name": "CLK_PLL_DIV_REG",
+   "observation_check": null,
    "our_accesses": {},
    "width": 16
   },
@@ -457,6 +461,7 @@
    },
    "manual_verification": null,
    "name": "CLK_AUX_REG",
+   "observation_check": null,
    "our_accesses": {},
    "width": 16
   },
@@ -1679,7 +1684,9 @@
    "file": "uart.h",
    "found_in_our_firmware": false,
    "functional_notes": [
-    "status bits used by our code match the reference bit numbers: RI = bit 6 (0x102ac tbit $6) and TI = bit 5 (0x102da tbit $5); the baud field bits 2-4 is set to 0xC at 0x100ee, i.e. 115200 as the reference defines"
+    "receive status is bit 6, as UART_CTRL_REG_RI",
+    "transmit status is bit 5, as UART_CTRL_REG_TI",
+    "baud field bits 2-4 set to 3 (115200)"
    ],
    "low_bit_candidates": [
     "0x000f4900"
@@ -1740,11 +1747,36 @@
     }
    },
    "manual_verification": {
-    "evidence": "status bits used by our code match the reference bit numbers: RI = bit 6 (0x102ac tbit $6) and TI = bit 5 (0x102da tbit $5); the baud field bits 2-4 is set to 0xC at 0x100ee, i.e. 115200 as the reference defines",
-    "level": "FUNCTIONAL_REGISTER_MATCH",
+    "observations": [
+     {
+      "image": "first",
+      "mnemonic": "tbit",
+      "operands": "$0x6:s,r0",
+      "site": "0x102ac",
+      "why": "receive status is bit 6, as UART_CTRL_REG_RI"
+     },
+     {
+      "image": "first",
+      "mnemonic": "tbit",
+      "operands": "$0x5:s,r0",
+      "site": "0x102da",
+      "why": "transmit status is bit 5, as UART_CTRL_REG_TI"
+     },
+     {
+      "image": "first",
+      "mnemonic": "orw",
+      "operands": "$0xc:s,r0",
+      "site": "0x100ee",
+      "why": "baud field bits 2-4 set to 3 (115200)"
+     }
+    ],
     "our_address": "0x000f4900"
    },
    "name": "UART_CTRL_REG",
+   "observation_check": {
+    "instructions_verified": true,
+    "problems": []
+   },
    "our_accesses": {},
    "width": 16
   },
@@ -1754,7 +1786,8 @@
    "file": "uart.h",
    "found_in_our_firmware": false,
    "functional_notes": [
-    "read and written as a 16-bit data word (0x102be, 0x102ce) between the status polls"
+    "read returns the received byte",
+    "write sends a byte"
    ],
    "low_bit_candidates": [
     "0x000f4902"
@@ -1790,11 +1823,29 @@
     }
    },
    "manual_verification": {
-    "evidence": "read and written as a 16-bit data word (0x102be, 0x102ce) between the status polls",
-    "level": "FUNCTIONAL_REGISTER_MATCH",
+    "observations": [
+     {
+      "image": "first",
+      "mnemonic": "loadw",
+      "operands": "0xf4902:m,r2",
+      "site": "0x102be",
+      "why": "read returns the received byte"
+     },
+     {
+      "image": "first",
+      "mnemonic": "storw",
+      "operands": "r2,0xf4902:m",
+      "site": "0x102ce",
+      "why": "write sends a byte"
+     }
+    ],
     "our_address": "0x000f4902"
    },
    "name": "UART_RX_TX_REG",
+   "observation_check": {
+    "instructions_verified": true,
+    "problems": []
+   },
    "our_accesses": {},
    "width": 16
   },
@@ -1804,7 +1855,7 @@
    "file": "uart.h",
    "found_in_our_firmware": false,
    "functional_notes": [
-    "written with 1 to clear the transmit flag (0x102e4), as the reference does"
+    "a write of 1 clears the transmit flag"
    ],
    "low_bit_candidates": [
     "0x000f4904"
@@ -1835,11 +1886,22 @@
     }
    },
    "manual_verification": {
-    "evidence": "written with 1 to clear the transmit flag (0x102e4), as the reference does",
-    "level": "FUNCTIONAL_REGISTER_MATCH",
+    "observations": [
+     {
+      "image": "first",
+      "mnemonic": "storw",
+      "operands": "$0x1:s,0xf4904:m",
+      "site": "0x102e4",
+      "why": "a write of 1 clears the transmit flag"
+     }
+    ],
     "our_address": "0x000f4904"
    },
    "name": "UART_CLEAR_TX_INT_REG",
+   "observation_check": {
+    "instructions_verified": true,
+    "problems": []
+   },
    "our_accesses": {},
    "width": 16
   },
@@ -1849,7 +1911,7 @@
    "file": "uart.h",
    "found_in_our_firmware": false,
    "functional_notes": [
-    "written with 1 to clear the receive flag (0x102ba), as the reference does"
+    "a write of 1 clears the receive flag"
    ],
    "low_bit_candidates": [
     "0x000f4906"
@@ -1866,11 +1928,22 @@
     }
    },
    "manual_verification": {
-    "evidence": "written with 1 to clear the receive flag (0x102ba), as the reference does",
-    "level": "FUNCTIONAL_REGISTER_MATCH",
+    "observations": [
+     {
+      "image": "first",
+      "mnemonic": "storw",
+      "operands": "$0x1:s,0xf4906:m",
+      "site": "0x102ba",
+      "why": "a write of 1 clears the receive flag"
+     }
+    ],
     "our_address": "0x000f4906"
    },
    "name": "UART_CLEAR_RX_INT_REG",
+   "observation_check": {
+    "instructions_verified": true,
+    "problems": []
+   },
    "our_accesses": {},
    "width": 16
   },
@@ -1933,7 +2006,7 @@
    "found_in_our_firmware": true,
    "functional_notes": [
     "observed operations: WRITE; widths: 8",
-    "written value 0xff matches the reference"
+    "written value 0xff matches; observed ['0xff']"
    ],
    "low_bit_candidates": [
     "0x000f4c00"
@@ -1969,14 +2042,25 @@
     }
    },
    "manual_verification": {
-    "evidence": "written with the same value 0xFF as the reference (0x102a0, 0x102ca; the store at 0x28820 carries immediate 0xff in the report) inside a wait loop",
     "expected_value": "0xff",
-    "level": "FUNCTIONAL_REGISTER_MATCH",
+    "observations": [
+     {
+      "image": "normal",
+      "mnemonic": "storw",
+      "operands": "r0,0xf4c00:m",
+      "site": "0x28820",
+      "why": "written with 0xff from the immediate tracked in the block"
+     }
+    ],
     "our_address": "0x000f4c00",
     "value_from_low_bits": "0x000f4c00",
-    "width_note": "our 0x00FF4C00 uses storb (8-bit) and 0x000F4C00 uses storw (16-bit); the value 0xFF is the same, the width is not"
+    "width_note": "our 0x00ff4c00 uses storb (8-bit) and 0x000f4c00 uses storw (16-bit); the value 0xff is the same, the width is not"
    },
    "name": "WATCHDOG_REG",
+   "observation_check": {
+    "instructions_verified": true,
+    "problems": []
+   },
    "our_accesses": {
     "normal": [
      {
@@ -2110,6 +2194,7 @@
    },
    "manual_verification": null,
    "name": "RESET_INT_PENDING_REG",
+   "observation_check": null,
    "our_accesses": {},
    "width": 16
   },
@@ -2300,6 +2385,7 @@
    },
    "manual_verification": null,
    "name": "INT2_PRIORITY_REG",
+   "observation_check": null,
    "our_accesses": {},
    "width": 16
   },
@@ -2332,6 +2418,7 @@
    },
    "manual_verification": null,
    "name": "INT3_PRIORITY_REG",
+   "observation_check": null,
    "our_accesses": {},
    "width": 16
   },
