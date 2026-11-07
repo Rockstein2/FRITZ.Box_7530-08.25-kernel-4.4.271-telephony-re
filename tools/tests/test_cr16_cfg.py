@@ -224,8 +224,8 @@ def test_edge_categories():
 
     # DIRECT_UNSUPPORTED: the 6-byte conditional at 0x92fc.
     cat = [e.category for e in by_src.get(0x92FC, []) if e.kind == "cond"]
-    check("0x92fc 6-byte conditional is DIRECT_UNSUPPORTED",
-          cat, [C.DIRECT_UNSUPPORTED])
+    check("0x92fc 6-byte conditional leaves the image",
+          cat, [C.OUTSIDE_LOADED_IMAGE])
 
     # Every direct-resolved non-fallthrough edge lands on an instruction.
     bad = [e for e in edges
@@ -260,7 +260,8 @@ def test_category_stats():
     check("INDIRECT_REGISTER is 382", st[C.INDIRECT_REGISTER], 382)
     check("INDIRECT_UNRESOLVED is 0 (same thing as REGISTER here)",
           st[C.INDIRECT_UNRESOLVED], 0)
-    check("DIRECT_UNSUPPORTED is 46", st[C.DIRECT_UNSUPPORTED], 46)
+    # every branch form now decodes, so nothing is left unsupported
+    check("DIRECT_UNSUPPORTED is 0", st[C.DIRECT_UNSUPPORTED], 0)
     check("FALLTHROUGH_UNRESOLVED is 9", st[C.FALLTHROUGH_UNRESOLVED], 9)
     check("TOTAL edges", st["TOTAL"], 22669)
 

@@ -210,8 +210,11 @@ if report is not None:
     row = find_row(FACTS_DOC, "unsupported branch forms")
     check("known facts: unsupported total",
           number(row[1]) if row else None, unsup_total)
-    row = find_row(CFG_DOC, f"{unsup_total} unsupported branch forms")
+    row = find_row(CFG_DOC, "unsupported branch forms")
     check("cfg doc: unsupported total row exists", row is not None, True)
+    if row:
+        check("cfg doc: unsupported total matches the report",
+              f"{unsup_total}" in " ".join(row), True)
 
 # ---------------------------------------------------------------------------
 # 5. Peripheral register table widths

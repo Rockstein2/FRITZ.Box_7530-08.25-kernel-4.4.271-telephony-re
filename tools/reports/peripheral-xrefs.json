@@ -22417,7 +22417,7 @@
      "operation": "WRITE",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 32
     },
     {
@@ -169089,7 +169089,7 @@
      "operation": "READ",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -169105,7 +169105,7 @@
      "operation": "READ",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -169121,7 +169121,7 @@
      "operation": "WRITE",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -169137,7 +169137,7 @@
      "operation": "READ",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -169153,7 +169153,7 @@
      "operation": "READ",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -169169,7 +169169,7 @@
      "operation": "READ",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -169185,7 +169185,7 @@
      "operation": "READ",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -169203,7 +169203,7 @@
       "0x026098"
      ],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -169219,7 +169219,7 @@
      "operation": "READ",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -169237,7 +169237,7 @@
       "0x0260aa"
      ],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -169255,7 +169255,7 @@
       "0x0260b8"
      ],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -169273,7 +169273,7 @@
       "0x0260ca"
      ],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -171407,7 +171407,7 @@
      "operation": "READ",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -171423,7 +171423,7 @@
      "operation": "READ",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 8
     },
     {
@@ -171441,7 +171441,7 @@
       "0x0263e4"
      ],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 16
     },
     {
@@ -179331,7 +179331,7 @@
      "operation": "WRITE",
      "provenance": [],
      "reachable_mode_a": false,
-     "reachable_mode_b": false,
+     "reachable_mode_b": true,
      "width_bits": 32
     },
     {

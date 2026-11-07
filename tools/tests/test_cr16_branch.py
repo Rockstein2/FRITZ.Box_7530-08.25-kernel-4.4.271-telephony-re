@@ -315,9 +315,24 @@ def run_unit_checks():
     check("plain load has no target",
           B.decode_insn(0x25FAE, "loadw", bytes.fromhex("0f890260"))[2],
           "NOT_A_BRANCH")
-    check("6-byte conditional stays unsupported",
-          B.decode_insn(0x92FC, "bhi", bytes.fromhex("10004d00074e"))[2],
-          "UNSUPPORTED")
+    # disps25 / disps17 targets validated against cr16-dis.c
+    check("0x10284 -> 0x000008",
+          B.decode_insn(0x10284, "br", bytes.fromhex("1000ef0e85fd"))[0], 0x8)
+    for site, raw in ((0x1017C, "e01885ff"), (0x10250, "1018b1fe"),
+                      (0x10298, "e01869fe")):
+        check(f"{site:#07x} -> retry loop 0x10100",
+              B.decode_insn(site, "br", bytes.fromhex(raw))[0], 0x10100)
+    check("disps17 uses a 16-bit magnitude mask",
+          B.decode_insn(0x3C50, "bne", bytes.fromhex("1018f7fe"))[0], 0x3B46)
+    check("a zero field targets the instruction itself",
+          B.decode_insn(0x10284, "br", bytes.fromhex("100080000000"))[0],
+          0x10284)
+    check("6-byte branch decodes as disps25",
+          B.decode_insn(0x92FC, "bhi", bytes.fromhex("10004d00074e"))[1],
+          "disps25")
+    check("the 0x92fc target matches the 24-bit mask",
+          B.decode_insn(0x92FC, "bhi", bytes.fromhex("10004d00074e"))[0],
+          0xD0E102)
 
 
 # ---------------------------------------------------------------------------

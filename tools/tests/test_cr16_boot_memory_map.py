@@ -313,12 +313,13 @@ if first_path.is_file() and OBJDUMP.is_file():
     import cr16_cfg as C
     fw = C.load(str(first_path))
     C.disassemble(fw, str(OBJDUMP))
-    for site in (0x1017C, 0x10284, 0x10298):
-        # the current decoder must not invent a target for these
+    # these three now decode; the targets were validated against cr16-dis.c
+    for site, want in ((0x1017C, 0x10100), (0x10298, 0x10100),
+                       (0x10284, 0x8)):
         t, form, status = C.decode_insn(site, fw.insns[site].mnemonic,
                                         fw.insns[site].raw[:6])
-        check(f"{site:#07x} is not reported as DIRECT",
-              status != "DIRECT", True)
+        check(f"{site:#07x} decodes to {want:#x}",
+              (status, t), ("DIRECT", want))
     check("0x10100 is an instruction (the even neighbour)",
           0x10100 in fw.insns, True)
     check("0x10101 is not an instruction boundary",
