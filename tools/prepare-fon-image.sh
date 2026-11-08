@@ -18,6 +18,9 @@
 
 set -eu
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+FON_REPO="$ROOT"
+. "$ROOT/tools/workspace.sh"
+OPENWRT_DIR=${OPENWRT_DIR:-$OPENWRT_SRC}
 : "${OPENWRT_DIR:?set OPENWRT_DIR to an OpenWrt 25.12.6 source tree}"
 OUT_DIR=${OUT_DIR:-/tmp/opencode/fon-dtb}
 FON_PROBE_ONLY=${FON_PROBE_ONLY:-0}

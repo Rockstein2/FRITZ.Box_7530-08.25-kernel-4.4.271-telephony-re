@@ -33,7 +33,7 @@ Set paths:
 
 ```bash
 IMG="$HOME/Downloads/OpenWrt7530/reference/oem-08.25/installers/FRITZ.Box_7530-08.25.image"
-WORK="$HOME/fritz7530-extract"
+WORK="$HOME/Downloads/OpenWrt7530/work/oem-08.25/extract"
 REPO="$HOME/Downloads/OpenWrt7530/FRITZ.Box_7530-08.25-kernel-4.4.271-telephony-re"
 
 mkdir -p "$WORK"

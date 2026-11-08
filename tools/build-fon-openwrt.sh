@@ -12,6 +12,9 @@
 
 set -eu
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+FON_REPO="$ROOT"
+. "$ROOT/tools/workspace.sh"
+SDK_DIR=${SDK_DIR:-$OPENWRT_SDK}
 : "${SDK_DIR:?set SDK_DIR to the extracted OpenWrt SDK root}"
 PKG_SRC="$ROOT/openwrt/package/kernel/fon-tdm"
 PKG_DST="$SDK_DIR/package/kernel/fon-tdm"

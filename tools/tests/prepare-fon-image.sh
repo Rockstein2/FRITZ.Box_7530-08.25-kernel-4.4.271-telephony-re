@@ -11,7 +11,9 @@
 set -u
 HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 REPO=$(CDPATH= cd -- "$HERE/../.." && pwd)
-SRC=${OPENWRT_SRC:-/home/rck/Downloads/OpenWrt7530/openwrt-25.12.6-source}
+FON_REPO="$REPO"
+. "$REPO/tools/workspace.sh"
+SRC=${OPENWRT_SRC:-$FON_WORKSPACE/openwrt-25.12.6-source}
 PRISTINE=${PRISTINE_DTS:?set PRISTINE_DTS to an unpatched board DTS}
 WORK=${TMPDIR:-/tmp/opencode}/fon-image-tests
 : "${KERNEL_INCLUDE:?set KERNEL_INCLUDE to a prepared kernel include dir}"

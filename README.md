@@ -66,6 +66,8 @@ FXS driver for the 7530 analog port.
 
 The local workspace layout is documented in `../WORKSPACE.md` (outside Git):
 `reference/`, `evidence/`, `restore/`, `backups/`, `work/`, `builds/`.
+Copy `tools/workspace.env.example` to `../workspace.env` for local overrides;
+the tools source it automatically.
 
 Documentation is split into four layers (see `docs/README.md`):
 

@@ -14,7 +14,7 @@ A HW236 DTB was extracted from the EVA/LZMA kernel in the original FRITZ!OS
 
 | Item | Value |
 |---|---|
-| Outer image | `FRITZ.Box_7530-08.25.image` |
+| Outer image | `reference/oem-08.25/installers/FRITZ.Box_7530-08.25.image` |
 | Kernel member | `var/tmp/kernel.image` |
 | Format | AVM EVA record containing an LZMA stream |
 | Decompressed-kernel FDT offset | `0x98d038` |

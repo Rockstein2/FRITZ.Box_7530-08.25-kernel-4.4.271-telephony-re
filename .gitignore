@@ -12,6 +12,9 @@ FRITZ*.image
 FRITZ*.exe
 backups/
 
+# Local workspace override (template is tools/workspace.env.example).
+tools/workspace.env
+
 # Python and editor noise.
 __pycache__/
 *.py[cod]
