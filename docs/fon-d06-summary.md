@@ -29,7 +29,7 @@ unknown. D0.6 did not authorize an active reset/upload.
 | Clock check | `Piglet_noemif.ko:Check_TDMInterface()` calls `dakota_gpio_ctrl(gpio,0,0)` and counts edges; it does not generate clocks | **CONFIRMED (code)** |
 | Piglet ctrl side effects | `dakota_gpio_ctrl()` may change pad configuration; body unavailable | **UNKNOWN** |
 | Active physical mux group/wiring | software names and selectors do not prove PCB connectivity | **UNKNOWN** |
-| OEM DTB selection | three HW236 DTBs in `kernel.image`; FON properties identical, only `subrevision` differs. OEM runtime log reports `HWS(2)`, matching the first blob | **board subrevision CONFIRMED; bootloader choice UNKNOWN (Q80)** |
+| OEM DTB selection | three HW236 DTBs in `kernel.image`; FON properties identical, only `subrevision` differs. OEM runtime log and live FDT report `HWS(2)`, matching the first blob | **board subrevision CONFIRMED; bootloader choice UNKNOWN (Q80)** |
 | 74LVC1G04 role | measurements exist only under OpenWrt; no connection to GPIO40/reset proven | **UNKNOWN** |
 | First missing OpenWrt startup actions | no recovered reset sequence and no firmware upload are performed | **CONFIRMED (software state)** |
 | Why FSC/BCLK are absent/present on this board | not passively measured on an identified net | **UNKNOWN** |

@@ -358,6 +358,9 @@ API transformation, electrical connection, and any inversion are unresolved
 | AVM API transformation | body of `dakota_gpio_pinconfig()` and physical effect of `dakota_gpio_out_bit()` are unavailable | **UNKNOWN** |
 | OEM DTB selection | three HW236 DTBs are present in `kernel.image`: `0x98d038` (`subrevision=2`), `0x993990`/`0x99a2e8` (`subrevision=0`); FON-relevant properties are identical. The OEM runtime log reports `HWS(2)`, so this board is **subrevision 2** and the first blob matches it. Which blob the bootloader actually selects is still not observed (Q80) | OEM-DTB, OEM-CAPTURE / **selection UNKNOWN** |
 | Local OEM rootfs verified against live system | all 99 `/lib/modules/4.4.271/*.ko`, 4 `/lib/firmware` files, `dect_eeprom`, `dect_manager`, `telefon` and `voipd` MD5-match the live OEM 08.25 system; `sha256sum` is absent on the OEM BusyBox, local SHA256 manifests remain authoritative | OEM-CAPTURE |
+| Live OEM FDT | `/sys/firmware/fdt`: `/chosen/stdout-path=serial0`, `/avm-hw-revision/subrevision=2`, `/chosen/wlan_dect_configs=<0x2bc000 0x2bc800 0x2bd000>` | OEM-CAPTURE |
+| OEM clock tree | `audio_clk_src`=200 MHz, `gcc_audio_pwm_clk`=200 MHz, `gcc_audio_ahb_clk`=100 MHz disabled; SC14448 TDM clock is not visible there | OEM-CAPTURE |
+| `/proc/avm/profile` | it is **AVM Profiler v3** (CPU tracing), not a board/hardware profile; `csv` is empty, so it does not expose `avm_get_hw_config_table()` | OEM-CAPTURE |
 | 74LVC1G04 | VCC/A/Y = 3.3/3.3/0 V measured under OpenWrt only; no link to GPIO40 or reset proven | RUNTIME-RO / **UNKNOWN role** |
 
 Current D0.6 status and document navigation: `fon-d06-summary.md`.
