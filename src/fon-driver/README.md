@@ -15,9 +15,36 @@ tests/         host-side tests for the pure helpers
 probe_only=1  (default)  report DT resources only; no MMIO/clock/reset/DMA
 probe_only=0            map resources and obtain optional clock/reset/pinctrl
                         handles, but still no read/write/clock enable/DMA
+C1/C2 (opt-in)          run_c1 / run_c2 bounded MMIO test, then restore
+C3 dry-run              dma_prepare fills TX with silent frames carrying a
+                        zero slot-5 control word; no DMA, no IRQ, no MMIO
+C3 passive RX           NOT IMPLEMENTED — needs hardware-validated clocks
+C4 active TDM           NOT IMPLEMENTED — dma_start returns -EOPNOTSUPP
 ```
 
+There is no automatic transition between stages, and no mode that arms a
+line, a ring or a firmware upload.
+
 The first hardware test uses `probe_only=1`.
+
+## C3 control-only frame layout
+
+`dma_prepare` builds frames that match the AVM `tdm@0` geometry
+(`docs/fon-adss-tdm-channel-map.md`):
+
+```text
+byte 0x00  0x0000
+byte 0x02  0xfefe
+byte 0x04  0xfefe
+byte 0x06  0xfefe
+byte 0x08  0x5555
+byte 0x0a  16-bit control word (physical slot 5) — always 0x0000 after prepare
+byte 0x0c  remaining slots, silence
+```
+
+`slots = 8`, 16 bytes per frame, `fs_per_dma = 32`, so a ping-pong half is
+512 bytes.  The control word stays zero until a caller explicitly sets it, so
+`dma_prepare` alone never arms anything.
 
 ## State machine
 

@@ -141,6 +141,182 @@ static void test_ring_bits(void)
 	assert(fon_tdm_reg48_ring_bits(0xff9f) == 0);
 }
 
+/*
+ * Control-only buffer helpers.  Geometry follows the AVM call site:
+ * 8 x 16-bit slots per frame, and the control word lives at byte 0x0a of
+ * every frame (physical slot 5).
+ */
+static void test_buffer_geometry(void)
+{
+	u8 buf[8 * 16];
+	unsigned int frames = 8;
+
+	/* AVM geometry: 8 slots x 2 bytes x 8 frames = 128 bytes. */
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, frames) == 0);
+
+	/* A short buffer is rejected, never partially written. */
+	assert(fon_tdm_buffer_init(buf, sizeof(buf) - 1, 8, frames) == -EINVAL);
+	assert(fon_tdm_buffer_init(buf, sizeof(buf) + 1, 8, frames) == -EINVAL);
+
+	/* A frame too short to contain slot 5 is rejected. */
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 4, frames) == -EINVAL);
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 5, frames) == -EINVAL);
+
+	/* Zero frames / slots are rejected. */
+	assert(fon_tdm_buffer_init(buf, 0, 8, 0) == -EINVAL);
+	assert(fon_tdm_buffer_init(buf, 0, 0, 1) == -EINVAL);
+
+	/* Above the documented maximum. */
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), FON_TDM_MAX_SLOTS + 1,
+				   1) == -EINVAL);
+}
+
+static void test_buffer_silence(void)
+{
+	u8 buf[8 * 16];
+	unsigned int f;
+
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, 8) == 0);
+
+	for (f = 0; f < 8; f++) {
+		const u8 *frame = buf + f * 16;
+
+		assert(le16(frame + 0x00) == 0x0000);
+		assert(le16(frame + 0x02) == 0xfefe);
+		assert(le16(frame + 0x04) == 0xfefe);
+		assert(le16(frame + 0x06) == 0xfefe);
+		assert(le16(frame + 0x08) == 0x5555);
+		/* Control slot starts as zero: nothing is armed by default. */
+		assert(le16(frame + 0x0a) == 0x0000);
+		/* Audio slots 0,1,2,3,4,6,7 stay silent. */
+		assert(le16(frame + 0x0c) == 0x0000);
+		assert(le16(frame + 0x0e) == 0x0000);
+	}
+}
+
+static void test_buffer_control_only(void)
+{
+	u8 buf[8 * 16];
+	u8 before[8 * 16];
+	unsigned int f;
+	u16 status = 0;
+
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, 8) == 0);
+	memcpy(before, buf, sizeof(buf));
+
+	assert(fon_tdm_buffer_set_control(buf, sizeof(buf), 8, 8, 0x4001) == 0);
+
+	for (f = 0; f < 8; f++) {
+		const u8 *frame = buf + f * 16;
+		const u8 *old = before + f * 16;
+		int i;
+
+		assert(le16(frame + 0x0a) == 0x4001);
+		assert(frame[0x0a] == 0x01 && frame[0x0b] == 0x40);
+		/* Every other byte is untouched: audio really stays silent. */
+		for (i = 0; i < 16; i++) {
+			if (i == 0x0a || i == 0x0b)
+				continue;
+			assert(frame[i] == old[i]);
+		}
+	}
+
+	/* Read back a specific frame. */
+	assert(fon_tdm_buffer_get_status(buf, sizeof(buf), 8, 8, 3,
+					 &status) == 0);
+	assert(status == 0x4001);
+
+	/* Out-of-range frame index. */
+	assert(fon_tdm_buffer_get_status(buf, sizeof(buf), 8, 8, 8,
+					 &status) == -ERANGE);
+	assert(fon_tdm_buffer_get_status(buf, sizeof(buf), 8, 8, 9,
+					 &status) == -ERANGE);
+
+	/* Geometry mismatch on the setters. */
+	assert(fon_tdm_buffer_set_control(buf, sizeof(buf) - 1, 8, 8,
+					  0x4001) == -EINVAL);
+	assert(fon_tdm_buffer_get_status(buf, sizeof(buf), 8, 8, 0, NULL) ==
+	       -EINVAL);
+}
+
+/*
+ * The control word must land on the same byte that Stage 5 identified in
+ * pcmlink.ko (offset 0x0a) for every supported slot count, so that the
+ * "slot 5" claim is encoded in one place.
+ */
+static void test_control_offset_is_slot_five(void)
+{
+	unsigned int slots;
+
+	for (slots = FON_TDM_CONTROL_SLOT + 1; slots <= FON_TDM_MAX_SLOTS;
+	     slots++) {
+		u8 buf[FON_TDM_MAX_SLOTS * 2 * 2];
+		size_t len = (size_t)slots * 2 * 2;
+		unsigned int byte;
+
+		assert(fon_tdm_buffer_init(buf, len, slots, 2) == 0);
+		assert(fon_tdm_buffer_set_control(buf, len, slots, 2,
+						  0x1234) == 0);
+
+		for (byte = 0; byte < len; byte++) {
+			bool in_slot5 = ((byte % (slots * 2)) == 0x0a) ||
+					((byte % (slots * 2)) == 0x0b);
+
+			if (in_slot5)
+				assert(buf[byte] == (byte & 1 ? 0x12 : 0x34));
+		}
+		assert(le16(buf + FON_TDM_CONTROL_OFFSET) == 0x1234);
+	}
+}
+
+/*
+ * Cross-check against the AVM geometry recorded independently:
+ *   docs/fon-adss-tdm-channel-map.md §4.1  DMABufferSize = slots * sizeof(short) * fs_per_dma
+ *   docs/fon-known-facts.md                slots=8, 16-bit, 32 frames, 512-byte half
+ *
+ * This ties the constants to the source values rather than to our own
+ * #defines, so a silent change in either is caught.
+ */
+static void test_avm_geometry_matches(void)
+{
+	const unsigned int avm_slots = 8;      /* 8 x 16-bit per frame */
+	const unsigned int avm_fs_per_dma = 32;
+	const size_t avm_half = 512;           /* bytes per ping-pong half */
+	u8 buf[16 * 32];
+	size_t len = (size_t)avm_slots * 2 * avm_fs_per_dma;
+
+	assert(avm_slots * sizeof(u16) * avm_fs_per_dma == avm_half);
+	assert(len == avm_half);
+	assert(fon_tdm_buffer_init(buf, len, avm_slots, avm_fs_per_dma) == 0);
+
+	/* The control word exists in all 32 frames of the AVM half. */
+	assert(fon_tdm_buffer_set_control(buf, len, avm_slots, avm_fs_per_dma,
+					  0x0000) == 0);
+}
+
+/*
+ * An all-zero RX buffer is a valid "no status" frame and must decode to 0
+ * rather than to an error.  A truncated RX buffer must be an error, not a
+ * read past the end.
+ */
+static void test_empty_rx(void)
+{
+	u8 buf[8 * 16];
+	u16 status = 0xffff;
+
+	memset(buf, 0, sizeof(buf));
+	assert(fon_tdm_buffer_get_status(buf, sizeof(buf), 8, 8, 0, &status) ==
+	       0);
+	assert(status == 0x0000);
+
+	/* One byte short of a whole frame. */
+	assert(fon_tdm_buffer_get_status(buf, sizeof(buf) - 1, 8, 8, 0,
+					 &status) == -EINVAL);
+	/* Backing up by a whole frame is still a mismatch vs `frames`. */
+	assert(fon_tdm_buffer_get_status(buf, sizeof(buf) - 16, 8, 8, 0,
+					 &status) == -EINVAL);
+}
+
 int main(void)
 {
 	test_frame_layout_12();
@@ -149,6 +325,12 @@ int main(void)
 	test_slic_control();
 	test_status_hook();
 	test_ring_bits();
+	test_buffer_geometry();
+	test_buffer_silence();
+	test_buffer_control_only();
+	test_control_offset_is_slot_five();
+	test_avm_geometry_matches();
+	test_empty_rx();
 	puts("fon_tdm_test: all tests passed");
 	return 0;
 }

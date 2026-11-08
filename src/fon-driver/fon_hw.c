@@ -296,6 +296,28 @@ err:
 	return ret;
 }
 
+static int fon_tdm_fill_silent(struct fon_tdm_dev *tdm, size_t buf_size)
+{
+	unsigned int frames = buf_size / (tdm->slots * 2);
+	unsigned int i;
+	int ret;
+
+	if (!frames || frames * tdm->slots * 2 != buf_size)
+		return -EINVAL;
+
+	for (i = 0; i < 2; i++) {
+		ret = fon_tdm_buffer_init(tdm->tx.buf[i], buf_size, tdm->slots,
+					  frames);
+		if (ret) {
+			tdm->tx_frame_errors++;
+			return ret;
+		}
+	}
+	tdm->tx_frames = frames;
+	tdm->control_word = 0;
+	return 0;
+}
+
 static int fon_tdm_dma_prepare(struct fon_tdm_dev *tdm)
 {
 	unsigned int frame_bytes;
@@ -330,6 +352,20 @@ static int fon_tdm_dma_prepare(struct fon_tdm_dev *tdm)
 		return ret;
 	ret = fon_dma_ring_prepare(tdm->dev, &tdm->rx, buf_size);
 	if (ret) {
+		fon_dma_ring_free(tdm->dev, &tdm->tx);
+		return ret;
+	}
+
+	/*
+	 * Control-only dry-run: fill both TX halves with silent frames that
+	 * carry a zero control word.  Nothing is armed by this: slot 5 stays
+	 * 0x0000, every audio slot stays 0.  The RX halves stay zeroed by the
+	 * allocator and are only read back, never interpreted, until DMA is
+	 * validated on hardware.
+	 */
+	ret = fon_tdm_fill_silent(tdm, buf_size);
+	if (ret) {
+		fon_dma_ring_free(tdm->dev, &tdm->rx);
 		fon_dma_ring_free(tdm->dev, &tdm->tx);
 		return ret;
 	}
@@ -434,6 +470,14 @@ static ssize_t diagnostics_show(struct device *dev, struct device_attribute *att
 	n += sysfs_emit_at(buf, n, "dma_prepared=%u\n",
 			   tdm->state == FON_STATE_DMA_PREPARED);
 	n += sysfs_emit_at(buf, n, "dma_started=0\n");
+	n += sysfs_emit_at(buf, n, "tx_frames=%u\n", tdm->tx_frames);
+	n += sysfs_emit_at(buf, n, "rx_frames=%u\n", tdm->rx_frames);
+	n += sysfs_emit_at(buf, n, "tx_frame_errors=%u\n",
+			   tdm->tx_frame_errors);
+	n += sysfs_emit_at(buf, n, "rx_frame_errors=%u\n",
+			   tdm->rx_frame_errors);
+	n += sysfs_emit_at(buf, n, "control_word=0x%04x\n",
+			   tdm->control_word);
 	mutex_unlock(&tdm->lock);
 	return n;
 }

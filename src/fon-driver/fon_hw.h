@@ -127,6 +127,13 @@ struct fon_tdm_dev {
 	u32 i2s_rst;
 	u32 stereo_tx_cfg;
 	u32 stereo_rx_cfg;
+
+	/* Control-only dry-run diagnostics; all start at zero. */
+	u32 tx_frames;
+	u32 rx_frames;
+	u32 tx_frame_errors;
+	u32 rx_frame_errors;
+	u16 control_word;
 };
 
 #endif /* FON_HW_H */

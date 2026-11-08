@@ -28,6 +28,7 @@
 #else
 #include <stdint.h>
 #include <stddef.h>
+#include <stdbool.h>
 #include <string.h>
 #include <errno.h>
 typedef uint8_t u8;
@@ -60,5 +61,25 @@ u16 fon_tdm_reg48_ring_bits(u16 reg48);
 int fon_tdm_frame_init(u8 *frame, size_t len);
 int fon_tdm_frame_set_control(u8 *frame, size_t len, u16 control);
 int fon_tdm_frame_get_status(const u8 *frame, size_t len, u16 *status);
+
+/*
+ * Control-only dry-run helpers.  They fill a whole DMA buffer (one or more
+ * consecutive TDM frames) in CPU memory and never touch hardware.
+ *
+ * `slots` must be uniform across the buffer because the control word is at a
+ * fixed byte offset (0x0a) inside every frame; a frame shorter than
+ * FON_TDM_MIN_FRAME_BYTES is rejected rather than silently truncated.
+ */
+int fon_tdm_buffer_init(u8 *buf, size_t len, unsigned int slots,
+			unsigned int frames);
+
+/* Write `control` into slot 5 of every frame.  No other byte changes. */
+int fon_tdm_buffer_set_control(u8 *buf, size_t len, unsigned int slots,
+			       unsigned int frames, u16 control);
+
+/* Read slot 5 of frame `index`.  Returns -ERANGE if `index` is past `frames`. */
+int fon_tdm_buffer_get_status(const u8 *buf, size_t len, unsigned int slots,
+			      unsigned int frames, unsigned int index,
+			      u16 *status);
 
 #endif /* FON_TDM_H */
