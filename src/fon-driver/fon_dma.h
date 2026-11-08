@@ -37,6 +37,13 @@ typedef uint32_t u32;
 #define FON_DESC_EOM              (1u << 30)
 #define FON_DESC_OWN              (1u << 31)
 
+/*
+ * `fs_per_dma` in ipq-adss-avm.c.  The GPL doc comment (line 2178) says
+ * "count of framesyncs for one dma-buffer (4 ms == 32)", so 32 is the
+ * *documented* value for a 4 ms buffer at 8 kHz.  What pcmlink.ko actually
+ * passes is `slot_ratio`, recovered from the call site but not decoded to a
+ * number, so 32 is INFERRED for the FON path (Q76), not proven.
+ */
 #define FON_DMA_FRAMES_PER_BUFFER 32u
 #define FON_DMA_DESC_COUNT        16u
 

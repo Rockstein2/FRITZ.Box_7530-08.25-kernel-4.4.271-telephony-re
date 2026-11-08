@@ -9,6 +9,7 @@
  */
 
 #include <assert.h>
+#include <limits.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -152,23 +153,27 @@ static void test_buffer_geometry(void)
 	unsigned int frames = 8;
 
 	/* AVM geometry: 8 slots x 2 bytes x 8 frames = 128 bytes. */
-	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, frames) == 0);
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, frames, FON_TDM_HDR08_5555) == 0);
 
 	/* A short buffer is rejected, never partially written. */
-	assert(fon_tdm_buffer_init(buf, sizeof(buf) - 1, 8, frames) == -EINVAL);
-	assert(fon_tdm_buffer_init(buf, sizeof(buf) + 1, 8, frames) == -EINVAL);
+	assert(fon_tdm_buffer_init(buf, sizeof(buf) - 1, 8, frames, FON_TDM_HDR08_5555) == -EINVAL);
+	assert(fon_tdm_buffer_init(buf, sizeof(buf) + 1, 8, frames, FON_TDM_HDR08_5555) == -EINVAL);
 
 	/* A frame too short to contain slot 5 is rejected. */
-	assert(fon_tdm_buffer_init(buf, sizeof(buf), 4, frames) == -EINVAL);
-	assert(fon_tdm_buffer_init(buf, sizeof(buf), 5, frames) == -EINVAL);
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 4, frames, FON_TDM_HDR08_5555) == -EINVAL);
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 5, frames, FON_TDM_HDR08_5555) == -EINVAL);
 
 	/* Zero frames / slots are rejected. */
-	assert(fon_tdm_buffer_init(buf, 0, 8, 0) == -EINVAL);
-	assert(fon_tdm_buffer_init(buf, 0, 0, 1) == -EINVAL);
+	assert(fon_tdm_buffer_init(buf, 0, 8, 0, FON_TDM_HDR08_5555) == -EINVAL);
+	assert(fon_tdm_buffer_init(buf, 0, 0, 1, FON_TDM_HDR08_5555) == -EINVAL);
 
 	/* Above the documented maximum. */
 	assert(fon_tdm_buffer_init(buf, sizeof(buf), FON_TDM_MAX_SLOTS + 1,
-				   1) == -EINVAL);
+				   1, FON_TDM_HDR08_5555) == -EINVAL);
+
+	/* An out-of-range header selector is rejected. */
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, frames,
+				   (enum fon_tdm_header_08)7) == -EINVAL);
 }
 
 static void test_buffer_silence(void)
@@ -176,23 +181,105 @@ static void test_buffer_silence(void)
 	u8 buf[8 * 16];
 	unsigned int f;
 
-	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, 8) == 0);
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, 8, FON_TDM_HDR08_5555) == 0);
 
 	for (f = 0; f < 8; f++) {
 		const u8 *frame = buf + f * 16;
 
+		/* 0x00..0x08 are AVM framing rails, not audio. */
 		assert(le16(frame + 0x00) == 0x0000);
 		assert(le16(frame + 0x02) == 0xfefe);
 		assert(le16(frame + 0x04) == 0xfefe);
 		assert(le16(frame + 0x06) == 0xfefe);
 		assert(le16(frame + 0x08) == 0x5555);
-		/* Control slot starts as zero: nothing is armed by default. */
+		/*
+		 * 0x0a is the control slot.  Zero is the default buffer
+		 * content, NOT a proven line-idle command.
+		 */
 		assert(le16(frame + 0x0a) == 0x0000);
-		/* Audio slots 0,1,2,3,4,6,7 stay silent. */
+		/* Only 0x0c onward is audio, and it starts silent. */
 		assert(le16(frame + 0x0c) == 0x0000);
 		assert(le16(frame + 0x0e) == 0x0000);
 	}
 }
+
+/*
+ * AVM's TxDMA writes 0x5555 or 0x0000 at offset 0x08.  Both branches must be
+ * reproducible byte for byte, and nothing else may change between them.
+ */
+static void test_header08_branches(void)
+{
+	u8 a[8 * 16];
+	u8 b[8 * 16];
+	unsigned int f;
+	int i;
+
+	assert(fon_tdm_buffer_init(a, sizeof(a), 8, 8, FON_TDM_HDR08_ZERO) == 0);
+	assert(fon_tdm_buffer_init(b, sizeof(b), 8, 8, FON_TDM_HDR08_5555) == 0);
+
+	for (f = 0; f < 8; f++) {
+		const u8 *fa = a + f * 16;
+		const u8 *fb = b + f * 16;
+
+		assert(le16(fa + 0x08) == 0x0000);
+		assert(le16(fb + 0x08) == 0x5555);
+
+		/* Apart from bytes 0x08/0x09 the frames are identical. */
+		for (i = 0; i < 16; i++) {
+			if (i == 0x08 || i == 0x09)
+				continue;
+			assert(fa[i] == fb[i]);
+		}
+	}
+}
+
+/*
+ * 32-bit overflow regression.  On ARMv7 `size_t` is 32 bits, so
+ * `frames * slots * 2` wraps: 0x10000000 frames * 8 slots * 2 == 0.  The old
+ * check accepted `len == 0` and the writer then ran past the buffer.  These
+ * cases must all be rejected.
+ */
+static void test_geometry_overflow(void)
+{
+	u8 buf[8];
+
+	/* The exact wrap from the review: product truncates to 0. */
+	assert(fon_tdm_buffer_init(buf, 0, 8, 0x10000000u,
+				   FON_TDM_HDR08_ZERO) == -EINVAL);
+	assert(fon_tdm_buffer_set_control(buf, 0, 8, 0x10000000u, 0) ==
+	       -EINVAL);
+
+	/* Products that overflow when multiplied in 32 bits. */
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, 0x08000000u,
+				   FON_TDM_HDR08_ZERO) == -EINVAL);
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), FON_TDM_MAX_SLOTS,
+				   UINT_MAX, FON_TDM_HDR08_ZERO) == -EINVAL);
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, UINT_MAX,
+				   FON_TDM_HDR08_ZERO) == -EINVAL);
+
+	/* A real buffer can never satisfy those frame counts. */
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, 0x10000000u,
+				   FON_TDM_HDR08_ZERO) == -EINVAL);
+
+	/* Zero length with a positive frame count is still wrong. */
+	assert(fon_tdm_buffer_init(buf, 0, 8, 1, FON_TDM_HDR08_ZERO) ==
+	       -EINVAL);
+
+	/*
+	 * The largest legitimate geometry must still be accepted, so the
+	 * overflow guard is not simply rejecting everything.
+	 */
+	{
+		static u8 big[FON_TDM_MAX_SLOTS * 2 * 32];
+
+		assert(fon_tdm_buffer_init(big, sizeof(big), FON_TDM_MAX_SLOTS,
+					   32, FON_TDM_HDR08_ZERO) == 0);
+		assert(fon_tdm_buffer_init(big, sizeof(big) - 1,
+					   FON_TDM_MAX_SLOTS, 32,
+					   FON_TDM_HDR08_ZERO) == -EINVAL);
+	}
+}
+
 
 static void test_buffer_control_only(void)
 {
@@ -201,7 +288,7 @@ static void test_buffer_control_only(void)
 	unsigned int f;
 	u16 status = 0;
 
-	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, 8) == 0);
+	assert(fon_tdm_buffer_init(buf, sizeof(buf), 8, 8, FON_TDM_HDR08_5555) == 0);
 	memcpy(before, buf, sizeof(buf));
 
 	assert(fon_tdm_buffer_set_control(buf, sizeof(buf), 8, 8, 0x4001) == 0);
@@ -254,7 +341,7 @@ static void test_control_offset_is_slot_five(void)
 		size_t len = (size_t)slots * 2 * 2;
 		unsigned int byte;
 
-		assert(fon_tdm_buffer_init(buf, len, slots, 2) == 0);
+		assert(fon_tdm_buffer_init(buf, len, slots, 2, FON_TDM_HDR08_5555) == 0);
 		assert(fon_tdm_buffer_set_control(buf, len, slots, 2,
 						  0x1234) == 0);
 
@@ -287,7 +374,7 @@ static void test_avm_geometry_matches(void)
 
 	assert(avm_slots * sizeof(u16) * avm_fs_per_dma == avm_half);
 	assert(len == avm_half);
-	assert(fon_tdm_buffer_init(buf, len, avm_slots, avm_fs_per_dma) == 0);
+	assert(fon_tdm_buffer_init(buf, len, avm_slots, avm_fs_per_dma, FON_TDM_HDR08_5555) == 0);
 
 	/* The control word exists in all 32 frames of the AVM half. */
 	assert(fon_tdm_buffer_set_control(buf, len, avm_slots, avm_fs_per_dma,
@@ -327,6 +414,8 @@ int main(void)
 	test_ring_bits();
 	test_buffer_geometry();
 	test_buffer_silence();
+	test_header08_branches();
+	test_geometry_overflow();
 	test_buffer_control_only();
 	test_control_offset_is_slot_five();
 	test_avm_geometry_matches();

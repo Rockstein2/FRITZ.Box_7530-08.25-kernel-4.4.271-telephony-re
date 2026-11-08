@@ -112,41 +112,56 @@ u16 fon_tdm_reg48_ring_bits(u16 reg48)
 /*
  * Buffer-level control-only helpers.
  *
- * The geometry check is deliberately strict: `slots` must be at least
- * FON_TDM_CONTROL_SLOT + 1 so that slot 5 exists inside a frame, and the
- * buffer must hold exactly `frames * slots * 2` bytes. A short buffer is an
- * error, never a partial fill.
+ * The geometry check is deliberately strict and overflow-free.  On the
+ * 32-bit IPQ4019, `frames * slots * 2` can wrap: `frames = 0x10000000` with
+ * 8 slots gives 0 after truncation, which would accept a zero-length buffer
+ * and let the writer run past its end.  Dividing instead of multiplying
+ * cannot overflow.
  */
 static bool fon_tdm_geometry_ok(unsigned int slots, unsigned int frames,
 				size_t len)
 {
+	size_t frame_bytes;
+
 	if (!slots || !frames)
 		return false;
 	if (slots > FON_TDM_MAX_SLOTS)
 		return false;
 	if (slots < FON_TDM_CONTROL_SLOT + 1)
 		return false;
-	return len == (size_t)frames * slots * 2;
+
+	frame_bytes = (size_t)slots * sizeof(u16);
+	return len % frame_bytes == 0 && len / frame_bytes == frames;
 }
 
 int fon_tdm_buffer_init(u8 *buf, size_t len, unsigned int slots,
-			unsigned int frames)
+			unsigned int frames, enum fon_tdm_header_08 hdr08)
 {
+	u16 hdr_word;
 	unsigned int f;
 
 	if (!buf || !fon_tdm_geometry_ok(slots, frames, len))
 		return -EINVAL;
+	if (hdr08 != FON_TDM_HDR08_ZERO && hdr08 != FON_TDM_HDR08_5555)
+		return -EINVAL;
+
+	hdr_word = (hdr08 == FON_TDM_HDR08_5555) ? FON_TDM_HEADER_AUDIO
+						 : FON_TDM_HEADER_ZERO;
 
 	for (f = 0; f < frames; f++) {
-		u8 *frame = buf + (size_t)f * slots * 2;
+		u8 *frame = buf + (size_t)f * slots * sizeof(u16);
 
-		/* Silence: every slot zero, then the fixed header words. */
-		memset(frame, 0, (size_t)slots * 2);
+		/*
+		 * Zero everything first, then lay down the AVM header rails.
+		 * Only the words from 0x0c on are audio; 0x00..0x0a are
+		 * framing values and the control slot.
+		 */
+		memset(frame, 0, (size_t)slots * sizeof(u16));
 		put_le16(frame + 0x00, FON_TDM_HEADER_ZERO);
 		put_le16(frame + 0x02, FON_TDM_HEADER_SYNC);
 		put_le16(frame + 0x04, FON_TDM_HEADER_SYNC);
 		put_le16(frame + 0x06, FON_TDM_HEADER_SYNC);
-		put_le16(frame + 0x08, FON_TDM_HEADER_AUDIO);
+		put_le16(frame + 0x08, hdr_word);
 		put_le16(frame + FON_TDM_CONTROL_OFFSET, 0);
 	}
 	return 0;
@@ -161,8 +176,8 @@ int fon_tdm_buffer_set_control(u8 *buf, size_t len, unsigned int slots,
 		return -EINVAL;
 
 	for (f = 0; f < frames; f++)
-		put_le16(buf + (size_t)f * slots * 2 + FON_TDM_CONTROL_OFFSET,
-			 control);
+		put_le16(buf + (size_t)f * slots * sizeof(u16) +
+			 FON_TDM_CONTROL_OFFSET, control);
 	return 0;
 }
 
@@ -175,7 +190,7 @@ int fon_tdm_buffer_get_status(const u8 *buf, size_t len, unsigned int slots,
 	if (index >= frames)
 		return -ERANGE;
 
-	*status = get_le16(buf + (size_t)index * slots * 2 +
+	*status = get_le16(buf + (size_t)index * slots * sizeof(u16) +
 			   FON_TDM_CONTROL_OFFSET);
 	return 0;
 }

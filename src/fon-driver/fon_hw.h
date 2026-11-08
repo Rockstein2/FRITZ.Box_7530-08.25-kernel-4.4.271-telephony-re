@@ -16,6 +16,7 @@
 #include <linux/mutex.h>
 
 #include "fon_dma.h"
+#include "fon_tdm.h"
 
 /*
  * IPQ4019 ADSS/MBOX register offsets.  Addresses come exclusively from
@@ -133,6 +134,7 @@ struct fon_tdm_dev {
 	u32 rx_frames;
 	u32 tx_frame_errors;
 	u32 rx_frame_errors;
+	enum fon_tdm_header_08 header08;
 	u16 control_word;
 };
 

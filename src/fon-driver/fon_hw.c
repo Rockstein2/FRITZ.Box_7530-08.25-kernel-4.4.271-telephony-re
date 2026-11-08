@@ -58,6 +58,17 @@ MODULE_PARM_DESC(allow_mmio_reads,
 		 "Allow explicit read-only MMIO diagnostics after the caller has proven the ADSS clock/reset state (default: false)");
 
 /*
+ * Word at frame offset 0x08.  AVM's TxDMA writes 0x5555 or 0x0000 depending
+ * on a flag it derives at run time; that condition is not decoded.  The
+ * default is 0x0000 (zero buffer contents), and this parameter makes the
+ * choice explicit instead of burying it.
+ */
+static bool tdm_hdr08_5555;
+module_param(tdm_hdr08_5555, bool, 0444);
+MODULE_PARM_DESC(tdm_hdr08_5555,
+		 "Use 0x5555 at TX frame offset 0x08 instead of 0x0000 (default: false; the AVM selection condition is not decoded)");
+
+/*
  * probe_only is the default and intentionally acquires no MMIO, clock or
  * reset resource.  It is the first hardware-test mode: it only reports what
  * the DT describes and whether sibling DT reg ranges overlap.
@@ -296,24 +307,39 @@ err:
 	return ret;
 }
 
-static int fon_tdm_fill_silent(struct fon_tdm_dev *tdm, size_t buf_size)
+static int fon_tdm_fill_frames(struct fon_tdm_dev *tdm, size_t buf_size)
 {
-	unsigned int frames = buf_size / (tdm->slots * 2);
+	size_t frame_bytes = (size_t)tdm->slots * sizeof(u16);
+	unsigned int frames;
 	unsigned int i;
 	int ret;
 
-	if (!frames || frames * tdm->slots * 2 != buf_size)
+	/*
+	 * Divide rather than multiply: on 32-bit ARM `frames * slots * 2`
+	 * can wrap and accept a zero-length buffer.
+	 */
+	if (!frame_bytes || buf_size % frame_bytes)
+		return -EINVAL;
+
+	frames = buf_size / frame_bytes;
+	if (!frames || frames > FON_DMA_FRAMES_PER_BUFFER)
 		return -EINVAL;
 
 	for (i = 0; i < 2; i++) {
 		ret = fon_tdm_buffer_init(tdm->tx.buf[i], buf_size, tdm->slots,
-					  frames);
+					  frames, tdm->header08);
 		if (ret) {
 			tdm->tx_frame_errors++;
 			return ret;
 		}
 	}
 	tdm->tx_frames = frames;
+	/*
+	 * Default buffer contents only.  ZERO here means "what this buffer
+	 * happens to contain", NOT "a control word the SC14448 is known to
+	 * treat as line-idle": AVM's build_slic_ctrl(0, 0, 0) returns 0x4000,
+	 * so 0x0000 is not the AVM idle encoding.  dma_start stays blocked.
+	 */
 	tdm->control_word = 0;
 	return 0;
 }
@@ -357,13 +383,15 @@ static int fon_tdm_dma_prepare(struct fon_tdm_dev *tdm)
 	}
 
 	/*
-	 * Control-only dry-run: fill both TX halves with silent frames that
-	 * carry a zero control word.  Nothing is armed by this: slot 5 stays
-	 * 0x0000, every audio slot stays 0.  The RX halves stay zeroed by the
-	 * allocator and are only read back, never interpreted, until DMA is
-	 * validated on hardware.
+	 * Control-only dry-run: fill both TX halves with AVM-shaped frames.
+	 * The frames are NOT all silence: bytes 0x02-0x08 are AVM framing
+	 * rails, 0x0a is the control word and only 0x0c onward is audio.
+	 * The control word stays 0x0000, which is default buffer content and
+	 * is NOT a proven SC14448 line-idle command.  Nothing is armed: no
+	 * DMA starts, and the RX halves stay zeroed by the allocator and are
+	 * never interpreted until DMA is validated on hardware.
 	 */
-	ret = fon_tdm_fill_silent(tdm, buf_size);
+	ret = fon_tdm_fill_frames(tdm, buf_size);
 	if (ret) {
 		fon_dma_ring_free(tdm->dev, &tdm->rx);
 		fon_dma_ring_free(tdm->dev, &tdm->tx);
@@ -478,6 +506,8 @@ static ssize_t diagnostics_show(struct device *dev, struct device_attribute *att
 			   tdm->rx_frame_errors);
 	n += sysfs_emit_at(buf, n, "control_word=0x%04x\n",
 			   tdm->control_word);
+	n += sysfs_emit_at(buf, n, "hdr08=0x%04x\n",
+			   tdm->header08 == FON_TDM_HDR08_5555 ? 0x5555 : 0x0000);
 	mutex_unlock(&tdm->lock);
 	return n;
 }
@@ -731,6 +761,8 @@ static int fon_tdm_probe(struct platform_device *pdev)
 		return -EINVAL;
 	}
 	tdm->slots = slots;
+	tdm->header08 = tdm_hdr08_5555 ? FON_TDM_HDR08_5555
+				       : FON_TDM_HDR08_ZERO;
 	if (slots != 8)
 		dev_warn(&pdev->dev,
 			 "qcom,tdm-slots=%u: only the recovered 8-slot FON geometry is validated\n",
