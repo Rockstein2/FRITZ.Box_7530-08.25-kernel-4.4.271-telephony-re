@@ -210,6 +210,44 @@ be reproduced, but the INTID arithmetic is confirmed.
 slave-mode clock produced by the SC14448, not by our PLL.  It is a **sanity
 value, not a tuning target**.
 
+### 4b. Which audio node the FON uses (C3, 2026-11-08)
+
+The 7530 DTB enables **two** QCA audio descriptions with **opposite**
+channel pairs.  Only one is the FON path.
+
+| Node | dma-tx | dma-rx | stereo-tx | stereo-rx | Role |
+|---|---|---|---|---|---|
+| `tdm@0` (`qca,ipq4019-tdm`) | 0 | 7 | **0** | **3** | **FON / pcmlink** |
+| `pcm@7704000` (`qca,ipq4019-pcm`) | 6 | 1 | 3 | 0 | not the FON path |
+
+Evidence: compiled HW236 DTB (`tdm@0` block, `pcm@7704000` block) and the OEM
+runtime log `intf_tdm_probe: ena: dma-tx-channel=0 stereo-tx-port=0 / ena:
+dma-rx-channel=7 stereo-rx-port=3` (`history/fon-oem-bootlog-crosscheck.md`).
+
+**`stereo-tx-port`/`stereo-rx-port` select the hardware**, not
+`dma-tx-channel`: `tdm_if_adss_dma_init()` passes `stereo_tx`/`stereo_rx` as
+the `dma_id` and uses `mbox_data[stereo_tx].irq`
+(`ipq-adss-avm.c:2208,2216`).  `dma-tx-channel` is read and logged only.
+
+Consequence for our DTS: `mbox_tx=0x7708000`, `mbox_rx=0x770E000`,
+`stereo_tx=0x7709000`, `stereo_rx=0x770F000` — **already correct**.
+
+### 4c. Terminology: GPL vs proprietary disassembly
+
+Some FON facts in this file are **not** from published GPL source.  They come
+from disassembling proprietary AVM modules and are labelled accordingly:
+
+| Fact | Source class |
+|---|---|
+| slot-5 control word at frame offset `0x0a` | **proprietary disassembly** (`pcmlink.ko`) |
+| hook = RX status bit 3 → reg 0x44 bit 7 | **proprietary disassembly** (`pcmlink.ko`) |
+| `build_slic_ctrl` bit layout | **proprietary disassembly** (`pcmlink.ko`) |
+| MBOX/stereo/TDM channel selection | **GPL** (`ipq-adss-avm.c`) + DTB + OEM log |
+| 8 slots × 16 bit, slave mode, delays | **GPL** (`ipq-adss-avm.c`) |
+
+Do not describe a `proprietary disassembly` fact as "GPL".  Both are
+`CONFIRMED` on the Linux side; neither proves the SC14448 side.
+
 ## 5. GPIO (board HW236)
 
 | Function | GPIO | Notes | Evidence |
