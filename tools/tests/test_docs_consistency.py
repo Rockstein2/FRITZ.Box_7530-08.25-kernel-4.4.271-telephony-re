@@ -707,8 +707,50 @@ if D04.is_file():
 if KF.is_file():
     t = KF.read_text()
     check("fs_per_dma is not claimed as a GPL literal 32",
-          "32 is INFERRED for the FON path" in t, True)
+          "not a literal 32" in t, True)
     check("Q76 is the fs_per_dma question id", "(Q76)" in t, True)
+
+# ---------------------------------------------------------------------------
+# 18. D0.5: PCM net identification and runbook
+# ---------------------------------------------------------------------------
+D05 = ROOT / "docs" / "fon-d05-pcm-net-identification.md"
+D05RB = ROOT / "docs" / "runbook" / "fon-stage-d05-pcm-net-identification.md"
+check("d05 pcm net doc exists", D05.is_file(), True)
+check("d05 runbook exists", D05RB.is_file(), True)
+
+if D05.is_file():
+    t = D05.read_text()
+    check("d05 maps i2s_rx to gpio20-23",
+          "`i2s_rx` | 0, 1, 2, **20, 21, 22, 23**" in t, True)
+    check("d05 maps i2s_tx to gpio24-26",
+          "`i2s_tx` | **24, 25, 26**" in t, True)
+    check("d05 states no pinctrl-0 on PCM nodes",
+          "no `pinctrl-0`" in t or "has `pinctrl-0`? |" in t, True)
+    check("d05 keeps the physical point UNKNOWN",
+          "Accessible point" in t and "**UNKNOWN**" in t, True)
+    check("d05 resolves the 0x808 FPGA flag",
+          "FPGA-present flag" in t, True)
+    check("d05 downgrades fs_per_dma to unresolved",
+          "UNRESOLVED" in t and "withdrawn" in t, True)
+
+if D05RB.is_file():
+    t = D05RB.read_text()
+    check("d05 runbook starts with finding the net",
+          "finding the net" in t, True)
+    check("d05 runbook forbids powered QFP probing",
+          "NO-GO" in t and "QFP" in t, True)
+    check("d05 runbook refuses A/B as PCM without proof",
+          "are not identified as PCM" in t, True)
+    check("d05 runbook requires 1.8 V-capable front end",
+          "1.8 V-capable" in t, True)
+    check("d05 runbook marks BCLK as not measured here",
+          "neither frequency has been measured" in t, True)
+
+README = ROOT / "src" / "fon-driver" / "README.md"
+if README.is_file():
+    t = README.read_text()
+    check("driver README uses the 7530 hdr08 default 0x5555",
+          "byte 0x08  0x5555" in t, True)
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
