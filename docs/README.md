@@ -15,6 +15,8 @@ what the hardware actually emitted; it is evidence, not a summary.
 The external workspace layout is documented locally in `../WORKSPACE.md`
 (outside Git): `reference/`, `evidence/`, `restore/`, `backups/`, `work/`,
 `builds/`. Small sanitized evidence stays in `docs/reference/` in Git.
+Verify the canonical layout and all SHA256 manifests with
+`sh tools/verify-workspace.sh`.
 
 ## Layer 1 — current truth (`docs/`)
 
