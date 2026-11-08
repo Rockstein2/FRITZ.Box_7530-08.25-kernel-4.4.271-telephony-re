@@ -56,10 +56,11 @@ int fon_tdm_frame_init_ex(u8 *frame, size_t len, enum fon_tdm_header_08 hdr08)
 		return -EINVAL;
 
 	/*
-	 * The one-frame API owns the whole buffer: zero all of `len` and lay
-	 * the rails over the first frame, so trailing bytes are deterministic.
+	 * The one-frame API owns the whole buffer.  fon_tdm_frame_build()
+	 * zeroes all `len` bytes before laying the rails over the first
+	 * frame, so trailing bytes stay deterministic without a second
+	 * memset here.
 	 */
-	memset(frame, 0, len);
 	fon_tdm_frame_build(frame, len, hdr08);
 	return 0;
 }

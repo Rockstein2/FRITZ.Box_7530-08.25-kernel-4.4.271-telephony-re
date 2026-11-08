@@ -323,6 +323,42 @@ static void test_single_frame_matches_buffer(void)
 }
 
 
+/*
+ * The single-frame helper must zero every byte it is given and must not
+ * touch anything past `len`.  This guards the removal of the redundant
+ * memset in fon_tdm_frame_init_ex(): the internal builder has to do it.
+ */
+static void test_single_frame_zeroes_only_len(void)
+{
+	u8 buf[24];
+	unsigned int total;
+
+	/* Fill with a poison pattern so a missing clear is visible. */
+	memset(buf, 0x5a, sizeof(buf));
+
+	assert(fon_tdm_frame_init_ex(buf, 16, FON_TDM_HDR08_5555) == 0);
+
+	/* Rails inside the frame. */
+	assert(le16(buf + 0x00) == 0x0000);
+	assert(le16(buf + 0x02) == 0xfefe);
+	assert(le16(buf + 0x04) == 0xfefe);
+	assert(le16(buf + 0x06) == 0xfefe);
+	assert(le16(buf + 0x08) == 0x5555);
+	assert(le16(buf + 0x0a) == 0x0000);
+
+	/* Every byte up to len is defined and zeroed apart from the rails. */
+	for (total = 0; total < 16; total++) {
+		bool rail = (total < 0x0c);
+
+		if (!rail)
+			assert(buf[total] == 0x00);
+	}
+
+	/* Nothing past len may be touched. */
+	for (total = 16; total < sizeof(buf); total++)
+		assert(buf[total] == 0x5a);
+}
+
 static void test_buffer_control_only(void)
 {
 	u8 buf[8 * 16];
@@ -459,6 +495,7 @@ int main(void)
 	test_header08_branches();
 	test_geometry_overflow();
 	test_single_frame_matches_buffer();
+	test_single_frame_zeroes_only_len();
 	test_buffer_control_only();
 	test_control_offset_is_slot_five();
 	test_avm_geometry_matches();
