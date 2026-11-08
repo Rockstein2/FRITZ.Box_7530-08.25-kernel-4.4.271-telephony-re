@@ -25,8 +25,8 @@ build must confirm.
 |---|---|---|---|
 | Q2 | Which virq is assigned to INTID 188 and 191 on our kernel? | `/proc/interrupts` | A |
 | Q3 | Is the DT trigger `IRQ_TYPE_LEVEL_HIGH` what the GIC actually reports? | `/sys/kernel/irq/*/trigger` or `debugfs` | A |
-| Q4 | Is the TDM frame sync (8 kHz) actually present when the SC14448 runs under OpenWrt? | passive scope/logic analyser | A / bench |
-| Q5 | Is the bit clock really ~1.025 MHz on this board under OpenWrt? | scope | bench |
+| Q4 | Is the TDM frame sync (8 kHz) actually present when the SC14448 runs under OpenWrt? | read-only TLMM software probe under a `CONFIG_DEVMEM=y` test kernel (C0+), or passive scope/logic analyser; the software probe observes only the IPQ4019 input path | A / bench |
+| Q5 | Is the bit clock really ~1.025 MHz on this board under OpenWrt? | read-only TLMM software probe with a sample rate comfortably above 4.1 MS/s (C0+), or scope; a low-rate `DETECTED` result is not a frequency | bench |
 | Q8 | Do the six register blocks map without conflict? | Stage C | C |
 
 Stage A/B already closed the resource-claim, probe-bind and probe-only IRQ
@@ -81,14 +81,14 @@ checks; those results are in `fon-known-facts.md` §9c/§9d.
 
 | # | Question | How to answer | Stage |
 |---|---|---|---|
-| Q27 | Does the SC14448 currently emit FSC/BCLK, i.e. is it running? | scope measurement on an identified net, `runbook/fon-tdm-passive-test.md`; C0 only showed that Linux has no mux owner, which does not read back hardware `FUNC_SEL` and does not prove the line is inactive | probe |
+| Q27 | Does the SC14448 currently emit FSC/BCLK, i.e. is it running? | read-only TLMM software probe (C0+) under a `CONFIG_DEVMEM=y` test kernel, then scope on an identified net. C0 only showed that Linux has no mux owner; it did not read back hardware `FUNC_SEL` and did not prove the line inactive | probe |
 | Q28 | Is `GCC_AUDIO_AHB_CLK` required to read the ADSS registers? | C1 with clock enabled, then a controlled negated run | C1 |
 | Q34 | Does the audio AHB gate actually close when disabled? | one post-disable `readl()` of `0x181b010` (bit 31 + FSM bits) | C2.2 |
 | Q76 | Is `fs_per_dma = 32` correct for the FON `tdm_if_adss_dma_init()` call site? | **narrowed**: `fs_per_dma` is `[r5] / [r5+8]` from the board config in `ipq40xxtdm_linkinit`, not a literal 32; the numeric board values are in the closed `avm_get_hw_config_table`. `/proc/avm/profile` is only AVM Profiler v3 and does not expose them. Needs the 7530 board table or an offline module/board-table reconstruction | C4 |
 | Q74 | Does our dry-run TX frame (`0xfefe` sync words + `0x5555` at slot 4 + control at slot 5) match what `pcmlink.ko` actually sends byte-for-byte? | diff against the Stage-5 `TxDMA` header dump | C3/C4 |
 | Q75 | Is the SC14448 genuinely the consumer of the slot-5 control word? | passive TDM capture + a later controlled write/read-back once clocks are proven | D0.4 / C4 |
 | Q36 | Which SC14448 revision is on HW236 (A or B), and how many audio codecs does it have? | die/package marking, or the exact-variant datasheet | research |
-| Q37 | Can FSC/BCLK be measured with a passive GPIO read (no pinmux change)? | **the shell method is too slow** (process per sample, GPIO subsystem); a kernel edge counter validated against a known signal is required | C0+ |
+| Q37 | Can FSC/BCLK be measured with a passive GPIO read (no pinmux change)? | **partly answered**: direct read-only TLMM polling avoids the slow shell/sysfs path and needs no pinmux change. The userspace tool is prepared, but stock OpenWrt has `CONFIG_DEVMEM` disabled; a reviewed test kernel or the kernel-side skeleton is required, and a hardware run has not been done | C0+ |
 | Q38 | What does the still-undecoded SC14448 access to `0x00FF600E` configure? (`0x00FF6006` is already known to be pulsed as a trigger.) | decode the `0x00FF600E` writers or obtain the register map | research |
 | Q57 | Do `0x000Fxxxx` and `0x00FFxxxx` map to different hardware, or is there an address decode that aliases them? | **still open after PERIPH-3**: 12 pairs share the low 20 bits in both images, but the access structures differ and no document or measurement exists.  Needs a SC14448 map, a bus trace, or a write/read-back experiment | research |
 | Q40 | Which dispatch key reaches the `0x2558` arm? | data-flow across blocks; no symbol table in the image | research |
@@ -105,7 +105,7 @@ checks; those results are in `fon-known-facts.md` §9c/§9d.
 | Q39 | What electrical level reaches the SC14448 reset pin under OpenWrt, and is it asserted? OEM shows GPIO40 high/out; OpenWrt shows input 0. The pad state is known on both sides, the SC14448-side level is not. | establish the net/polarity first, then passive simultaneous observation; no toggle without separate approval | D / bench |
 | Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
 | Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |
-| Q31 | Which physical PCM group is wired to the SC14448, and what will the TLMM `FUNC_SEL` be under OpenWrt? OEM live readback shows a mixed group: GPIO21/22=2, GPIO23/25/26/27=3, GPIO20/24=0. PCB connectivity and the OpenWrt state remain unknown. | schematic, continuity to an identified net, OpenWrt TLMM readback, or passive waveform evidence | probe |
+| Q31 | Which physical PCM group is wired to the SC14448, and what will the TLMM `FUNC_SEL` be under OpenWrt? OEM live readback shows a mixed group: GPIO21/22=2, GPIO23/25/26/27=3, GPIO20/24=0. PCB connectivity and the OpenWrt state remain unknown. | read-only TLMM readback plus software edge observation (C0+) narrows the live group, but continuity to an identified net or passive waveform evidence is still needed for the physical answer | probe |
 | Q32 | Does the console UART tolerate a userspace uploader without corrupting the stream? | C-controlled test with `quiet loglevel=0` | D |
 | Q33 | What are the SC14448 boot reply timings on this unit? | measurement during a controlled handshake | D |
 

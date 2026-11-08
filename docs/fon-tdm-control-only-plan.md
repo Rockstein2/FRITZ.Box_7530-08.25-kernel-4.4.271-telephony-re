@@ -73,10 +73,36 @@ Consequences:
 
 1. Mainline Linux cannot read TDM activity through its pinctrl state; the
    hardware mux value is unknown.
-2. The **only** way to answer Q4/Q27 is an electrical measurement at a real
-   test point (or a reviewed TLMM readback).
+2. The final physical answer to Q4/Q27 needs an electrical measurement at a
+   real test point.  A reviewed, read-only TLMM probe can narrow it first
+   without a scope.
 3. Absence of a Linux-visible signal is **not** evidence that the SC14448 is
    silent.
+
+### 2.1 Read-only TLMM software probe (C0+)
+
+There is a third option besides the scope and the GPIO subsystem: a
+userspace program can map the TLMM window read-only and poll the raw
+`GPIO_IO(n)` input bit.  This is the same input path used by the OEM
+`Piglet_noemif.ko` check and it does not request a GPIO line, change pinmux,
+or enable a clock.
+
+The implementation is `tools/fon-tlmm-clock-probe/`; the procedure is
+`runbook/fon-stage-c0plus-software-clock-probe.md`.
+
+Limitations:
+
+- the stock OpenWrt 25.12.6 kernel has `# CONFIG_DEVMEM is not set`, so the
+  userspace variant needs a reviewed test kernel with `CONFIG_DEVMEM=y`;
+- it observes only the IPQ4019 input path, not the physical wire, amplitude
+  or signal quality;
+- a 1.024 MHz BCLK estimate needs a sample rate comfortably above 4.1 MS/s;
+  otherwise the tool reports `DETECTED`, not a reliable frequency;
+- `STATIC_OBSERVED` does not prove the SC14448 is silent.
+
+The software probe can therefore **narrow** Q4/Q5/Q27/Q31 under a reviewed
+test kernel.  It does not replace the electrical measurement for the final
+physical answer.
 
 ## 3. Safe measurement points
 
@@ -183,6 +209,7 @@ point**: FRITZ!OS is known to print `TDM: FS: 8000 Hz CLK: 1025720 Hz`.
 | Action | Decision | Condition |
 |---|---|---|
 | passive level measurement on A/B | **GO** | multimeter, board unpowered for continuity |
+| read-only TLMM software probe | **GO only after separate review** | `CONFIG_DEVMEM=y` test kernel; no writes; see C0+ runbook |
 | scope on an identified TDM net | **GO** | net first identified unpowered; 1.8 V-capable front end |
 | scope on a QFP perimeter pin | **NO-GO** unless a safer pad exists | risk of short/bridging |
 | GPIO40 toggle | **NO-GO** | separate approval |

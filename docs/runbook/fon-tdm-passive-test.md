@@ -7,6 +7,14 @@
 Purpose: decide, **without changing anything**, whether the Dialog SC14448 is
 currently producing TDM clocks, and whether the IPQ4019 sees them.
 
+> **A scope is not the only way to detect input edges.**  The OEM itself
+> counts transitions by reading the TLMM input register.  A read-only
+> userspace probe can do the same under a reviewed `CONFIG_DEVMEM=y` test
+> kernel; see `fon-stage-c0plus-software-clock-probe.md` and
+> `../../tools/fon-tlmm-clock-probe/`.  It observes the IPQ4019 input path
+> only and does not replace the electrical measurement for the physical wire,
+> amplitude or signal quality.
+
 ---
 
 ## 1. What should be on the wire
@@ -76,6 +84,12 @@ All of these are passive and already available in the Stage C0 collector:
 These checks can distinguish only "another Linux driver owns the pins" from
 "nobody owns them".  They cannot tell whether the SC14448 is toggling its
 outputs.
+
+A direct read-only TLMM poll is not one of the checks above: it reads the raw
+input bit rather than the GPIO sysfs value.  Under a `CONFIG_DEVMEM=y` test
+kernel it can detect FSC/BCLK transitions without a scope, but it still sees
+only the SoC side of the wire.  Use it as a pre-screen; keep the scope step
+for the final electrical answer.
 
 ---
 

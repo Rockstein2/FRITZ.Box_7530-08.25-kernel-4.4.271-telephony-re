@@ -1,0 +1,10 @@
+/fon-tlmm-clock-probe
+/test_core
+*.o
+/kernel/*.ko
+/kernel/.*.cmd
+/kernel/.*.o
+/kernel/Module.symvers
+/kernel/modules.order
+/kernel/.module-common.o
+/kernel/.tmp_versions/

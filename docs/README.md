@@ -76,6 +76,7 @@ Procedures and build records. Executable, dated, not arguments.
 | `runbook/fon-dialog-hw-test-plan.md` | SC14448 bench plan (procedure form) |
 | `runbook/fon-dialog-uart-sniff-plan.md` | UART boot-sniff plan |
 | `runbook/fon-tdm-passive-test.md` | Passive FSC/BCLK measurement and pin candidates |
+| `runbook/fon-stage-c0plus-software-clock-probe.md` | Read-only TLMM software TDM clock probe; prepared, never executed |
 
 ## Layer 4 — history (`history/`)
 
@@ -100,7 +101,8 @@ provenance, never as status.
 | `history/fon-adss-avm-init-sequence.md` | AVM's ADSS/TDM order and register table |
 | `history/fon-adss-tdm-channel-map.md` | ADSS channel and port mapping |
 | `history/fon-audio-ahb-clock-warning.md` | AHB clock warning on disable; what remains unproven |
-| `history/fon-tdm-clock-software-check.md` | Recovered `pcmlink` FSC/DCL count algorithm |
+| `history/fon-tdm-clock-software-check.md` | Corrected Piglet 100 µs boot algorithm and separate pcmlink diagnostic; C0+ probe design |
+| `history/fon-c0plus-offline-validation.md` | C0+ tool build, synthetic tests, cross-build and stock-image `/dev/mem` blocker |
 | `history/fon-tdm-hardware.md` | TDM/ADSS frame parameters and register map |
 | `history/fon-pcmlink-register-path.md` | Recovered register path (slot 5, `TxDMA`/`PutRxDMA`) |
 

@@ -26,7 +26,7 @@ unknown. D0.6 did not authorize an active reset/upload.
 | OEM live PCM `FUNC_SEL` | GPIO21/22=2; GPIO23/25/26/27=3; GPIO20/24=0 | **CONFIRMED (OEM-CAPTURE)** |
 | `pinmux-pins` vs actual mux | OEM shows `MUX UNCLAIMED` for GPIO20–27 while `/proc/avm/gpio/list` shows func 2/3 | **CONFIRMED (not a hardware readback)** |
 | Actual hardware `FUNC_SEL` under OpenWrt | Linux reports no mux owner, but that is not a TLMM register readback | **UNKNOWN** |
-| Clock check | `Piglet_noemif.ko:Check_TDMInterface()` calls `dakota_gpio_ctrl(gpio,0,0)` and counts edges; it does not generate clocks | **CONFIRMED (code)** |
+| Clock check | `Piglet_noemif.ko:Check_TDMInterface()` uses a 100 µs window, counts edges and reports `5 * edges`; it does not generate clocks. The `[pcmlink]TDM` string is a separate diagnostic command | **CONFIRMED (code)** |
 | Piglet ctrl side effects | `dakota_gpio_ctrl()` may change pad configuration; body unavailable | **UNKNOWN** |
 | Active physical mux group/wiring | software names and selectors do not prove PCB connectivity | **UNKNOWN** |
 | OEM DTB selection | three HW236 DTBs in `kernel.image`; FON properties identical, only `subrevision` differs. OEM runtime log and live FDT report `HWS(2)`, matching the first blob | **board subrevision CONFIRMED; bootloader choice UNKNOWN (Q80)** |

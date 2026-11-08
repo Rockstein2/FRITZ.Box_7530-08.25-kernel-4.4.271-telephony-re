@@ -120,8 +120,10 @@ and errors with `ERROR: resource gpio %d not available` / `no
 gpio_avm_pcmlink_fsc exist`.  So the GPIO numbers come from the same board
 table summarised in §1.1; `pcmlink.ko` does not invent pins.
 
-`[pcmlink]TDM: FS: %u Hz CLK: %u Hz` is the runtime check; it returns
-failure if FSC/DCL are missing or the measured clock is below threshold.
+`[piglet]TDM: FS: %u Hz CLK: %u Hz` is the boot-time runtime check; it
+returns failure if FSC/DCL are missing or the measured clock is below the
+100-edge threshold.  `pcmlink` has a separate `[pcmlink]TDM` diagnostic
+string; it is not the boot line.
 
 ## 2. The signal table requested by the task
 

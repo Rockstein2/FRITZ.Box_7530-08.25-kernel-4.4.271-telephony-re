@@ -1,7 +1,7 @@
 # FON go / no-go gates
 
 Status: **probe-only and C1 completed; D0.6 offline reconstruction completed;
-C4 and every active SC14448 action remain NO-GO**
+C0+ software probe prepared offline; C4 and every active SC14448 action remain NO-GO**
 
 Each gate names the open question it closes (see `fon-open-questions.md`)
 and the fact it relies on (see `fon-known-facts.md`).
@@ -17,8 +17,8 @@ stage at a time.  Do not skip from probe-only to DMA or line control.
 | IRQ not requested in probe-only (closed Stage B check) | `irq_spi=156/159`, `irq_intid=188/191`, `irq=-1` | Stage B diagnostics | **PASS 2026-11-07** |
 | No visible resource overlap (closed Stage A/B check) | `/proc/iomem` identical before/after | Stage A/B | **PASS 2026-11-07** |
 | Clock/reset/pinctrl ownership (Q2, Q3) | `/proc/iomem`, `/proc/interrupts`, pinctrl/clk export | Stage A + review | **PARTIAL 2026-11-07** — probe-only holds `clock_refs=0 reset_refs=0 pinctrl_ref=0`; GPIO40 unclaimed was confirmed in D0.6; real ownership under DMA still open |
-| TDM clocks present (Q4, Q5) | passive FSC/DCL/MCL measurement | scope/logic analyzer | **pending** |
-| SC14448 running (Q4) | passive UART/clock evidence | scope/logic analyzer | **pending** |
+| TDM clocks present (Q4, Q5) | read-only TLMM software probe (C0+) and/or passive FSC/DCL/MCL measurement | C0+ under a `CONFIG_DEVMEM=y` test kernel; scope/analyzer for the electrical answer | **pending** |
+| SC14448 running (Q4) | read-only TLMM edge evidence and/or passive UART/clock evidence | C0+ test kernel or scope/logic analyzer | **pending** |
 | GPIO40 software ownership | OEM DTB + `Piglet_noemif.ko` disassembly + OpenWrt pinctrl state | Stage D0.6 | **PASS (software path)** — GPIO40 belongs to `dect_loader` under FRITZ!OS and is unclaimed under OpenWrt |
 | GPIO40 electrical net/polarity/safety (Q13, Q15, Q39) | identified net plus passive electrical evidence | future bench stage | **pending — blocks any toggle** |
 | Recovery proven (Q23) | tested rollback to known-good image | bench dry-run | **pending** |
@@ -59,6 +59,8 @@ probe-only preparation:   READY
 probe-only hardware:      PASS (2026-11-07)
 C1 MMIO read:             PASS (2026-11-07)
 D0.6 offline RE:          COMPLETE
+C0+ offline preparation:  PASS (tool + tests + runbook)
+C0+ hardware run:         NOT RUN (needs separate approval; stock image has no /dev/mem)
 OEM 08.25 live readback:  PASS (read-only console)
 D0.6 read-only snapshot:  NOT RUN
 C2 rerun / C4 DMA:        NOT READY
@@ -170,3 +172,22 @@ would leave the ADSS clocked while software believes it is off.
 **C4 (active TDM) is NO-GO** until Q4/Q27 show the SC14448 supplies
 BCLK/FSC **and** the clock gate is understood.  Dry-run frame building is
 offline only and changes no hardware state.
+
+### Stage C0+ gates (software TDM clock probe, 2026-11-08)
+
+| Gate | Evidence | Status |
+|---|---|---|
+| OEM Piglet algorithm recovered | 100 µs window, `5 * edges`, `[piglet]TDM` call site | **PASS (DISASM)** |
+| OEM pcmlink diagnostic separated | ~195 ms window; not the boot line | **PASS (DISASM)** |
+| TLMM register map verified | base `0x01000000`, stride `0x1000`, `IO+4` bit 0 | **PASS (GPL source)** |
+| Userspace read-only tool | `tools/fon-tlmm-clock-probe/`, `PROT_READ` only, no GPIO/pinctrl/clk/reset calls | **PASS (offline build)** |
+| Synthetic signal tests | 8 kHz, 1.024 MHz, undersampled, static, short-window | **PASS** |
+| Source write guard | no `PROT_WRITE`, `writel`, GPIO request, pinctrl/clock/reset | **PASS** |
+| Stock OpenWrt `/dev/mem` | `# CONFIG_DEVMEM is not set` | **NO-GO for userspace probe on stock image** |
+| Test kernel / kernel skeleton | design prepared, not built or loaded | **NOT RUN** |
+| Hardware measurement under OpenWrt | requires separate review | **NO-GO until approved** |
+| Physical wire/amplitude/quality | still requires electrical evidence | **pending** |
+
+The C0+ tool is an observation aid.  A clean FSC/BCLK result would narrow Q4,
+Q5, Q27 and Q31, but it would **not** authorize reset, firmware, DMA or
+line/ring, and it would not prove the physical connection to the SC14448.
