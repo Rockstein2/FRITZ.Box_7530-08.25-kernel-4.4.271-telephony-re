@@ -200,7 +200,7 @@ be reproduced, but the INTID arithmetic is confirmed.
 | DMA RX channel | 7 (MBOX3) | GPL, OEM |
 | Stereo TX port | 0 | GPL, OEM |
 | Stereo RX port | 3 | GPL, OEM |
-| Frames per DMA buffer | **32 documented** (`4 ms == 32` in `ipq-adss-avm.c:2178`); the value `pcmlink.ko` actually passes is `slot_ratio`, not decoded to a number → **32 is INFERRED for the FON path (Q76)** | GPL (doc comment) / proprietary disassembly |
+| Frames per DMA buffer | `fs_per_dma` is computed as `[r5] / [r5+8]` from the board config (`ipq40xxtdm_linkinit` `0x9ef0..0x9f28`), not a literal 32; the 7530 board values are in the closed `avm_get_hw_config_table` → **UNRESOLVED (Q76)**.  The GPL comment `4 ms == 32` describes the intent, not the passed number | GPL (doc comment) / proprietary disassembly |
 | Buffer size | 512 bytes per ping-pong half, **if** `fs_per_dma = 32` and `slots = 8` (`32 * 8 * 2`) | derived, INFERRED |
 | DMA descriptors | 16 | GPL |
 | Descriptor size (IPQ4019) | 156 bytes, `L1_CACHE_ALIGN` = 192 | GPL |
@@ -231,6 +231,26 @@ the `dma_id` and uses `mbox_data[stereo_tx].irq`
 
 Consequence for our DTS: `mbox_tx=0x7708000`, `mbox_rx=0x770E000`,
 `stereo_tx=0x7709000`, `stereo_rx=0x770F000` — **already correct**.
+
+### 4d. TX frame word at offset 0x08 (D0.5, 2026-11-08)
+
+`TxDMA` (`0x98ac..0x98c8`) writes:
+
+```
+movw r2, #0x5555
+ldr  r3, [TDMPriv, #0x808]
+cmp  r3, #0
+movne r2, #0
+strh r2, [frame + 0x08]
+```
+
+`+0x808` is set to 1 by `fpgadata_init` (`0x9434..0x944c`) only when
+`(config & 0x1003) == 0x1001`, i.e. an FPGA is present.  Stock `pcmlink`
+runs `abmode=1` (**no FPGA**) on the 7530, so `+0x808 == 0` and the TX frame
+carries **0x5555** at offset 0x08.  `0x0000` is the FPGA-board branch.
+
+Driver default is therefore `FON_TDM_HDR08_5555`; `tdm_hdr08_zero=1` selects
+the other branch for experiments.
 
 ### 4c. Terminology: GPL vs proprietary disassembly
 
