@@ -72,6 +72,14 @@ u16 fon_tdm_reg48_ring_bits(u16 reg48);
 
 /* Frame helpers.  Return -EINVAL if the buffer is too short. */
 int fon_tdm_frame_init(u8 *frame, size_t len);
+
+/*
+ * Same as fon_tdm_frame_init() but with an explicit header selector.
+ * fon_tdm_frame_init() is exactly this with FON_TDM_HDR08_5555, which keeps
+ * its historical behaviour; the buffer helper defaults to _ZERO in the
+ * driver.  Both share one internal builder, so they cannot drift apart.
+ */
+int fon_tdm_frame_init_ex(u8 *frame, size_t len, enum fon_tdm_header_08 hdr08);
 int fon_tdm_frame_set_control(u8 *frame, size_t len, u16 control);
 int fon_tdm_frame_get_status(const u8 *frame, size_t len, u16 *status);
 

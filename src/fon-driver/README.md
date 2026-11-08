@@ -37,8 +37,10 @@ byte 0x00  0x0000      header
 byte 0x02  0xfefe      header (sync rail)
 byte 0x04  0xfefe      header (sync rail)
 byte 0x06  0xfefe      header (sync rail)
-byte 0x08  0x0000      AVM writes 0x5555 or 0x0000 here; the choice is a
-                       module parameter (tdm_hdr08_5555, default false)
+byte 0x08  0x5555      AVM writes 0x5555 when TDMPriv+0x808 == 0 (no FPGA).
+                       The 7530 runs abmode=1 (no FPGA), so 0x5555 is the
+                       board-correct value; tdm_hdr08_zero=1 selects the
+                       FPGA branch 0x0000
 byte 0x0a  16-bit control word (physical slot 5) — 0x0000 after prepare
 byte 0x0c  audio slots, zeroed
 ```

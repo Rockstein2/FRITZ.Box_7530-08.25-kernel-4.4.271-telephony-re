@@ -281,6 +281,48 @@ static void test_geometry_overflow(void)
 }
 
 
+/*
+ * The one-frame and buffer helpers must produce byte-identical frames for
+ * the same parameters, so the two APIs cannot drift apart again.
+ */
+static void test_single_frame_matches_buffer(void)
+{
+	u8 single[FON_TDM_MAX_SLOTS * 2];
+	u8 buffer[FON_TDM_MAX_SLOTS * 2];
+	unsigned int slots;
+
+	for (slots = FON_TDM_CONTROL_SLOT + 1; slots <= FON_TDM_MAX_SLOTS;
+	     slots++) {
+		size_t len = (size_t)slots * 2;
+
+		assert(fon_tdm_frame_init_ex(single, len,
+					     FON_TDM_HDR08_5555) == 0);
+		assert(fon_tdm_buffer_init(buffer, len, slots, 1,
+					   FON_TDM_HDR08_5555) == 0);
+		assert(memcmp(single, buffer, len) == 0);
+
+		assert(fon_tdm_frame_init_ex(single, len,
+					     FON_TDM_HDR08_ZERO) == 0);
+		assert(fon_tdm_buffer_init(buffer, len, slots, 1,
+					   FON_TDM_HDR08_ZERO) == 0);
+		assert(memcmp(single, buffer, len) == 0);
+	}
+
+	/*
+	 * The historical one-frame entry point keeps its 0x5555 behaviour,
+	 * so old callers are unaffected by the new selector.
+	 */
+	assert(fon_tdm_frame_init(single, 16) == 0);
+	assert(fon_tdm_frame_init_ex(single, 16,
+				     FON_TDM_HDR08_5555) == 0);
+	assert(le16(single + 0x08) == 0x5555);
+
+	/* An invalid selector is rejected by both entry points. */
+	assert(fon_tdm_frame_init_ex(single, 16,
+				     (enum fon_tdm_header_08)9) == -EINVAL);
+}
+
+
 static void test_buffer_control_only(void)
 {
 	u8 buf[8 * 16];
@@ -416,6 +458,7 @@ int main(void)
 	test_buffer_silence();
 	test_header08_branches();
 	test_geometry_overflow();
+	test_single_frame_matches_buffer();
 	test_buffer_control_only();
 	test_control_offset_is_slot_five();
 	test_avm_geometry_matches();

@@ -63,10 +63,18 @@ MODULE_PARM_DESC(allow_mmio_reads,
  * default is 0x0000 (zero buffer contents), and this parameter makes the
  * choice explicit instead of burying it.
  */
-static bool tdm_hdr08_5555;
-module_param(tdm_hdr08_5555, bool, 0444);
-MODULE_PARM_DESC(tdm_hdr08_5555,
-		 "Use 0x5555 at TX frame offset 0x08 instead of 0x0000 (default: false; the AVM selection condition is not decoded)");
+/*
+ * TxDMA writes 0x5555 at frame offset 0x08 when TDMPriv+0x808 == 0 and
+ * 0x0000 when it is non-zero.  +0x808 is set by fpgadata_init only when the
+ * board config advertises an FPGA (config & 0x1003 == 0x1001); stock
+ * pcmlink runs with abmode=1, i.e. no FPGA, so the 7530 takes the 0x5555
+ * branch.  The default therefore matches the 7530, and the parameter exists
+ * only to exercise the other branch deliberately.
+ */
+static bool tdm_hdr08_zero;
+module_param(tdm_hdr08_zero, bool, 0444);
+MODULE_PARM_DESC(tdm_hdr08_zero,
+		 "Use 0x0000 at TX frame offset 0x08 (FPGA-board branch) instead of the 7530's 0x5555 (default: false)");
 
 /*
  * probe_only is the default and intentionally acquires no MMIO, clock or
@@ -761,8 +769,8 @@ static int fon_tdm_probe(struct platform_device *pdev)
 		return -EINVAL;
 	}
 	tdm->slots = slots;
-	tdm->header08 = tdm_hdr08_5555 ? FON_TDM_HDR08_5555
-				       : FON_TDM_HDR08_ZERO;
+	tdm->header08 = tdm_hdr08_zero ? FON_TDM_HDR08_ZERO
+				       : FON_TDM_HDR08_5555;
 	if (slots != 8)
 		dev_warn(&pdev->dev,
 			 "qcom,tdm-slots=%u: only the recovered 8-slot FON geometry is validated\n",

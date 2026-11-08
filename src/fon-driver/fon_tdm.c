@@ -23,18 +23,44 @@ static u16 get_le16(const u8 *p)
 	return (u16)p[0] | ((u16)p[1] << 8);
 }
 
-int fon_tdm_frame_init(u8 *frame, size_t len)
+/*
+ * Single internal frame builder.  Both the one-frame helper and the buffer
+ * helper go through this, so they cannot drift apart again.
+ */
+static void fon_tdm_frame_build(u8 *frame, size_t frame_len,
+				enum fon_tdm_header_08 hdr08)
 {
-	if (!frame || len < FON_TDM_MIN_FRAME_BYTES)
-		return -EINVAL;
+	u16 hdr_word = (hdr08 == FON_TDM_HDR08_5555) ? FON_TDM_HEADER_AUDIO
+						     : FON_TDM_HEADER_ZERO;
 
-	memset(frame, 0, len);
+	memset(frame, 0, frame_len);
 	put_le16(frame + 0x00, FON_TDM_HEADER_ZERO);
 	put_le16(frame + 0x02, FON_TDM_HEADER_SYNC);
 	put_le16(frame + 0x04, FON_TDM_HEADER_SYNC);
 	put_le16(frame + 0x06, FON_TDM_HEADER_SYNC);
-	put_le16(frame + 0x08, FON_TDM_HEADER_AUDIO);
+	put_le16(frame + 0x08, hdr_word);
 	put_le16(frame + FON_TDM_CONTROL_OFFSET, 0);
+}
+
+int fon_tdm_frame_init(u8 *frame, size_t len)
+{
+	/* Historical behaviour: the one-frame helper always used 0x5555. */
+	return fon_tdm_frame_init_ex(frame, len, FON_TDM_HDR08_5555);
+}
+
+int fon_tdm_frame_init_ex(u8 *frame, size_t len, enum fon_tdm_header_08 hdr08)
+{
+	if (!frame || len < FON_TDM_MIN_FRAME_BYTES)
+		return -EINVAL;
+	if (hdr08 != FON_TDM_HDR08_ZERO && hdr08 != FON_TDM_HDR08_5555)
+		return -EINVAL;
+
+	/*
+	 * The one-frame API owns the whole buffer: zero all of `len` and lay
+	 * the rails over the first frame, so trailing bytes are deterministic.
+	 */
+	memset(frame, 0, len);
+	fon_tdm_frame_build(frame, len, hdr08);
 	return 0;
 }
 
@@ -137,7 +163,6 @@ static bool fon_tdm_geometry_ok(unsigned int slots, unsigned int frames,
 int fon_tdm_buffer_init(u8 *buf, size_t len, unsigned int slots,
 			unsigned int frames, enum fon_tdm_header_08 hdr08)
 {
-	u16 hdr_word;
 	unsigned int f;
 
 	if (!buf || !fon_tdm_geometry_ok(slots, frames, len))
@@ -145,25 +170,9 @@ int fon_tdm_buffer_init(u8 *buf, size_t len, unsigned int slots,
 	if (hdr08 != FON_TDM_HDR08_ZERO && hdr08 != FON_TDM_HDR08_5555)
 		return -EINVAL;
 
-	hdr_word = (hdr08 == FON_TDM_HDR08_5555) ? FON_TDM_HEADER_AUDIO
-						 : FON_TDM_HEADER_ZERO;
-
-	for (f = 0; f < frames; f++) {
-		u8 *frame = buf + (size_t)f * slots * sizeof(u16);
-
-		/*
-		 * Zero everything first, then lay down the AVM header rails.
-		 * Only the words from 0x0c on are audio; 0x00..0x0a are
-		 * framing values and the control slot.
-		 */
-		memset(frame, 0, (size_t)slots * sizeof(u16));
-		put_le16(frame + 0x00, FON_TDM_HEADER_ZERO);
-		put_le16(frame + 0x02, FON_TDM_HEADER_SYNC);
-		put_le16(frame + 0x04, FON_TDM_HEADER_SYNC);
-		put_le16(frame + 0x06, FON_TDM_HEADER_SYNC);
-		put_le16(frame + 0x08, hdr_word);
-		put_le16(frame + FON_TDM_CONTROL_OFFSET, 0);
-	}
+	for (f = 0; f < frames; f++)
+		fon_tdm_frame_build(buf + (size_t)f * slots * sizeof(u16),
+				    (size_t)slots * sizeof(u16), hdr08);
 	return 0;
 }
 
