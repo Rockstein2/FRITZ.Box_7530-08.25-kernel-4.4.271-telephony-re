@@ -86,9 +86,9 @@ build must confirm.
 | Q28 | Is `GCC_AUDIO_AHB_CLK` required to read the ADSS registers? | C1 with clock enabled, then a controlled negated run | C1 |
 | Q34 | Does the audio AHB gate actually close when disabled? | one post-disable `readl()` of `0x181b010` (bit 31 + FSM bits) | C2.2 |
 | Q35 | Which TX/RX port pairing does the FON need (AVM uses 3 for TX, our node uses 0)? | **answered 2026-11-08**: the FON uses the `tdm@0` node — stereo-tx **0** / stereo-rx **3**, MBOX0/MBOX3, IRQ 156/159.  The `stereo-tx-port = 3` figure belongs to the separate `pcm@7704000` node, which is not the FON path.  Our DTS already matches.  See `fon-adss-tdm-channel-map.md` | answered |
-| Q58 | Is `fs_per_dma = 32` correct for the FON `tdm_if_adss_dma_init()` call site? | compare the `linkinit` register/stack assignment with a buffer fill-time measurement | C4 |
-| Q59 | Does our dry-run TX frame (`0xfefe` sync words + `0x5555` at slot 4 + control at slot 5) match what `pcmlink.ko` actually sends byte-for-byte? | diff against the Stage-5 `TxDMA` header dump | C3/C4 |
-| Q60 | Is the SC14448 genuinely the consumer of the slot-5 control word? | passive TDM capture + a later controlled write/read-back once clocks are proven | D0.4 / C4 |
+| Q76 | Is `fs_per_dma = 32` correct for the FON `tdm_if_adss_dma_init()` call site? | **partly answered**: `fs_per_dma` is `slot_ratio` from `pcmlink.ko` (not a literal 32); the GPL comment documents `4 ms == 32`, so 32 is INFERRED.  Close with a fill-time measurement or by decoding `slot_ratio` | C4 |
+| Q74 | Does our dry-run TX frame (`0xfefe` sync words + `0x5555` at slot 4 + control at slot 5) match what `pcmlink.ko` actually sends byte-for-byte? | diff against the Stage-5 `TxDMA` header dump | C3/C4 |
+| Q75 | Is the SC14448 genuinely the consumer of the slot-5 control word? | passive TDM capture + a later controlled write/read-back once clocks are proven | D0.4 / C4 |
 | Q36 | Which SC14448 revision is on HW236 (A or B), and how many audio codecs does it have? | die/package marking, or the exact-variant datasheet | research |
 | Q37 | Can FSC/BCLK be measured with a passive GPIO read (no pinmux change)? | **the shell method is too slow** (process per sample, GPIO subsystem); a kernel edge counter validated against a known signal is required | C0+ |
 | Q38 | Do the SC14448 firmware PCM accesses (0xFF6006/0xFF600E) reveal the slave clock format? | **answered for 0xFF6006**: the function at `0x2558` writes `0x80` and then clears it to `0`, so it is a trigger, not a format; `0xFF600E` not decoded | research |

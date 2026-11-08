@@ -130,7 +130,7 @@ would leave the ADSS clocked while software believes it is off.
 | Driver builds against 6.12 | `fon_tdm_drv.ko` built from the target tree | **PASS** |
 | Modules default to no transmission | `allow_dma`, `allow_hw_writes`, `probe_only` defaults | **PASS** |
 | `dma_start` still refuses | returns `-EOPNOTSUPP` | **PASS (intentional)** |
-| `fs_per_dma` confirmed | Q58 | **pending** |
+| `fs_per_dma` confirmed | Q76 | **pending** |
 | SC14448 clocks present (Q4/Q27) | passive scope | **pending — blocks C4** |
 | Clock-disable gate understood | `fon-audio-ahb-clock-warning.md` | **pending** |
 

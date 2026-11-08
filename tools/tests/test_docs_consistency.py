@@ -672,6 +672,44 @@ if KF.is_file():
     check("known facts record the tdm@0 role",
           "FON / pcmlink" in t, True)
 
+# ---------------------------------------------------------------------------
+# 17. C3.1: overflow, control-word honesty, header rails, fs_per_dma status
+# ---------------------------------------------------------------------------
+TDMSRC = ROOT / "src" / "fon-driver" / "fon_tdm.c"
+TDMHDR = ROOT / "src" / "fon-driver" / "fon_tdm.h"
+if TDMSRC.is_file():
+    t = TDMSRC.read_text()
+    check("geometry check divides instead of multiplying",
+          "len % frame_bytes == 0 && len / frame_bytes == frames" in t, True)
+    check("geometry check no longer multiplies frames in size_t",
+          "len == (size_t)frames * slots" not in t, True)
+if TDMHDR.is_file():
+    t = TDMHDR.read_text()
+    check("frame is not described as all-silence",
+          "NOT \"all silence\"" in t or "not \"all silence\"" in t.lower(),
+          True)
+    check("offset 0x08 is a parameter, not a constant",
+          "enum fon_tdm_header_08" in t, True)
+
+if D04.is_file():
+    t = D04.read_text()
+    check("d04 fixes the time-base arithmetic",
+          "200 µs/div × 10 div = 2 ms" in t, True)
+    check("d04 no longer claims 200 us/div shows 1.6 frames",
+          "~1.6 frames across the screen" not in t, True)
+    check("d04 says 1 025 720 Hz is OEM-reported, not our measurement",
+          "has not been measured by us" in t, True)
+    check("d04 does not require a 10 s 10 MSa/s dump",
+          "not a 10 s = 100 Msample dump" in t, True)
+    check("d04 keeps firmware-required as a hypothesis",
+          "still a\nhypothesis" in t or "still a hypothesis" in t, True)
+
+if KF.is_file():
+    t = KF.read_text()
+    check("fs_per_dma is not claimed as a GPL literal 32",
+          "32 is INFERRED for the FON path" in t, True)
+    check("Q76 is the fs_per_dma question id", "(Q76)" in t, True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)

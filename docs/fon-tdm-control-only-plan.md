@@ -25,18 +25,24 @@ So C3 stops at **dry-run**, and D0.4 is the measurement that unlocks C4.
 
 ## 1. Expected signals and where they come from
 
-| Signal | Expected | Source |
+| Quantity | Value | Source |
 |---|---|---|
-| FSC | 8 kHz, 125 µs period | OEM log `TDM: FS: 8000 Hz` |
-| BCLK / DCL | ≈ 1 025 720 Hz measured (formula 1 024 000 Hz) | OEM log, GPL formula |
+| FSC | 8000 Hz (125 µs period) | OEM log `TDM: FS: 8000 Hz` |
+| BCLK (OEM-reported) | 1 025 720 Hz | OEM log |
+| BCLK (GPL formula) | 1 024 000 Hz = 8 × 16 × 8000 | GPL (`ipq-adss-avm.c:2060`) |
+| BCLK on **our** board under OpenWrt | **UNKNOWN** | scope not yet applied |
 | Slots per frame | 8 | GPL |
 | Bits per slot | 16 | GPL |
 | Direction | **SC14448 is master; IPQ4019 is slave** | GPL slave path, board DTS |
 
+**1 025 720 Hz has not been measured by us.**  It is what FRITZ!OS printed,
+and it is 0.17 % above the GPL formula.  Treat it as the expected value to
+look for, not as a confirmed measurement on this board under OpenWrt.
+
 The IPQ4019 will **never** generate these clocks in this configuration
-(`master = 0` → `bclk = 254` sentinel = external pad clock).  Therefore:
-**no clock on the wire means the SC14448 is not driving it**, not that the
-SoC failed.
+(`master = 0` → `bclk = 254` sentinel = external pad clock).  Therefore a
+missing clock points at the **SC14448 or the path to it**, not at the SoC
+failing to drive its own output.
 
 ### 1.1 Candidate pins from the AVM board table
 
@@ -90,19 +96,49 @@ continuity to a safer pad exists.
 
 ## 4. Scope / analyser settings
 
+### 4.1 Two settings, two purposes
+
+| Mode | Time base | Shows | Purpose |
+|---|---|---|---|
+| **Overview** | 200 µs/div × 10 div = 2 ms | ~16 FSC frames | is anything toggling at all? |
+| **Detail** | 20 µs/div × 10 div = 200 µs | ~1.6 frames | front shape, edges per slot |
+
+(The earlier draft said "200 µs/div ≈ 1.6 frames"; that was wrong — 200 µs/div
+spans 2 ms, which is 16 frames.)
+
+### 4.2 Common settings
+
 | Parameter | Value | Why |
 |---|---|---|
 | Probe | ×10, ≥ 1 MΩ, ≤ 15 pF | do not load a 1 MHz clock |
-| Logic analyser threshold | **1.8 V-capable** | a 3.3 V-only front end may read permanent low |
+| Instrument threshold | **1.8 V-capable** | a 3.3 V-only front end may read permanent low |
 | Ground | one lead, to a verified low-side board ground | avoid ground loops |
-| Time base | 200 µs/div | ~1.6 frames across the screen |
 | Trigger | rising edge, ~0.9 V, normal, ~200 mV hysteresis | FSC edges |
-| Sample rate (LA) | ≥ 10 MSa/s | ≥ 10 samples per 1 µs BCLK period |
 | Channels | FSC candidate + BCLK candidate, same time base | confirm 16 BCLK per slot |
-| Storage | raw samples | decoded-only views hide periodic errors |
 
 Never drive a signal, inject a clock, connect a signal generator, or hold a
 probe on more than one net at once.
+
+### 4.3 Capture plan
+
+**A. Short high-speed capture** (digital scope, single-shot or normal):
+
+- two channels, FSC candidate + BCLK candidate;
+- ≥ 10 MSa/s per channel (≥ 10 samples per 1 µs BCLK period);
+- long enough for a few dozen to a few hundred frames — at 10 MSa/s that is
+  ~1.6 kB per frame per channel, so a few ms of memory covers hundreds;
+- save the **raw samples**, not only a decoded view.
+
+**B. Long stability observation** (not a 10 s = 100 Msample dump):
+
+- use the scope's hardware frequency/period measurement, or a counter, on
+  the FSC line;
+- watch for **dropouts** (a missed FSC) and drift over minutes;
+- if a stream capture is wanted, lower the sample rate to what the period
+  measurement needs and record only the FSC channel.
+
+A plain digital oscilloscope is sufficient: mode A for shape, mode B for
+stability.  A logic analyser is convenient but not required.
 
 ## 5. How to distinguish real TDM from noise
 
@@ -110,22 +146,30 @@ probe on more than one net at once.
 |---|---|
 | FSC period 125 µs ± 1 %, jitter < 1 µs | genuine 8 kHz frame sync |
 | exactly 16 BCLK edges between two FSC edges per slot, 128 per frame | genuine 8-slot 16-bit TDM |
-| stable duty cycle, no missing edges over ≥ 1000 frames | healthy master |
+| stable duty cycle, no missing edges over many frames | healthy master |
 | BCLK present but FSC absent | partial init; chip started but TDM not framed |
 | random bursts, no fixed period | not TDM; likely unrelated digital activity |
-| flat line | SC14448 not clocking (§6) |
+| flat line | not clocking — see §6 for what that does **not** prove |
 
-A single capture is not enough: record at least **10 s** continuously and
-count frames, so a glitch is not mistaken for a clock.
+A single capture is not enough: a stability run (mode B) is needed to rule out
+a one-off glitch being mistaken for a clock.
 
 ## 6. When absence does **not** prove a fault
 
-A flat line must not be read as "SC14448 broken":
+A flat line must not be read as "SC14448 broken", and it must not be read as
+"firmware is required".  It may mean any of:
 
-- the chip may be held in reset (GPIO40 was observed low as an input);
-- the firmware may never have been uploaded under OpenWrt;
-- the FON block may be clock-gated until a channel is opened;
-- the probe may be on the wrong net or too heavily loaded.
+- the SC14448 is held in reset (GPIO40 was observed low as an input);
+- no firmware has been uploaded under OpenWrt;
+- the relevant clock is gated for another reason;
+- the probe is on the wrong net, or loaded too heavily;
+- the board's audio path behaves differently under OpenWrt for a reason not
+  yet understood.
+
+In particular, **"the FON needs the full DECT firmware" is still a
+hypothesis**.  The AVM boot order makes it plausible, but no measurement has
+shown that FON clocks stop when DECT firmware is absent.  Do not state it as
+established.
 
 Each of these has to be excluded separately before concluding the chip is
 dead.  The comparison that matters is **FRITZ!OS vs OpenWrt on the same
@@ -145,9 +189,9 @@ point**: FRITZ!OS is known to print `TDM: FS: 8000 Hz CLK: 1025720 Hz`.
 ## 8. What to report back
 
 1. Which net was probed and how it was identified (continuity).
-2. FSC period and jitter.
-3. BCLK frequency and edges per slot.
-4. A ≥ 10 s capture with raw samples.
+2. FSC period and jitter, from mode B.
+3. BCLK frequency and edges per slot, from mode A.
+4. Raw samples from the mode A capture.
 5. Whether the same point shows clocks under FRITZ!OS.
 
 With FSC/BCLK confirmed, C4 (active TDM) becomes meaningful; without them,

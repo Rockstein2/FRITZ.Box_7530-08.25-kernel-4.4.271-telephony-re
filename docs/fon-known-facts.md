@@ -200,8 +200,8 @@ be reproduced, but the INTID arithmetic is confirmed.
 | DMA RX channel | 7 (MBOX3) | GPL, OEM |
 | Stereo TX port | 0 | GPL, OEM |
 | Stereo RX port | 3 | GPL, OEM |
-| Frames per DMA buffer | 32 (= 4 ms) | GPL |
-| Buffer size | 512 bytes per ping-pong half | GPL |
+| Frames per DMA buffer | **32 documented** (`4 ms == 32` in `ipq-adss-avm.c:2178`); the value `pcmlink.ko` actually passes is `slot_ratio`, not decoded to a number → **32 is INFERRED for the FON path (Q76)** | GPL (doc comment) / proprietary disassembly |
+| Buffer size | 512 bytes per ping-pong half, **if** `fs_per_dma = 32` and `slots = 8` (`32 * 8 * 2`) | derived, INFERRED |
 | DMA descriptors | 16 | GPL |
 | Descriptor size (IPQ4019) | 156 bytes, `L1_CACHE_ALIGN` = 192 | GPL |
 | Driver slot count | `qcom,tdm-slots = <8>` matches GPL | DT, GPL |

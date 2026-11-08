@@ -253,8 +253,36 @@ DMAPoolSize        = DescriptorPoolSize + 2 * AlignedBufferSize;   /* ping-pong 
 
 Two ping-pong buffers, `ndescs` descriptors (16 for the FON call site).  Our
 `fon_dma.h` uses the same `16` descriptors and the same 28-bit mask, so ring
-geometry is already compatible.  `fs_per_dma` is **INFERRED** (32 in the
-existing fact table; the self-test path passes `8 * 4`).
+geometry is already compatible.
+
+### 5.2 `fs_per_dma` — what is actually known
+
+`tdm_if_adss_dma_init(ref, TxData, RxData, cpu, only_rxirq, slots,
+fs_per_dma, desc_num)` maps to the call site as:
+
+| Argument | FON call site |
+|---|---|
+| `cpu` | `1` |
+| `only_rxirq` | `1` (shared TX/RX interrupt) |
+| `slots` | `slot_size` (8 or 16) |
+| `fs_per_dma` | **`slot_ratio`** = `uidiv([r5+0], [r5+8])` |
+| `desc_num` | `0x10` = 16 |
+
+So the number of frames per DMA buffer is **not a literal 32**: it is the
+`slot_ratio` value computed inside `pcmlink.ko`.  `slot_ratio` has not been
+decoded to a number.
+
+The GPL doc comment at `ipq-adss-avm.c:2178` says *"fs_per_dma: count of
+framesyncs for one dma-buffer (4 ms == 32)"*, and 4 ms at 8 kHz is exactly
+32.  That describes the **intended** value, not necessarily the value passed.
+
+Status: **INFERRED that the FON path uses 32** (Q76).  Consequences if it is
+wrong: the ping-pong half would not be 4 ms, so the buffer size and the
+DMA-relative timing would differ.  It does **not** change the slot-5 byte
+offset, which is per-frame.
+
+For a dry-run the difference is harmless because no DMA runs.  Before C4 it
+must be settled by a fill-time measurement or by decoding `slot_ratio`.
 
 ## 6. The control slot 5
 
