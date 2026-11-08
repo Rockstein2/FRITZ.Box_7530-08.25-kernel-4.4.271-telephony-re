@@ -5,6 +5,7 @@
 | `pcmlink_regs.py` | ELF/register analysis for `pcmlink.ko` (read-only) |
 | `fon-tlmm-clock-probe/` | Read-only TLMM input probe (userspace + one-shot kernel module); offline-only until approved |
 | `tests/test_oem_tdm_timing.py` | Numerical proof of the Piglet 100 ms and PCMLINK 195 ms windows |
+| `fon-slot5-protocol/` | Offline slot-5 control encoder/status decoder and golden vectors |
 | `build-fon-openwrt.sh` | Clean package rebuild in the target SDK |
 | `build-fon-dts-test.sh` | Compile the standalone FON DTS |
 | `prepare-fon-openwrt-tree.sh` | Install the package and apply DT patches 900/901 |

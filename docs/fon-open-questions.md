@@ -57,8 +57,8 @@ checks; those results are in `fon-known-facts.md` §9c/§9d.
 
 | # | Question | Closes with | Stage |
 |---|---|---|---|
-| Q16 | What exactly does the slot-5 control word mean to the SC14448 firmware? | firmware analysis / trace | E |
-| Q17 | What does the slot-5 status word contain besides hook (bit 3)? | trace | E |
+| Q16 | What exactly does the slot-5 control word mean to the SC14448 firmware? | **Linux-side formula fully recovered** (reg48 bits 4-11, reg2c bits 17/18, 0x4000/0x8000 markers, special path reg 0x30). SC14448 semantics still **open**; no firmware handler found | E0 / future trace |
+| Q17 | What does the slot-5 status word contain besides hook (bit 3)? | **Linux-side mapping recovered**: status 0-3 -> reg44 4-7; 5-8 -> reg44 8-11; 0x8000 no update; 0x4000 updates; zero -> 0xbad00000. Physical meaning of most bits **open** | E0 / future trace |
 | Q18 | Is the SC14448 firmware required for FON, or only for DECT? | E test with/without firmware | E |
 | Q19 | Which SC14448 pins drive the discrete line interface? | schematic / probing | E |
 
@@ -84,9 +84,9 @@ checks; those results are in `fon-known-facts.md` §9c/§9d.
 | Q27 | Does the SC14448 currently emit FSC/BCLK, i.e. is it running? | read-only TLMM software probe (C0+) under a `CONFIG_DEVMEM=y` test kernel, then scope on an identified net. C0 only showed that Linux has no mux owner; it did not read back hardware `FUNC_SEL` and did not prove the line inactive | probe |
 | Q28 | Is `GCC_AUDIO_AHB_CLK` required to read the ADSS registers? | C1 with clock enabled, then a controlled negated run | C1 |
 | Q34 | Does the audio AHB gate actually close when disabled? | one post-disable `readl()` of `0x181b010` (bit 31 + FSM bits) | C2.2 |
-| Q76 | Is `fs_per_dma = 32` correct for the FON `tdm_if_adss_dma_init()` call site? | **narrowed**: `fs_per_dma` is `[r5] / [r5+8]` from the board config in `ipq40xxtdm_linkinit`, not a literal 32; the numeric board values are in the closed `avm_get_hw_config_table`. `/proc/avm/profile` is only AVM Profiler v3 and does not expose them. Needs the 7530 board table or an offline module/board-table reconstruction | C4 |
-| Q74 | Does our dry-run TX frame (`0xfefe` sync words + `0x5555` at slot 4 + control at slot 5) match what `pcmlink.ko` actually sends byte-for-byte? | diff against the Stage-5 `TxDMA` header dump | C3/C4 |
-| Q75 | Is the SC14448 genuinely the consumer of the slot-5 control word? | passive TDM capture + a later controlled write/read-back once clocks are proven | D0.4 / C4 |
+| Q76 | Is `fs_per_dma = 32` correct for the FON `tdm_if_adss_dma_init()` call site? | **still open**: E0 did not recover the closed board table or a runtime value. Do not use 32 as a confirmed OEM value. Needs the 7530 board table or an offline module/board-table reconstruction | E0 / C4 |
+| Q74 | Does our dry-run TX frame (`0xfefe` sync words + `0x5555` at slot 4 + control at slot 5) match what `pcmlink.ko` actually sends byte-for-byte? | **partially**: logical header/control values match `TxDMA`; `EOR #2` byte-order mapping and logical slot-5 byte offset are still caveats, so byte-for-byte is not claimed | E0 / C3 |
+| Q75 | Is the SC14448 genuinely the consumer of the slot-5 control word? | **still open**: no slot-5 handler found in the resolved CR16 map; indirect/cross-block paths remain. A future passive TDM capture or trace is required | E0 / D0.4 |
 | Q36 | Which SC14448 revision is on HW236 (A or B), and how many audio codecs does it have? | die/package marking, or the exact-variant datasheet | research |
 | Q37 | Can FSC/BCLK be measured with a passive GPIO read (no pinmux change)? | **partly answered**: direct read-only TLMM polling avoids the slow shell/sysfs path and needs no pinmux change. The userspace tool is prepared, but stock OpenWrt has `CONFIG_DEVMEM` disabled; the kernel module is the preferred path, with strict one-trigger-per-insmod state, built offline but not loaded. A hardware run has not been done | C0+ / C0+-K |
 | Q38 | What does the still-undecoded SC14448 access to `0x00FF600E` configure? (`0x00FF6006` is already known to be pulsed as a trigger.) | decode the `0x00FF600E` writers or obtain the register map | research |
@@ -104,7 +104,7 @@ checks; those results are in `fon-known-facts.md` §9c/§9d.
 | Q47 | Does the hardware reset sequence fetch its entry from the exception table at `INTBASE = 0x24`, or jump directly to a fixed address? The table itself is found (31 entries); its runtime use is not proven. | reset-vector documentation, a bus trace, or a controlled capture | research |
 | Q39 | What electrical level reaches the SC14448 reset pin under OpenWrt, and is it asserted? OEM shows GPIO40 high/out; OpenWrt shows input 0. The pad state is known on both sides, the SC14448-side level is not. | establish the net/polarity first, then passive simultaneous observation; no toggle without separate approval | D / bench |
 | Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
-| Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |
+| Q30 | Is the analog FON usable without the AVM DECT userspace? | **still open**: E0 found no UART/SPI/I2C/GPIO alternate FON control path; the only recovered path is PCMLINK/TDM slot 5. A future firmware/hardware experiment is required | E0 / future bench |
 | Q31 | Which physical PCM group is wired to the SC14448, and what will the TLMM `FUNC_SEL` be under OpenWrt? OEM live readback shows a mixed group: GPIO21/22=2, GPIO23/25/26/27=3, GPIO20/24=0. PCB connectivity and the OpenWrt state remain unknown. | read-only TLMM readback plus software edge observation (C0+) narrows the live group, but continuity to an identified net or passive waveform evidence is still needed for the physical answer | probe |
 | Q32 | Does the console UART tolerate a userspace uploader without corrupting the stream? | C-controlled test with `quiet loglevel=0` | D |
 | Q33 | What are the SC14448 boot reply timings on this unit? | measurement during a controlled handshake | D |

@@ -195,7 +195,7 @@ be reproduced, but the INTID arithmetic is confirmed.
 |---|---|---|
 | Frame rate | 8000 frames/s | GPL, OEM |
 | Physical slots per frame | 8 | GPL (`adss_glb_tdm_ctrl_ch_num(slots - 1)`, "only 8 tested") |
-| Logical codec slots | 6 | OEM (`Codecslots=6`) |
+| Logical codec slots | `6` in the older wiki build; `9` in the OEM 08.25 live runtime | OEM (`Codecslots=9` on 08.25); **not** a physical slot count |
 | Slot width | 16 bit | GPL |
 | Bytes per frame | 16 | GPL (`8 * 2`) |
 | Bit clock formula | `slots * 8 * sizeof(short) * 8000` | GPL |
@@ -510,12 +510,22 @@ probe-only test must not assume an unprogrammed chip.
 
 | Fact | Value | Evidence |
 |---|---|---|
-| FON register transport | `TxDMA` / `PutRxDMA`, 16-bit word in TDM/MBOX **slot 5** | DISASM |
+| FON register transport | `TxDMA` / `PutRxDMA`, 16-bit word at the logical **slot 5** position; `EOR #2` byte-order caveat | DISASM / **caveat** |
 | Hook detection | RX slot 5 status bit 3 -> `reg 0x44` bit 7 | DISASM |
 | Ring control | `reg 0x48` bits 5/6 -> ring command -> TX slot 5 | DISASM |
 | Line feed | `reg 0x48` writes + `build_slic_ctrl` | DISASM (exact SC14448 bits unproven) |
 | FON over UART | **disproved** — no UART imports in `pcmlink`, `isdn_fbox_fon5`, `avm_dect` | GPL |
 | `pcmlink_ll_set_status` as FON transport | **disproved** — real link is `FPGALink` / QCA-ADSS | GPL, DISASM |
+| TX control formula | `ctrl = ((reg48>>3)&0x1e0) | ((reg48>>4)&0xf) | (reg2c bit17?0x10) | (reg2c bit18?0x200) | 0x4000`; special field -> `|0x8000` | DISASM (`0x8f68`) |
+| TX special field | `TDMPriv+0x7f4`, written by the command for register word `0x30` | DISASM |
+| TX command flags | `flags` is a frame-delay gate: `frame_counter < flags<<3` skips the command | DISASM (`TxDMA`) |
+| TX frame constants | `0x0000`, `0xfefe` (slots 1-3), `0x5555` (slot 4; suppressed when `+0x808 !=0`) | DISASM |
+| TX byte-order caveat | raw `strh` uses `EOR #2`; logical slot 5 at 0x0a is the working hypothesis, not independently re-proven | DISASM / **caveat** |
+| RX status mapping | status 0-3 -> reg44 4-7; status 5-8 -> reg44 8-11; status 4/9-14 not mapped; 0x8000 suppresses reg44; 0x4000 does not; zero -> `0xbad00000` | DISASM (`PutRxDMA`) |
+| RX hook | status bit 3 -> reg44 bit 7 -> `slic_get_hook_state`; physical hook meaning INFERRED | DISASM |
+| Ring cadence | `half_period = (500 / freq) << 3` frames, default 25 Hz; bits 5/6 toggled by timer | DISASM |
+| Firmware slot-5 handler | **not found** in resolved CR16 map; bounded negative result, indirect/cross-block paths remain | OFFLINE |
+| OEM `Codecslots` | 08.25 live reports 9; older wiki build reports 6; physical TDM slots remain 8 | OEM-CAPTURE / OEM |
 
 These are Linux-side facts from the proprietary `pcmlink.ko` disassembly. They
 are **CONFIRMED on the Linux side** but do not prove how the SC14448 interprets

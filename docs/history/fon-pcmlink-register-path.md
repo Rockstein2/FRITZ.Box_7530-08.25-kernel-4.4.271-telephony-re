@@ -614,9 +614,10 @@ Supporting facts:
   `stereo0..3`, and `tdm@0` (`Fritz_Box_HW236.dtsi:277..317`).
 - The TDM node uses `MBOX0_TX`/`MBOX3_RX`; the PCM node uses
   `MBOX3_TX`/`MBOX0_RX` (`qcom-ipq4019-audio.dtsi:31..38,189..200`).
-- The 7530 has one SC14448 with a 6-channel PCM+ interface. The six TDM
-  codec slots match `Codecslots=6 Slics=1 DECT=4`: five audio channels plus
-  one control slot.
+- The 7530 has one SC14448 with a PCM+ interface.  The older wiki build
+  reports `Codecslots=6 Slics=1 DECT=4`; the OEM 08.25 live runtime reports
+  `Codecslots=9`.  Neither number is a physical 16-bit slot count; the
+  physical TDM frame remains eight slots.
 - The FON PHY is discrete LM324 + BCP53-16; there is no separate SLIC IC and
   no QCA GPIO for SLIC control. The only digital device on the PCM/MBOX side
   that can drive the discrete line interface is the SC14448.

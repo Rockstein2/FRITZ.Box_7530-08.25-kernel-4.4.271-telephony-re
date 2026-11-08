@@ -29,6 +29,8 @@ Verify the canonical layout and all SHA256 manifests with
 | `fon-adss-clock-reset.md` | What gates ADSS register access: GCC audio clocks, the audio reset, and what AVM does. |
 | `fon-dialog-minimal-loader.md` | Minimal SC14448 boot-firmware loader: design, UART sharing, blockers. |
 | `fon-tdm-control-only-plan.md` | Control-only TDM plan; no DMA yet. |
+| `fon-e0-summary.md` | E0 SC14448/PCMLINK slot-5 research summary and evidence boundary. |
+| `fon-sc14448-pcmlink-protocol.md` | Reconstructed slot-5 TX/RX protocol, confidence and caveats. |
 
 Evidence classes used by `fon-known-facts.md`:
 
@@ -109,6 +111,11 @@ provenance, never as status.
 | `history/fon-c0plus-k1-hardware-result.md` | K1 preflight result; hardware load/unload BLOCKED / NOT RUN |
 | `history/fon-tdm-hardware.md` | TDM/ADSS frame parameters and register map |
 | `history/fon-pcmlink-register-path.md` | Recovered register path (slot 5, `TxDMA`/`PutRxDMA`) |
+| `history/fon-e0-tx-control-reconstruction.md` | TX slot-5 formula, markers, command timing and EOR caveat |
+| `history/fon-e0-rx-status-reconstruction.md` | RX slot-5 status-to-register-0x44 mapping |
+| `history/fon-e0-analog-state-machine.md` | `slics_reset`, ring, hook, line-state dispatch |
+| `history/fon-e0-sc14448-firmware-search.md` | Bounded search for a firmware slot-5 handler |
+| `history/fon-e0-protocol-confidence.md` | E0 confidence matrix and Q16/Q17/Q30/Q74/Q75/Q76 |
 
 ### Dialog SC14448 firmware and CR16
 

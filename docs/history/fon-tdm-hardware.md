@@ -72,7 +72,7 @@ driver exposes named resources so the integrator makes that choice explicit.
 |---|---|---|
 | Frame rate | 8000 frames/s | `tdm_if_adss_dma_init()` documents 4 ms = 32 frames; `fs_per_dma = 32`; AVM TDM code uses 8000 in the BCLK formula. High. |
 | Physical slots per frame | 8 | `ipq40xxtdm_linkinit` derives `slot_size = 8` from the six-codec-slot configuration (`6 < 8`), calls `tdm_if_config_init(8, 1, 1, master)`, and returns 8. `TxDMA`/`PutRxDMA` use that value as the frame stride (`8 * 2 = 16` bytes). High. |
-| Logical codec slots | 6 | AVM boot/configuration reports `Codecslots=6 Slics=1 DECT=4`; `tdm_dma+0x08` is 6. High. |
+| Logical codec slots | 6 in the older wiki build; 9 in OEM 08.25 live | Older boot log reports `Codecslots=6`; the 08.25 live runtime reports `Codecslots=9`.  Neither is the physical TDM slot count (8); `tdm_dma+0x08` is 6 in the older build. |
 | Slot width | 16 bit | `adss_config_tdm()` selects `STEREOn_CONFIG_DATA_WORD_SIZE(1)`, I2S 16-bit and MIC 16-bit. High. |
 | Bytes per frame | 16 | 8 slots × 2 bytes. High. |
 | Frame sync | 8 kHz; AVM programs sync-number field 0 | `adss_glb_tdm_ctrl_sync_num(0, ...)`; the exact FSYNC high-time/duty is a hardware/SC14448 property and is not proven. Medium-high. |

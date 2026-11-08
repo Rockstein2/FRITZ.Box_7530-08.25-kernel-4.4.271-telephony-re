@@ -901,6 +901,7 @@ _root_current = {
     "README.md", "fon-known-facts.md", "fon-open-questions.md",
     "fon-go-no-go.md", "fon-d06-summary.md", "fon-adss-clock-reset.md",
     "fon-dialog-minimal-loader.md", "fon-tdm-control-only-plan.md",
+    "fon-e0-summary.md", "fon-sc14448-pcmlink-protocol.md",
 }
 _root_analysis = [p.name for p in DOCS.glob("*.md")
                   if p.name not in _root_current]
@@ -1278,6 +1279,66 @@ check("C0+ tests cover frequency change and stability",
       "frequency change" in _test and "timing_suspect" in _test, True)
 check("C0+ source guard is wired into make test",
       "check_readonly.py" in (TOOL / "Makefile").read_text(), True)
+
+# ---------------------------------------------------------------------------
+# 25. FON-E0 SC14448/PCMLINK slot-5 research
+# ---------------------------------------------------------------------------
+_slot5 = TOOL.parent / "fon-slot5-protocol"
+for _name in ("README.md", "fon_slot5.h", "fon_slot5.c",
+              "tests/test_golden.c", "tests/check_offline.py", "Makefile"):
+    check(f"E0 slot5 library file exists: {_name}",
+          (_slot5 / _name).is_file(), True)
+
+for _name in ("fon-e0-summary.md", "fon-sc14448-pcmlink-protocol.md"):
+    check(f"E0 current document exists: {_name}",
+          (DOCS / _name).is_file(), True)
+for _name in ("fon-e0-tx-control-reconstruction.md",
+              "fon-e0-rx-status-reconstruction.md",
+              "fon-e0-analog-state-machine.md",
+              "fon-e0-sc14448-firmware-search.md",
+              "fon-e0-protocol-confidence.md"):
+    check(f"E0 history document exists: {_name}",
+          (HISTORY / _name).is_file(), True)
+
+_proto = (DOCS / "fon-sc14448-pcmlink-protocol.md").read_text()
+for _needle in ("build_slic_ctrl", "0x4000", "0x8000",
+                "PutRxDMA", "0x00020008", "0xbad00000",
+                "EOR #2", "Codecslots=9", "Codecslots=6",
+                "slot-5", "8 kHz"):
+    check(f"E0 protocol records {_needle}", _needle in _proto, True)
+
+_e0sum = (DOCS / "fon-e0-summary.md").read_text()
+for _q in ("Q16", "Q17", "Q30", "Q74", "Q75", "Q76"):
+    check(f"E0 summary records {_q}", _q in _e0sum, True)
+
+_fw = (HISTORY / "fon-e0-sc14448-firmware-search.md").read_text()
+for _needle in ("0x000F6002", "0x00FF6006", "0x000F6006",
+                "not found", "indirect", "cross-block"):
+    check(f"E0 firmware search records {_needle}", _needle in _fw, True)
+
+_q16 = find_row(OQ, "Q16")
+_q17 = find_row(OQ, "Q17")
+_q74 = find_row(OQ, "Q74")
+_q75 = find_row(OQ, "Q75")
+_q76 = find_row(OQ, "Q76")
+check("Q16 remains open with Linux-side evidence",
+      _q16 is not None and "Linux-side formula" in " ".join(_q16[1:])
+      and "open" in " ".join(_q16[1:]), True)
+check("Q17 remains open with Linux-side evidence",
+      _q17 is not None and "Linux-side mapping" in " ".join(_q17[1:])
+      and "open" in " ".join(_q17[1:]), True)
+check("Q74 remains partial", _q74 is not None and "partially" in " ".join(_q74[1:]),
+      True)
+check("Q75 remains open", _q75 is not None and "still open" in " ".join(_q75[1:]),
+      True)
+check("Q76 remains open", _q76 is not None and "still open" in " ".join(_q76[1:]),
+      True)
+
+check("E0 tools index links the slot5 library",
+      "fon-slot5-protocol/" in (ROOT / "tools" / "README.md").read_text(),
+      True)
+check("E0 docs index links the protocol",
+      "fon-sc14448-pcmlink-protocol.md" in _docs_index, True)
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
