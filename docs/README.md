@@ -77,7 +77,7 @@ Procedures and build records. Executable, dated, not arguments.
 | `runbook/fon-dialog-uart-sniff-plan.md` | UART boot-sniff plan |
 | `runbook/fon-tdm-passive-test.md` | Passive FSC/BCLK measurement and pin candidates |
 | `runbook/fon-stage-c0plus-software-clock-probe.md` | Read-only TLMM software TDM clock probe; prepared, never executed |
-| `runbook/fon-stage-c0plus-kernel-probe.md` | One-shot kernel TLMM probe; prepared, never loaded |
+| `runbook/fon-stage-c0plus-kernel-probe.md` | K1 load/unload + K2 one-shot kernel TLMM probe; prepared, never loaded |
 
 ## Layer 4 — history (`history/`)
 
@@ -104,6 +104,8 @@ provenance, never as status.
 | `history/fon-audio-ahb-clock-warning.md` | AHB clock warning on disable; what remains unproven |
 | `history/fon-tdm-clock-software-check.md` | Corrected Piglet 100 ms boot algorithm and separate pcmlink diagnostic; C0+ probe design |
 | `history/fon-c0plus-offline-validation.md` | C0+/R1 timing correction, gap tests, cross-build, kernel module and stock-image blocker |
+| `history/fon-c0plus-kernel-safety-review.md` | Final offline safety review, K1/K2 readiness and hardware-unverified risks |
+| `history/fon-c0plus-kernel-build-report.md` | Kernel 6.12.112 build identity, vermagic, module SHA256 and ABI caveats |
 | `history/fon-tdm-hardware.md` | TDM/ADSS frame parameters and register map |
 | `history/fon-pcmlink-register-path.md` | Recovered register path (slot 5, `TxDMA`/`PutRxDMA`) |
 

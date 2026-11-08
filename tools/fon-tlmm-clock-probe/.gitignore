@@ -1,5 +1,6 @@
 /fon-tlmm-clock-probe
 /test_core
+/test_kernel_logic
 *.o
 /kernel/*.ko
 /kernel/.*.cmd

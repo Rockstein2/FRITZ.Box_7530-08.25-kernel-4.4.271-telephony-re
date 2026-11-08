@@ -1,8 +1,9 @@
 # FON go / no-go gates
 
 Status: **probe-only and C1 completed; D0.6 offline reconstruction completed;
-C0+ R1 corrected the OEM window and hardened the probe; C0+-K kernel module
-is prepared offline; C4 and every active SC14448 action remain NO-GO**
+C0+ R1 corrected the OEM window and hardened the probe; C0+-K-R2 added strict
+one-trigger state and 2 ms frequency segments offline; K1/K2 are not run;
+C4 and every active SC14448 action remain NO-GO**
 
 Each gate names the open question it closes (see `fon-open-questions.md`)
 and the fact it relies on (see `fon-known-facts.md`).
@@ -62,9 +63,11 @@ C1 MMIO read:             PASS (2026-11-07)
 D0.6 offline RE:          COMPLETE
 C0+ offline preparation:  PASS (tool + tests + runbook)
 C0+ R1 correction:        PASS (Piglet 100 ms; gap/stability logic)
+C0+-K-R2 offline:         PASS (strict one-shot, 2 ms segments, 25 logic tests)
 C0+-K offline:            PASS (one-shot kernel module built offline; not loaded)
+C0+-K1 load/unload:       READY for separate approval; NOT RUN
+C0+-K2 measurement:       BLOCKED by K1; NOT RUN
 C0+ userspace hardware:   NO-GO on stock image (no /dev/mem)
-C0+-K hardware run:       NOT RUN (needs separate approval)
 OEM 08.25 live readback:  PASS (read-only console)
 D0.6 read-only snapshot:  NOT RUN
 C2 rerun / C4 DMA:        NOT READY
@@ -185,12 +188,13 @@ offline only and changes no hardware state.
 | OEM pcmlink diagnostic separated | ~195 ms window; not the boot line | **PASS (DISASM)** |
 | TLMM register map verified | base `0x01000000`, stride `0x1000`, `IO+4` bit 0 | **PASS (GPL source)** |
 | Userspace read-only tool | `tools/fon-tlmm-clock-probe/`, `PROT_READ` only, no GPIO/pinctrl/clk/reset calls | **PASS (offline build)** |
-| Synthetic signal tests | 52 core checks: 8 kHz at 4×/8×/16×, 1.024 MHz, undersampled/aliased BCLK, gaps, frequency change, pulses, noise, short window | **PASS** |
+| Synthetic signal tests | 52 core + 25 kernel-logic checks: 8 kHz at 4×/8×/16×, 1.024 MHz, undersampled/aliased BCLK, gaps, frequency change, pulses, noise, short window, state machine | **PASS** |
 | OEM numeric timing test | Piglet 100 ms and PCMLINK ≈195 ms arithmetic | **PASS** |
 | Source write guard | no `PROT_WRITE`, `writel`, GPIO request, pinctrl/clock/reset; idle `module_init` | **PASS** |
 | Stock OpenWrt `/dev/mem` | `# CONFIG_DEVMEM is not set` | **NO-GO for userspace probe on stock image** |
-| C0+-K kernel module | one-shot debugfs trigger, allowed GPIO21/22/25/26, 20–50 ms, one page, `readl` only | **PASS (offline build)**; not loaded |
-| C0+-K hardware run | requires separate review | **NO-GO until approved** |
+| C0+-K kernel module | strict one-shot state, allowed GPIO21/22/25/26, 2 ms frequency segments, 20–50 ms, one page, `readl` only | **PASS (offline build + logic tests)**; not loaded |
+| C0+-K1 load/unload | `insmod` idle, read idle, `rmmod`, cleanup | **READY for separate approval; NOT RUN** |
+| C0+-K2 one-shot measurement | one trigger per load; FSC first, BCLK only after FSC is clean | **BLOCKED by K1; NOT RUN** |
 | Physical wire/amplitude/quality | still requires electrical evidence | **pending** |
 | Physical wire/amplitude/quality | still requires electrical evidence | **pending** |
 

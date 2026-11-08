@@ -265,6 +265,18 @@ Q4/Q5/Q27/Q31 are **partially testable** with this probe under a
 `CONFIG_DEVMEM`-enabled test kernel, but they are not closed by offline code
 alone.
 
+### 5.1 C0+-R2 kernel measurement policy
+
+The kernel implementation does not reuse the OEM 100 ms formula.  It uses a
+20–50 ms bounded window, frequent 32-read gap checkpoints and separate ~2 ms
+frequency segments.  The segment frequencies are checked against the expected
+8 kHz / 1.024 MHz with signal-specific tolerances; a low-edge, zero-edge,
+unstable or too-few-segment result is `INCONCLUSIVE`, not a confident
+frequency.
+
+This is a measurement policy, not an OEM reconstruction, and it does not
+change the Piglet or PCMLINK conclusions above.
+
 ---
 
 ## 6. Confidence

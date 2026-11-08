@@ -1110,8 +1110,10 @@ for _name in ("Makefile", "README.md", ".gitignore",
               "fon-tlmm-clock-probe-core.c",
               "fon-tlmm-clock-probe-core.h",
               "tests/test_core.c", "tests/check_readonly.py",
-              "kernel/fon_tlmm_probe.c", "kernel/Makefile",
-              "kernel/README.md"):
+              "kernel/fon_tlmm_probe.c",
+              "kernel/fon_tlmm_probe_logic.h",
+              "kernel/tests/test_logic.c",
+              "kernel/Makefile", "kernel/README.md"):
     check(f"C0+ tool file exists: {_name}", (TOOL / _name).is_file(), True)
 
 OEM_TIMING_TEST = ROOT / "tools" / "tests" / "test_oem_tdm_timing.py"
@@ -1119,7 +1121,21 @@ _clock_doc = HISTORY / "fon-tdm-clock-software-check.md"
 _c0_runbook = RUNBOOK / "fon-stage-c0plus-software-clock-probe.md"
 _c0k_runbook = RUNBOOK / "fon-stage-c0plus-kernel-probe.md"
 _c0_validation = HISTORY / "fon-c0plus-offline-validation.md"
+_c0_safety = HISTORY / "fon-c0plus-kernel-safety-review.md"
+_c0_build = HISTORY / "fon-c0plus-kernel-build-report.md"
 check("C0+ OEM timing test exists", OEM_TIMING_TEST.is_file(), True)
+check("C0+ safety review exists", _c0_safety.is_file(), True)
+check("C0+ kernel build report exists", _c0_build.is_file(), True)
+if _c0_safety.is_file():
+    _st = _c0_safety.read_text()
+    check("C0+ safety review records K1/K2 readiness",
+          "K1" in _st and "K2" in _st and "NOT RUN" in _st, True)
+if _c0_build.is_file():
+    _bt = _c0_build.read_text()
+    check("C0+ build report records vermagic and module hash",
+          "6.12.112 SMP mod_unload ARMv7 p2v8" in _bt
+          and "31173cc9eacf34c8487442cc1fd89270d3b48067fead164301b917ed79312a60"
+          in _bt, True)
 if OEM_TIMING_TEST.is_file():
     _ot = OEM_TIMING_TEST.read_text()
     check("C0+ OEM timing test encodes the Piglet magic",
@@ -1137,6 +1153,8 @@ if _c0_validation.is_file():
     _vt = _c0_validation.read_text()
     check("C0+ validation records 52 synthetic passes",
           "52 PASS, 0 FAIL" in _vt, True)
+    check("C0+ validation records 25 kernel-logic passes",
+          "25 PASS, 0 FAIL" in _vt, True)
     check("C0+ validation records the source guard",
           "7 PASS, 0 FAIL" in _vt, True)
     check("C0+ validation records the OEM numeric test",
@@ -1184,7 +1202,8 @@ if _c0_runbook.is_file():
 if _c0k_runbook.is_file():
     _kt = _c0k_runbook.read_text()
     for _needle in ("debugfs", "vermagic", "echo 1", "rmmod",
-                    "GPIO40", "NO-GO", "20-50"):
+                    "GPIO40", "NO-GO", "20–50", "K1", "K2",
+                    "EALREADY"):
         check(f"C0+-K runbook records {_needle}", _needle in _kt, True)
     check("C0+-K runbook is marked prepared, not executed",
           "prepared, never executed" in _kt, True)
@@ -1237,6 +1256,14 @@ check("C0+ kernel module_init is idle",
 check("C0+ kernel module has a debugfs one-shot trigger",
       "debugfs_create_file" in _kernel and "run_measurement" in _kernel,
       True)
+_klogic = (TOOL / "kernel" / "fon_tlmm_probe_logic.h").read_text()
+check("C0+ kernel logic has separate frequency segments",
+      "PROBE_SEGMENT_NS" in _klogic and "valid_segments" in _klogic, True)
+check("C0+ kernel state machine rejects restarts",
+      "PROBE_TRIGGER_RESULT_READY" in _klogic
+      and "probe_trigger_can_start" in _klogic, True)
+check("C0+ kernel command is strict one-shot",
+      "EALREADY" in _kernel and "command[1] == '\\n'" in _kernel, True)
 _all_c0 = _main + _kernel + _core + _test
 for _needle in ("gpio_request", "gpiod_", "pinctrl_", "reset_control",
                 "request_mem_region"):

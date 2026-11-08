@@ -86,6 +86,7 @@ the kernel module allows only 21, 22, 25 and 26.
 |---|---|
 | Host build | **PASS** |
 | Synthetic core tests | **52 PASS, 0 FAIL** |
+| Kernel logic tests | **25 PASS, 0 FAIL** |
 | Source guard (MMIO writes, GPIO/pinctrl/clk/reset, idle init) | **7 PASS, 0 FAIL** |
 | OEM numeric timing test | **20 PASS, 0 FAIL** |
 | Cross build for ARMv7 musl | **PASS** |
@@ -103,7 +104,8 @@ sha256 f1e8ee5cd665442347dffba8fb3cf73d4647f72da69a9d159655347d80973588
 Kernel module compile check:
 
 ```text
-sha256 1d4bf8788dcadf83dbf8bf3beea467e9efa057b8b8063003e40d387445c7247a
+size 53248 bytes
+sha256 31173cc9eacf34c8487442cc1fd89270d3b48067fead164301b917ed79312a60
 vermagic 6.12.112 SMP mod_unload ARMv7 p2v8
 ```
 
@@ -128,17 +130,20 @@ outside 0.5–2× expected produce `DETECTED`, not a confident estimate.
 Synthetic cases include static 0/1, 8 kHz at 4×/8×/16×, 1.024 MHz,
 1.025 MHz, undersampled/aliased BCLK, scheduler gaps, high-average/local-gap,
 frequency change, short pulses, noise-like toggling, short window and invalid
-input.
+input.  The kernel logic has its own 25 tests, including stable FSC/BCLK,
+OEM 1.024355 MHz, zero/one-edge segments, frequency change, scheduler gaps,
+low edge density and the trigger state machine.
 
 ## 4. Kernel-side architecture
 
 `tools/fon-tlmm-clock-probe/kernel/fon_tlmm_probe.c`:
 
 ```text
-insmod   -> create /sys/kernel/debug/fon_tlmm_probe; idle
-echo 1   -> one bounded 20–50 ms measurement of one allowed GPIO
-cat      -> last result only
-rmmod    -> remove the debugfs node
+insmod     -> create /sys/kernel/debug/fon_tlmm_probe; idle
+echo 1     -> one bounded 20–50 ms measurement of one allowed GPIO
+echo 1 again -> -EALREADY; no second measurement
+cat        -> last result only
+rmmod      -> remove the debugfs node
 ```
 
 - `module_init()` does not call `ioremap()` and does not measure.
@@ -149,6 +154,16 @@ rmmod    -> remove the debugfs node
 - `cond_resched()` every 1024 samples; no preemption/interrupt disabling and
   no real-time scheduling.
 - A timing gap or `CFG` change forces `INCONCLUSIVE`.
+- Gap checkpoints (32 reads) and frequency segments (~2 ms) are separate.
+- FSC uses 10%/20% segment tolerances; BCLK uses 2%/4%.
+- Fewer than three valid segments, any zero/low-edge segment, or segment
+  disagreement forces `INCONCLUSIVE`.
+- A second trigger in the same module lifetime returns `-EALREADY`.
+
+The pure timing policy is in `kernel/fon_tlmm_probe_logic.h`; it is shared
+with `kernel/tests/test_logic.c` (25 checks).  The detailed build identity is
+in `fon-c0plus-kernel-build-report.md`; the hardware-unverified risks are in
+`fon-c0plus-kernel-safety-review.md`.
 
 This is the preferred path for stock OpenWrt because it does not require
 rebuilding the kernel with `CONFIG_DEVMEM=y`.
@@ -202,6 +217,8 @@ tools/fon-tlmm-clock-probe/
   tests/test_core.c
   tests/check_readonly.py
   kernel/fon_tlmm_probe.c
+  kernel/fon_tlmm_probe_logic.h
+  kernel/tests/test_logic.c
   kernel/Makefile
   kernel/README.md
 
@@ -211,6 +228,8 @@ docs/runbook/fon-stage-c0plus-software-clock-probe.md
 docs/runbook/fon-stage-c0plus-kernel-probe.md
 docs/history/fon-tdm-clock-software-check.md
 docs/history/fon-c0plus-offline-validation.md
+docs/history/fon-c0plus-kernel-safety-review.md
+docs/history/fon-c0plus-kernel-build-report.md
 docs/fon-known-facts.md
 docs/fon-open-questions.md
 docs/fon-go-no-go.md

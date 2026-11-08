@@ -257,6 +257,9 @@ correction.
   4x/8x/16x oversampling, undersampled/aliased BCLK, scheduler gaps,
   high-average/local-gap, frequency change, short pulses, noise-like
   toggling, short window and invalid input;
+- `kernel/tests/test_logic.c` — 25 checks for the shared kernel timing logic:
+  stable FSC/BCLK, OEM BCLK 1.024355 MHz, zero/one-edge segments, frequency
+  change, scheduler gaps, low edge density and the one-shot state machine;
 - `tests/check_readonly.py` — source guard against MMIO writes, GPIO requests,
   pinctrl, clock and reset operations, plus an idle-`module_init` guard.
 
@@ -272,13 +275,22 @@ The synthetic tests do not touch hardware.
 `kernel/fon_tlmm_probe.c` is the preferred stock-image path.  It is idle
 after `insmod`: `module_init` only creates
 `/sys/kernel/debug/fon_tlmm_probe`.  Writing `1` to that file performs one
-bounded 20–50 ms measurement of GPIO21/22/25/26; reading returns the last
-result.  It maps one 4 KiB TLMM page, uses `readl()` only, and calls
+bounded 20–50 ms measurement of GPIO21/22/25/26; a second trigger in the same
+module lifetime returns `-EALREADY`.  Reading returns the last result and
+never measures.  It maps one 4 KiB TLMM page, uses `readl()` only, and calls
 `cond_resched()` without disabling preemption or interrupts.
 
-It is deliberately excluded from `make` and `make test`.  It has been
+Gap checkpoints (32 reads) are separate from frequency segments (~2 ms).
+Fewer than three valid segments, zero/low-edge segments, a frequency change
+or a large gap makes the result `INCONCLUSIVE` rather than a confident
+frequency.
+
+It is deliberately excluded from the userspace `make` target.  It has been
 compiled offline against 6.12.112 as a compile check, but it has not been
-loaded.  The separate C0+-K runbook governs load, trigger and unload.
+loaded.  The separate C0+-K runbook governs K1 (load/unload) and K2
+(one-shot measurement); see also
+`docs/history/fon-c0plus-kernel-safety-review.md` and
+`docs/history/fon-c0plus-kernel-build-report.md`.
 
 The kernel path can sample faster than userspace, but it has the same
 limitations: it observes only the IPQ4019 input path, not the physical wire
@@ -296,6 +308,8 @@ fon-tlmm-clock-probe-core.h
 tests/test_core.c
 tests/check_readonly.py
 kernel/fon_tlmm_probe.c
+kernel/fon_tlmm_probe_logic.h
+kernel/tests/test_logic.c
 kernel/Makefile
 kernel/README.md
 .gitignore
