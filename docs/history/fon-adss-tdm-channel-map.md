@@ -56,7 +56,7 @@ which is *not* the FON path.
 
 ## 1. Why `stereo` and not `dma-*-channel` selects hardware
 
-`avm-gpl/sources/kernel/linux/sound/soc/qcom/ipq/ipq-adss-avm.c:2188`
+`reference/sources/avm/avm-gpl/sources/kernel/linux/sound/soc/qcom/ipq/ipq-adss-avm.c:2188`
 `tdm_if_adss_dma_init()`:
 
 ```c

@@ -1,7 +1,7 @@
 # AVM ADSS/TDM initialisation sequence
 
 > **Status: source reconstruction plus hardware-confirmed values.**
-> Everything marked *AVM* comes from `avm-gpl/.../sound/soc/qcom/ipq/ipq-adss-avm.c`
+> Everything marked *AVM* comes from `reference/sources/avm/avm-gpl/.../sound/soc/qcom/ipq/ipq-adss-avm.c`
 > and `ipq-adss.h`.  Everything marked *HW* was observed on the board in
 > Stage C1/C2.  Anything else is labelled as unproven.
 

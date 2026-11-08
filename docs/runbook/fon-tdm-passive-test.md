@@ -35,7 +35,7 @@ IPQ4019 will never generate them in this configuration.
 
 ## 2. Pin candidates and which group is real
 
-From `avm-gpl/.../arch/arm/boot/dts/Fritz_Box_HW236.dtsi` lines 344-383:
+From `reference/sources/avm/avm-gpl/.../arch/arm/boot/dts/Fritz_Box_HW236.dtsi` lines 344-383:
 
 | Signal | Group "PINMUX2" | Group "PINMUX3" | Direction |
 |---|---|---|---|

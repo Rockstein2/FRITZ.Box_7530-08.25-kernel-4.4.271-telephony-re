@@ -53,6 +53,12 @@ for d in \
 	"$FON_REFERENCE/oem-08.25/extracted/firmware" \
 	"$FON_REFERENCE/oem-08.25/extracted/init-scripts" \
 	"$FON_REFERENCE/oem-08.25/dtb" \
+	"$FON_REFERENCE/archive" \
+	"$FON_REFERENCE/sources/openwrt" \
+	"$FON_REFERENCE/sources/avm" \
+	"$FON_REFERENCE/sources/other" \
+	"$FON_REFERENCE/7490" \
+	"$FON_REFERENCE/hardware" \
 	"$FON_EVIDENCE/stage-a" \
 	"$FON_EVIDENCE/stage-b" \
 	"$FON_EVIDENCE/stage-b-c1" \
@@ -110,7 +116,12 @@ for d in \
 	"$FON_REFERENCE/oem-08.25/extracted" \
 	"$FON_REFERENCE/oem-08.25/extracted/rootfs" \
 	"$FON_REFERENCE/oem-08.25/dtb" \
-	"$FON_REFERENCE/sources" \
+	"$FON_REFERENCE/archive" \
+	"$FON_REFERENCE/sources/openwrt" \
+	"$FON_REFERENCE/sources/avm" \
+	"$FON_REFERENCE/sources/other" \
+	"$FON_REFERENCE/7490" \
+	"$FON_REFERENCE/hardware" \
 	"$FON_EVIDENCE/stage-a" \
 	"$FON_EVIDENCE/stage-b" \
 	"$FON_EVIDENCE/stage-b-c1" \

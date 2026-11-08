@@ -62,7 +62,7 @@ show `enable_count = 0`, `hardware enable = N`, consumer `deviceless`.
 
 ## 2. What AVM's GPL driver does
 
-File: `avm-gpl/sources/kernel/linux/sound/soc/qcom/ipq/ipq-adss-avm.c`.
+File: `reference/sources/avm/avm-gpl/sources/kernel/linux/sound/soc/qcom/ipq/ipq-adss-avm.c`.
 
 `intf_audio_adss_probe` (lines 560-580) runs, in this order:
 
