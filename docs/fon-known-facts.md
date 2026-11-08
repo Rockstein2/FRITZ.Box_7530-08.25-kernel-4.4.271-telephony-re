@@ -357,6 +357,7 @@ API transformation, electrical connection, and any inversion are unresolved
 | Piglet ctrl side effects | `dakota_gpio_ctrl()` may reconfigure the pad; its body is unavailable, so this is **not** a proven hardware read-only procedure | **UNKNOWN** |
 | AVM API transformation | body of `dakota_gpio_pinconfig()` and physical effect of `dakota_gpio_out_bit()` are unavailable | **UNKNOWN** |
 | OEM DTB selection | three HW236 DTBs are present in `kernel.image`: `0x98d038` (`subrevision=2`), `0x993990`/`0x99a2e8` (`subrevision=0`); FON-relevant properties are identical. The OEM runtime log reports `HWS(2)`, so this board is **subrevision 2** and the first blob matches it. Which blob the bootloader actually selects is still not observed (Q80) | OEM-DTB, OEM-CAPTURE / **selection UNKNOWN** |
+| Local OEM rootfs verified against live system | all 99 `/lib/modules/4.4.271/*.ko`, 4 `/lib/firmware` files, `dect_eeprom`, `dect_manager`, `telefon` and `voipd` MD5-match the live OEM 08.25 system; `sha256sum` is absent on the OEM BusyBox, local SHA256 manifests remain authoritative | OEM-CAPTURE |
 | 74LVC1G04 | VCC/A/Y = 3.3/3.3/0 V measured under OpenWrt only; no link to GPIO40 or reset proven | RUNTIME-RO / **UNKNOWN role** |
 
 Current D0.6 status and document navigation: `fon-d06-summary.md`.

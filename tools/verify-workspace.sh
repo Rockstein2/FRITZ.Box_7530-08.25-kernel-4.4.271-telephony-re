@@ -67,6 +67,7 @@ for d in \
 	"$FON_EVIDENCE/stage-c0-final" \
 	"$FON_EVIDENCE/oem-08.25/boot-logs/2026-11-08" \
 	"$FON_EVIDENCE/oem-08.25/console/2026-11-08" \
+	"$FON_EVIDENCE/oem-08.25/inventory/2026-11-08" \
 	"$FON_RESTORE/openwrt-25.12.6" \
 	"$FON_BUILDS/probe-only" \
 	"$FON_WORK/extracted/sysupgrade-avm_fritzbox-7530" \
@@ -130,6 +131,7 @@ for d in \
 	"$FON_EVIDENCE/stage-c0-final" \
 	"$FON_EVIDENCE/oem-08.25/boot-logs/2026-11-08" \
 	"$FON_EVIDENCE/oem-08.25/console/2026-11-08" \
+	"$FON_EVIDENCE/oem-08.25/inventory/2026-11-08" \
 	"$FON_BUILDS/probe-only" \
 	"$FON_RESTORE/openwrt-25.12.6"; do
 	check_manifest "$d"
