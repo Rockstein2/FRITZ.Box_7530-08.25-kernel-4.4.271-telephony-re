@@ -106,6 +106,7 @@ provenance, never as status.
 | `history/fon-c0plus-offline-validation.md` | C0+/R1 timing correction, gap tests, cross-build, kernel module and stock-image blocker |
 | `history/fon-c0plus-kernel-safety-review.md` | Final offline safety review, K1/K2 readiness and hardware-unverified risks |
 | `history/fon-c0plus-kernel-build-report.md` | Kernel 6.12.112 build identity, vermagic, module SHA256 and ABI caveats |
+| `history/fon-c0plus-k1-hardware-result.md` | K1 preflight result; hardware load/unload BLOCKED / NOT RUN |
 | `history/fon-tdm-hardware.md` | TDM/ADSS frame parameters and register map |
 | `history/fon-pcmlink-register-path.md` | Recovered register path (slot 5, `TxDMA`/`PutRxDMA`) |
 
