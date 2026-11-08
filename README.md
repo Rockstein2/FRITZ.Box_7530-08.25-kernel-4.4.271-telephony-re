@@ -64,13 +64,14 @@ map, and the real 7530 hardware configuration.
 The `feature/fon-standalone-driver` branch investigates a minimal independent
 FXS driver for the 7530 analog port.
 
-Documentation is split into three layers (see `docs/README.md`):
+Documentation is split into four layers (see `docs/README.md`):
 
 ```text
 docs/fon-known-facts.md          confirmed facts, each with its evidence class
 docs/fon-open-questions.md       every unresolved item and what closes it
 docs/fon-go-no-go.md             gates for each hardware stage
 docs/fon-d06-summary.md          current reset/pinmux/startup reconstruction
+docs/reference/                  primary captured data (OEM boot logs)
 docs/runbook/                    procedures and build records
 docs/history/                    analysis trail (historical, kept for provenance)
 ```

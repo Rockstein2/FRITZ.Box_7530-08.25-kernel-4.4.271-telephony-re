@@ -92,6 +92,7 @@ above ask for; the *expectation* is no longer unknown.
 | Gate | Evidence | Status |
 |---|---|---|
 | OEM HW236 DTBs extracted | three self-consistent blobs at `0x98d038`, `0x993990`, `0x99a2e8`; FON properties identical; only `subrevision` differs | **PASS (extraction)** |
+| Board subrevision | OEM 08.25 capture reports `HWS(2)`, matching the first blob | **PASS (OEM-CAPTURE)** |
 | Which DTB the OEM bootloader selects | Q80 | **UNKNOWN** |
 | GPIO40 software path | `get_profile()` → `profile+0x28` → `dect_loader()` | **PASS** |
 | UART/reset API order | `0xb54` value 0 → `0xb80` UART init → `0xb9c` value 1 | **PASS** |

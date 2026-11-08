@@ -12,6 +12,7 @@ Every row names its evidence class:
 | **DT** | from the board device tree in this repository or in the GPL tree |
 | **OEM-DTB** | from the compiled HW236 tree extracted from FRITZ!OS 08.25 `kernel.image` |
 | **OEM** | observed in `history/wiki-fritzos-oem-bootlog-reference.txt` (FRITZ!OS, kernel **4.4.60**, build 2021-04-26) |
+| **OEM-CAPTURE** | observed in `reference/oem-08.25-boot/` — OEM FRITZ!OS **08.25** on this board, captured 2026-11-08 |
 | **DISASM** | recovered from a proprietary AVM binary; file/function/address must be cited |
 | **CODE** | implemented and offline-tested in `src/fon-driver/` |
 | **OFFLINE** | verified on this workstation, no hardware |
@@ -355,12 +356,31 @@ API transformation, electrical connection, and any inversion are unresolved
 | Piglet clock check | `Check_TDMInterface()` calls `dakota_gpio_ctrl(gpio, 0, 0)`, then reads and counts edges; there is no explicit `dakota_gpio_pinconfig()` in this path, and it does not generate FSC/BCLK | DISASM |
 | Piglet ctrl side effects | `dakota_gpio_ctrl()` may reconfigure the pad; its body is unavailable, so this is **not** a proven hardware read-only procedure | **UNKNOWN** |
 | AVM API transformation | body of `dakota_gpio_pinconfig()` and physical effect of `dakota_gpio_out_bit()` are unavailable | **UNKNOWN** |
-| OEM DTB selection | three HW236 DTBs are present in `kernel.image`: `0x98d038` (`subrevision=2`), `0x993990`/`0x99a2e8` (`subrevision=0`); FON-relevant properties are identical. Which one the bootloader selects is not proven (Q80) | OEM-DTB / **UNKNOWN** |
+| OEM DTB selection | three HW236 DTBs are present in `kernel.image`: `0x98d038` (`subrevision=2`), `0x993990`/`0x99a2e8` (`subrevision=0`); FON-relevant properties are identical. The OEM runtime log reports `HWS(2)`, so this board is **subrevision 2** and the first blob matches it. Which blob the bootloader actually selects is still not observed (Q80) | OEM-DTB, OEM-CAPTURE / **selection UNKNOWN** |
 | 74LVC1G04 | VCC/A/Y = 3.3/3.3/0 V measured under OpenWrt only; no link to GPIO40 or reset proven | RUNTIME-RO / **UNKNOWN role** |
 
 Current D0.6 status and document navigation: `fon-d06-summary.md`.
 Detailed disassembly is retained under `history/fon-d06-*.md`; the DTB
 extraction procedure is `runbook/fon-oem-dtb-extraction.md`.
+
+### 5c. OEM FRITZ!OS 08.25 runtime capture (2026-11-08)
+
+Primary source: `reference/oem-08.25-boot/`. This is OEM **08.25** on this
+board, not the older 4.4.60 wiki log.
+
+| Fact | Value | Evidence |
+|---|---|---|
+| Board revision string | `FW(08.25)HW(236)HWS(2)BV(1.11581)BN(131719)FS(08.25)BT(1)` | OEM-CAPTURE |
+| DECT UART | `msm_dectuart_probe: set dectuart_port to ttyMSM0` | OEM-CAPTURE |
+| Runtime GPIO table | `gpio_avm_dect_reset 40`, `gpio_avm_dect_rd 16` | OEM-CAPTURE |
+| Shared UART | `[piglet]===== shared usage of UART (DECT and CONSOLE) ...` | OEM-CAPTURE |
+| DECT firmware upload | `dect_loader-bootmode`, then `upload of 'dectfw_secondlevel_441.hex' successfull` | OEM-CAPTURE |
+| OEM TDM report | `[piglet]TDM: FS: 8000 Hz CLK: 1024355 Hz` | OEM-CAPTURE |
+| PCMLINK and DMA | `pcmlink` module loaded; `mbox_dma_init: irq=107 hwirq=191` | OEM-CAPTURE |
+
+These confirm the OEM-side sequence and the board subrevision, but they do
+**not** prove GPIO40 polarity, the actual TLMM `FUNC_SEL`, physical PCM
+wiring, or any OpenWrt behaviour. Q13/Q15/Q27/Q31/Q39/Q77/Q81 stay open.
 
 ### UART routing, established from the DTS (2026-11-08)
 
@@ -413,6 +433,11 @@ them, as the decompiled DTB shows.
 | 20.39 s | `mbox_dma_init` success | OEM |
 | 20.69 s | `Codecslots=6 ...` | OEM |
 
+Times above are from the wiki 4.4.60 log. The 2026-11-08 **08.25** capture on
+this board shows the same sequence with `CLK: 1024355 Hz` instead of
+`1025720 Hz`; both are OEM reports from different builds, not OpenWrt
+measurements. See `reference/oem-08.25-boot/`.
+
 **The SC14448 is already running before any TDM client appears.**  A
 probe-only test must not assume an unprogrammed chip.
 
@@ -438,7 +463,9 @@ slot 5 (Q16/Q17/Q75). The source-class split is repeated in §4c.
 | Device | `serial@78af000`, 0x200 bytes | DT |
 | GIC SPI | 107 | DT |
 | Pins | GPIO16/17 | DT |
-| Shared use | DECT loader and kernel console | OEM |
+| DECT port selection | `msm_dectuart_probe: set dectuart_port to ttyMSM0` | OEM-CAPTURE |
+| Shared use | DECT loader and kernel console; OEM 08.25 prints `shared usage of UART (DECT and CONSOLE)` | OEM, OEM-CAPTURE |
+| Arbitration | console and `msm_dectuart_*` share the controller; the arbitration is not recovered (Q79) | **UNKNOWN** |
 | FON driver use | **none** | CODE |
 
 ## 9. Our driver — first hardware run

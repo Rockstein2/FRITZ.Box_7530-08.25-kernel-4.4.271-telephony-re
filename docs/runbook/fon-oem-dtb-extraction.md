@@ -141,8 +141,10 @@ the `subrevision` property. Therefore:
 
 - the D0.6 GPIO40, UART and PINMUX facts do not depend on which of the three
   blobs is selected — those properties are identical;
-- **which blob the OEM bootloader actually chooses, and which hardware
-  subrevision this board is, remain UNKNOWN (Q80)**;
+- the OEM 08.25 runtime capture reports `HWS(2)`
+  (`reference/oem-08.25-boot/`), so this board is **subrevision 2** and the
+  first blob matches it;
+- **which blob the OEM bootloader actually chooses remains UNKNOWN (Q80)**;
 - the `model` string alone is not evidence of bootloader selection.
 
 Save and decompile the first blob:

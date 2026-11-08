@@ -1,14 +1,16 @@
-# FON documentation — current, runbooks, history
+# FON documentation — current, reference, runbooks, history
 
-This index is current. Documentation has three strict layers:
+This index is current. Documentation has four strict layers:
 
 1. `docs/` — current status and decisions;
-2. `docs/runbook/` — reproducible procedures;
-3. `docs/history/` — detailed analysis and superseded reasoning.
+2. `docs/reference/` — primary captured data that stays valid over time;
+3. `docs/runbook/` — reproducible procedures;
+4. `docs/history/` — detailed analysis and superseded reasoning.
 
 Do not use a file under `history/` as the current project status. If current
 files disagree with a runbook or historical report, the current files win. A
-runbook controls procedure, not interpretation.
+runbook controls procedure, not interpretation. A reference capture records
+what the hardware actually emitted; it is evidence, not a summary.
 
 ## Layer 1 — current truth (`docs/`)
 
@@ -30,13 +32,25 @@ Evidence classes used by `fon-known-facts.md`:
 | **DT** | from the board device tree in this repository |
 | **OEM-DTB** | from the compiled HW236 tree extracted from FRITZ!OS 08.25 `kernel.image` |
 | **OEM** | observed in `history/wiki-fritzos-oem-bootlog-reference.txt` |
+| **OEM-CAPTURE** | observed in `reference/oem-08.25-boot/` — OEM FRITZ!OS 08.25 on this board, captured 2026-11-08 |
 | **DISASM** | recovered from a proprietary AVM binary; file/function/address cited |
 | **OFFLINE** | computed from an image or report without touching hardware |
 | **RUNTIME-RO** | observation through read-only interfaces: console, `/proc`, sysfs or debugfs; no module load and no intentional GPIO/MMIO writes. A debugfs read is not proof of zero hardware side effects |
 | **HW-TEST** | controlled hardware execution: test-image boot, module load, clock/reset/MMIO writes, or a bench measurement requiring explicit authorisation |
 | **CONFIRMED / INFERRED / UNKNOWN / DISPROVED** | truth status; source class and truth status are separate, and static evidence is never promoted to hardware proof |
 
-## Layer 2 — runbooks (`runbook/`)
+## Layer 2 — primary reference (`reference/`)
+
+Captured data. Never summarize it away; keep the original content.
+
+| File | What it is |
+|---|---|
+| `reference/oem-08.25-boot/rx.log` | OEM FRITZ!OS 08.25 text RX capture; identifiers redacted and binary shared-UART blocks summarized |
+| `reference/oem-08.25-boot/tx.log` | OEM shell TX command stream |
+| `reference/oem-08.25-boot/SHA256SUMS` | Hashes of the repository copies |
+| `reference/oem-08.25-boot/README.md` | Provenance, hashes, redaction policy and key OEM-side lines |
+
+## Layer 3 — runbooks (`runbook/`)
 
 Procedures and build records. Executable, dated, not arguments.
 
@@ -57,7 +71,7 @@ Procedures and build records. Executable, dated, not arguments.
 | `runbook/fon-dialog-uart-sniff-plan.md` | UART boot-sniff plan |
 | `runbook/fon-tdm-passive-test.md` | Passive FSC/BCLK measurement and pin candidates |
 
-## Layer 3 — history (`history/`)
+## Layer 4 — history (`history/`)
 
 The reasoning trail. Many files still say `UNKNOWN` about questions that have
 since been answered; each carries a historical banner. Read them for

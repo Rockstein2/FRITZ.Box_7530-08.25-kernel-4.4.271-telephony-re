@@ -1,9 +1,10 @@
 #!/bin/sh
 # SPDX-License-Identifier: GPL-2.0-only
 #
-# Split docs/ into three layers:
+# Split docs/ into layers:
 #
 #   docs/            current truth      (known-facts, open-questions, go-no-go)
+#   docs/reference/  primary captures   (OEM boot logs; not moved by this script)
 #   docs/runbook/    operational        (procedures, build records)
 #   docs/history/    analysis records   (reasoning trail, marked historical)
 #

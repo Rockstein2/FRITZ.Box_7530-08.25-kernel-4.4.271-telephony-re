@@ -1,0 +1,33 @@
+
+
+
+cat /etc/version 2>/dev/null; cat /etc/avm/version 2>/dev/null; uname -a; cat /proc/version
+echo __SERIAL_DONE_1794162516944__
+ps | grep -iE "dhcp|dnsmasq|inetd|ctlmgr" | grep -v grep
+echo __SERIAL_DONE_1794162517156__
+/etc/version; /etc/version -vsub; /etc/version --project
+echo __SERIAL_DONE_1794162524921__
+netstat -lnup 2>/dev/null | grep -E ":67|:53" ; netstat -lntp 2>/dev/null | grep -E ":21|:23|:80|:443"
+echo __SERIAL_DONE_1794162526875__
+ifconfig 2>/dev/null | grep -E "^[a-z]|inet addr" | head -30
+echo __SERIAL_DONE_1794162527315__
+ctlmgr_ctl 2>&1 | sed -n "1,25p"
+echo __SERIAL_DONE_1794162541008__
+ctlmgr_ctl r lan 2>&1 | sed -n "1,60p"
+echo __SERIAL_DONE_1794162541278__
+ifconfig 2>&1 | sed -n "1,40p"
+echo __SERIAL_DONE_1794162541543__
+ctlmgr_ctl u lan 2>&1 | sed -n "1,80p"
+echo __SERIAL_DONE_1794162548471__
+ifconfig 2>&1 | sed -n "40,100p"
+echo __SERIAL_DONE_1794162548727__
+cat /proc/avm/version 2>/dev/null; cat /proc/avm/hwrevision 2>/dev/null; cat /proc/avm/board_type 2>/dev/null; cat /proc/avm/productid 2>/dev/null
+echo __SERIAL_DONE_1794162565504__
+ls /proc/avm 2>/dev/null | sed -n "1,60p"
+echo __SERIAL_DONE_1794162565634__
+ps | sed -n "1,60p"
+echo __SERIAL_DONE_1794162565768__
+for x in tftp nc wget ftpget ftpput; do command -v $x >/dev/null 2>&1 && echo "have $x"; done; busybox --list 2>/dev/null | grep -E "^(tftp|nc|wget|ftpget|ftpput)$"
+echo __SERIAL_DONE_1794162576796__
+ls -la /proc/avm/dect 2>/dev/null | sed -n "1,40p"
+echo __SERIAL_DONE_1794162576918__

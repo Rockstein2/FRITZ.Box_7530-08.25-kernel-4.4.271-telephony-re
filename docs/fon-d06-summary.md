@@ -25,7 +25,7 @@ physical PCM wiring, and did not authorize an active reset/upload.
 | Clock check | `Piglet_noemif.ko:Check_TDMInterface()` calls `dakota_gpio_ctrl(gpio,0,0)` and counts edges; it does not generate clocks | **CONFIRMED (code)** |
 | Piglet ctrl side effects | `dakota_gpio_ctrl()` may change pad configuration; body unavailable | **UNKNOWN** |
 | Active physical mux group/wiring | software names and selectors do not prove PCB connectivity | **UNKNOWN** |
-| OEM DTB selection | three HW236 DTBs in `kernel.image`; FON properties identical, only `subrevision` differs | **UNKNOWN (bootloader choice, Q80)** |
+| OEM DTB selection | three HW236 DTBs in `kernel.image`; FON properties identical, only `subrevision` differs. OEM runtime log reports `HWS(2)`, matching the first blob | **board subrevision CONFIRMED; bootloader choice UNKNOWN (Q80)** |
 | 74LVC1G04 role | measurements exist only under OpenWrt; no connection to GPIO40/reset proven | **UNKNOWN** |
 | First missing OpenWrt startup actions | no recovered reset sequence and no firmware upload are performed | **CONFIRMED (software state)** |
 | Why FSC/BCLK are absent/present on this board | not passively measured on an identified net | **UNKNOWN** |
@@ -60,11 +60,11 @@ only difference found in the decompiled trees is `avm-hw-revision/subrevision`.
 | `0x993990` | `26963` | `497fe05825d104c7d781729ce37e2f9cb101cccb85bdcbdab67be1eb1aedb4f4` | `0` |
 | `0x99a2e8` | `26963` | `497fe05825d104c7d781729ce37e2f9cb101cccb85bdcbdab67be1eb1aedb4f4` | `0` |
 
-The repository analyses the first blob. That is a documented choice, **not**
-proof that the OEM bootloader selects it. Which subrevision this board is, and
-which blob the bootloader chooses, remain **UNKNOWN** (Q80). Because the
-FON-relevant properties are identical in all three, D0.6 conclusions do not
-depend on that choice.
+The repository analyses the first blob. The OEM 08.25 runtime capture reports
+`HWS(2)`, so this board's hardware subrevision is **2** and the first blob
+matches it (`reference/oem-08.25-boot/`). That still does **not** prove which
+blob the OEM bootloader selects (Q80). Because the FON-relevant properties are
+identical in all three, D0.6 conclusions do not depend on that choice.
 
 The binaries remain outside Git. Reproduction and comparison instructions are
 in `runbook/fon-oem-dtb-extraction.md`.

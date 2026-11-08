@@ -115,7 +115,7 @@ checks; those results are in `fon-known-facts.md` §9c/§9d.
 |---|---|---|---|
 | Q78 | What is the physical role of GPIO16, which is both a `blsp_uart0` pin and the board-table `gpio_avm_dect_rd`? Can both roles operate concurrently? | schematic/trace plus a reviewed runtime check | research / bench |
 | Q79 | How are the console and `msm_dectuart_*` arbitrated on the shared `blsp_uart0` controller, and can a Dialog upload coexist with console traffic? | review `msm_serial.c`/loader ownership, then a controlled test | D0 / bench |
-| Q80 | Which of the three HW236 DTBs in `kernel.image` does the OEM bootloader select, and what is this board's `avm-hw-revision` subrevision? | bootloader log/selection code, or reading the revision straps/OTP | research |
+| Q80 | Which of the three HW236 DTBs in `kernel.image` does the OEM bootloader select? The board subrevision is now known to be `2` from the OEM 08.25 capture, and the first blob matches it; bootloader selection itself is still not observed. | bootloader selection code or a capture of the chosen DTB | research |
 
 ## 7. Explicitly out of scope
 

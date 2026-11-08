@@ -3,6 +3,9 @@
 modules/
 firmware/
 reference/
+# docs/reference/ contains sanitized primary captures, not vendor binaries.
+!docs/reference/
+!docs/reference/**
 
 # Vendor firmware images / Windows recovery tools / backups.
 FRITZ*.image

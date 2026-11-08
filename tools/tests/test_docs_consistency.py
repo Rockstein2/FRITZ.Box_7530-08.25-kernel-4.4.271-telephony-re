@@ -1031,6 +1031,69 @@ check("OEM DTB runbook: model alone is not selection proof",
       "model` string alone is not evidence of bootloader selection"
       in _dtb_text, True)
 
+# ---------------------------------------------------------------------------
+# 23. OEM 08.25 boot capture is primary reference, not history
+# ---------------------------------------------------------------------------
+_REF = DOCS / "reference" / "oem-08.25-boot"
+_ref_rx = _REF / "rx.log"
+_ref_tx = _REF / "tx.log"
+_ref_readme = _REF / "README.md"
+check("OEM capture: RX exists", _ref_rx.is_file(), True)
+check("OEM capture: TX exists", _ref_tx.is_file(), True)
+check("OEM capture: README exists", _ref_readme.is_file(), True)
+
+if _ref_rx.is_file():
+    _rx_bytes = _ref_rx.read_bytes()
+    _rx_text = _rx_bytes.decode("utf-8")
+    check("OEM capture: RX is a text file", b"\x00" not in _rx_bytes, True)
+    for _needle in (
+        "use_hw_config_to_set_gpios: hw_config: gpio_avm_dect_reset 40",
+        "use_hw_config_to_set_gpios: hw_config: gpio_avm_dect_rd 16",
+        "[piglet]slow: dect_loader-bootmode",
+        "upload of 'dectfw_secondlevel_441.hex' successfull",
+        "[piglet]TDM: FS: 8000 Hz CLK: 1024355 Hz",
+        "mbox_dma_init: irq=107 hwirq=191",
+    ):
+        check(f"OEM capture: RX contains {_needle}", _needle in _rx_text, True)
+    check("OEM capture: binary shared-UART blocks are summarized",
+          "binary/non-text serial data block removed" in _rx_text, True)
+
+if _ref_tx.is_file():
+    _tx = _ref_tx.read_text(errors="replace")
+    check("OEM capture: TX contains the device query",
+          "cat /etc/version" in _tx, True)
+
+# The repository is public: no original device identifiers may survive.
+for _f in (_ref_rx, _ref_tx):
+    if not _f.is_file():
+        continue
+    _b = _f.read_bytes()
+    check(f"OEM capture: {_f.name} has no original MAC",
+          re.search(rb"98:9b:cb:46:7b:[0-9a-f]{2}", _b, re.I) is None, True)
+    check(f"OEM capture: {_f.name} has no original IPv6 suffix",
+          re.search(rb"9a9b:cbff:fe46:7b[0-9a-f]{2}", _b, re.I) is None, True)
+    check(f"OEM capture: {_f.name} has no original ULA prefix",
+          b"fd86:e1a4:8ab4" not in _b, True)
+    check(f"OEM capture: {_f.name} has no original RFPI",
+          b"03136f6f50" not in _b, True)
+
+if _ref_readme.is_file():
+    _r = _ref_readme.read_text()
+    check("OEM capture: README records original RX hash",
+          "e854d392546b2013b2ff24a1193a5b0c3986cabce6ae4690d947b0bf5723bde0"
+          in _r, True)
+    check("OEM capture: README records the raw backup location",
+          ".work/fon-oem-boot-2026-11-08/" in _r, True)
+    check("OEM capture: README states the repository is public",
+          "GitHub repository is public" in _r, True)
+
+_docs_index = (DOCS / "README.md").read_text()
+check("docs index: reference layer exists",
+      "`docs/reference/`" in _docs_index
+      and "primary reference" in _docs_index, True)
+check("known facts: OEM-CAPTURE class and HWS(2)",
+      "| **OEM-CAPTURE** |" in _facts and "HWS(2)" in _facts, True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)
