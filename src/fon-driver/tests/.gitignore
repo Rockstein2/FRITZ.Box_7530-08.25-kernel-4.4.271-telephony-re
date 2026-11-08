@@ -1,1 +1,7 @@
+# Generated test binaries.  Build them with `make run-all`; never commit them.
 fon_c2_test
+fon_tdm_test
+fon_dma_test
+fon_tdm_test32
+fon_tdm_test_san
+fon_dma_test_san
