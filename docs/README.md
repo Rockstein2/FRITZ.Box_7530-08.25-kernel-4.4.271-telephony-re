@@ -32,6 +32,7 @@ Verify the canonical layout and all SHA256 manifests with
 | `fon-e0-summary.md` | E0 SC14448/PCMLINK slot-5 research summary and evidence boundary. |
 | `fon-sc14448-pcmlink-protocol.md` | Reconstructed slot-5 TX/RX protocol, confidence and caveats. |
 | `fon-e1-summary.md` | E1 cross-block dataflow, indirect search and DMA byte-order result. |
+| `fon-e2-summary.md` | E2 interprocedural analysis, table consumers, IRQ callgraphs and slot-5 boundary. |
 
 Evidence classes used by `fon-known-facts.md`:
 
@@ -122,6 +123,11 @@ provenance, never as status.
 | `history/fon-e1-pcm-handler-candidates.md` | PCM candidate regions and Q46/Q55 boundary |
 | `history/fon-e1-normal-vs-p2test.md` | Normal/p2test topology and metrics comparison |
 | `history/fon-e1-dma-byte-order.md` | EOR #2 raw DMA memory model and remaining wire-order unknown |
+| `history/fon-e2-interprocedural-dataflow.md` | Call/return CFG, convergence and function summaries |
+| `history/fon-e2-table-dispatch.md` | Table-consumer criterion and indirect dispatch results |
+| `history/fon-e2-irq-callgraph.md` | 31-vector IRQ callgraph for both images |
+| `history/fon-e2-firmware-handler-search.md` | Expanded slot-5 search and remaining paths |
+| `history/fon-e2-loader-vs-pcm-buffer.md` | `0x01000000` loader/RAM-init versus PCM ambiguity |
 
 ### Dialog SC14448 firmware and CR16
 

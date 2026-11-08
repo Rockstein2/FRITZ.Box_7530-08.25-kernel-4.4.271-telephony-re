@@ -902,7 +902,7 @@ _root_current = {
     "fon-go-no-go.md", "fon-d06-summary.md", "fon-adss-clock-reset.md",
     "fon-dialog-minimal-loader.md", "fon-tdm-control-only-plan.md",
     "fon-e0-summary.md", "fon-sc14448-pcmlink-protocol.md",
-    "fon-e1-summary.md",
+    "fon-e1-summary.md", "fon-e2-summary.md",
 }
 _root_analysis = [p.name for p in DOCS.glob("*.md")
                   if p.name not in _root_current]
@@ -1361,15 +1361,15 @@ _dn = json.loads((ROOT / "tools" / "reports" /
                   "cr16-dataflow-normal.json").read_text())
 _dp = json.loads((ROOT / "tools" / "reports" /
                   "cr16-dataflow-p2test.json").read_text())
-check("E1 normal new-resolved count", _dn["newly_resolved_count"], 119)
-check("E1 p2test new-resolved count", _dp["newly_resolved_count"], 171)
+check("E1 normal new-resolved count", _dn["newly_resolved_count"], 115)
+check("E1 p2test new-resolved count", _dp["newly_resolved_count"], 165)
 check("E1 normal state blocks", _dn["state_blocks"] > 0, True)
 check("E1 p2test state blocks", _dp["state_blocks"] > 0, True)
 check("E1 reports keep unknown counts", "new_stats" in _dn, True)
 
 _df = (DOCS / "history" / "fon-e1-cross-block-dataflow.md").read_text()
 check("E1 dataflow doc records new metrics",
-      "119" in _df and "171" in _df and "777" in _df and "916" in _df, True)
+      "115" in _df and "165" in _df and "750" in _df and "894" in _df, True)
 check("E1 dataflow doc records false-positive flag",
       "outside the known internal range" in _df, True)
 _de = (DOCS / "history" / "fon-e1-dma-byte-order.md").read_text()
@@ -1388,7 +1388,7 @@ _q74 = find_row(OQ, "Q74")
 _q75 = find_row(OQ, "Q75")
 check("E1 Q74 remains partial with raw/wire distinction",
       _q74 is not None and "partial" in " ".join(_q74[1:]).lower()
-      and "Physical wire" in " ".join(_q74[1:]), True)
+      and "physical wire" in " ".join(_q74[1:]).lower(), True)
 check("E1 Q75 remains open",
       _q75 is not None and "still open" in " ".join(_q75[1:]), True)
 
@@ -1396,6 +1396,90 @@ check("E1 tools index links dataflow",
       "cr16_dataflow.py" in (ROOT / "tools" / "README.md").read_text(), True)
 check("E1 summary is in docs index",
       "fon-e1-summary.md" in _docs_index, True)
+
+# ---------------------------------------------------------------------------
+# 27. FON-E2 interprocedural / table / IRQ
+# ---------------------------------------------------------------------------
+for _name in ("fon-e2-summary.md",
+              "history/fon-e2-interprocedural-dataflow.md",
+              "history/fon-e2-table-dispatch.md",
+              "history/fon-e2-irq-callgraph.md",
+              "history/fon-e2-firmware-handler-search.md",
+              "history/fon-e2-loader-vs-pcm-buffer.md"):
+    check(f"E2 document exists: {_name}", (DOCS / _name).is_file(), True)
+
+for _name in ("cr16-interproc-normal.json", "cr16-interproc-p2test.json",
+              "cr16-table-dispatch.json", "cr16-irq-paths.json",
+              "cr16-fon-handler-candidates.json"):
+    check(f"E2 report exists: {_name}",
+          (ROOT / "tools" / "reports" / _name).is_file(), True)
+
+_e2n = json.loads((ROOT / "tools" / "reports" /
+                   "cr16-interproc-normal.json").read_text())
+_e2p = json.loads((ROOT / "tools" / "reports" /
+                   "cr16-interproc-p2test.json").read_text())
+check("E2 normal function summaries", _e2n["function_entries"], 432)
+check("E2 p2test function summaries", _e2p["function_entries"], 403)
+check("E2 normal proven arguments",
+      _e2n["proven_argument_propagations"], 25)
+check("E2 p2test proven arguments",
+      _e2p["proven_argument_propagations"], 10)
+check("E2 reports keep source SHA",
+      len(_e2n.get("sha256", "")) == 64
+      and len(_e2p.get("sha256", "")) == 64, True)
+
+_tab = json.loads((ROOT / "tools" / "reports" /
+                   "cr16-table-dispatch.json").read_text())
+for _image in ("normal", "p2test"):
+    _s = _tab["images"][_image]["summary"]
+    check(f"E2 {_image} table has no proven target",
+          _s["proven_targets"], 0)
+    check(f"E2 {_image} table keeps unresolved sites",
+          _s["unresolved"] > 0, True)
+
+_irq = json.loads((ROOT / "tools" / "reports" /
+                   "cr16-irq-paths.json").read_text())
+for _image in ("normal", "p2test"):
+    check(f"E2 {_image} IRQ vectors",
+          len(_irq["images"][_image]["vectors"]), 31)
+    check(f"E2 {_image} IRQ has no PCM-named handler",
+          _irq["images"][_image]["pcm_named_handlers"], 0)
+
+_h = json.loads((ROOT / "tools" / "reports" /
+                 "cr16-fon-handler-candidates.json").read_text())
+check("E2 does not claim a slot-5 handler", _h["handler_found"], False)
+check("E2 classifies 0x01000000 without naming it PCM",
+      _h["classification"]["0x01000000"],
+      "LOADER_OR_RAM_INIT_CANDIDATE")
+
+_e2s = (DOCS / "fon-e2-summary.md").read_text()
+for _needle in ("CONVERGED", "NON_CONVERGED", "146", "116", "25", "10",
+                "382", "396", "31", "0x00ff4000", "generic_slotinterleave"):
+    check(f"E2 summary records {_needle}", _needle in _e2s, True)
+
+_e2o = (HISTORY / "fon-e2-interprocedural-dataflow.md").read_text()
+check("E2 interprocedural doc records call/return CFG",
+      "call ------> callee entry" in _e2o, True)
+check("E2 interprocedural doc records convergence failure handling",
+      "NON_CONVERGED" in _e2o, True)
+_e2t = (HISTORY / "fon-e2-table-dispatch.md").read_text()
+check("E2 table doc records no proven target",
+      "| normal | 382 | 87 | 295 | 0 |" in _e2t, True)
+_e2i = (HISTORY / "fon-e2-irq-callgraph.md").read_text()
+check("E2 IRQ doc records the 31-vector table",
+      "31" in _e2i and "dip_int" in _e2i, True)
+_e2f = (HISTORY / "fon-e2-firmware-handler-search.md").read_text()
+check("E2 handler doc records remaining indirect sites",
+      "295" in _e2f and "318" in _e2f, True)
+_e2l = (HISTORY / "fon-e2-loader-vs-pcm-buffer.md").read_text()
+check("E2 loader doc does not name PCM buffer",
+      "not a named PCM buffer" in _e2l, True)
+
+check("E2 tools index links interprocedural tool",
+      "cr16_interproc.py" in (ROOT / "tools" / "README.md").read_text(),
+      True)
+check("E2 summary is in docs index",
+      "fon-e2-summary.md" in _docs_index, True)
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")

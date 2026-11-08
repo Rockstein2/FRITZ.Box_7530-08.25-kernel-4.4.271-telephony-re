@@ -154,6 +154,26 @@ int main(void)
 		check_u16("round-trip slot6", back[6], frame[6]);
 		check_u16("round-trip slot7", back[7], frame[7]);
 	}
+	{
+		uint16_t in_place[8] = { 0, 0xfefe, 0xfefe, 0xfefe,
+					 0x5555, 0x4200, 0x1111, 0x2222 };
+		check_u16("in-place raw conversion",
+			  (uint16_t)fon_slot5_frame_to_raw(in_place,
+							   in_place), 0);
+		check_u16("in-place raw slot0", in_place[0], 0xfefe);
+		check_u16("in-place raw slot1", in_place[1], 0x0000);
+		check_u16("in-place raw slot4", in_place[4], 0x4200);
+		check_u16("in-place raw slot5", in_place[5], 0x5555);
+		check_u16("in-place raw slot6", in_place[6], 0x2222);
+		check_u16("in-place raw slot7", in_place[7], 0x1111);
+		check_u16("in-place back conversion",
+			  (uint16_t)fon_slot5_raw_to_frame(in_place,
+							   in_place), 0);
+		check_u16("in-place back slot0", in_place[0], 0x0000);
+		check_u16("in-place back slot1", in_place[1], 0xfefe);
+		check_u16("in-place back slot4", in_place[4], 0x5555);
+		check_u16("in-place back slot5", in_place[5], 0x4200);
+	}
 
 	check_u16("frame with slot4 suppressed",
 		  (uint16_t)fon_slot5_build_frame_ex(frame, 0x4000, 0), 0);

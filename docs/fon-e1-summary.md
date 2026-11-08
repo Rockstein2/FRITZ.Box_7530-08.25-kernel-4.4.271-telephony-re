@@ -5,9 +5,10 @@
 
 ## 1. New tooling
 
-- `tools/cr16_dataflow.py`: conservative CFG worklist with cross-block
-  register/pair constants, exact-agreement joins, provenance, and call/indirect
-  state kills.
+- `tools/cr16_dataflow.py`: conservative CFG fixed-point scan with
+  cross-block register/pair constants, exact-agreement joins, provenance, and
+  call/indirect state kills.  E2 added call-continuation edges and an explicit
+  convergence status; see `fon-e2-summary.md`.
 - Reports:
   - `tools/reports/cr16-dataflow-normal.json`
   - `tools/reports/cr16-dataflow-p2test.json`
@@ -21,14 +22,14 @@
 
 | Image | Blocks | Stateful blocks | New resolved | Outside known ranges |
 |---|---:|---:|---:|---:|
-| normal | 5 454 | 777 | **119** | 10 |
-| p2test | 5 170 | 916 | **171** | 3 |
+| normal | 5 454 | 750 | **115** | 10 |
+| p2test | 5 170 | 894 | **165** | 3 |
 
 Unknown reduction:
 
 ```text
-normal: READ/UNKNOWN 1403 -> 1328; WRITE 1205 -> 1174; RMW 204 -> 177
-p2test: READ/UNKNOWN 1238 -> 1128; WRITE 1215 -> 1162; RMW 178 -> 163
+normal: READ/UNKNOWN 1403 -> 1331; WRITE 1205 -> 1175; RMW 204 -> 177
+p2test: READ/UNKNOWN 1238 -> 1132; WRITE 1215 -> 1164; RMW 178 -> 163
 ```
 
 The 10/3 out-of-range rows are flagged as data/code false-positive candidates,

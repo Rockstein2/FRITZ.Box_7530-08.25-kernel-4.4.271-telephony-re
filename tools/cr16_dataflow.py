@@ -30,6 +30,7 @@ IMAGES = [
 
 CALLS = C.CALLS
 RETS = C.RETS
+MAX_ITERS = 1000
 
 
 def merge_state(states):
@@ -62,7 +63,18 @@ def blocks_and_successors(fw):
     for start in starts:
         last = blocks[start][-1]
         insn = fw.insns[last]
-        if insn.mnemonic in CALLS or insn.mnemonic in RETS:
+        if insn.mnemonic in RETS:
+            continue
+        if insn.mnemonic in CALLS:
+            # A direct call has two successors: the callee entry and the
+            # continuation after the return.  State propagation is still
+            # conservative (the call transfer clears the state); this only
+            # restores CFG coverage for the continuation.
+            for e in edges:
+                if e.src != last or e.category != C.DIRECT_RESOLVED:
+                    continue
+                if e.kind in ("call", "fallthrough") and e.dst in addr_block:
+                    succ[start].add(addr_block[e.dst])
             continue
         for e in edges:
             if e.src != last or e.category != C.DIRECT_RESOLVED:
@@ -244,7 +256,7 @@ def _row(image, addr, insn, kind, width, akind, effective, provenance,
     }
 
 
-def run_image(name, path, objdump):
+def run_image(name, path, objdump, max_iters=MAX_ITERS):
     fw = C.load(str(path))
     C.disassemble(fw, objdump)
     blocks, starts, addr_block, succ, preds = blocks_and_successors(fw)
@@ -257,7 +269,9 @@ def run_image(name, path, objdump):
     provs = {s: {} for s in starts}
     out_states = {s: {} for s in starts}
     out_provs = {s: {} for s in starts}
-    for _ in range(100):
+    converged = False
+    iterations = 0
+    for iterations in range(1, max_iters + 1):
         changed = False
         for s in starts:
             state, prov = merge_entry(preds, out_states, out_provs, s)
@@ -271,6 +285,7 @@ def run_image(name, path, objdump):
                 out_provs[s] = out_pv
                 changed = True
         if not changed:
+            converged = True
             break
     rows = []
     unclassified = []
@@ -288,6 +303,9 @@ def run_image(name, path, objdump):
         if r["address_kind"] == "RESOLVED" and r["effective_address"]:
             r["plausibility_note"] = X._resolved_note(
                 int(r["effective_address"], 16))
+    for r in rows:
+        if r["address_kind"] == "RESOLVED":
+            r["confidence"] = "PROVEN" if converged else "CANDIDATE"
     new_resolved = [r for r in rows if r["address_kind"] == "RESOLVED"
                     and (r["instruction"], r["operation"],
                          r["effective_address"]) not in old_keys]
@@ -307,6 +325,15 @@ def run_image(name, path, objdump):
         "newly_resolved_count": len(new_resolved),
         "newly_resolved_outside_known_ranges": sum(
             1 for r in new_resolved if r.get("plausibility_note")),
+        "analysis_status": "CONVERGED" if converged else "NON_CONVERGED",
+        "converged": converged,
+        "iterations": iterations,
+        "max_iterations": max_iters,
+        "call_edges": sum(1 for e in C.build(fw)
+                           if e.kind == "call" and
+                           e.category == C.DIRECT_RESOLVED),
+        "return_blocks": sum(1 for s in starts
+                             if fw.insns[blocks[s][-1]].mnemonic in RETS),
         "unclassified": unclassified,
         "state_blocks": sum(1 for s in starts if states[s]),
         "limitations": [
@@ -370,6 +397,7 @@ def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("--objdump", default=str(OBJDUMP))
     ap.add_argument("--out", default=str(ROOT / "tools" / "reports"))
+    ap.add_argument("--max-iterations", type=int, default=MAX_ITERS)
     args = ap.parse_args(argv[1:])
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -379,7 +407,8 @@ def main(argv):
         if not path.is_file():
             print(f"SKIP {name}: {path} missing")
             continue
-        report, fw, rows = run_image(name, path, args.objdump)
+        report, fw, rows = run_image(name, path, args.objdump,
+                                     args.max_iterations)
         (out / f"cr16-dataflow-{name}.json").write_text(
             json.dumps(report, indent=2) + "\n")
         print(f"{name}: blocks={report['blocks']} "

@@ -92,8 +92,11 @@ fon_slot5_frame_to_raw(logical, raw);
 fon_slot5_raw_to_frame(raw, logical);
 ```
 
-The raw model is proven; the physical TDM wire order remains **UNKNOWN**.
-See `docs/history/fon-e1-dma-byte-order.md`.
+The raw model is proven for the decoded header/control accesses; E2 also
+found the same `EOR #2` in `generic_slotinterleave`, but audio sample
+packing/endianness remains **MODEL / INFERRED**.  The physical TDM wire order
+remains **UNKNOWN**.  Both helpers support `raw == logical` (in-place) through
+temporary words.  See `docs/history/fon-e1-dma-byte-order.md`.
 
 ## 4. Build and test
 

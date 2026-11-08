@@ -65,8 +65,11 @@ The Linux-side reconstruction uses this logical order:
 16-bit slots inside each 32-bit DMA word.  The logical slot-5 word appears at
 raw 16-bit index 4 / byte offset `0x08`; the logical map remains the order
 above.  The raw memory model is proven by the ARM instructions and covered by
-`history/fon-e1-dma-byte-order.md`.  The final DMA presentation/physical wire
-order is still **UNKNOWN** and is the remaining Q74 caveat.
+`history/fon-e1-dma-byte-order.md`.  E2 confirmed that
+`generic_slotinterleave` also uses `EOR #2` for the audio stores; the
+header/control raw order is proven, while audio sample order/endianness is
+**MODEL / INFERRED**.  The final DMA presentation/physical wire order is still
+**UNKNOWN** and is the remaining Q74 caveat.
 
 `0xfefe` and `0x5555` are Linux-side frame constants.  They are **not**
 claimed to be universal SC14448 sync words.
@@ -167,6 +170,13 @@ PCM-adjacent accesses are the `0xF6002` poll, `0x00FF6006` pulse/clear,
 `0xF6006` reads and interrupt-controller writes.  Indirect/cross-block code
 remains the open possibility.  See
 `history/fon-e0-sc14448-firmware-search.md`.
+
+E2 expanded this to call continuations, direct-call summaries, table-consumer
+candidates and all 31 IRQ vectors.  It still found no proven slot-5 consumer:
+the closest IRQ path is `dip_int`, which reads `0xF6006` and writes
+`0xF5402 = 0x400` in both images, but that is not a proven control-word
+handler.  The `0x01000000 + 2*index` writer remains a loader/RAM-init
+candidate with no resolved reader.  See `fon-e2-summary.md`.
 
 ## 11. Minimum standalone driver
 

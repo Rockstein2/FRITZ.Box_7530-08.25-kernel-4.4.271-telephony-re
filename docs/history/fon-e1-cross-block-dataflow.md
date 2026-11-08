@@ -34,17 +34,17 @@ modelled paths.
 
 | Image | Blocks | Blocks with entry state | Newly resolved | Outside known ranges |
 |---|---:|---:|---:|---:|
-| normal | 5 454 | 777 | **119** | 10 |
-| p2test | 5 170 | 916 | **171** | 3 |
+| normal | 5 454 | 750 | **115** | 10 |
+| p2test | 5 170 | 894 | **165** | 3 |
 
 Comparison with E0:
 
 | Image | `READ/UNKNOWN` | `WRITE/UNKNOWN` | `RMW/UNKNOWN` |
 |---|---:|---:|---:|
 | normal E0 | 1 403 | 1 205 | 204 |
-| normal E1 | **1 328** | **1 174** | **177** |
+| normal E1 | **1 331** | **1 175** | **177** |
 | p2test E0 | 1 238 | 1 215 | 178 |
-| p2test E1 | **1 128** | **1 162** | **163** |
+| p2test E1 | **1 132** | **1 164** | **163** |
 
 The 10/3 addresses outside the known internal ranges are explicitly flagged
 `address outside the known internal range`; they are data/code false-positive
@@ -83,8 +83,8 @@ access appeared.
 The cross-block coverage still does not find a firmware consumer of slot 5.
 The remaining unknowns are:
 
-- 1 328 `READ/UNKNOWN` and 1 174 `WRITE/UNKNOWN` in normal;
-- 1 128 / 1 162 in p2test;
+- 1 331 `READ/UNKNOWN` and 1 175 `WRITE/UNKNOWN` in normal;
+- 1 132 / 1 164 in p2test;
 - all indexed `r12/r13` accesses;
 - indirect call/table paths (reported separately).
 

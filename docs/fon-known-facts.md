@@ -520,15 +520,20 @@ probe-only test must not assume an unprogrammed chip.
 | TX special field | `TDMPriv+0x7f4`, written by the command for register word `0x30` | DISASM |
 | TX command flags | `flags` is a frame-delay gate: `frame_counter < flags<<3` skips the command | DISASM (`TxDMA`) |
 | TX frame constants | `0x0000`, `0xfefe` (slots 1-3), `0x5555` (slot 4; suppressed when `+0x808 !=0`) | DISASM |
-| TX byte-order caveat | raw `strh` uses `EOR #2`; logical slot 5 at 0x0a is the working hypothesis, not independently re-proven | DISASM / **caveat** |
+| TX byte-order caveat | raw `strh` uses `EOR #2`; logical slot 5 maps to raw index 4 / byte `0x08`; physical wire order is **UNKNOWN** | DISASM / **caveat** |
 | RX status mapping | status 0-3 -> reg44 4-7; status 5-8 -> reg44 8-11; status 4/9-14 not mapped; 0x8000 suppresses reg44; 0x4000 does not; zero -> `0xbad00000` | DISASM (`PutRxDMA`) |
 | RX hook | status bit 3 -> reg44 bit 7 -> `slic_get_hook_state`; physical hook meaning INFERRED | DISASM |
 | Ring cadence | `half_period = (500 / freq) << 3` frames, default 25 Hz; bits 5/6 toggled by timer | DISASM |
 | Firmware slot-5 handler | **not found** in resolved CR16 map; bounded negative result, indirect/cross-block paths remain | OFFLINE |
-| E1 cross-block dataflow | conservative merge; normal 119 / p2test 171 newly resolved accesses; 10/3 out-of-range candidates flagged | OFFLINE |
+| E1 cross-block dataflow | conservative merge; normal 115 / p2test 165 newly resolved accesses; 10/3 out-of-range candidates flagged | OFFLINE |
 | E1 indirect candidates | 382 normal / 396 p2test indirect edges; 5 639/5 668 table-like hits are candidates, not proof | OFFLINE |
+| E2 call-return CFG | direct calls add callee + continuation; fixed point converged in 4 iterations; forced cap reports `NON_CONVERGED` and no new `PROVEN` rows | OFFLINE |
+| E2 interprocedural summaries | 432/403 functions; 146/116 direct argument records; 25/10 proven; indirect calls clobber all registers | OFFLINE |
+| E2 table dispatch | 382/396 indirect sites; 87/78 candidates, 295/318 unresolved, **0 proven** | OFFLINE |
+| E2 IRQ callgraph | 31 vectors in both images; only `tim1_int`, `dip_int`, `dsp_int` have memory operations; no PCM-named handler, no proven 8 kHz period | OFFLINE |
 | TX DMA `EOR #2` | swaps adjacent 16-bit slots inside each 32-bit DMA word; raw order proven, physical wire order **UNKNOWN** | DISASM + GPL source |
-| `0x01000000` SC14448 region | 511 indexed writes, no resolved reader; loader/copy vs runtime PCM buffer still **UNKNOWN** | OFFLINE |
+| E2 audio `EOR #2` | `generic_slotinterleave` also applies `EOR #2`; audio pair swap is a raw-memory model, sample order/endianness **INFERRED** | DISASM |
+| `0x01000000` SC14448 region | 511 indexed writes, no resolved reader; loader/RAM-init candidate; runtime PCM role **UNKNOWN** | OFFLINE |
 | OEM `Codecslots` | 08.25 live reports 9; older wiki build reports 6; physical TDM slots remain 8 | OEM-CAPTURE / OEM |
 
 These are Linux-side facts from the proprietary `pcmlink.ko` disassembly. They

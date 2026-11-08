@@ -11,8 +11,8 @@
 | SHA256 | `7cac33c7…ebab7b31` | `6361384d…dbc4860` |
 | Decoded instructions | 19 570 | 18 058 |
 | Blocks | 5 454 | 5 170 |
-| Blocks with entry state | 777 | 916 |
-| Newly resolved | 119 | 171 |
+| Blocks with entry state | 750 | 894 |
+| Newly resolved | 115 | 165 |
 | Outside known ranges | 10 | 3 |
 | PCM candidate accesses | 34 | 34 |
 

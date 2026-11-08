@@ -60,7 +60,8 @@ int fon_slot5_build_frame_ex(uint16_t tx_words[8], uint16_t control,
  * Low-level ARM TxDMA representation: the code stores each logical halfword
  * at an address XORed with 2, which swaps adjacent 16-bit words inside every
  * 32-bit DMA word.  This helper makes that raw-memory order explicit.  It is
- * NOT a claim about the physical TDM wire order.
+ * NOT a claim about the physical TDM wire order.  The two buffers may be the
+ * same array; in-place conversion is supported through temporary words.
  */
 int fon_slot5_frame_to_raw(const uint16_t logical[8], uint16_t raw[8]);
 int fon_slot5_raw_to_frame(const uint16_t raw[8], uint16_t logical[8]);

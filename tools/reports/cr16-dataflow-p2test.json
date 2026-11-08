@@ -27,18 +27,18 @@
     "ADDRESS_LOAD/RESOLVED": 480,
     "READ/INDEXED": 195,
     "READ/PC_RELATIVE": 6,
-    "READ/RESOLVED": 633,
+    "READ/RESOLVED": 629,
     "READ/STACK": 412,
-    "READ/UNKNOWN": 1128,
+    "READ/UNKNOWN": 1132,
     "RMW/INDEXED": 15,
     "RMW/RESOLVED": 73,
     "RMW/STACK": 2,
     "RMW/UNKNOWN": 163,
     "WRITE/INDEXED": 186,
     "WRITE/PC_RELATIVE": 16,
-    "WRITE/RESOLVED": 429,
+    "WRITE/RESOLVED": 427,
     "WRITE/STACK": 283,
-    "WRITE/UNKNOWN": 1162
+    "WRITE/UNKNOWN": 1164
   },
   "newly_resolved": [
     {
@@ -55,7 +55,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -71,7 +72,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -89,7 +91,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -107,7 +110,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -125,7 +129,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -143,7 +148,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -161,7 +167,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -179,7 +186,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -197,7 +205,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -215,7 +224,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -233,7 +243,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -251,7 +262,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -269,7 +281,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -287,7 +300,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -305,7 +319,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -323,7 +338,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -341,7 +357,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -359,7 +376,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -377,7 +395,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": false,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -395,7 +414,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": false,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -413,7 +433,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": false,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -431,7 +452,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": false,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -449,7 +471,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -467,7 +490,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -485,7 +509,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -503,7 +528,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -521,7 +547,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -539,7 +566,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -557,7 +585,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -575,7 +604,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -593,7 +623,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -611,7 +642,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -629,7 +661,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -647,7 +680,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -665,7 +699,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -683,7 +718,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -701,7 +737,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -719,7 +756,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -737,7 +775,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -755,25 +794,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
-    },
-    {
-      "image": "p2test",
-      "instruction": "0x009bd8",
-      "bytes": "077a",
-      "mnemonic": "tbitb",
-      "operation": "READ",
-      "width_bits": 8,
-      "address_kind": "RESOLVED",
-      "effective_address": "0x00009515",
-      "expression": null,
-      "provenance": [
-        "0x009bca"
-      ],
-      "reachable_mode_a": false,
-      "reachable_mode_b": true,
-      "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -791,7 +813,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -809,7 +832,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -827,7 +851,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -845,7 +870,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -863,7 +889,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -881,7 +908,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -899,7 +927,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -917,7 +946,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -933,7 +963,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": false,
       "note": "single bit",
-      "plausibility_note": "address outside the known internal ranges; may be data decoded as code (see docs, 'unreliable RESOLVED')"
+      "plausibility_note": "address outside the known internal ranges; may be data decoded as code (see docs, 'unreliable RESOLVED')",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -949,7 +980,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": false,
       "note": "",
-      "plausibility_note": "address outside the known internal ranges; may be data decoded as code (see docs, 'unreliable RESOLVED')"
+      "plausibility_note": "address outside the known internal ranges; may be data decoded as code (see docs, 'unreliable RESOLVED')",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -965,7 +997,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": false,
       "note": "",
-      "plausibility_note": "address outside the known internal ranges; may be data decoded as code (see docs, 'unreliable RESOLVED')"
+      "plausibility_note": "address outside the known internal ranges; may be data decoded as code (see docs, 'unreliable RESOLVED')",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -983,7 +1016,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1001,7 +1035,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1019,7 +1054,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1037,7 +1073,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1055,7 +1092,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1073,7 +1111,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1091,7 +1130,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1109,7 +1149,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1127,7 +1168,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1145,7 +1187,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1163,7 +1206,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1181,7 +1225,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1199,7 +1244,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1217,7 +1263,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1235,7 +1282,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1253,7 +1301,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1271,7 +1320,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1289,7 +1339,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1307,7 +1358,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1325,7 +1377,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1343,7 +1396,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1361,43 +1415,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
-    },
-    {
-      "image": "p2test",
-      "instruction": "0x021ec0",
-      "bytes": "0a97",
-      "mnemonic": "loadw",
-      "operation": "READ",
-      "width_bits": 16,
-      "address_kind": "RESOLVED",
-      "effective_address": "0x00001acd",
-      "expression": null,
-      "provenance": [
-        "0x021e7a"
-      ],
-      "reachable_mode_a": false,
-      "reachable_mode_b": true,
-      "note": "",
-      "plausibility_note": ""
-    },
-    {
-      "image": "p2test",
-      "instruction": "0x021ec4",
-      "bytes": "0ad7",
-      "mnemonic": "storw",
-      "operation": "WRITE",
-      "width_bits": 16,
-      "address_kind": "RESOLVED",
-      "effective_address": "0x00001acd",
-      "expression": null,
-      "provenance": [
-        "0x021e7a"
-      ],
-      "reachable_mode_a": false,
-      "reachable_mode_b": true,
-      "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1415,7 +1434,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1433,7 +1453,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1451,7 +1472,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1469,7 +1491,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1487,7 +1510,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1505,7 +1529,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1523,7 +1548,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1541,7 +1567,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1559,7 +1586,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1577,7 +1605,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1595,7 +1624,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1613,7 +1643,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1631,7 +1662,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1649,7 +1681,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1667,7 +1700,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1685,7 +1719,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1703,7 +1738,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1721,7 +1757,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1739,7 +1776,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1757,7 +1795,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1775,7 +1814,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1793,7 +1833,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1811,7 +1852,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1829,7 +1871,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1847,7 +1890,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1865,7 +1909,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1883,7 +1928,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1901,7 +1947,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1919,7 +1966,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1937,7 +1985,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "single bit",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1955,7 +2004,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1973,7 +2023,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -1991,7 +2042,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2009,7 +2061,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2027,7 +2080,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2045,7 +2099,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2063,7 +2118,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2081,7 +2137,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2099,7 +2156,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2117,7 +2175,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2135,7 +2194,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2153,7 +2213,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2171,7 +2232,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2189,7 +2251,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2207,7 +2270,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2225,7 +2289,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2243,7 +2308,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2261,7 +2327,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2279,7 +2346,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2297,7 +2365,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2315,7 +2384,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2333,7 +2403,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2351,7 +2422,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2369,7 +2441,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2387,7 +2460,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2405,7 +2479,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2423,7 +2498,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2441,7 +2517,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2459,7 +2536,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2477,7 +2555,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2495,7 +2574,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2513,7 +2593,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2531,43 +2612,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
-    },
-    {
-      "image": "p2test",
-      "instruction": "0x026544",
-      "bytes": "27b0",
-      "mnemonic": "loadb",
-      "operation": "READ",
-      "width_bits": 8,
-      "address_kind": "RESOLVED",
-      "effective_address": "0x00009abb",
-      "expression": null,
-      "provenance": [
-        "0x02651c"
-      ],
-      "reachable_mode_a": false,
-      "reachable_mode_b": true,
-      "note": "",
-      "plausibility_note": ""
-    },
-    {
-      "image": "p2test",
-      "instruction": "0x026578",
-      "bytes": "27b0",
-      "mnemonic": "loadb",
-      "operation": "READ",
-      "width_bits": 8,
-      "address_kind": "RESOLVED",
-      "effective_address": "0x00009abb",
-      "expression": null,
-      "provenance": [
-        "0x02651c"
-      ],
-      "reachable_mode_a": false,
-      "reachable_mode_b": true,
-      "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2585,7 +2631,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2603,7 +2650,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2621,7 +2669,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2639,7 +2688,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2657,7 +2707,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2675,7 +2726,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2693,7 +2745,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2711,7 +2764,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2729,7 +2783,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2747,7 +2802,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2765,7 +2821,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2783,7 +2840,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2801,7 +2859,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2819,7 +2878,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2837,7 +2897,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2855,7 +2916,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2873,7 +2935,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2891,7 +2954,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2909,7 +2973,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2927,7 +2992,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2945,7 +3011,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2963,7 +3030,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2981,7 +3049,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -2999,7 +3068,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -3017,7 +3087,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": true,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -3035,7 +3106,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": false,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -3053,7 +3125,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": false,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -3071,7 +3144,8 @@
       "reachable_mode_a": false,
       "reachable_mode_b": false,
       "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     },
     {
       "image": "p2test",
@@ -3089,31 +3163,20 @@
       "reachable_mode_a": false,
       "reachable_mode_b": false,
       "note": "",
-      "plausibility_note": ""
-    },
-    {
-      "image": "p2test",
-      "instruction": "0x02797a",
-      "bytes": "97f0",
-      "mnemonic": "storb",
-      "operation": "WRITE",
-      "width_bits": 8,
-      "address_kind": "RESOLVED",
-      "effective_address": "0x00009512",
-      "expression": null,
-      "provenance": [
-        "0x02791a"
-      ],
-      "reachable_mode_a": false,
-      "reachable_mode_b": false,
-      "note": "",
-      "plausibility_note": ""
+      "plausibility_note": "",
+      "confidence": "PROVEN"
     }
   ],
-  "newly_resolved_count": 171,
+  "newly_resolved_count": 165,
   "newly_resolved_outside_known_ranges": 3,
+  "analysis_status": "CONVERGED",
+  "converged": true,
+  "iterations": 4,
+  "max_iterations": 1000,
+  "call_edges": 1371,
+  "return_blocks": 250,
   "unclassified": [],
-  "state_blocks": 916,
+  "state_blocks": 894,
   "limitations": [
     "merge keeps a key only when all predecessors agree exactly",
     "calls and indirect control flow clear the state",

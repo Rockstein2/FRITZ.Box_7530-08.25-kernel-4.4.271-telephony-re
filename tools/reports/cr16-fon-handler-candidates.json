@@ -1,0 +1,1374 @@
+{
+  "tool": "cr16-fon-handler-candidates/1",
+  "source_images": {
+    "normal": {
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31"
+    },
+    "p2test": {
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860"
+    }
+  },
+  "handler_found": false,
+  "pcm_candidates": {
+    "tool": "cr16-pcm-candidates/1",
+    "images": [
+      {
+        "tool": "cr16-pcm-candidates/1",
+        "image": "normal",
+        "candidate_accesses": [
+          {
+            "image": "normal",
+            "instruction": "0x001348",
+            "bytes": "2fc90660",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6006",
+            "expression": null,
+            "provenance": [
+              "0x001348"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x001392",
+            "bytes": "0fc10454",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5404",
+            "expression": null,
+            "provenance": [
+              "0x001392"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x001396",
+            "bytes": "0fc10654",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5406",
+            "expression": null,
+            "provenance": [
+              "0x001396"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x00139a",
+            "bytes": "0fc10854",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5408",
+            "expression": null,
+            "provenance": [
+              "0x00139a"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x00139e",
+            "bytes": "0fc10a54",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f540a",
+            "expression": null,
+            "provenance": [
+              "0x00139e"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x00145c",
+            "bytes": "0fc90660",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6006",
+            "expression": null,
+            "provenance": [
+              "0x00145c"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x001918",
+            "bytes": "7100ff000454",
+            "mnemonic": "movd",
+            "operation": "ADDRESS_LOAD",
+            "width_bits": 32,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5404",
+            "expression": null,
+            "provenance": [
+              "0x001918"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x00191e",
+            "bytes": "3190",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5404",
+            "expression": null,
+            "provenance": [
+              "0x001918"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x001928",
+            "bytes": "31d0",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5404",
+            "expression": null,
+            "provenance": [
+              "0x001918"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x001934",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x001934"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x001a14",
+            "bytes": "7100ff000654",
+            "mnemonic": "movd",
+            "operation": "ADDRESS_LOAD",
+            "width_bits": 32,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x001a14"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x001a1a",
+            "bytes": "3190",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x001a14"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x001a22",
+            "bytes": "31d0",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x001a14"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x00255e",
+            "bytes": "0fc10064",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6400",
+            "expression": null,
+            "provenance": [
+              "0x00255e"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x002566",
+            "bytes": "0fc90264",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6402",
+            "expression": null,
+            "provenance": [
+              "0x002566"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x002582",
+            "bytes": "7000ff000660",
+            "mnemonic": "movd",
+            "operation": "ADDRESS_LOAD",
+            "width_bits": 32,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff6006",
+            "expression": null,
+            "provenance": [
+              "0x002582"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x00258c",
+            "bytes": "20d0",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff6006",
+            "expression": null,
+            "provenance": [
+              "0x002582"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x002596",
+            "bytes": "7300ff000654",
+            "mnemonic": "movd",
+            "operation": "ADDRESS_LOAD",
+            "width_bits": 32,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x002596"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x00259c",
+            "bytes": "5390",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x002596"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x0025a2",
+            "bytes": "53d0",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x002596"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x0025aa",
+            "bytes": "2090",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff6006",
+            "expression": null,
+            "provenance": [
+              "0x002582"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x0025b0",
+            "bytes": "2fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x0025b0"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x0025b4",
+            "bytes": "00c2",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff6006",
+            "expression": null,
+            "provenance": [
+              "0x002582"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x003a28",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x003a28"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x025fae",
+            "bytes": "0f890260",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6002",
+            "expression": null,
+            "provenance": [
+              "0x025fae"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x02602c",
+            "bytes": "0f890660",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6006",
+            "expression": null,
+            "provenance": [
+              "0x02602c"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x026034",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x026034"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x026040",
+            "bytes": "7100ff000654",
+            "mnemonic": "movd",
+            "operation": "ADDRESS_LOAD",
+            "width_bits": 32,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x026040"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x026046",
+            "bytes": "3190",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x026040"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x026050",
+            "bytes": "31d0",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x026040"
+            ],
+            "reachable_mode_a": true,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x0289a8",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x0289a8"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": false,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x028b00",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x028b00"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": false,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x028cde",
+            "bytes": "0f890660",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6006",
+            "expression": null,
+            "provenance": [
+              "0x028cde"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": false,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "normal",
+            "instruction": "0x028ce8",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x028ce8"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": false,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          }
+        ],
+        "count": 34,
+        "candidate_regions": [
+          "0x01000000 + indexed writes: loader/copy or runtime unknown",
+          "0x00108xx: data/table candidate",
+          "0x00116xx: data/table candidate",
+          "0x000F6002/6, 0x00FF6006: control/status candidates"
+        ],
+        "limitations": [
+          "no resolved slot-5 buffer",
+          "indirect and indexed paths remain"
+        ]
+      },
+      {
+        "tool": "cr16-pcm-candidates/1",
+        "image": "p2test",
+        "candidate_accesses": [
+          {
+            "image": "p2test",
+            "instruction": "0x000dbe",
+            "bytes": "2fc90660",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6006",
+            "expression": null,
+            "provenance": [
+              "0x000dbe"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x000e08",
+            "bytes": "0fc10454",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5404",
+            "expression": null,
+            "provenance": [
+              "0x000e08"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x000e0c",
+            "bytes": "0fc10654",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5406",
+            "expression": null,
+            "provenance": [
+              "0x000e0c"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x000e10",
+            "bytes": "0fc10854",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5408",
+            "expression": null,
+            "provenance": [
+              "0x000e10"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x000e14",
+            "bytes": "0fc10a54",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f540a",
+            "expression": null,
+            "provenance": [
+              "0x000e14"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x000ed2",
+            "bytes": "0fc90660",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6006",
+            "expression": null,
+            "provenance": [
+              "0x000ed2"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x00139a",
+            "bytes": "7100ff000454",
+            "mnemonic": "movd",
+            "operation": "ADDRESS_LOAD",
+            "width_bits": 32,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5404",
+            "expression": null,
+            "provenance": [
+              "0x00139a"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x0013a0",
+            "bytes": "3190",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5404",
+            "expression": null,
+            "provenance": [
+              "0x00139a"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x0013aa",
+            "bytes": "31d0",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5404",
+            "expression": null,
+            "provenance": [
+              "0x00139a"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x0013b6",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x0013b6"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x00144a",
+            "bytes": "7100ff000654",
+            "mnemonic": "movd",
+            "operation": "ADDRESS_LOAD",
+            "width_bits": 32,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x00144a"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001450",
+            "bytes": "3190",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x00144a"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001458",
+            "bytes": "31d0",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x00144a"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001e12",
+            "bytes": "0fc10064",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6400",
+            "expression": null,
+            "provenance": [
+              "0x001e12"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001e1a",
+            "bytes": "0fc90264",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6402",
+            "expression": null,
+            "provenance": [
+              "0x001e1a"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001e3e",
+            "bytes": "7000ff000660",
+            "mnemonic": "movd",
+            "operation": "ADDRESS_LOAD",
+            "width_bits": 32,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff6006",
+            "expression": null,
+            "provenance": [
+              "0x001e3e"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001e48",
+            "bytes": "20d0",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff6006",
+            "expression": null,
+            "provenance": [
+              "0x001e3e"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001e52",
+            "bytes": "7300ff000654",
+            "mnemonic": "movd",
+            "operation": "ADDRESS_LOAD",
+            "width_bits": 32,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x001e52"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001e58",
+            "bytes": "5390",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x001e52"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001e5e",
+            "bytes": "53d0",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x001e52"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001e66",
+            "bytes": "2090",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff6006",
+            "expression": null,
+            "provenance": [
+              "0x001e3e"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001e6c",
+            "bytes": "2fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x001e6c"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x001e70",
+            "bytes": "00c2",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff6006",
+            "expression": null,
+            "provenance": [
+              "0x001e3e"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x026764",
+            "bytes": "0f890260",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6002",
+            "expression": null,
+            "provenance": [
+              "0x026764"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x0267e2",
+            "bytes": "0f890660",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6006",
+            "expression": null,
+            "provenance": [
+              "0x0267e2"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x0267ea",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x0267ea"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x0267f6",
+            "bytes": "7100ff000654",
+            "mnemonic": "movd",
+            "operation": "ADDRESS_LOAD",
+            "width_bits": 32,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x0267f6"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x0267fc",
+            "bytes": "3190",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x0267f6"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x026806",
+            "bytes": "31d0",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x00ff5406",
+            "expression": null,
+            "provenance": [
+              "0x0267f6"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x027142",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x027142"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": true,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x02773c",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x02773c"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": false,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x027980",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x027980"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": false,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x027c96",
+            "bytes": "0f890660",
+            "mnemonic": "loadw",
+            "operation": "READ",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f6006",
+            "expression": null,
+            "provenance": [
+              "0x027c96"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": false,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          },
+          {
+            "image": "p2test",
+            "instruction": "0x027ca0",
+            "bytes": "0fc90254",
+            "mnemonic": "storw",
+            "operation": "WRITE",
+            "width_bits": 16,
+            "address_kind": "RESOLVED",
+            "effective_address": "0x000f5402",
+            "expression": null,
+            "provenance": [
+              "0x027ca0"
+            ],
+            "reachable_mode_a": false,
+            "reachable_mode_b": false,
+            "note": "",
+            "plausibility_note": "",
+            "confidence": "PROVEN"
+          }
+        ],
+        "count": 34,
+        "candidate_regions": [
+          "0x01000000 + indexed writes: loader/copy or runtime unknown",
+          "0x00108xx: data/table candidate",
+          "0x00116xx: data/table candidate",
+          "0x000F6002/6, 0x00FF6006: control/status candidates"
+        ],
+        "limitations": [
+          "no resolved slot-5 buffer",
+          "indirect and indexed paths remain"
+        ]
+      }
+    ]
+  },
+  "classification": {
+    "slot5_handler": "NOT_FOUND",
+    "slot5_status": "CANDIDATE_ONLY",
+    "0x01000000": "LOADER_OR_RAM_INIT_CANDIDATE",
+    "0x01000000_runtime_pcm_buffer": "UNKNOWN",
+    "irq_pcm_handler": "NOT_PROVEN"
+  },
+  "remaining_paths": [
+    "indirect/table dispatch",
+    "indexed r12/r13 FIFO/buffer",
+    "IRQ handler reading hardware FIFO",
+    "cross-call stack arguments",
+    "data/code ambiguity"
+  ],
+  "normal_p2test": {
+    "normal_indirect": 382,
+    "p2test_indirect": 396,
+    "normal_table_candidates": 382,
+    "p2test_table_candidates": 396,
+    "normal_irq_vectors": 31,
+    "p2test_irq_vectors": 31,
+    "structural_match": "same vector count; no PCM name"
+  },
+  "limitations": [
+    "no slot-5 handler proven",
+    "no physical wire order claimed",
+    "stack-passed arguments are not modelled",
+    "indirect calls are whole-register clobbers"
+  ]
+}

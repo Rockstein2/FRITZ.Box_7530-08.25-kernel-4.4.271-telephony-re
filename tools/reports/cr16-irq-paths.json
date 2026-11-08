@@ -1,0 +1,1553 @@
+{
+  "tool": "cr16-irq-paths/1",
+  "images": {
+    "normal": {
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+      "vectors": [
+        {
+          "index": 0,
+          "reference_name": "reserved00",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 1,
+          "reference_name": "nmi",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 2,
+          "reference_name": "reserved02",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 3,
+          "reference_name": "reserved03",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 4,
+          "reference_name": "reserved04",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 5,
+          "reference_name": "svc_trap",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 6,
+          "reference_name": "dvz_trap",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 7,
+          "reference_name": "flg_trap",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 8,
+          "reference_name": "bpt_trap",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 9,
+          "reference_name": "trc_trap",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 10,
+          "reference_name": "und_trap",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 11,
+          "reference_name": "reserved11",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 12,
+          "reference_name": "iad_trap",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 13,
+          "reference_name": "reserved13",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 14,
+          "reference_name": "dbg_trap",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 15,
+          "reference_name": "ise_int",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 16,
+          "reference_name": "access12_int",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 17,
+          "reference_name": "keyb_int",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 18,
+          "reference_name": "reserved_int18",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 19,
+          "reference_name": "ct_classd_int",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 20,
+          "reference_name": "uart_ri_int",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 21,
+          "reference_name": "uart_ti_int",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 22,
+          "reference_name": "spi_int",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 23,
+          "reference_name": "tim0_int",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 24,
+          "reference_name": "tim1_int",
+          "handler": "0x028996",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [
+            {
+              "instruction": "0x02899e",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000002b6",
+              "expression": null
+            }
+          ],
+          "writes": [
+            {
+              "instruction": "0x0289a2",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000002b6",
+              "expression": null
+            },
+            {
+              "instruction": "0x0289a8",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "memory_operations": [
+            {
+              "instruction": "0x028998",
+              "operation": "ADDRESS_LOAD",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000002b6",
+              "expression": null
+            },
+            {
+              "instruction": "0x02899e",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000002b6",
+              "expression": null
+            },
+            {
+              "instruction": "0x0289a2",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000002b6",
+              "expression": null
+            },
+            {
+              "instruction": "0x0289a8",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 25,
+          "reference_name": "clk100_int",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 26,
+          "reference_name": "dip_int",
+          "handler": "0x028cd0",
+          "blocks": 2,
+          "calls": [
+            "0x028cec"
+          ],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [
+            {
+              "instruction": "0x028cd8",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000093c9",
+              "expression": null
+            },
+            {
+              "instruction": "0x028cde",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f6006",
+              "expression": null
+            }
+          ],
+          "writes": [
+            {
+              "instruction": "0x028cdc",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000093c9",
+              "expression": null
+            },
+            {
+              "instruction": "0x028ce8",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "memory_operations": [
+            {
+              "instruction": "0x028cd2",
+              "operation": "ADDRESS_LOAD",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000093c9",
+              "expression": null
+            },
+            {
+              "instruction": "0x028cd8",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000093c9",
+              "expression": null
+            },
+            {
+              "instruction": "0x028cdc",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000093c9",
+              "expression": null
+            },
+            {
+              "instruction": "0x028cde",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f6006",
+              "expression": null
+            },
+            {
+              "instruction": "0x028ce8",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 27,
+          "reference_name": "ad_int",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 28,
+          "reference_name": "spi2",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 29,
+          "reference_name": "dsp_int",
+          "handler": "0x028a94",
+          "blocks": 8,
+          "calls": [
+            "0x028aee",
+            "0x028af6"
+          ],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [
+            {
+              "instruction": "0x028aa0",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000093cb",
+              "expression": null
+            },
+            {
+              "instruction": "0x028aa8",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000000d6",
+              "expression": null
+            },
+            {
+              "instruction": "0x028ab2",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+0"
+            },
+            {
+              "instruction": "0x028ad2",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+14"
+            },
+            {
+              "instruction": "0x028ae4",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+16"
+            }
+          ],
+          "writes": [
+            {
+              "instruction": "0x028aa6",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000093cb",
+              "expression": null
+            },
+            {
+              "instruction": "0x028ab4",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+0"
+            },
+            {
+              "instruction": "0x028ad6",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+14"
+            },
+            {
+              "instruction": "0x028ae8",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+16"
+            },
+            {
+              "instruction": "0x028afa",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r8,r7)+0"
+            },
+            {
+              "instruction": "0x028b00",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "memory_operations": [
+            {
+              "instruction": "0x028a9a",
+              "operation": "ADDRESS_LOAD",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000093cb",
+              "expression": null
+            },
+            {
+              "instruction": "0x028aa0",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000093cb",
+              "expression": null
+            },
+            {
+              "instruction": "0x028aa6",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000093cb",
+              "expression": null
+            },
+            {
+              "instruction": "0x028aa8",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000000d6",
+              "expression": null
+            },
+            {
+              "instruction": "0x028ab2",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+0"
+            },
+            {
+              "instruction": "0x028ab4",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+0"
+            },
+            {
+              "instruction": "0x028ac6",
+              "operation": "ADDRESS_LOAD",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000002c4",
+              "expression": null
+            },
+            {
+              "instruction": "0x028ad2",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+14"
+            },
+            {
+              "instruction": "0x028ad6",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+14"
+            },
+            {
+              "instruction": "0x028ade",
+              "operation": "RMW",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000093c8",
+              "expression": null
+            },
+            {
+              "instruction": "0x028ae4",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+16"
+            },
+            {
+              "instruction": "0x028ae8",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+16"
+            },
+            {
+              "instruction": "0x028afa",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r8,r7)+0"
+            },
+            {
+              "instruction": "0x028b00",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 30,
+          "reference_name": "reserved30",
+          "handler": "0x028dca",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        }
+      ],
+      "vector_count": 31,
+      "pcm_named_handlers": 0
+    },
+    "p2test": {
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+      "vectors": [
+        {
+          "index": 0,
+          "reference_name": "reserved00",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 1,
+          "reference_name": "nmi",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 2,
+          "reference_name": "reserved02",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 3,
+          "reference_name": "reserved03",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 4,
+          "reference_name": "reserved04",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 5,
+          "reference_name": "svc_trap",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 6,
+          "reference_name": "dvz_trap",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 7,
+          "reference_name": "flg_trap",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 8,
+          "reference_name": "bpt_trap",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 9,
+          "reference_name": "trc_trap",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 10,
+          "reference_name": "und_trap",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 11,
+          "reference_name": "reserved11",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 12,
+          "reference_name": "iad_trap",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 13,
+          "reference_name": "reserved13",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 14,
+          "reference_name": "dbg_trap",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 15,
+          "reference_name": "ise_int",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 16,
+          "reference_name": "access12_int",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 17,
+          "reference_name": "keyb_int",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 18,
+          "reference_name": "reserved_int18",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 19,
+          "reference_name": "ct_classd_int",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 20,
+          "reference_name": "uart_ri_int",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 21,
+          "reference_name": "uart_ti_int",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 22,
+          "reference_name": "spi_int",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 23,
+          "reference_name": "tim0_int",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 24,
+          "reference_name": "tim1_int",
+          "handler": "0x02772a",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [
+            {
+              "instruction": "0x027732",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00000216",
+              "expression": null
+            }
+          ],
+          "writes": [
+            {
+              "instruction": "0x027736",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00000216",
+              "expression": null
+            },
+            {
+              "instruction": "0x02773c",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "memory_operations": [
+            {
+              "instruction": "0x02772c",
+              "operation": "ADDRESS_LOAD",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00000216",
+              "expression": null
+            },
+            {
+              "instruction": "0x027732",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00000216",
+              "expression": null
+            },
+            {
+              "instruction": "0x027736",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00000216",
+              "expression": null
+            },
+            {
+              "instruction": "0x02773c",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 25,
+          "reference_name": "clk100_int",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 26,
+          "reference_name": "dip_int",
+          "handler": "0x027c88",
+          "blocks": 2,
+          "calls": [
+            "0x027ca4"
+          ],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [
+            {
+              "instruction": "0x027c90",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00009510",
+              "expression": null
+            },
+            {
+              "instruction": "0x027c96",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f6006",
+              "expression": null
+            }
+          ],
+          "writes": [
+            {
+              "instruction": "0x027c94",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00009510",
+              "expression": null
+            },
+            {
+              "instruction": "0x027ca0",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "memory_operations": [
+            {
+              "instruction": "0x027c8a",
+              "operation": "ADDRESS_LOAD",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00009510",
+              "expression": null
+            },
+            {
+              "instruction": "0x027c90",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00009510",
+              "expression": null
+            },
+            {
+              "instruction": "0x027c94",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00009510",
+              "expression": null
+            },
+            {
+              "instruction": "0x027c96",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f6006",
+              "expression": null
+            },
+            {
+              "instruction": "0x027ca0",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 27,
+          "reference_name": "ad_int",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 28,
+          "reference_name": "spi2",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 29,
+          "reference_name": "dsp_int",
+          "handler": "0x027914",
+          "blocks": 8,
+          "calls": [
+            "0x02796e",
+            "0x027976"
+          ],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [
+            {
+              "instruction": "0x027920",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00009512",
+              "expression": null
+            },
+            {
+              "instruction": "0x027928",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000000d6",
+              "expression": null
+            },
+            {
+              "instruction": "0x027932",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+0"
+            },
+            {
+              "instruction": "0x027952",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+14"
+            },
+            {
+              "instruction": "0x027964",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+16"
+            }
+          ],
+          "writes": [
+            {
+              "instruction": "0x027926",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00009512",
+              "expression": null
+            },
+            {
+              "instruction": "0x027934",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+0"
+            },
+            {
+              "instruction": "0x027956",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+14"
+            },
+            {
+              "instruction": "0x027968",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+16"
+            },
+            {
+              "instruction": "0x02797a",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r8,r7)+0"
+            },
+            {
+              "instruction": "0x027980",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "memory_operations": [
+            {
+              "instruction": "0x02791a",
+              "operation": "ADDRESS_LOAD",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00009512",
+              "expression": null
+            },
+            {
+              "instruction": "0x027920",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00009512",
+              "expression": null
+            },
+            {
+              "instruction": "0x027926",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00009512",
+              "expression": null
+            },
+            {
+              "instruction": "0x027928",
+              "operation": "READ",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000000d6",
+              "expression": null
+            },
+            {
+              "instruction": "0x027932",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+0"
+            },
+            {
+              "instruction": "0x027934",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+0"
+            },
+            {
+              "instruction": "0x027946",
+              "operation": "ADDRESS_LOAD",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x00000224",
+              "expression": null
+            },
+            {
+              "instruction": "0x027952",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+14"
+            },
+            {
+              "instruction": "0x027956",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+14"
+            },
+            {
+              "instruction": "0x02795e",
+              "operation": "RMW",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x0000950e",
+              "expression": null
+            },
+            {
+              "instruction": "0x027964",
+              "operation": "READ",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+16"
+            },
+            {
+              "instruction": "0x027968",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r1,r0)+16"
+            },
+            {
+              "instruction": "0x02797a",
+              "operation": "WRITE",
+              "address_kind": "UNKNOWN",
+              "effective_address": null,
+              "expression": "(r8,r7)+0"
+            },
+            {
+              "instruction": "0x027980",
+              "operation": "WRITE",
+              "address_kind": "RESOLVED",
+              "effective_address": "0x000f5402",
+              "expression": null
+            }
+          ],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        },
+        {
+          "index": 30,
+          "reference_name": "reserved30",
+          "handler": "0x009ffc",
+          "blocks": 1,
+          "calls": [],
+          "indirect_sites": 0,
+          "return_blocks": 1,
+          "reads": [],
+          "writes": [],
+          "memory_operations": [],
+          "frequency_8khz_proven": false,
+          "frequency_evidence": null,
+          "pcm_named": false
+        }
+      ],
+      "vector_count": 31,
+      "pcm_named_handlers": 0
+    }
+  }
+}

@@ -50,6 +50,15 @@ The logical slot-5 control is at raw 16-bit index 4, i.e. byte offset `0x08`.
 also index 4.  This resolves why the raw store/read addresses looked like
 `0x08` while the existing logical map calls the word slot 5.
 
+E2 additionally checked `generic_slotinterleave` in `pcmlink.ko`.  Its
+audio-slot stores also use `eor ..., #2` before `strh` (normal disassembly
+around `0x7d68`, `0x7d9c`, `0x7e0c`, `0x7ea4`).  Therefore the same adjacent
+16-bit pair swap applies to the audio words `audio6`/`audio7`, not only to the
+header/control words.  The raw-memory pair order is supported for all eight
+words; the sample packing/endianness inside an audio halfword, the receive
+audio order and the physical wire order remain **MODEL / INFERRED**, not
+measured facts.
+
 ## 3. QCA ADSS/MBOX policy
 
 The AVM GPL source has:
@@ -86,7 +95,9 @@ fon_slot5_raw_to_frame(raw, logical);
 ```
 
 The golden test covers all eight words, round-trip, and the raw order above.
-The logical encoder is not changed to emit a guessed physical order.
+It also covers in-place conversion (`frame_to_raw(buf, buf)` and
+`raw_to_frame(buf, buf)`) through temporary variables.  The logical encoder is
+not changed to emit a guessed physical order.
 
 ## 5. Q74 status
 

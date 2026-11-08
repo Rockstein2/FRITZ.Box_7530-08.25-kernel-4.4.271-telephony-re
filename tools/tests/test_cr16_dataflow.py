@@ -97,6 +97,19 @@ def test_firmware():
           report["state_blocks"] > 0, True)
     check("normal dataflow finds new resolved accesses",
           report["newly_resolved_count"] > 0, True)
+    check("normal CFG records direct call edges",
+          report["call_edges"] > 0, True)
+    check("normal CFG records return blocks",
+          report["return_blocks"] > 0, True)
+    blocks, starts, _ab, succ, _preds = D.blocks_and_successors(fw)
+    call_blocks = [s for s in starts
+                   if fw.insns[blocks[s][-1]].mnemonic in D.CALLS]
+    return_blocks = [s for s in starts
+                     if fw.insns[blocks[s][-1]].mnemonic in D.RETS]
+    check("a call block has a callee and a continuation",
+          any(len(succ[s]) >= 2 for s in call_blocks), True)
+    check("return blocks have no normal successor",
+          all(not succ[s] for s in return_blocks), True)
     # 0x0010cc was UNKNOWN in E0 and must have a cross-block provenance.
     hit = [r for r in report["newly_resolved"]
            if r["instruction"] == "0x0010cc"]
@@ -112,6 +125,14 @@ def test_firmware():
         check("p2test has blocks", rep2["blocks"] > 1000, True)
         check("p2test has cross-block constants",
               rep2["state_blocks"] > 0, True)
+    # A deliberately tiny iteration cap must not be reported as converged.
+    forced, _fw3, _rows3 = D.run_image("normal", FW, str(OBJDUMP),
+                                       max_iters=1)
+    check("forced iteration cap reports NON_CONVERGED",
+          forced["analysis_status"], "NON_CONVERGED")
+    check("forced cap does not claim PROVEN new rows",
+          all(r.get("confidence") == "CANDIDATE"
+              for r in forced["newly_resolved"]), True)
 
 
 def test_reports():

@@ -59,8 +59,10 @@ int fon_slot5_frame_to_raw(const uint16_t logical[8], uint16_t raw[8])
 	if (!logical || !raw)
 		return -1;
 	for (i = 0; i < 8; i += 2) {
-		raw[i] = logical[i + 1];
-		raw[i + 1] = logical[i];
+		uint16_t lo = logical[i];
+		uint16_t hi = logical[i + 1];
+		raw[i] = hi;
+		raw[i + 1] = lo;
 	}
 	return 0;
 }
@@ -72,8 +74,10 @@ int fon_slot5_raw_to_frame(const uint16_t raw[8], uint16_t logical[8])
 	if (!raw || !logical)
 		return -1;
 	for (i = 0; i < 8; i += 2) {
-		logical[i] = raw[i + 1];
-		logical[i + 1] = raw[i];
+		uint16_t lo = raw[i];
+		uint16_t hi = raw[i + 1];
+		logical[i] = hi;
+		logical[i + 1] = lo;
 	}
 	return 0;
 }
