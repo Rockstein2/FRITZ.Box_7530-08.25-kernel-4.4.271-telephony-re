@@ -201,7 +201,7 @@ be reproduced, but the INTID arithmetic is confirmed.
 | Stereo TX port | 0 | GPL, OEM |
 | Stereo RX port | 3 | GPL, OEM |
 | Frames per DMA buffer | `fs_per_dma` is computed as `[r5] / [r5+8]` from the board config (`ipq40xxtdm_linkinit` `0x9ef0..0x9f28`), not a literal 32; the 7530 board values are in the closed `avm_get_hw_config_table` → **UNRESOLVED (Q76)**.  The GPL comment `4 ms == 32` describes the intent, not the passed number | GPL (doc comment) / proprietary disassembly |
-| Buffer size | 512 bytes per ping-pong half, **if** `fs_per_dma = 32` and `slots = 8` (`32 * 8 * 2`) | derived, INFERRED |
+| Buffer size | 512 bytes per ping-pong half **only if** `fs_per_dma = 32` and `slots = 8` (`32 * 8 * 2`); 32 is the offline driver's constant, not an OEM-proven value | derived, UNRESOLVED (Q76) |
 | DMA descriptors | 16 | GPL |
 | Descriptor size (IPQ4019) | 156 bytes, `L1_CACHE_ALIGN` = 192 | GPL |
 | Driver slot count | `qcom,tdm-slots = <8>` matches GPL | DT, GPL |

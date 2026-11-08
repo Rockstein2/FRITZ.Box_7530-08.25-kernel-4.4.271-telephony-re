@@ -48,9 +48,12 @@ byte 0x0c  audio slots, zeroed
 **This frame is not "all silence".**  Bytes 0x02–0x08 carry AVM framing rails
 whose SC14448 meaning is not decoded; only 0x0c onward is audio.
 
-`slots = 8`, 16 bytes per frame.  `fs_per_dma = 32` is the documented value
-(`4 ms == 32`) but the number `pcmlink.ko` actually passes is `slot_ratio`,
-which is not decoded, so the 512-byte half is **inferred** (Q76).
+`slots = 8`, 16 bytes per frame.  `FON_DMA_FRAMES_PER_BUFFER = 32` is a
+**configuration constant of this offline driver**, matching the GPL comment
+`4 ms == 32`.  It is not the value OEM `pcmlink.ko` passes: that is
+`[r5] / [r5+8]` from the board config, whose numbers are not recovered.  So
+`fs_per_dma` for HW236 is **UNRESOLVED (Q76)** and the 512-byte half is only
+correct if 32 turns out to be right.
 
 The control word stays 0x0000 after prepare.  That is **default buffer
 contents, not a proven line-idle command**: AVM's `build_slic_ctrl(0, 0, 0)`

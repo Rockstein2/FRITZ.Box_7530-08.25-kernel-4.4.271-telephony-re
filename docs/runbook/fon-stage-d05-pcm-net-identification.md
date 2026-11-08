@@ -12,7 +12,9 @@ The analysis behind this is in `../fon-d05-pcm-net-identification.md`.
 
 | Statement | Status |
 |---|---|
-| The PCM signals can only appear on IPQ4019 GPIO20–GPIO27 | `GPL pinctrl` + board table |
+| GPIO20–GPIO27 are AVM's documented PCMLINK candidates on HW236 | board table |
+| Their physical connection to the SC14448 and the active pinmux | **UNKNOWN** |
+| The I2S function is also reachable on other GPIOs in the SoC | `pinctrl-ipq4019.c` |
 | A specific GPIO is FSC or BCLK | **UNKNOWN** — only MUX2/MUX3 name groups |
 | A board pad anywhere carries FSC/BCLK | **UNKNOWN** |
 | Groups A/B are PCM | **UNKNOWN** — not established by anything |

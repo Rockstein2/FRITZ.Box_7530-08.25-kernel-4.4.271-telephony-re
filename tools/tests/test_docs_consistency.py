@@ -752,6 +752,59 @@ if README.is_file():
     check("driver README uses the 7530 hdr08 default 0x5555",
           "byte 0x08  0x5555" in t, True)
 
+# ---------------------------------------------------------------------------
+# 19. C3.3: no generated binaries, reconciled hdr08 and fs_per_dma status
+# ---------------------------------------------------------------------------
+import subprocess as _sp
+
+_tracked = _sp.run(["git", "ls-files", "src/fon-driver/tests"],
+                   cwd=ROOT, capture_output=True, text=True).stdout.split()
+_generated = {"fon_c2_test", "fon_tdm_test", "fon_dma_test",
+              "fon_tdm_test32", "fon_tdm_test_san", "fon_dma_test_san"}
+check("no generated test binaries are tracked",
+      [p for p in _tracked if p.rsplit("/", 1)[-1] in _generated], [])
+
+_gi = ROOT / "src" / "fon-driver" / "tests" / ".gitignore"
+if _gi.is_file():
+    _t = _gi.read_text()
+    check("gitignore lists every generated test binary",
+          all(n in _t for n in _generated), True)
+
+_HDR = ROOT / "src" / "fon-driver" / "fon_tdm.h"
+if _HDR.is_file():
+    _t = _HDR.read_text()
+    check("header documents the FPGA/0x808 selection",
+          "config & 0x1003" in _t, True)
+    check("header no longer says the 0x08 condition is undecoded",
+          "condition behind that flag is not decoded" not in _t, True)
+    check("header no longer claims the driver defaults to _ZERO",
+          "defaults to _ZERO" not in _t, True)
+
+_DMAH = ROOT / "src" / "fon-driver" / "fon_dma.h"
+if _DMAH.is_file():
+    _t = _DMAH.read_text()
+    check("fon_dma.h records fs_per_dma as UNRESOLVED",
+          "UNRESOLVED (Q76)" in _t, True)
+
+for _name in ("docs/fon-adss-tdm-channel-map.md", "docs/fon-known-facts.md",
+              "src/fon-driver/README.md"):
+    _f = ROOT / _name
+    if _f.is_file():
+        _t = _f.read_text()
+        check(f"{_name} does not claim fs_per_dma=32 as resolved",
+              "INFERRED that the FON path uses 32" not in _t
+              and "32 is INFERRED" not in _t, True)
+
+if D05.is_file():
+    _t = D05.read_text()
+    check("d05 calls GPIO20-27 candidates, not the only pins",
+          "documented AVM candidates" in _t, True)
+
+if D05RB.is_file():
+    _t = D05RB.read_text()
+    check("d05 runbook drops the 'can only appear' claim",
+          "can only appear" not in _t, True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)

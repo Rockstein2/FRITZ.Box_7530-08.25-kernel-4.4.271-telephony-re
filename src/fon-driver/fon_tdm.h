@@ -13,15 +13,18 @@
  *   byte offset 0x02 : 0xfefe
  *   byte offset 0x04 : 0xfefe
  *   byte offset 0x06 : 0xfefe
- *   byte offset 0x08 : 0x5555 or 0x0000 (AVM picks by TDMPriv+0x808)
+ *   byte offset 0x08 : 0x5555 (no FPGA) or 0x0000 (FPGA board)
  *   byte offset 0x0a : 16-bit FON control/status word (physical slot 5)
  *   byte offset 0x0c..: audio / remaining slots
  *
  * This frame is NOT "all silence": 0x02..0x08 carry AVM framing rails whose
  * SC14448 meaning is not decoded.  Only 0x0c and beyond are audio.
  *
- * The 0xfefe/0x5555 values are copied from the AVM TxDMA header, and the
- * condition behind the 0x08 choice is not decoded, so it is a parameter.
+ * The 0x08 word is chosen by AVM from TDMPriv+0x808, which fpgadata_init
+ * sets only when the board config advertises an FPGA
+ * (`(config & 0x1003) == 0x1001`).  The 7530 runs abmode=1 (no FPGA), so
+ * its flag is 0 and the frame carries 0x5555.  What 0x5555 means inside
+ * the SC14448 is still not decoded; only the AVM-side choice is known.
  */
 
 #ifdef __KERNEL__
@@ -52,9 +55,10 @@ typedef uint32_t u32;
 #define FON_TDM_HEADER_AUDIO       0x5555
 
 /*
- * Word at byte offset 0x08.  AVM's TxDMA writes 0x5555 or 0x0000 depending
- * on TDMPriv+0x808; the condition behind that flag is not decoded, so the
- * caller must choose and say which branch it is exercising.
+ * Word at byte offset 0x08.  TxDMA writes 0x0000 when TDMPriv+0x808 is
+ * non-zero and 0x5555 otherwise; fpgadata_init raises that flag only for
+ * boards whose config advertises an FPGA.  The 7530 has none, so _5555 is
+ * the board-correct value and _ZERO exists to exercise the FPGA branch.
  */
 enum fon_tdm_header_08 {
 	FON_TDM_HDR08_ZERO = 0,   /* tx[0x08] = 0x0000 */
@@ -76,8 +80,9 @@ int fon_tdm_frame_init(u8 *frame, size_t len);
 /*
  * Same as fon_tdm_frame_init() but with an explicit header selector.
  * fon_tdm_frame_init() is exactly this with FON_TDM_HDR08_5555, which keeps
- * its historical behaviour; the buffer helper defaults to _ZERO in the
- * driver.  Both share one internal builder, so they cannot drift apart.
+ * its historical behaviour.  The driver also defaults to _5555 for the
+ * 7530 and only selects _ZERO via the tdm_hdr08_zero module parameter.
+ * Both entry points share one internal builder, so they cannot drift apart.
  */
 int fon_tdm_frame_init_ex(u8 *frame, size_t len, enum fon_tdm_header_08 hdr08);
 int fon_tdm_frame_set_control(u8 *frame, size_t len, u16 control);

@@ -276,13 +276,17 @@ The GPL doc comment at `ipq-adss-avm.c:2178` says *"fs_per_dma: count of
 framesyncs for one dma-buffer (4 ms == 32)"*, and 4 ms at 8 kHz is exactly
 32.  That describes the **intended** value, not necessarily the value passed.
 
-Status: **INFERRED that the FON path uses 32** (Q76).  Consequences if it is
-wrong: the ping-pong half would not be 4 ms, so the buffer size and the
-DMA-relative timing would differ.  It does **not** change the slot-5 byte
-offset, which is per-frame.
+Status: **UNRESOLVED (Q76)**.  Finding `fs_per_dma` is `[r5] / [r5+8]` means
+the value is a ratio of board-config numbers, and those numbers are not in
+the GPL drop.  A literal 32 is *not* established for the FON path; it is only
+this offline driver's own constant (`FON_DMA_FRAMES_PER_BUFFER`) and the
+example in the GPL comment.  Consequences if 32 is wrong: the ping-pong half
+would not be 4 ms, so buffer size and DMA-relative timing differ.  It does
+**not** change the slot-5 byte offset, which is per-frame.
 
 For a dry-run the difference is harmless because no DMA runs.  Before C4 it
-must be settled by a fill-time measurement or by decoding `slot_ratio`.
+must be settled from the 7530 board-config table or a runtime `DBG_TRC_API`
+readback of `tdm_if_adss_dma_init(... fs_per_dma=%u ...)`.
 
 ## 6. The control slot 5
 
@@ -314,7 +318,7 @@ slots, offset `0x0a` would be slot 10.  `INFERRED`, dependent on
 | Descriptor count | 16 | 16 | matches |
 | DMA mask | 28-bit | `0x0fffffff` | matches |
 | `dma-tx/rx-channel` | informational only | not encoded | no action needed |
-| Frames per DMA buffer | `fs_per_dma` | 32 | **INFERRED**, verify |
+| Frames per DMA buffer | `fs_per_dma` | 32 (driver constant) | **UNRESOLVED (Q76)**, verify |
 
 **The register-block mapping in our DTS is already correct.**  The one thing
 that was genuinely wrong was the *draft of this document*, which read the
@@ -334,7 +338,7 @@ Remaining real gaps are behavioural, not mapping:
 | SC14448 actually drives BCLK/FSC on this board | **UNKNOWN** — Q4/Q27 |
 | ADSS pads are muxed to the PCM pins | **DISPROVED for the current boot** — Stage C0 found `i2s_rx/tx/td` |
 | `slots = 8` at runtime on our kernel | **INFERRED** |
-| `fs_per_dma` in the FON call site | **INFERRED** from `linkinit` disassembly |
+| `fs_per_dma` in the FON call site | **UNRESOLVED** — it is `[r5] / [r5+8]`; the board numbers are closed |
 | Exact SC14448 bit meaning of the control word | **UNKNOWN** |
 
 The dominant open item is still **Q4/Q27**: until the SC14448 is shown running

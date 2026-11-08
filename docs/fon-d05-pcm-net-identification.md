@@ -10,13 +10,20 @@ PCMLINK reverse engineering.
 
 ## 0. Bottom line
 
+**GPIO20–27 are AVM's documented PCMLINK candidates on HW236.  Their physical
+connection to the SC14448 and the active pinmux are not proven.**  The
+pinctrl driver makes I2S reachable on other pins too, so the candidate list is
+evidence of intent, not of wiring.
+
 Three DT/pinctrl facts decide the whole question, in order of importance:
 
-1. **The I2S/PCM function exists in the IPQ4019 pinctrl driver, and it maps
-   exactly the AVM board-table pins.**  `i2s_rx` = gpio20/21/22/23,
-   `i2s_tx` = gpio24/25/26, `i2s_td` = gpio27.  So the AVM names
-   `fsc`/`dcl`/`mcl`/`di`/`do` are not arbitrary; they are the SoC's I2S
-   groups.
+1. **The I2S/PCM function exists in the IPQ4019 pinctrl driver, and it is
+   available on the AVM board-table pins.**  `i2s_rx` may use gpio20/21/22/23,
+   `i2s_tx` gpio24/25/26, `i2s_td` gpio27 — but the same functions are also
+   available on other GPIOs (e.g. `i2s_rx` also on 0/1/2/58/60/61/63,
+   `i2s_tx` also on 52/53/57/60/61, `i2s_td` also on 28/29/54/55/56/63).
+   So GPIO20–27 are the **documented AVM candidates** for PCMLINK on
+   HW236, not the only pins that could carry I2S in the SoC.
 2. **Neither the AVM audio DTSI nor the HW236 board file assigns
    `pinctrl-0` to the PCM/TDM nodes.**  The pins are not muxed by Linux
    Device Tree at all in the published sources.
