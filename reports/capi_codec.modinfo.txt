@@ -1,4 +1,4 @@
-filename:       ~/Downloads/OpenWrt7530/reference/oem-08.25/rootfs/lib/modules/4.4.271/capi_codec/capi_codec.ko
+filename:       ~/Downloads/OpenWrt7530/reference/oem-08.25/extracted/rootfs/lib/modules/4.4.271/capi_codec/capi_codec.ko
 author:         AVM GmbH
 license:        Proprietary
 description:    CAPICODEC support by AVM

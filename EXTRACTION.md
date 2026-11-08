@@ -220,10 +220,16 @@ reference/init.d/
 
 ## 5. Verify hashes
 
-From the repository root:
+From the repository root, for the legacy in-repo cache:
 
 ```bash
 sha256sum -c SHA256SUMS
+```
+
+For the canonical external tree:
+
+```bash
+(cd ../reference/oem-08.25/extracted && sha256sum -c SHA256SUMS)
 ```
 
 All selected artifacts should report `OK`. A mismatch usually means the
@@ -233,6 +239,10 @@ The hash manifest covers only this selected set. It is not a complete copy of
 all vendor modules.
 
 ## 6. What each selected component is
+
+Canonical extracted copies live outside Git in
+`../reference/oem-08.25/extracted/{modules,firmware,init-scripts}/`. The
+repository-local paths below are legacy caches kept for older commands.
 
 | Repository path | Vendor path | Role | Depends on |
 |---|---|---|---|
@@ -283,8 +293,10 @@ userspace/ABI work.
   OpenWrt `6.12` kernel.
 - The vendor modules import AVM/QCOM APIs not present in OpenWrt: `tdm_if_*`,
   `dakota_gpio_*`, `avm_get_hw_config_table`, `msm_dectuart_*`, AVM FIQ helpers.
-- `modules/`, `firmware/` and `reference/` are intentionally ignored by Git.
-  Keep them local unless you have made a licensing decision.
+- `modules/`, `firmware/` and `reference/` are intentionally ignored by Git as
+  legacy local caches. Canonical extracted copies live outside the repository
+  in `../reference/oem-08.25/extracted/`. Keep all of them local unless you
+  have made a licensing decision.
 - The extraction commands are read-only with respect to the firmware image.
 
 ## 9. One-command check after extraction

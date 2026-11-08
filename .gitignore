@@ -1,5 +1,5 @@
-# Proprietary AVM binaries, firmware and extracted vendor scripts.
-# Keep them locally; reproduce by extracting the vendor image into these paths.
+# Legacy in-repo extraction caches; canonical copies live outside Git in
+# ../reference/oem-08.25/extracted/.
 modules/
 firmware/
 reference/

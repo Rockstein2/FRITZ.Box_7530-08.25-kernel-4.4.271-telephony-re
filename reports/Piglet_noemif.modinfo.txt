@@ -1,4 +1,4 @@
-filename:       ~/Downloads/OpenWrt7530/reference/oem-08.25/rootfs/lib/modules/4.4.271/piglet_noemif/Piglet_noemif.ko
+filename:       ~/Downloads/OpenWrt7530/reference/oem-08.25/extracted/rootfs/lib/modules/4.4.271/piglet_noemif/Piglet_noemif.ko
 author:         AVM GmbH
 license:        Proprietary.Copyright 2008-2024 by AVM
 

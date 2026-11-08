@@ -20,8 +20,8 @@ The original unredacted files, including the binary shared-UART/DECT stream,
 are kept **outside Git** in:
 
 ```text
-/home/rck/Downloads/OpenWrt7530/reference/oem-08.25/boot-logs/2026-11-08/rx.log
-/home/rck/Downloads/OpenWrt7530/reference/oem-08.25/boot-logs/2026-11-08/tx.log
+/home/rck/Downloads/OpenWrt7530/evidence/oem-08.25/boot-logs/2026-11-08/rx.log
+/home/rck/Downloads/OpenWrt7530/evidence/oem-08.25/boot-logs/2026-11-08/tx.log
 ```
 
 Original hashes:
@@ -40,7 +40,7 @@ raw capture contains a binary shared-UART/DECT stream that may include
 proprietary firmware data. Do not commit the unredacted captures, that binary
 stream, AVM modules, firmware or extracted DTBs. If the repository is made
 private, the raw file can be added separately; until then it stays in
-`reference/oem-08.25/boot-logs/2026-11-08/`.
+`evidence/oem-08.25/boot-logs/2026-11-08/`.
 
 **Why the text copy is still useful:** the bootloader and kernel boot sequence
 is text; only the shared-UART binary blocks are summarized. All technical lines
@@ -102,5 +102,5 @@ The later live read-only console readback (GPIO/TLMM, ISDN/PCMLINK registers)
 is stored outside Git at:
 
 ```text
-/home/rck/Downloads/OpenWrt7530/reference/oem-08.25/console/2026-11-08/
+/home/rck/Downloads/OpenWrt7530/evidence/oem-08.25/console/2026-11-08/
 ```

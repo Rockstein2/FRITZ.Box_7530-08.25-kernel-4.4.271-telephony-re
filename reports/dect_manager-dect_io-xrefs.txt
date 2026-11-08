@@ -1,6 +1,6 @@
 dect_manager -> /dev/dect_io static cross-references
 ====================================================
-Binary: ~/Downloads/OpenWrt7530/reference/oem-08.25/rootfs/usr/bin/dect_manager
+Binary: ~/Downloads/OpenWrt7530/reference/oem-08.25/extracted/rootfs/usr/bin/dect_manager
 Type:   ARM PIE, stripped, uClibc
 VAs below are file/PIE virtual addresses, not runtime addresses.
 

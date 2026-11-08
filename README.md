@@ -64,6 +64,9 @@ map, and the real 7530 hardware configuration.
 The `feature/fon-standalone-driver` branch investigates a minimal independent
 FXS driver for the 7530 analog port.
 
+The local workspace layout is documented in `../WORKSPACE.md` (outside Git):
+`reference/`, `evidence/`, `restore/`, `backups/`, `work/`, `builds/`.
+
 Documentation is split into four layers (see `docs/README.md`):
 
 ```text
@@ -121,6 +124,22 @@ reference/oem-08.25/installers/FRITZ.Box_7530-08.25.image
   -> var/tmp/filesystem.image   (SquashFS rootfs)
   -> var/tmp/kernel.image       (EVA/LZMA kernel containing OEM HW236 DTBs)
 ```
+
+**Canonical extracted copies live outside Git** in
+`../reference/oem-08.25/extracted/`:
+
+```text
+extracted/kernel.image
+extracted/filesystem.image
+extracted/rootfs/
+extracted/modules/
+extracted/firmware/
+extracted/init-scripts/
+```
+
+The in-repo `modules/`, `firmware/` and `reference/init.d/` trees below are
+**legacy local caches** used by older analysis commands. They remain ignored
+by Git; they are not the canonical reference location.
 
 ### Kernel modules
 

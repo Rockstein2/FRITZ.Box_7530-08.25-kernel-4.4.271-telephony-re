@@ -59,7 +59,7 @@ Return paths, in order of preference:
    power" and boot the normal image.  This is the only path that needs no
    flash restore.
 2. **If NAND is ever modified:** flash the verified official sysupgrade image
-   from `../../restore/` (SHA-256 `011e020205fed455c79ee68ebb4d9ce43e6b05698bd99b05ebfc5c851f7ceb73`)
+   from `../../restore/openwrt-25.12.6/` (SHA-256 `011e020205fed455c79ee68ebb4d9ce43e6b05698bd99b05ebfc5c851f7ceb73`)
    and restore the latest configuration tarball from `../../backups/`.  This
    restores the same release and settings, not a byte-identical rootfs.
 3. **If the bootloader is damaged:** use the AVM EVA recovery route.  It is

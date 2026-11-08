@@ -1090,7 +1090,7 @@ if _ref_readme.is_file():
           "e854d392546b2013b2ff24a1193a5b0c3986cabce6ae4690d947b0bf5723bde0"
           in _r, True)
     check("OEM capture: README records the raw backup location",
-          "reference/oem-08.25/boot-logs/2026-11-08/" in _r, True)
+          "evidence/oem-08.25/boot-logs/2026-11-08/" in _r, True)
     check("OEM capture: README states the repository is public",
           "GitHub repository is public" in _r, True)
 

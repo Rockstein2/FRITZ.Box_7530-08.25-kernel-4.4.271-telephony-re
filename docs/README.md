@@ -12,6 +12,10 @@ files disagree with a runbook or historical report, the current files win. A
 runbook controls procedure, not interpretation. A reference capture records
 what the hardware actually emitted; it is evidence, not a summary.
 
+The external workspace layout is documented locally in `../WORKSPACE.md`
+(outside Git): `reference/`, `evidence/`, `restore/`, `backups/`, `work/`,
+`builds/`. Small sanitized evidence stays in `docs/reference/` in Git.
+
 ## Layer 1 — current truth (`docs/`)
 
 | File | What it is |

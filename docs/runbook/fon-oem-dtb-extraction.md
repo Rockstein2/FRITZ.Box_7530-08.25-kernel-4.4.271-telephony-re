@@ -22,8 +22,8 @@ A HW236 DTB was extracted from the EVA/LZMA kernel in the original FRITZ!OS
 | Model | `AVM FRITZ!Box 7530` |
 | Compatible | `qcom,ipq4019` |
 | SHA256 | `3083e2acedc800015fea5ee7e57fa6cc8da551e21ee792095cbd8a7224bb841f` |
-| Local DTB | `reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dtb` |
-| Local DTS | `reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dts` |
+| Local DTB | `reference/oem-08.25/dtb/HW236-subrev2.dtb` |
+| Local DTS | `reference/oem-08.25/dtb/HW236-subrev2.dts` |
 
 The SHA256 is identical to the value previously recorded in
 `../history/fon-dialog-board-uart-identification.md` and
@@ -63,7 +63,7 @@ python3 - <<'PY'
 from pathlib import Path
 import struct
 
-src = Path("reference/oem-08.25/image-extracted/var/tmp/kernel.image").read_bytes()
+src = Path("reference/oem-08.25/extracted/kernel.image").read_bytes()
 magic, record_len, load_addr, image_type, compressed_size, \
     uncompressed_size, crc = struct.unpack_from("<7I", src, 0)
 
@@ -151,14 +151,14 @@ Save and decompile the first blob:
 
 ```bash
 cp reference/oem-08.25/dtb/fdt-1-0x98d038.dtb \
-   reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dtb
+   reference/oem-08.25/dtb/HW236-subrev2.dtb
 
 dtc -I dtb -O dts \
-  -o reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dts \
-  reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dtb
+  -o reference/oem-08.25/dtb/HW236-subrev2.dts \
+  reference/oem-08.25/dtb/HW236-subrev2.dtb
 
-sha256sum reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dtb
-fdtget reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dtb / model
+sha256sum reference/oem-08.25/dtb/HW236-subrev2.dtb
+fdtget reference/oem-08.25/dtb/HW236-subrev2.dtb / model
 ```
 
 ## D0.6 evidence from the compiled DTB

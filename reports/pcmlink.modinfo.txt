@@ -1,4 +1,4 @@
-filename:       ~/Downloads/OpenWrt7530/reference/oem-08.25/rootfs/lib/modules/4.4.271/ubik2/pcmlink.ko
+filename:       ~/Downloads/OpenWrt7530/reference/oem-08.25/extracted/rootfs/lib/modules/4.4.271/ubik2/pcmlink.ko
 license:        
 (C) Copyright 2007-2025 AVM
 

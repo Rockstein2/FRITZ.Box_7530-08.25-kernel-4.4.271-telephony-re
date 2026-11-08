@@ -129,8 +129,8 @@ Verified restore assets outside the repository:
 
 | Asset | Hash / note |
 |---|---|
-| `../../restore/openwrt-25.12.6-ipq40xx-generic-avm_fritzbox-7530-squashfs-sysupgrade.bin` | `011e020205fed455c79ee68ebb4d9ce43e6b05698bd99b05ebfc5c851f7ceb73` |
-| `../../restore/version.buildinfo` | `r33311-981c978eff` (matches the board) |
+| `../../restore/openwrt-25.12.6/openwrt-25.12.6-ipq40xx-generic-avm_fritzbox-7530-squashfs-sysupgrade.bin` | `011e020205fed455c79ee68ebb4d9ce43e6b05698bd99b05ebfc5c851f7ceb73` |
+| `../../restore/openwrt-25.12.6/version.buildinfo` | `r33311-981c978eff` (matches the board) |
 | `../../backups/RckBox-config-*.tar.gz` | configuration only; newest 2026-11-06 21:31 |
 
 
@@ -384,7 +384,7 @@ wiring, or any OpenWrt behaviour. Q13/Q15/Q27/Q31/Q39/Q77/Q81 stay open.
 
 ### 5d. OEM 08.25 live console readback (2026-11-08)
 
-Primary reference: `/home/rck/Downloads/OpenWrt7530/reference/oem-08.25/console/2026-11-08/`.
+Primary reference: `/home/rck/Downloads/OpenWrt7530/evidence/oem-08.25/console/2026-11-08/`.
 Read-only console commands; no write, no toggle, no module load.
 
 | Fact | Value | Evidence |
@@ -554,7 +554,7 @@ The kernel in the test image is built from the workspace tree
 | GPIO40 | `pin 40 (GPIO_40): (MUX UNCLAIMED) (GPIO UNCLAIMED)` |
 | Console | `ttyMSM0` holds the console |
 
-Evidence: `../../restore/stage-a/stage-a.tar.gz` and the console boot log.
+Evidence: `../../evidence/stage-a/stage-a.tar.gz` and the console boot log.
 
 ### 9d. Stage B result (probe-only, HW-TEST)
 
@@ -602,7 +602,7 @@ Isolation checks:
   no `stage`/`diagnostics` attributes remain; the `7700000.fon-tdm` entry in
   `/sys/bus/platform/devices` is the DT node itself.
 
-Evidence: `../../restore/stage-b/stage-b-2/`.
+Evidence: `../../evidence/stage-b/stage-b-2/`.
 
 ### 9d-2. Stage C0 on hardware (RUNTIME-RO, 2026-11-07)
 
@@ -633,7 +633,7 @@ the field is `0`. The actual mux value, the pad state, the electrical
 connection to the SC14448 and the presence of FSC/BCLK all remain **UNKNOWN**
 (Q27/Q31). A read-only TLMM readback or a passive measurement is required.
 
-Evidence: `../../restore/stage-c0-final/stage-c0g/`, archive sha256
+Evidence: `../../evidence/stage-c0-final/stage-c0g/`, archive sha256
 `2a9f4afc3164131a180e579e55fa9c43b1bb9c02146e23e32d993e95a4030d7e`.
 Three collector defects were only visible on the device and are fixed:
 BusyBox awk has no `strtonum`, `od` is absent, and the iomem owner test
@@ -696,7 +696,7 @@ Conclusion: **declaring a clock and a reset in DT does not make a
 probe-only load acquire them.**  The resources exist for C1 and remain
 untouched under Stage B.
 
-Evidence: `../../restore/stage-b-c1/stage-b-c1/`.
+Evidence: `../../evidence/stage-b-c1/stage-b-c1/`.
 
 ### 9d-5. Metric defect: clock_refs did not measure what it claimed
 
@@ -758,7 +758,7 @@ are 0).  `FON probe-only ready; no MMIO/clock/reset/IRQ/DMA access` is
 printed from that same run.
 
 Artifacts: module `a9ee7a13...d30f` (76 412 B), image `154bd755...4811`,
-evidence `../../restore/stage-b-c1b/stage-b-c1b/`.
+evidence `../../evidence/stage-b-c1b/stage-b-c1b/`.
 
 ### 9d-7. Stage C1: the ADSS block answers on the bus (HW-TEST, 2026-11-07)
 
