@@ -3,6 +3,7 @@
 | Script | Purpose |
 |---|---|
 | `pcmlink_regs.py` | ELF/register analysis for `pcmlink.ko` (read-only) |
+| `cr16_dataflow.py` | Conservative cross-block CR16 register dataflow and reports |
 | `fon-tlmm-clock-probe/` | Read-only TLMM input probe (userspace + one-shot kernel module); offline-only until approved |
 | `tests/test_oem_tdm_timing.py` | Numerical proof of the Piglet 100 ms and PCMLINK 195 ms windows |
 | `fon-slot5-protocol/` | Offline slot-5 control encoder/status decoder and golden vectors |

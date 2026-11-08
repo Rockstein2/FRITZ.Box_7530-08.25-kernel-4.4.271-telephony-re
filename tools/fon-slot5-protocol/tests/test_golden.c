@@ -129,6 +129,32 @@ int main(void)
 	check_u16("frame slot6", frame[6], 0x0000);
 	check_u16("frame slot7", frame[7], 0x0000);
 
+	/* Raw ARM TxDMA memory: adjacent 16-bit words are address-XOR-2 swapped. */
+	{
+		uint16_t raw[8];
+		uint16_t back[8];
+		check_u16("logical frame to raw",
+			  (uint16_t)fon_slot5_frame_to_raw(frame, raw), 0);
+		check_u16("raw slot0", raw[0], 0xfefe);
+		check_u16("raw slot1", raw[1], 0x0000);
+		check_u16("raw slot2", raw[2], 0xfefe);
+		check_u16("raw slot3", raw[3], 0xfefe);
+		check_u16("raw slot4", raw[4], 0x4200);
+		check_u16("raw slot5", raw[5], 0x5555);
+		check_u16("raw slot6", raw[6], 0x0000);
+		check_u16("raw slot7", raw[7], 0x0000);
+		check_u16("raw frame to logical",
+			  (uint16_t)fon_slot5_raw_to_frame(raw, back), 0);
+		check_u16("round-trip slot0", back[0], frame[0]);
+		check_u16("round-trip slot1", back[1], frame[1]);
+		check_u16("round-trip slot2", back[2], frame[2]);
+		check_u16("round-trip slot3", back[3], frame[3]);
+		check_u16("round-trip slot4", back[4], frame[4]);
+		check_u16("round-trip slot5", back[5], frame[5]);
+		check_u16("round-trip slot6", back[6], frame[6]);
+		check_u16("round-trip slot7", back[7], frame[7]);
+	}
+
 	check_u16("frame with slot4 suppressed",
 		  (uint16_t)fon_slot5_build_frame_ex(frame, 0x4000, 0), 0);
 	check_u16("suppressed slot4", frame[4], 0x0000);

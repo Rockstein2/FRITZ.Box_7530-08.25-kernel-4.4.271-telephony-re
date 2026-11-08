@@ -51,3 +51,29 @@ int fon_slot5_build_frame(uint16_t tx_words[8], uint16_t control)
 {
 	return fon_slot5_build_frame_ex(tx_words, control, 1);
 }
+
+int fon_slot5_frame_to_raw(const uint16_t logical[8], uint16_t raw[8])
+{
+	int i;
+
+	if (!logical || !raw)
+		return -1;
+	for (i = 0; i < 8; i += 2) {
+		raw[i] = logical[i + 1];
+		raw[i + 1] = logical[i];
+	}
+	return 0;
+}
+
+int fon_slot5_raw_to_frame(const uint16_t raw[8], uint16_t logical[8])
+{
+	int i;
+
+	if (!raw || !logical)
+		return -1;
+	for (i = 0; i < 8; i += 2) {
+		logical[i] = raw[i + 1];
+		logical[i + 1] = raw[i];
+	}
+	return 0;
+}

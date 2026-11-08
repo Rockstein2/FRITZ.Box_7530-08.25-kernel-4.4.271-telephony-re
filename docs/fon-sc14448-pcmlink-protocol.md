@@ -61,11 +61,12 @@ The Linux-side reconstruction uses this logical order:
 | 6 | audio | filled by `generic_slotinterleave`/audio path |
 | 7 | audio | filled by `generic_slotinterleave`/audio path |
 
-**Caveat:** `TxDMA` writes the raw halfwords through an ARM `strh` address
-`EOR #2`.  The exact byte-order/slot mapping after that transformation is not
-independently proven.  The logical order above is the working reconstruction;
-the raw-store offsets are recorded in
-`history/fon-e0-tx-control-reconstruction.md`.
+**EOR #2 (resolved at the memory level):** `TxDMA`/`PutRxDMA` swap adjacent
+16-bit slots inside each 32-bit DMA word.  The logical slot-5 word appears at
+raw 16-bit index 4 / byte offset `0x08`; the logical map remains the order
+above.  The raw memory model is proven by the ARM instructions and covered by
+`history/fon-e1-dma-byte-order.md`.  The final DMA presentation/physical wire
+order is still **UNKNOWN** and is the remaining Q74 caveat.
 
 `0xfefe` and `0x5555` are Linux-side frame constants.  They are **not**
 claimed to be universal SC14448 sync words.

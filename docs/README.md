@@ -31,6 +31,7 @@ Verify the canonical layout and all SHA256 manifests with
 | `fon-tdm-control-only-plan.md` | Control-only TDM plan; no DMA yet. |
 | `fon-e0-summary.md` | E0 SC14448/PCMLINK slot-5 research summary and evidence boundary. |
 | `fon-sc14448-pcmlink-protocol.md` | Reconstructed slot-5 TX/RX protocol, confidence and caveats. |
+| `fon-e1-summary.md` | E1 cross-block dataflow, indirect search and DMA byte-order result. |
 
 Evidence classes used by `fon-known-facts.md`:
 
@@ -116,6 +117,11 @@ provenance, never as status.
 | `history/fon-e0-analog-state-machine.md` | `slics_reset`, ring, hook, line-state dispatch |
 | `history/fon-e0-sc14448-firmware-search.md` | Bounded search for a firmware slot-5 handler |
 | `history/fon-e0-protocol-confidence.md` | E0 confidence matrix and Q16/Q17/Q30/Q74/Q75/Q76 |
+| `history/fon-e1-cross-block-dataflow.md` | Conservative CFG dataflow, metrics and provenance |
+| `history/fon-e1-indirect-dispatch.md` | Indirect edges, table candidates and vector limits |
+| `history/fon-e1-pcm-handler-candidates.md` | PCM candidate regions and Q46/Q55 boundary |
+| `history/fon-e1-normal-vs-p2test.md` | Normal/p2test topology and metrics comparison |
+| `history/fon-e1-dma-byte-order.md` | EOR #2 raw DMA memory model and remaining wire-order unknown |
 
 ### Dialog SC14448 firmware and CR16
 

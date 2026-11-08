@@ -1,0 +1,6701 @@
+{
+  "tool": "cr16-indirect/1",
+  "images": [
+    {
+      "tool": "cr16-indirect/1",
+      "image": "normal",
+      "indirect_edges": [
+        {
+          "instruction": "0x000014",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000018",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000370",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000380",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00038c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00039c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0003a8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0003b8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0003c4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0003d4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0003e0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0003f0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000400",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000410",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00041a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000426",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000432",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000444",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00044a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000450",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000456",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00045c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000462",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00046c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000472",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000478",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000480",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000486",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000494",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0010d8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0010e2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0010f4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0010fe",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x001108",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x001114",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00111c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001124",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00112c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001134",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00113c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001148",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001154",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00115c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001164",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00116e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001178",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001182",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00118c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001194",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0011cc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00131a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00157e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001592",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0015a8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001854",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001a08",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001a7c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001aac",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002556",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00261a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002638",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00264a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002658",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002740",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002744",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002748",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00274c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002772",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0029a4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0029f4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0029f8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002a18",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002a1c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002a20",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002a40",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002a44",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002a48",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002b84",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002bfa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002cbe",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002d24",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002d2a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002d40",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002d46",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002d60",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002d6a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002d80",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002d86",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002d9c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002da2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002e2c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e38",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e3e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e4c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e98",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002eb0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002ec6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002ed0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002eec",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002ef6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002efe",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002fc0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002fd2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002fda",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002fe0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002ff0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003020",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003028",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00302e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003040",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00305a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00307c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00308e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003096",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00309c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0030aa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0030b0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0030be",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00316c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003172",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003234",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00323c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003242",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003252",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00326a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003270",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003282",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0032a2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0032aa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0032b0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0032be",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0032c4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0032d2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003328",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00334a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00335a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00336a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00337c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003436",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00343e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00358e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0035a4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0035b6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0035c4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0035d6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0035f2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003620",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003670",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003682",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00372a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003738",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003740",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00374e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00375c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00376a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003772",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003780",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003b36",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x009cd4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009cde",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009cee",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009cfc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009e66",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x009fee",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x009ffe",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x017982",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020246",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020254",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02026c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0203e4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0203fa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020420",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x02045a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020468",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x02050e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020532",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02054c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02081a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020afe",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020b12",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020b84",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020b90",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020b98",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020d90",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020da8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020dc6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020de2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020df6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020fc2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021004",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02100e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021034",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x021044",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x021054",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x021064",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x021074",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0210f6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021266",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02138c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0213dc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021454",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02156a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021784",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0217a8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021946",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021950",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02195e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021970",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021978",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021980",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02198a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021e24",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021e2e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021e38",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021e4c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021e56",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021e68",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021eb2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021fc8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021fce",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021fe0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021fea",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02238e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0224f6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02250a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02259c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022714",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022762",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022d40",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022d48",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022d56",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022d70",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022d7e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022d8e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022d9e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022f4c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022f5e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022f72",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x023150",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02315c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02316e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x023f34",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x023f62",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x023f90",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x023fa8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x025784",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025794",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02579c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0257aa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0257ba",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0257c6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0257d2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0257e2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0257ec",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0257fa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025808",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025818",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025822",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02582c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025834",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02583c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025848",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025850",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025862",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02586e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025878",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025882",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025890",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0258a0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0258aa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0258bc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0258cc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0258d6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0258e4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0258f2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025902",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025912",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025924",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02593c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02595c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02596a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025984",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02599c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259b0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259ba",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259d2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259de",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259f4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a0a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a2a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a38",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a4a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a5c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a78",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a90",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025aa0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025ab0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025ac0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025ad6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025afa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025afe",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025b10",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025b1a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025bf0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025bfe",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025c3e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025e80",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025eba",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x025ef8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x025f06",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x025f5a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x025f68",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x025f76",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x025f84",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x025f8a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x02610e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x026214",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x026226",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027242",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027262",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027270",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027286",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027296",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0272a8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0272b2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0272bc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0272c6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027530",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02754a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027556",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0275be",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0275c8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0276be",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027738",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02784c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027858",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027864",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027870",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02787c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027888",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027916",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027bee",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x027bf6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x027c84",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x027c98",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x027ce2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x027cf6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x027d3a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x027d42",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x027db8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027dc6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027f7a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027f84",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027f8c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027f9a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027fa2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027fb2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027fda",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x027fe2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x02800a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x028014",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x02804a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02804e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0284f0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028500",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02858c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0287b6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028994",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028a4a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028a92",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028b18",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028b82",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028c0e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028c12",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028c62",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028c8e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028cb2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028d20",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028d86",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028dac",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028dbc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x028dc8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        }
+      ],
+      "indirect_count": 382,
+      "table_hits": [
+        {
+          "addr": 0,
+          "value": 160,
+          "in_insn": true
+        },
+        {
+          "addr": 2,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 6,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 8,
+          "value": 16,
+          "in_insn": true
+        },
+        {
+          "addr": 10,
+          "value": 224,
+          "in_insn": true
+        },
+        {
+          "addr": 18,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 20,
+          "value": 214,
+          "in_insn": true
+        },
+        {
+          "addr": 22,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 24,
+          "value": 214,
+          "in_insn": true
+        },
+        {
+          "addr": 26,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 28,
+          "value": 2290,
+          "in_insn": true
+        },
+        {
+          "addr": 30,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 34,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 174,
+          "value": 260,
+          "in_insn": true
+        },
+        {
+          "addr": 176,
+          "value": 1544,
+          "in_insn": true
+        },
+        {
+          "addr": 182,
+          "value": 2560,
+          "in_insn": true
+        },
+        {
+          "addr": 186,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 188,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 190,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 192,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 194,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 196,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 198,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 200,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 202,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 204,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 206,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 208,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 210,
+          "value": 0,
+          "in_insn": false
+        },
+        {
+          "addr": 216,
+          "value": 258,
+          "in_insn": true
+        },
+        {
+          "addr": 220,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 224,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 228,
+          "value": 2376,
+          "in_insn": true
+        },
+        {
+          "addr": 236,
+          "value": 4626,
+          "in_insn": true
+        },
+        {
+          "addr": 238,
+          "value": 4626,
+          "in_insn": true
+        },
+        {
+          "addr": 240,
+          "value": 4626,
+          "in_insn": true
+        },
+        {
+          "addr": 242,
+          "value": 18,
+          "in_insn": true
+        },
+        {
+          "addr": 246,
+          "value": 264,
+          "in_insn": true
+        },
+        {
+          "addr": 248,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 250,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 252,
+          "value": 256,
+          "in_insn": true
+        },
+        {
+          "addr": 256,
+          "value": 272,
+          "in_insn": true
+        },
+        {
+          "addr": 258,
+          "value": 1536,
+          "in_insn": true
+        },
+        {
+          "addr": 260,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 262,
+          "value": 512,
+          "in_insn": true
+        },
+        {
+          "addr": 268,
+          "value": 1792,
+          "in_insn": true
+        },
+        {
+          "addr": 270,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 272,
+          "value": 768,
+          "in_insn": true
+        },
+        {
+          "addr": 280,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 282,
+          "value": 1024,
+          "in_insn": true
+        },
+        {
+          "addr": 286,
+          "value": 274,
+          "in_insn": true
+        },
+        {
+          "addr": 288,
+          "value": 2304,
+          "in_insn": true
+        },
+        {
+          "addr": 290,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 298,
+          "value": 2560,
+          "in_insn": true
+        },
+        {
+          "addr": 300,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 302,
+          "value": 1536,
+          "in_insn": true
+        },
+        {
+          "addr": 308,
+          "value": 256,
+          "in_insn": true
+        },
+        {
+          "addr": 310,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 312,
+          "value": 1792,
+          "in_insn": true
+        },
+        {
+          "addr": 318,
+          "value": 512,
+          "in_insn": true
+        },
+        {
+          "addr": 320,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 328,
+          "value": 768,
+          "in_insn": true
+        },
+        {
+          "addr": 330,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 332,
+          "value": 2304,
+          "in_insn": true
+        },
+        {
+          "addr": 338,
+          "value": 1024,
+          "in_insn": true
+        },
+        {
+          "addr": 340,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 342,
+          "value": 2560,
+          "in_insn": true
+        },
+        {
+          "addr": 350,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 352,
+          "value": 2816,
+          "in_insn": true
+        },
+        {
+          "addr": 356,
+          "value": 272,
+          "in_insn": true
+        },
+        {
+          "addr": 358,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 360,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 368,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 370,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 372,
+          "value": 3328,
+          "in_insn": true
+        },
+        {
+          "addr": 378,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 380,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 382,
+          "value": 3584,
+          "in_insn": true
+        },
+        {
+          "addr": 386,
+          "value": 274,
+          "in_insn": true
+        },
+        {
+          "addr": 388,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 390,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 392,
+          "value": 3840,
+          "in_insn": true
+        },
+        {
+          "addr": 398,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 400,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 406,
+          "value": 264,
+          "in_insn": true
+        },
+        {
+          "addr": 408,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 410,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 412,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 416,
+          "value": 264,
+          "in_insn": true
+        },
+        {
+          "addr": 418,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 420,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 426,
+          "value": 264,
+          "in_insn": true
+        },
+        {
+          "addr": 428,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 430,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 432,
+          "value": 5120,
+          "in_insn": true
+        },
+        {
+          "addr": 436,
+          "value": 264,
+          "in_insn": true
+        },
+        {
+          "addr": 438,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 440,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 442,
+          "value": 5376,
+          "in_insn": true
+        },
+        {
+          "addr": 446,
+          "value": 264,
+          "in_insn": true
+        },
+        {
+          "addr": 448,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 450,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 452,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 454,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 456,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 458,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 460,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 464,
+          "value": 3840,
+          "in_insn": true
+        },
+        {
+          "addr": 468,
+          "value": 4638,
+          "in_insn": true
+        },
+        {
+          "addr": 470,
+          "value": 3280,
+          "in_insn": true
+        },
+        {
+          "addr": 474,
+          "value": 3280,
+          "in_insn": true
+        },
+        {
+          "addr": 478,
+          "value": 3280,
+          "in_insn": true
+        },
+        {
+          "addr": 482,
+          "value": 3280,
+          "in_insn": true
+        },
+        {
+          "addr": 484,
+          "value": 4608,
+          "in_insn": true
+        },
+        {
+          "addr": 494,
+          "value": 2312,
+          "in_insn": true
+        },
+        {
+          "addr": 498,
+          "value": 2312,
+          "in_insn": true
+        },
+        {
+          "addr": 542,
+          "value": 3074,
+          "in_insn": true
+        },
+        {
+          "addr": 544,
+          "value": 4626,
+          "in_insn": true
+        },
+        {
+          "addr": 546,
+          "value": 3280,
+          "in_insn": true
+        },
+        {
+          "addr": 550,
+          "value": 3280,
+          "in_insn": true
+        },
+        {
+          "addr": 554,
+          "value": 3280,
+          "in_insn": true
+        },
+        {
+          "addr": 558,
+          "value": 2256,
+          "in_insn": true
+        },
+        {
+          "addr": 562,
+          "value": 2304,
+          "in_insn": true
+        },
+        {
+          "addr": 572,
+          "value": 6662,
+          "in_insn": true
+        },
+        {
+          "addr": 576,
+          "value": 1688,
+          "in_insn": true
+        },
+        {
+          "addr": 596,
+          "value": 1672,
+          "in_insn": true
+        },
+        {
+          "addr": 616,
+          "value": 144,
+          "in_insn": true
+        },
+        {
+          "addr": 622,
+          "value": 6662,
+          "in_insn": true
+        },
+        {
+          "addr": 626,
+          "value": 1688,
+          "in_insn": true
+        },
+        {
+          "addr": 642,
+          "value": 768,
+          "in_insn": true
+        },
+        {
+          "addr": 652,
+          "value": 4622,
+          "in_insn": true
+        },
+        {
+          "addr": 654,
+          "value": 14388,
+          "in_insn": true
+        },
+        {
+          "addr": 658,
+          "value": 238,
+          "in_insn": true
+        },
+        {
+          "addr": 660,
+          "value": 4416,
+          "in_insn": true
+        },
+        {
+          "addr": 672,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 674,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 676,
+          "value": 1032,
+          "in_insn": true
+        },
+        {
+          "addr": 678,
+          "value": 524,
+          "in_insn": true
+        },
+        {
+          "addr": 680,
+          "value": 1546,
+          "in_insn": true
+        },
+        {
+          "addr": 682,
+          "value": 270,
+          "in_insn": true
+        },
+        {
+          "addr": 700,
+          "value": 5764,
+          "in_insn": true
+        },
+        {
+          "addr": 704,
+          "value": 74,
+          "in_insn": true
+        },
+        {
+          "addr": 714,
+          "value": 124,
+          "in_insn": true
+        },
+        {
+          "addr": 718,
+          "value": 5792,
+          "in_insn": true
+        },
+        {
+          "addr": 728,
+          "value": 2092,
+          "in_insn": true
+        },
+        {
+          "addr": 752,
+          "value": 2066,
+          "in_insn": true
+        },
+        {
+          "addr": 776,
+          "value": 2070,
+          "in_insn": true
+        },
+        {
+          "addr": 820,
+          "value": 54,
+          "in_insn": true
+        },
+        {
+          "addr": 878,
+          "value": 288,
+          "in_insn": true
+        },
+        {
+          "addr": 886,
+          "value": 18,
+          "in_insn": true
+        },
+        {
+          "addr": 894,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 906,
+          "value": 260,
+          "in_insn": true
+        },
+        {
+          "addr": 914,
+          "value": 18,
+          "in_insn": true
+        },
+        {
+          "addr": 922,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 934,
+          "value": 232,
+          "in_insn": true
+        },
+        {
+          "addr": 942,
+          "value": 18,
+          "in_insn": true
+        },
+        {
+          "addr": 950,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 970,
+          "value": 18,
+          "in_insn": true
+        },
+        {
+          "addr": 978,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 990,
+          "value": 176,
+          "in_insn": true
+        },
+        {
+          "addr": 998,
+          "value": 18,
+          "in_insn": true
+        },
+        {
+          "addr": 1006,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 1018,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 1022,
+          "value": 2092,
+          "in_insn": true
+        },
+        {
+          "addr": 1034,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 1060,
+          "value": 38,
+          "in_insn": true
+        },
+        {
+          "addr": 1072,
+          "value": 40,
+          "in_insn": true
+        },
+        {
+          "addr": 1086,
+          "value": 18,
+          "in_insn": true
+        },
+        {
+          "addr": 1160,
+          "value": 540,
+          "in_insn": true
+        },
+        {
+          "addr": 1166,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 1170,
+          "value": 2080,
+          "in_insn": true
+        },
+        {
+          "addr": 1172,
+          "value": 2798,
+          "in_insn": true
+        },
+        {
+          "addr": 1178,
+          "value": 122,
+          "in_insn": true
+        },
+        {
+          "addr": 1186,
+          "value": 72,
+          "in_insn": true
+        },
+        {
+          "addr": 1228,
+          "value": 12976,
+          "in_insn": true
+        },
+        {
+          "addr": 1250,
+          "value": 112,
+          "in_insn": true
+        },
+        {
+          "addr": 1258,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 1268,
+          "value": 336,
+          "in_insn": true
+        },
+        {
+          "addr": 1274,
+          "value": 296,
+          "in_insn": true
+        },
+        {
+          "addr": 1278,
+          "value": 112,
+          "in_insn": true
+        },
+        {
+          "addr": 1286,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 1290,
+          "value": 5954,
+          "in_insn": true
+        },
+        {
+          "addr": 1296,
+          "value": 464,
+          "in_insn": true
+        },
+        {
+          "addr": 1302,
+          "value": 424,
+          "in_insn": true
+        },
+        {
+          "addr": 1306,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 1318,
+          "value": 28,
+          "in_insn": true
+        },
+        {
+          "addr": 1320,
+          "value": 116,
+          "in_insn": true
+        },
+        {
+          "addr": 1330,
+          "value": 552,
+          "in_insn": true
+        },
+        {
+          "addr": 1336,
+          "value": 512,
+          "in_insn": true
+        },
+        {
+          "addr": 1340,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 1348,
+          "value": 116,
+          "in_insn": true
+        },
+        {
+          "addr": 1358,
+          "value": 680,
+          "in_insn": true
+        },
+        {
+          "addr": 1364,
+          "value": 640,
+          "in_insn": true
+        },
+        {
+          "addr": 1368,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 1376,
+          "value": 116,
+          "in_insn": true
+        },
+        {
+          "addr": 1386,
+          "value": 808,
+          "in_insn": true
+        },
+        {
+          "addr": 1392,
+          "value": 768,
+          "in_insn": true
+        },
+        {
+          "addr": 1396,
+          "value": 120,
+          "in_insn": true
+        },
+        {
+          "addr": 1404,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 1408,
+          "value": 22,
+          "in_insn": true
+        }
+      ],
+      "table_hit_count": 5639,
+      "limitations": [
+        "a 16-bit word equal to an instruction address is a candidate, not proof of a function pointer",
+        "no vector entry is assigned a PCM name"
+      ]
+    },
+    {
+      "tool": "cr16-indirect/1",
+      "image": "p2test",
+      "indirect_edges": [
+        {
+          "instruction": "0x000014",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000018",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000282",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000294",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00029c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0002ae",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0002b6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0002c8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0002d0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0002dc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0002e6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0002ee",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0002fa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000308",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00030e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000314",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00031a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000320",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x000326",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00032c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00033a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000bb6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000bc0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000bca",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000bd4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000bde",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000be8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000bf2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000bfc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000c08",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000c42",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000d90",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x000ffa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00100e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001024",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0012d6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0014b2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0014e2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001db4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001ed6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001ef4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001f06",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001f14",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x001ffc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002000",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002004",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002008",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00202e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002260",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0022b0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0022b4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0022d4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0022d8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0022dc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0022fc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002300",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002304",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002440",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002526",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002540",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002548",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002550",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002586",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00258c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002592",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002598",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025a0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025a4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025a8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025ac",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025b2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025b6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025be",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025c4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025ca",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025d6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025e0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025e4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025e8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025ec",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025f0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025f4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0025f8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002690",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00281c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00282e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002844",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00285a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0028c0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0028c6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0028dc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0028e2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0028fc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002906",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00291c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002922",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002938",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00293e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0029c8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0029d4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0029da",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0029e8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002a44",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002a5a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002a64",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002a80",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002a8c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002a94",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002b5c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002b6c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002b74",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002b7a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002b8c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002bbc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002bc4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002bca",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002bdc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002bf6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002c18",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002c2a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002c32",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002c38",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002c46",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002c4c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002c5a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002c76",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002d16",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002d1c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002ddc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002df8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x002e00",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e06",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e18",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e30",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e36",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e48",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e68",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e70",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e76",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e84",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e8a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002e98",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002eec",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002f16",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002f26",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002f36",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x002f4a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003022",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003026",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00312c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003132",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003138",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00313e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003144",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00314a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003150",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x00315a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003328",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003344",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003372",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0033c2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0033d4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00347c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00348a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003492",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0034a0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0034ae",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0034bc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0034c4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0034d2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0035dc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0036ae",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0036ba",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0036c6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0036d2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x00375c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0039aa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0039b2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003a1c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003a34",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003a74",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003a88",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003ab4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003abc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003b1e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003c62",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003c70",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003c98",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003ca0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003cc6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003cce",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x003cfa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x003cfe",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x009c32",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x009cc0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x009ccc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x009cfa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009d52",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009d90",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009dd8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009de2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009e2c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009e96",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009eb6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009ecc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009ed8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009ee0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x009fb2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x009ffa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02004e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020052",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020152",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020168",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x02018e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0201c8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0201d6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020290",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0202b4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0202ce",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0207be",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0207d2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020852",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x02085e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020866",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020870",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020878",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020a96",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020aa8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020ab4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020ac6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020ade",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020c1e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020d34",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020d94",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020db0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020dc2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020dce",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020e72",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020ee8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020ef2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x020f18",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020f28",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020f38",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020f48",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020f58",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x020fd4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021036",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02107e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021166",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021236",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0212ce",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021322",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02132c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021336",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0214c2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0214d4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021594",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02159c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021600",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02160a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02173e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021748",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021752",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021d52",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021d60",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x021d6e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022058",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022066",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022072",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02207c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022088",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0224fc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02250c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02251e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022568",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02267e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022684",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02268e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022782",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022794",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02298e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022b6e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022cba",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x022d08",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x023280",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02329a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0232a8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0232b6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0232c0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0232ce",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0232de",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02349c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x023680",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02368a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02369c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0258d4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0258e4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0258f4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0258fc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02590a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02591a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02592a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025936",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025940",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025950",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02595e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02596c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02597e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025988",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025992",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259a4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259ac",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259bc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259c6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259ce",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259de",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259f0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0259fa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a06",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a14",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a1e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a2c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a44",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a64",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a72",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a80",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025a98",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025aa8",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025aba",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025ad0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025adc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025aec",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025b02",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025b1c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025b2a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025b3c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025b4a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025b5a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x025b80",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x026598",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0265aa",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0265c0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0265d2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0266a2",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0266e0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0266ee",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026740",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0268c4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x02699c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0269ae",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0269f0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026b5e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026bb0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026c28",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026c48",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026c60",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026c88",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026d60",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026d7a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026e3e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026e58",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x026e7a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x026e86",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x026e8e",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x026ea4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x026ebc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x026f7a",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0272d6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0272e0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0272f0",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x0272fe",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jal with a register operand"
+        },
+        {
+          "instruction": "0x027468",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0276de",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0276e4",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0276f6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x0276fc",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027712",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027718",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027728",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027752",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027998",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027a02",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027a92",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027ada",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027ade",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027b64",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027b72",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027ba6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027bfe",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027c22",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027c48",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027cf6",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027d1c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027d2c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027d3c",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        },
+        {
+          "instruction": "0x027d48",
+          "kind": "indirect",
+          "category": "INDIRECT_REGISTER",
+          "reason": "jump with a register operand"
+        }
+      ],
+      "indirect_count": 396,
+      "table_hits": [
+        {
+          "addr": 0,
+          "value": 160,
+          "in_insn": true
+        },
+        {
+          "addr": 2,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 6,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 8,
+          "value": 16,
+          "in_insn": true
+        },
+        {
+          "addr": 10,
+          "value": 224,
+          "in_insn": true
+        },
+        {
+          "addr": 14,
+          "value": 11264,
+          "in_insn": true
+        },
+        {
+          "addr": 16,
+          "value": 318,
+          "in_insn": true
+        },
+        {
+          "addr": 18,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 20,
+          "value": 214,
+          "in_insn": true
+        },
+        {
+          "addr": 22,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 24,
+          "value": 214,
+          "in_insn": true
+        },
+        {
+          "addr": 26,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 30,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 34,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 38,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 42,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 46,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 50,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 54,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 58,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 62,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 66,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 70,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 74,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 78,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 82,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 86,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 90,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 94,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 98,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 102,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 106,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 110,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 114,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 118,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 122,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 126,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 130,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 138,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 146,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 150,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 152,
+          "value": 15498,
+          "in_insn": true
+        },
+        {
+          "addr": 158,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 174,
+          "value": 260,
+          "in_insn": true
+        },
+        {
+          "addr": 176,
+          "value": 1544,
+          "in_insn": true
+        },
+        {
+          "addr": 194,
+          "value": 12574,
+          "in_insn": true
+        },
+        {
+          "addr": 202,
+          "value": 37258,
+          "in_insn": true
+        },
+        {
+          "addr": 216,
+          "value": 258,
+          "in_insn": true
+        },
+        {
+          "addr": 220,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 224,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 228,
+          "value": 2364,
+          "in_insn": true
+        },
+        {
+          "addr": 236,
+          "value": 2,
+          "in_insn": true
+        },
+        {
+          "addr": 238,
+          "value": 3084,
+          "in_insn": true
+        },
+        {
+          "addr": 240,
+          "value": 3084,
+          "in_insn": true
+        },
+        {
+          "addr": 242,
+          "value": 32,
+          "in_insn": true
+        },
+        {
+          "addr": 246,
+          "value": 7692,
+          "in_insn": true
+        },
+        {
+          "addr": 250,
+          "value": 3084,
+          "in_insn": true
+        },
+        {
+          "addr": 262,
+          "value": 12,
+          "in_insn": true
+        },
+        {
+          "addr": 282,
+          "value": 8460,
+          "in_insn": true
+        },
+        {
+          "addr": 286,
+          "value": 8972,
+          "in_insn": true
+        },
+        {
+          "addr": 290,
+          "value": 780,
+          "in_insn": true
+        },
+        {
+          "addr": 296,
+          "value": 9484,
+          "in_insn": true
+        },
+        {
+          "addr": 318,
+          "value": 1410,
+          "in_insn": true
+        },
+        {
+          "addr": 320,
+          "value": 642,
+          "in_insn": true
+        },
+        {
+          "addr": 330,
+          "value": 2316,
+          "in_insn": true
+        },
+        {
+          "addr": 338,
+          "value": 264,
+          "in_insn": true
+        },
+        {
+          "addr": 348,
+          "value": 264,
+          "in_insn": true
+        },
+        {
+          "addr": 350,
+          "value": 32,
+          "in_insn": true
+        },
+        {
+          "addr": 360,
+          "value": 12,
+          "in_insn": true
+        },
+        {
+          "addr": 368,
+          "value": 32,
+          "in_insn": true
+        },
+        {
+          "addr": 372,
+          "value": 780,
+          "in_insn": true
+        },
+        {
+          "addr": 382,
+          "value": 58,
+          "in_insn": true
+        },
+        {
+          "addr": 400,
+          "value": 32,
+          "in_insn": true
+        },
+        {
+          "addr": 404,
+          "value": 2316,
+          "in_insn": true
+        },
+        {
+          "addr": 408,
+          "value": 3084,
+          "in_insn": true
+        },
+        {
+          "addr": 416,
+          "value": 520,
+          "in_insn": true
+        },
+        {
+          "addr": 420,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 432,
+          "value": 1688,
+          "in_insn": true
+        },
+        {
+          "addr": 446,
+          "value": 36928,
+          "in_insn": true
+        },
+        {
+          "addr": 472,
+          "value": 144,
+          "in_insn": true
+        },
+        {
+          "addr": 482,
+          "value": 1688,
+          "in_insn": true
+        },
+        {
+          "addr": 496,
+          "value": 36928,
+          "in_insn": true
+        },
+        {
+          "addr": 498,
+          "value": 512,
+          "in_insn": true
+        },
+        {
+          "addr": 510,
+          "value": 13330,
+          "in_insn": true
+        },
+        {
+          "addr": 520,
+          "value": 1024,
+          "in_insn": true
+        },
+        {
+          "addr": 522,
+          "value": 456,
+          "in_insn": true
+        },
+        {
+          "addr": 530,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 534,
+          "value": 316,
+          "in_insn": true
+        },
+        {
+          "addr": 540,
+          "value": 5290,
+          "in_insn": true
+        },
+        {
+          "addr": 544,
+          "value": 50,
+          "in_insn": true
+        },
+        {
+          "addr": 558,
+          "value": 5316,
+          "in_insn": true
+        },
+        {
+          "addr": 564,
+          "value": 2080,
+          "in_insn": true
+        },
+        {
+          "addr": 574,
+          "value": 13088,
+          "in_insn": true
+        },
+        {
+          "addr": 578,
+          "value": 112,
+          "in_insn": true
+        },
+        {
+          "addr": 586,
+          "value": 13088,
+          "in_insn": true
+        },
+        {
+          "addr": 590,
+          "value": 112,
+          "in_insn": true
+        },
+        {
+          "addr": 594,
+          "value": 2058,
+          "in_insn": true
+        },
+        {
+          "addr": 598,
+          "value": 13088,
+          "in_insn": true
+        },
+        {
+          "addr": 602,
+          "value": 112,
+          "in_insn": true
+        },
+        {
+          "addr": 610,
+          "value": 13088,
+          "in_insn": true
+        },
+        {
+          "addr": 632,
+          "value": 124,
+          "in_insn": true
+        },
+        {
+          "addr": 634,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 640,
+          "value": 180,
+          "in_insn": true
+        },
+        {
+          "addr": 642,
+          "value": 220,
+          "in_insn": true
+        },
+        {
+          "addr": 648,
+          "value": 18,
+          "in_insn": true
+        },
+        {
+          "addr": 652,
+          "value": 4,
+          "in_insn": true
+        },
+        {
+          "addr": 658,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 660,
+          "value": 220,
+          "in_insn": true
+        },
+        {
+          "addr": 666,
+          "value": 154,
+          "in_insn": true
+        },
+        {
+          "addr": 668,
+          "value": 220,
+          "in_insn": true
+        },
+        {
+          "addr": 674,
+          "value": 18,
+          "in_insn": true
+        },
+        {
+          "addr": 678,
+          "value": 16,
+          "in_insn": true
+        },
+        {
+          "addr": 684,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 686,
+          "value": 220,
+          "in_insn": true
+        },
+        {
+          "addr": 692,
+          "value": 128,
+          "in_insn": true
+        },
+        {
+          "addr": 694,
+          "value": 220,
+          "in_insn": true
+        },
+        {
+          "addr": 700,
+          "value": 18,
+          "in_insn": true
+        },
+        {
+          "addr": 704,
+          "value": 28,
+          "in_insn": true
+        },
+        {
+          "addr": 710,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 712,
+          "value": 220,
+          "in_insn": true
+        },
+        {
+          "addr": 720,
+          "value": 220,
+          "in_insn": true
+        },
+        {
+          "addr": 726,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 730,
+          "value": 2064,
+          "in_insn": true
+        },
+        {
+          "addr": 732,
+          "value": 220,
+          "in_insn": true
+        },
+        {
+          "addr": 742,
+          "value": 220,
+          "in_insn": true
+        },
+        {
+          "addr": 750,
+          "value": 220,
+          "in_insn": true
+        },
+        {
+          "addr": 760,
+          "value": 28,
+          "in_insn": true
+        },
+        {
+          "addr": 762,
+          "value": 220,
+          "in_insn": true
+        },
+        {
+          "addr": 768,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 814,
+          "value": 572,
+          "in_insn": true
+        },
+        {
+          "addr": 820,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 826,
+          "value": 2798,
+          "in_insn": true
+        },
+        {
+          "addr": 832,
+          "value": 124,
+          "in_insn": true
+        },
+        {
+          "addr": 834,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 836,
+          "value": 0,
+          "in_insn": true
+        },
+        {
+          "addr": 840,
+          "value": 36,
+          "in_insn": true
+        },
+        {
+          "addr": 882,
+          "value": 12912,
+          "in_insn": true
+        },
+        {
+          "addr": 892,
+          "value": 12864,
+          "in_insn": true
+        },
+        {
+          "addr": 900,
+          "value": 7752,
+          "in_insn": true
+        },
+        {
+          "addr": 902,
+          "value": 112,
+          "in_insn": true
+        },
+        {
+          "addr": 910,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 920,
+          "value": 336,
+          "in_insn": true
+        },
+        {
+          "addr": 926,
+          "value": 296,
+          "in_insn": true
+        },
+        {
+          "addr": 930,
+          "value": 112,
+          "in_insn": true
+        },
+        {
+          "addr": 938,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 948,
+          "value": 464,
+          "in_insn": true
+        },
+        {
+          "addr": 954,
+          "value": 424,
+          "in_insn": true
+        },
+        {
+          "addr": 958,
+          "value": 112,
+          "in_insn": true
+        },
+        {
+          "addr": 966,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 974,
+          "value": 28,
+          "in_insn": true
+        },
+        {
+          "addr": 984,
+          "value": 512,
+          "in_insn": true
+        },
+        {
+          "addr": 988,
+          "value": 120,
+          "in_insn": true
+        },
+        {
+          "addr": 992,
+          "value": 5340,
+          "in_insn": true
+        },
+        {
+          "addr": 996,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 1000,
+          "value": 22,
+          "in_insn": true
+        },
+        {
+          "addr": 1004,
+          "value": 24,
+          "in_insn": true
+        },
+        {
+          "addr": 1012,
+          "value": 112,
+          "in_insn": true
+        },
+        {
+          "addr": 1036,
+          "value": 10,
+          "in_insn": true
+        },
+        {
+          "addr": 1048,
+          "value": 2,
+          "in_insn": true
+        },
+        {
+          "addr": 1054,
+          "value": 2018,
+          "in_insn": true
+        },
+        {
+          "addr": 1062,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 1066,
+          "value": 2010,
+          "in_insn": true
+        },
+        {
+          "addr": 1076,
+          "value": 10,
+          "in_insn": true
+        },
+        {
+          "addr": 1080,
+          "value": 12,
+          "in_insn": true
+        },
+        {
+          "addr": 1088,
+          "value": 16,
+          "in_insn": true
+        },
+        {
+          "addr": 1122,
+          "value": 4874,
+          "in_insn": true
+        },
+        {
+          "addr": 1132,
+          "value": 2,
+          "in_insn": true
+        },
+        {
+          "addr": 1138,
+          "value": 40,
+          "in_insn": true
+        },
+        {
+          "addr": 1148,
+          "value": 1924,
+          "in_insn": true
+        },
+        {
+          "addr": 1162,
+          "value": 10,
+          "in_insn": true
+        },
+        {
+          "addr": 1168,
+          "value": 12,
+          "in_insn": true
+        },
+        {
+          "addr": 1174,
+          "value": 38,
+          "in_insn": true
+        },
+        {
+          "addr": 1190,
+          "value": 20,
+          "in_insn": true
+        },
+        {
+          "addr": 1208,
+          "value": 40,
+          "in_insn": true
+        },
+        {
+          "addr": 1222,
+          "value": 10,
+          "in_insn": true
+        },
+        {
+          "addr": 1228,
+          "value": 12,
+          "in_insn": true
+        },
+        {
+          "addr": 1234,
+          "value": 38,
+          "in_insn": true
+        },
+        {
+          "addr": 1258,
+          "value": 2064,
+          "in_insn": true
+        },
+        {
+          "addr": 1278,
+          "value": 2072,
+          "in_insn": true
+        },
+        {
+          "addr": 1292,
+          "value": 126,
+          "in_insn": true
+        },
+        {
+          "addr": 1298,
+          "value": 2048,
+          "in_insn": true
+        },
+        {
+          "addr": 1300,
+          "value": 116,
+          "in_insn": true
+        },
+        {
+          "addr": 1304,
+          "value": 2082,
+          "in_insn": true
+        },
+        {
+          "addr": 1316,
+          "value": 2,
+          "in_insn": true
+        },
+        {
+          "addr": 1326,
+          "value": 128,
+          "in_insn": true
+        },
+        {
+          "addr": 1330,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 1346,
+          "value": 10,
+          "in_insn": true
+        },
+        {
+          "addr": 1350,
+          "value": 12,
+          "in_insn": true
+        },
+        {
+          "addr": 1354,
+          "value": 14,
+          "in_insn": true
+        },
+        {
+          "addr": 1362,
+          "value": 128,
+          "in_insn": true
+        },
+        {
+          "addr": 1380,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 1384,
+          "value": 2094,
+          "in_insn": true
+        },
+        {
+          "addr": 1388,
+          "value": 12384,
+          "in_insn": true
+        },
+        {
+          "addr": 1394,
+          "value": 114,
+          "in_insn": true
+        },
+        {
+          "addr": 1398,
+          "value": 2092,
+          "in_insn": true
+        },
+        {
+          "addr": 1402,
+          "value": 12370,
+          "in_insn": true
+        },
+        {
+          "addr": 1408,
+          "value": 4,
+          "in_insn": true
+        },
+        {
+          "addr": 1414,
+          "value": 2364,
+          "in_insn": true
+        },
+        {
+          "addr": 1426,
+          "value": 4,
+          "in_insn": true
+        },
+        {
+          "addr": 1430,
+          "value": 128,
+          "in_insn": true
+        }
+      ],
+      "table_hit_count": 5668,
+      "limitations": [
+        "a 16-bit word equal to an instruction address is a candidate, not proof of a function pointer",
+        "no vector entry is assigned a PCM name"
+      ]
+    }
+  ]
+}

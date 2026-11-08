@@ -135,11 +135,11 @@ The existing `fon-tdm-hardware.md` describes the logical order as
 `0x00..0x0a`.  The two descriptions differ because of the `EOR #2`
 byte/halfword representation.
 
-**E0 conclusion:** the Linux-side *control value* and *frame header values*
-are proven; the exact mapping between the raw `EOR #2` DMA memory and the
-physical slot number remains a representation question.  The existing
-slot-5 mapping is retained as the working hypothesis, but the `EOR #2` is
-recorded as a caveat rather than silently normalized away.
+**E1 resolution:** `EOR #2` swaps adjacent 16-bit slots inside each 32-bit
+DMA word.  The raw memory order is now proven; the logical slot-5 mapping is
+coherent with it.  The remaining unknown is the DMA presentation/physical
+wire order, not the ARM address arithmetic.  See
+`fon-e1-dma-byte-order.md`.
 
 Slots 6/7 are audio; `TxDMA` does not write them directly.  They are filled
 by `generic_slotinterleave`/the audio path; their exact content is outside

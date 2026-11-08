@@ -902,6 +902,7 @@ _root_current = {
     "fon-go-no-go.md", "fon-d06-summary.md", "fon-adss-clock-reset.md",
     "fon-dialog-minimal-loader.md", "fon-tdm-control-only-plan.md",
     "fon-e0-summary.md", "fon-sc14448-pcmlink-protocol.md",
+    "fon-e1-summary.md",
 }
 _root_analysis = [p.name for p in DOCS.glob("*.md")
                   if p.name not in _root_current]
@@ -1339,6 +1340,62 @@ check("E0 tools index links the slot5 library",
       True)
 check("E0 docs index links the protocol",
       "fon-sc14448-pcmlink-protocol.md" in _docs_index, True)
+
+# ---------------------------------------------------------------------------
+# 26. FON-E1 cross-block dataflow / EOR #2
+# ---------------------------------------------------------------------------
+for _name in ("fon-e1-summary.md",
+              "history/fon-e1-cross-block-dataflow.md",
+              "history/fon-e1-indirect-dispatch.md",
+              "history/fon-e1-pcm-handler-candidates.md",
+              "history/fon-e1-normal-vs-p2test.md",
+              "history/fon-e1-dma-byte-order.md"):
+    check(f"E1 document exists: {_name}", (DOCS / _name).is_file(), True)
+
+for _name in ("cr16-dataflow-normal.json", "cr16-dataflow-p2test.json",
+              "cr16-indirect-candidates.json", "cr16-pcm-candidates.json"):
+    check(f"E1 report exists: {_name}",
+          (ROOT / "tools" / "reports" / _name).is_file(), True)
+
+_dn = json.loads((ROOT / "tools" / "reports" /
+                  "cr16-dataflow-normal.json").read_text())
+_dp = json.loads((ROOT / "tools" / "reports" /
+                  "cr16-dataflow-p2test.json").read_text())
+check("E1 normal new-resolved count", _dn["newly_resolved_count"], 119)
+check("E1 p2test new-resolved count", _dp["newly_resolved_count"], 171)
+check("E1 normal state blocks", _dn["state_blocks"] > 0, True)
+check("E1 p2test state blocks", _dp["state_blocks"] > 0, True)
+check("E1 reports keep unknown counts", "new_stats" in _dn, True)
+
+_df = (DOCS / "history" / "fon-e1-cross-block-dataflow.md").read_text()
+check("E1 dataflow doc records new metrics",
+      "119" in _df and "171" in _df and "777" in _df and "916" in _df, True)
+check("E1 dataflow doc records false-positive flag",
+      "outside the known internal range" in _df, True)
+_de = (DOCS / "history" / "fon-e1-dma-byte-order.md").read_text()
+check("E1 EOR doc records halfword pair swap",
+      "adjacent 16" in _de and "0x08" in _de, True)
+check("E1 EOR doc leaves wire order unknown",
+      "physical wire order" in _de and "UNKNOWN" in _de, True)
+_pc = (DOCS / "history" / "fon-e1-pcm-handler-candidates.md").read_text()
+check("E1 PCM doc does not name 0x01000000 PCM buffer",
+      "not named PCM" in _pc and "no resolved reader" in _pc, True)
+
+for _qid in ("Q46", "Q53", "Q54", "Q55", "Q57", "Q74", "Q75"):
+    _row = find_row(OQ, _qid)
+    check(f"E1 question {_qid} remains listed", _row is not None, True)
+_q74 = find_row(OQ, "Q74")
+_q75 = find_row(OQ, "Q75")
+check("E1 Q74 remains partial with raw/wire distinction",
+      _q74 is not None and "partial" in " ".join(_q74[1:]).lower()
+      and "Physical wire" in " ".join(_q74[1:]), True)
+check("E1 Q75 remains open",
+      _q75 is not None and "still open" in " ".join(_q75[1:]), True)
+
+check("E1 tools index links dataflow",
+      "cr16_dataflow.py" in (ROOT / "tools" / "README.md").read_text(), True)
+check("E1 summary is in docs index",
+      "fon-e1-summary.md" in _docs_index, True)
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")

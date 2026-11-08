@@ -83,11 +83,17 @@ slot 7: audio
 
 The library leaves slots 6/7 zero for the caller's audio path.
 
-`TxDMA` writes through an ARM `strh` address `EOR #2` transformation.  The
-existing `fon-tdm-hardware.md` maps byte offset `0x0a` to slot 5; this
-library represents the **logical 16-bit slot order**, not a claim about the
-byte-swapped DMA memory.  The EOR/byte-order question is recorded in
-`docs/history/fon-e0-tx-control-reconstruction.md`.
+`TxDMA` writes through an ARM `strh` address `EOR #2` transformation.  E1
+resolved it as an adjacent-halfword swap inside each 32-bit DMA word.  The
+logical encoder is kept separate from the raw-DMA helper:
+
+```c
+fon_slot5_frame_to_raw(logical, raw);
+fon_slot5_raw_to_frame(raw, logical);
+```
+
+The raw model is proven; the physical TDM wire order remains **UNKNOWN**.
+See `docs/history/fon-e1-dma-byte-order.md`.
 
 ## 4. Build and test
 

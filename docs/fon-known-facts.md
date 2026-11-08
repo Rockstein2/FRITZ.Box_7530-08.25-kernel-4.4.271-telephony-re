@@ -525,6 +525,10 @@ probe-only test must not assume an unprogrammed chip.
 | RX hook | status bit 3 -> reg44 bit 7 -> `slic_get_hook_state`; physical hook meaning INFERRED | DISASM |
 | Ring cadence | `half_period = (500 / freq) << 3` frames, default 25 Hz; bits 5/6 toggled by timer | DISASM |
 | Firmware slot-5 handler | **not found** in resolved CR16 map; bounded negative result, indirect/cross-block paths remain | OFFLINE |
+| E1 cross-block dataflow | conservative merge; normal 119 / p2test 171 newly resolved accesses; 10/3 out-of-range candidates flagged | OFFLINE |
+| E1 indirect candidates | 382 normal / 396 p2test indirect edges; 5 639/5 668 table-like hits are candidates, not proof | OFFLINE |
+| TX DMA `EOR #2` | swaps adjacent 16-bit slots inside each 32-bit DMA word; raw order proven, physical wire order **UNKNOWN** | DISASM + GPL source |
+| `0x01000000` SC14448 region | 511 indexed writes, no resolved reader; loader/copy vs runtime PCM buffer still **UNKNOWN** | OFFLINE |
 | OEM `Codecslots` | 08.25 live reports 9; older wiki build reports 6; physical TDM slots remain 8 | OEM-CAPTURE / OEM |
 
 These are Linux-side facts from the proprietary `pcmlink.ko` disassembly. They
