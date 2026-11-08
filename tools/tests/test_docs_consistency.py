@@ -805,6 +805,56 @@ if D05RB.is_file():
     check("d05 runbook drops the 'can only appear' claim",
           "can only appear" not in _t, True)
 
+# ---------------------------------------------------------------------------
+# 20. D0.6: reset path, pinmux, inverter, startup sequence, read-only runbook
+# ---------------------------------------------------------------------------
+_DPATH = ROOT / "docs"
+_d06 = {
+    "reset": _DPATH / "fon-d06-dect-reset-path.md",
+    "pinmux": _DPATH / "fon-d06-pcm-pinmux.md",
+    "inverter": _DPATH / "fon-d06-inverter-hypotheses.md",
+    "startup": _DPATH / "fon-d06-sc14448-startup-sequence.md",
+    "readonly": _DPATH / "runbook" / "fon-stage-d06-readonly.md",
+}
+for _k, _f in _d06.items():
+    check(f"d06 {_k} doc exists", _f.is_file(), True)
+
+_t = _d06["reset"].read_text() if _d06["reset"].is_file() else ""
+check("d06 records assert=0 at the API", "assert = 0" in _t, True)
+check("d06 records the profile slot +0x28", "profile+0x28" in _t, True)
+check("d06 keeps electrical polarity UNKNOWN",
+      "Electrical level at the SC14448 pin" in _t, True)
+check("d06 puts reset before the upload",
+      "reset pulse first" in _t or "before** `msm_dectuart_init()`" in _t,
+      True)
+
+_t = _d06["pinmux"].read_text() if _d06["pinmux"].is_file() else ""
+check("d06 pinmux records pinconfig by pcmlink",
+      "dakota_gpio_pinconfig" in _t, True)
+check("d06 pinmux disproves the earlier 'no pinmux' claim",
+      "DISPROVED" in _t, True)
+check("d06 pinmux does not invent FUNC_SEL",
+      "Why FUNC_SEL is left UNKNOWN" in _t
+      and "selector UNKNOWN" in _t, True)
+check("d06 pinmux gives the TLMM base", "0x01000000" in _t, True)
+
+_t = _d06["inverter"].read_text() if _d06["inverter"].is_file() else ""
+check("d06 inverter does not claim reset",
+      "UNKNOWN — not assumed" in _t, True)
+check("d06 inverter keeps the truth-table measurement",
+      "A high → Y low" in _t, True)
+
+_t = _d06["startup"].read_text() if _d06["startup"].is_file() else ""
+check("d06 startup lists the reset links", "RESET release" in _t, True)
+check("d06 startup marks clocks as UNKNOWN",
+      "Firmware runs | SC14448" in _t, True)
+
+_t = _d06["readonly"].read_text() if _d06["readonly"].is_file() else ""
+check("d06 read-only runbook refuses devmem commands",
+      "not** given as a ready command" in _t, True)
+check("d06 read-only runbook is passive",
+      "No GPIO write, no TLMM write" in _t, True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)
