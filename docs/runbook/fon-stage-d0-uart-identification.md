@@ -1,11 +1,15 @@
 # Stage D0 runbook: identifying the SC14448 UART and reset on the board
 
+> **Status: operational document.**
+> This is a runbook, not an evidence record.  Hardware facts are maintained in
+> `../fon-known-facts.md`; unresolved items in `../fon-open-questions.md`.
+
 Status: **plan only.**  Nothing in this runbook has been executed.  Every
 step needs the owner's explicit go-ahead, and the active steps need a
 separate one.
 
 **Read §0 first.**  The source and compiled-DTB analysis
-(`docs/fon-dialog-board-uart-identification.md`) shows that the AVM DECT
+(`../history/fon-dialog-board-uart-identification.md`) shows that the AVM DECT
 loader and the OpenWrt console use the **same known UART controller**
 (`blsp_uart0` @ `0x78AF000` on `gpio16`/`gpio17`).  No independent second UART
 path was found in this configuration.  That is **not** proof that the four

@@ -3,7 +3,7 @@
 > **Status: plan only.  Nothing here has been executed.**
 > No probe, GPIO, reset, DMA, firmware upload or MMIO write was performed to
 > write this document.  The existing passive measurement procedure is in
-> `../fon-tdm-passive-test.md`; this file adds the C3 decisions and the
+> `runbook/fon-tdm-passive-test.md`; this file adds the C3 decisions and the
 > concrete scope settings.
 
 Purpose: answer two questions **without changing anything**:
@@ -15,7 +15,7 @@ Purpose: answer two questions **without changing anything**:
 
 ## 0. Why this gates the driver
 
-`docs/fon-adss-tdm-channel-map.md` establishes the channel mapping
+`history/fon-adss-tdm-channel-map.md` establishes the channel mapping
 (`stereo-tx 0` / `stereo-rx 3` on the `tdm@0` node).  The driver can build
 frames in memory, but it cannot validate them until the SC14448 is known to
 supply BCLK/FSC.  Until then, any DMA start would run against a dead or

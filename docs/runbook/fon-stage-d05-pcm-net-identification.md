@@ -3,7 +3,9 @@
 > **Status: instructions only.  Nothing here has been executed.**
 > Owner's bench, owner's go-ahead.  No GPIO, reset, DMA or firmware action.
 
-The analysis behind this is in `../fon-d05-pcm-net-identification.md`.
+The historical analysis behind this is in
+`../history/fon-d05-pcm-net-identification.md`; current D0.6 status is in
+`../fon-d06-summary.md`.
 **Read the warning in §0 first: no test point is known yet.**
 
 ---

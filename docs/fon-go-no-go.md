@@ -1,6 +1,7 @@
 # FON go / no-go gates
 
-Status: **probe-only preparation complete; no hardware gate is closed**
+Status: **probe-only and C1 completed; D0.6 offline reconstruction completed;
+C4 and every active SC14448 action remain NO-GO**
 
 Each gate names the open question it closes (see `fon-open-questions.md`)
 and the fact it relies on (see `fon-known-facts.md`).
@@ -15,10 +16,11 @@ stage at a time.  Do not skip from probe-only to DMA or line control.
 | FON DT node binds (Q6) | `stage = 0x23`, `mode=probe-only` | Stage B | **PASS 2026-11-07** |
 | IRQ not requested in probe-only (Q7) | `irq_spi=156/159`, `irq_intid=188/191`, `irq=-1` | Stage B diagnostics | **PASS 2026-11-07** |
 | No resource overlap (Q1) | `/proc/iomem` identical before/after | Stage A/B | **PASS 2026-11-07** |
-| Clock/reset/pinctrl ownership (Q2, Q3, Q14) | `/proc/iomem`, `/proc/interrupts`, pinctrl/clk export | Stage A + review | **PARTIAL 2026-11-07** — probe-only holds `clock_refs=0 reset_refs=0 pinctrl_ref=0`, GPIO40 unclaimed; real ownership under DMA still open |
+| Clock/reset/pinctrl ownership (Q2, Q3) | `/proc/iomem`, `/proc/interrupts`, pinctrl/clk export | Stage A + review | **PARTIAL 2026-11-07** — probe-only holds `clock_refs=0 reset_refs=0 pinctrl_ref=0`; GPIO40 unclaimed was confirmed in D0.6; real ownership under DMA still open |
 | TDM clocks present (Q4, Q5) | passive FSC/DCL/MCL measurement | scope/logic analyzer | **pending** |
 | SC14448 running (Q4) | passive UART/clock evidence | scope/logic analyzer | **pending** |
-| GPIO40 not owned/unsafe (Q13, Q14, Q15) | DT/pinctrl export + bench review | Stage D0 | **pending** |
+| GPIO40 software ownership | OEM DTB + `Piglet_noemif.ko` disassembly + OpenWrt pinctrl state | Stage D0.6 | **PASS (software path)** — GPIO40 belongs to `dect_loader` under FRITZ!OS and is unclaimed under OpenWrt |
+| GPIO40 electrical net/polarity/safety (Q13, Q15, Q39) | identified net plus passive electrical evidence | future bench stage | **pending — blocks any toggle** |
 | Recovery proven (Q23) | tested rollback to known-good image | bench dry-run | **pending** |
 | Full MMIO read path | explicit reviewed clock/reset proof | separate future stage | **not started** |
 | MBOX DMA | MBOX start/IRQ review | separate future stage | **not started** |
@@ -54,8 +56,11 @@ stage at a time.  Do not skip from probe-only to DMA or line control.
 
 ```text
 probe-only preparation:   READY
-probe-only hardware:      pending user-authorized session
-full MMIO/DMA:            NOT READY
+probe-only hardware:      PASS (2026-11-07)
+C1 MMIO read:             PASS (2026-11-07)
+D0.6 offline RE:          COMPLETE
+D0.6 read-only snapshot:  NOT RUN
+C2 rerun / C4 DMA:        NOT READY
 SC14448 reset/upload:     NOT READY
 line/ring:                NOT READY
 ```
@@ -73,9 +78,29 @@ These were open before the OEM bootlog was cross-checked; see
 - GPIO35 is the FON LED; GPIO40 is the DECT reset line.
 - ADSS is the TDM **slave**; the SC14448 supplies BCLK/FSC.
 - The SC14448 firmware is uploaded before any TDM client exists.
+- `dect_loader` holds reset API value 0 while initialising the UART, then
+  supplies API value 1 before firmware transfer.
+- PINMUX2/PINMUX3 compile to profile values 2/3; `pcmlink.ko` applies the
+  profile through `dakota_gpio_pinconfig()`.
 
 They still need runtime confirmation on our kernel, which is what the gates
 above ask for; the *expectation* is no longer unknown.
+
+### Stage D0.6 gates (2026-11-08)
+
+| Gate | Evidence | Status |
+|---|---|---|
+| OEM HW236 DTB recovered | offset `0x98d038`, size 26,963, SHA256 `3083e2ac…b841f` | **PASS** |
+| GPIO40 software path | `get_profile()` → `profile+0x28` → `dect_loader()` | **PASS** |
+| UART/reset API order | `0xb54` value 0 → `0xb80` UART init → `0xb9c` value 1 | **PASS** |
+| PINMUX2/PINMUX3 numeric values | OEM DTB `function=<2>/<3>` + Linux pinctrl indices | **PASS** |
+| Physical reset polarity/net | Q13/Q39 | **pending** |
+| `dakota_gpio_*` electrical/register transformation | Q77 | **pending** |
+| Inverter role | no connection to GPIO40 or reset proven | **UNKNOWN** |
+| Active reset/upload/TLMM write | requires separate future authorization | **NO-GO** |
+
+Current D0.6 result: `fon-d06-summary.md`. Detailed reverse-engineering is in
+`history/fon-d06-*.md`; procedures are under `runbook/`.
 
 ### Stage C gates
 
@@ -110,9 +135,9 @@ separate "no firmware" from "no clocks".
 |---|---|---|
 | C1 returns real errors | offline review + header contract | **done** |
 | C2 readback is strict | `src/fon-driver/tests/fon_c2_test.c`, 19 checks | **done** |
-| C2 follows AVM order | `docs/fon-adss-avm-init-sequence.md` | **done** (code), not run |
-| Clock warning explained | `docs/fon-audio-ahb-clock-warning.md` | **partly**: cause identified, gate state unproven |
-| STEREO/MBOX map correct | `docs/fon-adss-clock-reset.md` correction | **done** |
+| C2 follows AVM order | `history/fon-adss-avm-init-sequence.md` | **done** (code), not run |
+| Clock warning explained | `history/fon-audio-ahb-clock-warning.md` | **partly**: cause identified, gate state unproven |
+| STEREO/MBOX map correct | `fon-adss-clock-reset.md` correction | **done** |
 | Stage C3 prepared | this iteration only documents; no code | **not started** |
 
 **Stage C3 is NO-GO** until the clock-disable warning is understood well
@@ -123,7 +148,7 @@ would leave the ADSS clocked while software believes it is off.
 
 | Gate | Evidence | Status |
 |---|---|---|
-| FON audio node identified | `tdm@0` vs `pcm@7704000`; DTB + OEM log | **PASS** — `fon-adss-tdm-channel-map.md` |
+| FON audio node identified | `tdm@0` vs `pcm@7704000`; DTB + OEM log | **PASS** — `history/fon-adss-tdm-channel-map.md` |
 | MBOX/stereo mapping matches AVM | stereo-tx 0 / stereo-rx 3, MBOX0/MBOX3 | **PASS** — our DTS already matches |
 | `dma-tx-channel` is not a hardware selector | `ipq-adss-avm.c:2208,2216` | **PASS** |
 | Control-only frame builder | `fon_tdm_buffer_*`, host tests | **PASS** |
@@ -132,7 +157,7 @@ would leave the ADSS clocked while software believes it is off.
 | `dma_start` still refuses | returns `-EOPNOTSUPP` | **PASS (intentional)** |
 | `fs_per_dma` confirmed | Q76 | **pending** |
 | SC14448 clocks present (Q4/Q27) | passive scope | **pending — blocks C4** |
-| Clock-disable gate understood | `fon-audio-ahb-clock-warning.md` | **pending** |
+| Clock-disable gate understood | `history/fon-audio-ahb-clock-warning.md` | **pending** |
 
 **C4 (active TDM) is NO-GO** until Q4/Q27 show the SC14448 supplies
 BCLK/FSC **and** the clock gate is understood.  Dry-run frame building is

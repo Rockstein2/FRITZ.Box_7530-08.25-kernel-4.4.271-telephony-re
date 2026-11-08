@@ -77,7 +77,7 @@ search for FDT magic in the compressed file will not find it. The complete,
 verified extraction procedure is documented in:
 
 ```text
-docs/fon-d06-oem-dtb-extraction.md
+docs/runbook/fon-oem-dtb-extraction.md
 ```
 
 For FRITZ!OS 08.25 the selected HW236 DTB is at decompressed-kernel offset

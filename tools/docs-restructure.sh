@@ -16,9 +16,9 @@ set -eu
 REPO=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 DOCS="$REPO/docs"
 
-CURRENT="README.md fon-known-facts.md fon-open-questions.md fon-go-no-go.md"
-RUNBOOK="fon-first-hardware-test.md fon-recovery-plan.md fon-recovery-ram-boot.md fon-test-image-safety.md fon-test-image-build.md fon-build-validation.md"
-HISTORY="fon-avm-analysis.md fon-control-path.md fon-dialog-boot.md fon-dialog-dependency.md fon-dialog-hardware-test-plan.md fon-feasibility.md fon-hardware.md fon-linux612-port.md fon-oem-bootlog-crosscheck.md fon-pcmlink-register-path.md fon-resource-audit.md fon-tdm-hardware.md"
+CURRENT="README.md fon-known-facts.md fon-open-questions.md fon-go-no-go.md fon-d06-summary.md fon-adss-clock-reset.md fon-dialog-minimal-loader.md fon-tdm-control-only-plan.md"
+RUNBOOK="fon-first-hardware-test.md fon-recovery-plan.md fon-recovery-ram-boot.md fon-test-image-safety.md fon-test-image-build.md fon-build-validation.md fon-stage-c1.md fon-stage-d0-uart-identification.md fon-stage-d05-pcm-net-identification.md fon-stage-d06-readonly.md fon-oem-dtb-extraction.md fon-dialog-hw-test-plan.md fon-dialog-uart-sniff-plan.md fon-tdm-passive-test.md"
+HISTORY="fon-avm-analysis.md fon-control-path.md fon-dialog-boot.md fon-dialog-dependency.md fon-dialog-hardware-test-plan.md fon-feasibility.md fon-hardware.md fon-linux612-port.md fon-oem-bootlog-crosscheck.md fon-pcmlink-register-path.md fon-resource-audit.md fon-tdm-hardware.md fon-d05-pcm-net-identification.md fon-d06-dect-reset-path.md fon-d06-pcm-pinmux.md fon-d06-sc14448-startup-sequence.md fon-d06-inverter-hypotheses.md fon-adss-avm-init-sequence.md fon-adss-tdm-channel-map.md fon-audio-ahb-clock-warning.md fon-dialog-address-alias-hypotheses.md fon-dialog-board-uart-identification.md fon-dialog-boot-branch-decoding.md fon-dialog-boot-disps25.md fon-dialog-boot-handoff.md fon-dialog-boot-memory-map.md fon-dialog-copy-helper-28d56.md fon-dialog-cr16-addressing.md fon-dialog-cr16-branches.md fon-dialog-cr16-cfg.md fon-dialog-cr16-disasm.md fon-dialog-cr16-register-effects.md fon-dialog-cr16-system-registers.md fon-dialog-cr16-vector-map.md fon-dialog-external-register-map.md fon-dialog-ff6006-callgraph.md fon-dialog-firmware-pcm.md fon-dialog-firstlevel-cfg.md fon-dialog-init-dependencies.md fon-dialog-low-memory-analysis.md fon-dialog-pcm-hypotheses.md fon-dialog-peripheral-init.md fon-dialog-peripheral-map.md fon-dialog-peripheral-xrefs.md fon-dialog-uart-boot-comparison.md fon-dialog-uart-boot-protocol.md fon-tdm-clock-software-check.md"
 
 mkdir -p "$DOCS/runbook" "$DOCS/history"
 
@@ -49,14 +49,19 @@ for f in $HISTORY; do move "$f" history; done
 
 # The reference-only OEM boot log lives next to its analysis document.
 OEM_SRC_NAME="OEM-BootLog.txt"
-OEM_DST_NAME="fritzos-08.25-oem-bootlog-reference.txt"
+OEM_DST_NAME="wiki-fritzos-oem-bootlog-reference.txt"
 oem_src="$REPO/$OEM_SRC_NAME"
 oem_dst="$DOCS/history/$OEM_DST_NAME"
 
 if [ -f "$oem_dst" ] && [ ! -f "$oem_src" ]; then
 	echo "PRESENT history/$OEM_DST_NAME"
 elif [ -f "$oem_src" ]; then
-	mv "$oem_src" "$oem_dst"
+	cd "$REPO"
+	if git ls-files --error-unmatch "$OEM_SRC_NAME" >/dev/null 2>&1; then
+		git mv "$OEM_SRC_NAME" "docs/history/$OEM_DST_NAME"
+	else
+		mv "$oem_src" "$oem_dst"
+	fi
 	echo "MV      $OEM_SRC_NAME -> history/$OEM_DST_NAME"
 else
 	echo "MISSING $OEM_SRC_NAME (already moved?)"

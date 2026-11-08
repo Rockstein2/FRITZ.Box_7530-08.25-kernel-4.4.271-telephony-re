@@ -1,32 +1,43 @@
-# FON documentation — three layers
+# FON documentation — current, runbooks, history
 
-> **Status: historical analysis.**
-> This document records the reasoning and evidence as of the date it was
-> written.  Some of its `UNKNOWN` / `UNVERIFIED` markers have since been
-> answered.
-> - Current confirmed facts: `fon-known-facts.md`
-> - Current open questions: `fon-open-questions.md`
-> - This file is kept for the reasoning trail, not as a status report.
+This index is current. Documentation has three strict layers:
 
-Current state lives in three small files.  Everything else is either a
-procedure you run or a record of how we got here.
+1. `docs/` — current status and decisions;
+2. `docs/runbook/` — reproducible procedures;
+3. `docs/history/` — detailed analysis and superseded reasoning.
 
-## Layer 1 — current truth
+Do not use a file under `history/` as the current project status. If current
+files disagree with a runbook or historical report, the current files win. A
+runbook controls procedure, not interpretation.
+
+## Layer 1 — current truth (`docs/`)
 
 | File | What it is |
 |---|---|
-| `fon-known-facts.md` | Every confirmed fact with its evidence class (GPL / DT / OEM / CODE / OFFLINE). **Start here.** |
-| `fon-open-questions.md` | Every unresolved item (Q1–Q33) and the stage that closes it. The only open-questions list. |
+| `fon-known-facts.md` | Every confirmed fact with its evidence class. **Start here.** |
+| `fon-open-questions.md` | Every unresolved item and the stage that closes it. The only open-questions list. |
 | `fon-go-no-go.md` | Which questions must be closed before each hardware stage. |
+| `fon-d06-summary.md` | Current GPIO40/reset, PINMUX2/3, OEM-DTB and SC14448 startup result. |
 | `fon-adss-clock-reset.md` | What gates ADSS register access: GCC audio clocks, the audio reset, and what AVM does. |
-| `fon-tdm-passive-test.md` | Passive FSC/BCLK measurement, pin candidates and what it can distinguish. |
-| `fon-dialog-minimal-loader.md` | Minimal SC14448 boot firmware loader: design, UART sharing, blockers. |
+| `fon-dialog-minimal-loader.md` | Minimal SC14448 boot-firmware loader: design, UART sharing, blockers. |
+| `fon-tdm-control-only-plan.md` | Control-only TDM plan; no DMA yet. |
 
-If these three disagree with any other document, **these three win**.
+Evidence classes used by `fon-known-facts.md`:
+
+| Class | Meaning |
+|---|---|
+| **GPL** | from the published GPL source tree |
+| **DT** | from the board device tree in this repository |
+| **OEM-DTB** | from the compiled HW236 tree extracted from FRITZ!OS 08.25 `kernel.image` |
+| **OEM** | observed in `history/wiki-fritzos-oem-bootlog-reference.txt` |
+| **DISASM** | recovered from a proprietary AVM binary; file/function/address cited |
+| **OFFLINE** | computed from an image or report without touching hardware |
+| **RUNTIME** | observed on the running OpenWrt system |
+| **CONFIRMED / INFERRED / UNKNOWN / DISPROVED** | truth status; static evidence is never promoted to hardware proof |
 
 ## Layer 2 — runbooks (`runbook/`)
 
-Procedures and build records.  Executable, dated, not arguments.
+Procedures and build records. Executable, dated, not arguments.
 
 | File | What it is |
 |---|---|
@@ -37,25 +48,74 @@ Procedures and build records.  Executable, dated, not arguments.
 | `runbook/fon-test-image-build.md` | Preparing the probe-only DTB/image |
 | `runbook/fon-build-validation.md` | Build, test and artifact results |
 | `runbook/fon-stage-c1.md` | Stage C1 ADSS MMIO read plan (currently NO-GO) |
-
-Stage C research additions:
-
-| File | What it is |
-|---|---|
-| `fon-audio-ahb-clock-warning.md` | Why the AHB clock warns on disable, and what is still unproven |
-| `fon-adss-avm-init-sequence.md` | AVM's real ADSS/TDM order and a register table |
-| `fon-tdm-clock-software-check.md` | The recovered `pcmlink` FSC/DCL count algorithm, and whether a passive GPIO read can replace a scope |
-| `fon-dialog-firmware-pcm.md` | What the SC14448 firmware actually programs, with a validated immediate decoder |
-| `fon-dialog-cr16-disasm.md` | Real CR16 disassembly of the PCM function; supersedes the byte-level reading |
-| `fon-dialog-ff6006-callgraph.md` | Firmware memory map and the `0xFF6006` function (branch targets provisional) |
-| `fon-dialog-cr16-branches.md` | CR16 branch encoding solved, validated examples, re-derived call graph |
-| `fon-dialog-cr16-cfg.md` | Global CFG, entry points, the PCM bring-up chain, and full statistics |
+| `runbook/fon-stage-d0-uart-identification.md` | Board UART identification procedure |
+| `runbook/fon-stage-d05-pcm-net-identification.md` | Finding the PCM net and probing FSC/BCLK |
+| `runbook/fon-stage-d06-readonly.md` | Read-only GPIO40/TLMM/OpenWrt state collection; no writes |
+| `runbook/fon-oem-dtb-extraction.md` | Offline extraction of the compiled HW236 DTB from EVA/LZMA |
+| `runbook/fon-dialog-hw-test-plan.md` | SC14448 bench plan (procedure form) |
+| `runbook/fon-dialog-uart-sniff-plan.md` | UART boot-sniff plan |
+| `runbook/fon-tdm-passive-test.md` | Passive FSC/BCLK measurement and pin candidates |
 
 ## Layer 3 — history (`history/`)
 
-The reasoning trail.  Many files still say `UNKNOWN` about questions that have
-since been answered; each carries a *Status: historical analysis* banner.
-Read them for provenance, never as status.
+The reasoning trail. Many files still say `UNKNOWN` about questions that have
+since been answered; each carries a historical banner. Read them for
+provenance, never as status.
+
+### D0.5 / D0.6 evidence
+
+| File | Subject |
+|---|---|
+| `history/fon-d05-pcm-net-identification.md` | Physical PCM-net identification analysis |
+| `history/fon-d06-dect-reset-path.md` | Instruction-level GPIO40 reset reconstruction |
+| `history/fon-d06-pcm-pinmux.md` | PCMLINK pinmux and TLMM register derivation |
+| `history/fon-d06-sc14448-startup-sequence.md` | Detailed SC14448 startup reconstruction |
+| `history/fon-d06-inverter-hypotheses.md` | Explicitly unproven inverter alternatives |
+
+### ADSS / TDM / SC14448
+
+| File | Subject |
+|---|---|
+| `history/fon-adss-avm-init-sequence.md` | AVM's ADSS/TDM order and register table |
+| `history/fon-adss-tdm-channel-map.md` | ADSS channel and port mapping |
+| `history/fon-audio-ahb-clock-warning.md` | AHB clock warning on disable; what remains unproven |
+| `history/fon-tdm-clock-software-check.md` | Recovered `pcmlink` FSC/DCL count algorithm |
+| `history/fon-tdm-hardware.md` | TDM/ADSS frame parameters and register map |
+| `history/fon-pcmlink-register-path.md` | Recovered register path (slot 5, `TxDMA`/`PutRxDMA`) |
+
+### Dialog SC14448 firmware and CR16
+
+| File | Subject |
+|---|---|
+| `history/fon-dialog-boot.md` | Dialog firmware boot protocol |
+| `history/fon-dialog-boot-handoff.md` | Boot handoff chain |
+| `history/fon-dialog-boot-memory-map.md` | Firmware memory map |
+| `history/fon-dialog-boot-branch-decoding.md` | Boot branch decoding |
+| `history/fon-dialog-boot-disps25.md` | `disps25` decoding |
+| `history/fon-dialog-address-alias-hypotheses.md` | `0x000Fxxxx` vs `0x00FFxxxx` alias hypotheses |
+| `history/fon-dialog-board-uart-identification.md` | Board UART identification analysis |
+| `history/fon-dialog-copy-helper-28d56.md` | `0x28d56` copy helper |
+| `history/fon-dialog-cr16-addressing.md` | CR16 addressing modes |
+| `history/fon-dialog-cr16-branches.md` | CR16 branch encoding and validated examples |
+| `history/fon-dialog-cr16-cfg.md` | Global CFG, entry points, PCM bring-up chain |
+| `history/fon-dialog-cr16-disasm.md` | CR16 disassembly of the PCM function |
+| `history/fon-dialog-cr16-register-effects.md` | CR16 register effects |
+| `history/fon-dialog-cr16-system-registers.md` | CR16 system registers |
+| `history/fon-dialog-cr16-vector-map.md` | CR16 vector map |
+| `history/fon-dialog-external-register-map.md` | External register map |
+| `history/fon-dialog-ff6006-callgraph.md` | Firmware map and `0xFF6006` function |
+| `history/fon-dialog-firmware-pcm.md` | What the firmware programs; immediate decoder |
+| `history/fon-dialog-firstlevel-cfg.md` | First-level CFG |
+| `history/fon-dialog-init-dependencies.md` | Init dependency chain |
+| `history/fon-dialog-low-memory-analysis.md` | Low-memory analysis |
+| `history/fon-dialog-pcm-hypotheses.md` | PCM hypotheses |
+| `history/fon-dialog-peripheral-init.md` | Peripheral init |
+| `history/fon-dialog-peripheral-map.md` | Peripheral map |
+| `history/fon-dialog-peripheral-xrefs.md` | Peripheral cross-references |
+| `history/fon-dialog-uart-boot-comparison.md` | UART boot comparison |
+| `history/fon-dialog-uart-boot-protocol.md` | UART boot protocol |
+
+### Project-level analysis
 
 | File | Subject |
 |---|---|
@@ -63,11 +123,8 @@ Read them for provenance, never as status.
 | `history/fon-feasibility.md` | Original standalone-driver feasibility study |
 | `history/fon-hardware.md` | Hardware architecture, SLIC/PHY identification |
 | `history/fon-control-path.md` | Dialog SC14448 control-path hypothesis |
-| `history/fon-pcmlink-register-path.md` | Recovered register path (slot 5, `TxDMA`/`PutRxDMA`) |
-| `history/fon-tdm-hardware.md` | TDM/ADSS frame parameters and register map |
-| `history/fon-dialog-boot.md` | Dialog firmware boot protocol |
 | `history/fon-dialog-dependency.md` | Dialog dependency assessment |
-| `history/fon-dialog-hardware-test-plan.md` | SC14448 bench plan |
+| `history/fon-dialog-hardware-test-plan.md` | SC14448 bench plan (historical form) |
 | `history/fon-linux612-port.md` | Porting notes for Linux 6.12 |
 | `history/fon-resource-audit.md` | Probe-safety audit |
 | `history/fon-oem-bootlog-crosscheck.md` | What the OEM boot log proves |
@@ -77,7 +134,7 @@ Read them for provenance, never as status.
 
 `history/wiki-fritzos-oem-bootlog-reference.txt` is a boot log from **the
 original AVM FRITZ!OS firmware**, published on the OpenWrt Wiki page for the
-7530 (it is not from OpenWrt and not from this project's hardware).  It is
+7530 (it is not from OpenWrt and not from this project's hardware). It is
 kept purely as a reference for comparison: driver names, TDM clocks, GPIO
 assignments and boot order.
 
@@ -90,13 +147,13 @@ Limits when using it:
 - it contains the original reporter's MAC addresses, which are not ours.
 
 Where it settles a question, the answer is copied into `fon-known-facts.md`
-with the evidence class **OEM**.  Nothing else in this repository should cite
+with the evidence class **OEM**. Nothing else in this repository should cite
 the log directly.
 
 ## Regenerating structure and links
 
 ```sh
-sh tools/docs-restructure.sh       # move files into layers (git mv), idempotent
-sh tools/docs-rewrite-links.sh     # fix cross-document links, idempotent
-sh tools/docs-add-historical-banner.sh   # refresh layer banners, idempotent
+sh tools/docs-restructure.sh             # move files into layers (git mv), idempotent
+sh tools/docs-rewrite-links.sh           # fix cross-document links, idempotent
+sh tools/docs-add-historical-banner.sh    # refresh layer banners, idempotent
 ```

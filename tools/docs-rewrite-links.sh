@@ -70,7 +70,10 @@ rewrite() {
 		name=${entry%%:*}
 		to=${entry##*:}
 		prefix=$(rel_prefix "$from" "$to")
-		[ -n "$base" ] && prefix="../${prefix}"
+		if [ -n "$base" ]; then
+			# Repository-relative links never traverse out of docs/.
+			if [ "$to" = "." ]; then prefix=""; else prefix="$to/"; fi
+		fi
 
 		# (a) explicit docs/<name>.md reference
 		old="docs/$name"
@@ -92,6 +95,7 @@ rewrite() {
 	done
 
 	[ "$changed" = 1 ] && echo "REWROTE ${file#"$REPO/"}"
+	return 0
 }
 
 for f in "$DOCS"/*.md; do

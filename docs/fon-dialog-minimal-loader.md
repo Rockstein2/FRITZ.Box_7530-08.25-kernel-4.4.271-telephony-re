@@ -185,7 +185,7 @@ Per the task constraints, GPIO40 is not toggled in this iteration.
 | 6 | Analog port without DECT stack | unknown, see section 2 |
 
 Blockers 1 and 5 are answered by the passive measurement in
-`fon-tdm-passive-test.md`.  Blocker 2 needs the decision in 3.3.
+`runbook/fon-tdm-passive-test.md`.  Blocker 2 needs the decision in 3.3.
 
 ---
 

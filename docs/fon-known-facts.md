@@ -10,7 +10,9 @@ Every row names its evidence class:
 |---|---|
 | **GPL** | read directly from the AVM `08.25` GPL tarball |
 | **DT** | from the board device tree in this repository or in the GPL tree |
+| **OEM-DTB** | from the compiled HW236 tree extracted from FRITZ!OS 08.25 `kernel.image` |
 | **OEM** | observed in `history/wiki-fritzos-oem-bootlog-reference.txt` (FRITZ!OS, kernel **4.4.60**, build 2021-04-26) |
+| **DISASM** | recovered from a proprietary AVM binary; file/function/address must be cited |
 | **CODE** | implemented and offline-tested in `src/fon-driver/` |
 | **OFFLINE** | verified on this workstation, no hardware |
 | **RUNTIME** | read from the real board over the serial console; no writes, no module load |
@@ -272,13 +274,13 @@ Do not describe a `proprietary disassembly` fact as "GPL".  Both are
 
 | Function | GPIO | Notes | Evidence |
 |---|---|---|---|
-| DECT reset (`gpio_avm_dect_reset`) | **40** | `AVM_DEF_HW_PARAM_GPIO_OUT_ACTIVE_HIGH` | GPL |
+| DECT reset (`gpio_avm_dect_reset`) | **40** | source macro `AVM_DEF_HW_PARAM_GPIO_OUT_ACTIVE_HIGH`; compiled `param=<0x0b>` | GPL, OEM-DTB |
 | DECT RD (`gpio_avm_dect_rd`) | 16 | | GPL |
-| PCMLINK FSC | 22 (mux2) / 26 (mux3) | input, active low | GPL |
-| PCMLINK DCL | 21 (mux2) / 25 (mux3) | input, active low | GPL |
-| PCMLINK MCL | 20 (mux2) / 24 (mux3) | input, active low | GPL |
-| PCMLINK DI | 23 (mux3) | input | GPL |
-| PCMLINK DO | 27 (mux3) | output, active low | GPL |
+| PCMLINK FSC | 22 (mux2) / 26 (mux3) | input; compiled `function=<2>/<3>` | GPL, OEM-DTB |
+| PCMLINK DCL | 21 (mux2) / 25 (mux3) | input; compiled `function=<2>/<3>` | GPL, OEM-DTB |
+| PCMLINK MCL | 20 (mux2) / 24 (mux3) | input; compiled `function=<2>/<3>` | GPL, OEM-DTB |
+| PCMLINK DI | 23 (mux3) | input; compiled `function=<3>` | GPL, OEM-DTB |
+| PCMLINK DO | 27 (mux3) | output; compiled `function=<3>` | GPL, OEM-DTB |
 | USB power enable | 49 | | GPL |
 | LED power | 39 | active low | GPL, OEM |
 | LED FON (`gpio_avm_led_fon`) | **35** | active low — **not** the reset line | GPL, OEM |
@@ -327,10 +329,31 @@ Reset line:
 |---|---|---|
 | GPIO40 (DECT reset) | `in` | **0** |
 
-The AVM board table declares GPIO40 as `OUT_ACTIVE_HIGH`.  Nothing in Linux
-drives it, the pad is an input, and it reads low, which is consistent with
-the SC14448 being **held in reset**.  Polarity at the chip is still
-unverified (Q15).
+The AVM board table declares GPIO40 as `OUT_ACTIVE_HIGH`. Nothing in OpenWrt
+drives it, the pad is an input, and it reads low. This does **not** establish
+the physical level or asserted state at the SC14448 reset pin: the AVM GPIO
+API transformation, electrical connection, and any inversion are unresolved
+(Q13/Q15).
+
+### 5b. D0.6 reset and PCMLINK pinmux reconstruction (2026-11-08)
+
+| Fact | Evidence | Status |
+|---|---|---|
+| Compiled OEM DTB | offset `0x98d038`, 26,963 bytes, SHA256 `3083e2acedc800015fea5ee7e57fa6cc8da551e21ee792095cbd8a7224bb841f` | OEM-DTB |
+| GPIO40 profile slot | `get_profile()` stores `gpio_avm_dect_reset` at `profile+0x28` (`Piglet_noemif.ko` `0x3844..0x385c`) | DISASM |
+| Reset API assert state | `dakota_gpio_ctrl(gpio,0,1)` at `0xb44`, then `dakota_gpio_out_bit(gpio,0)` at `0xb54` | DISASM |
+| UART-before-release order | `msm_dectuart_init()` at `0xb80`, then `dakota_gpio_out_bit(gpio,1)` at `0xb9c`; second branch `0xd10` then `0xd28` | DISASM |
+| Physical reset polarity | API arguments 0/1 do not prove pad or SC14448-pin levels | **UNKNOWN** |
+| PINMUX2/PINMUX3 values | compiled DTB contains `function=<2>` for GPIO20–22 and `<3>` for GPIO23–27 | OEM-DTB |
+| Linux TLMM selector | `i2s_rx` index 2 for GPIO20–22; `i2s_rx/tx/td` index 3 for GPIO23–27; `mux_bit=2` gives field bits `0x08/0x0c` | GPL |
+| PCMLINK applies pin config | `pcmlink.ko:ipq40xxtdm_linkinit()` calls `dakota_gpio_pinconfig(gpio, profile_field, 1)` at `0xa168` | DISASM |
+| Piglet clock check is passive | `Check_TDMInterface()` requests FSC/DCL as GPIO inputs and counts edges | DISASM |
+| AVM API transformation | body of `dakota_gpio_pinconfig()` and physical effect of `dakota_gpio_out_bit()` are unavailable | **UNKNOWN** |
+| 74LVC1G04 | VCC/A/Y = 3.3/3.3/0 V measured under OpenWrt only; no link to GPIO40 or reset proven | RUNTIME / **UNKNOWN role** |
+
+Current D0.6 status and document navigation: `fon-d06-summary.md`.
+Detailed disassembly is retained under `history/fon-d06-*.md`; the DTB
+extraction procedure is `runbook/fon-oem-dtb-extraction.md`.
 
 ### UART routing, established from the DTS (2026-11-08)
 
@@ -958,7 +981,7 @@ unknown.
 
 Produced by `tools/cr16_peripheral_xrefs.py`; report in
 `tools/reports/peripheral-xrefs.json`; details in
-`docs/fon-dialog-peripheral-xrefs.md` and `docs/fon-dialog-peripheral-map.md`.
+`history/fon-dialog-peripheral-xrefs.md` and `history/fon-dialog-peripheral-map.md`.
 
 The first version of this scanner saw only `abs20` operands and `movd`
 literals: it recognised `disp:m(rp)` but not the `disp:s(rp)` form the
@@ -1001,7 +1024,7 @@ totals:
 | ADDRESS_LOAD (not a memory access) | 568 | 480 |
 
 The register-effects rules are documented in
-`docs/fon-dialog-cr16-register-effects.md`.  Two corrections since PERIPH-2.1:
+`history/fon-dialog-cr16-register-effects.md`.  Two corrections since PERIPH-2.1:
 
 | Rule | Value |
 |---|---|
@@ -1050,9 +1073,9 @@ from its encoding.
 
 ## 9j. CR16 addressing, system registers and alias candidates (OFFLINE, 2026-11-07)
 
-Documents: `docs/fon-dialog-cr16-addressing.md`,
-`docs/fon-dialog-cr16-system-registers.md`,
-`docs/fon-dialog-address-alias-hypotheses.md`; report
+Documents: `history/fon-dialog-cr16-addressing.md`,
+`history/fon-dialog-cr16-system-registers.md`,
+`history/fon-dialog-address-alias-hypotheses.md`; report
 `tools/reports/cr16-address-alias.json` from `tools/cr16_address_alias.py`.
 
 | Fact | Value | Evidence |
@@ -1073,8 +1096,8 @@ Documents: `docs/fon-dialog-cr16-addressing.md`,
 
 ## 9k. Boot chain and memory layout (OFFLINE, 2026-11-07)
 
-Documents: `fon-dialog-firstlevel-cfg.md`, `fon-dialog-uart-boot-protocol.md`,
-`fon-dialog-boot-memory-map.md`, `fon-dialog-boot-handoff.md`; report
+Documents: `history/fon-dialog-firstlevel-cfg.md`, `history/fon-dialog-uart-boot-protocol.md`,
+`history/fon-dialog-boot-memory-map.md`, `history/fon-dialog-boot-handoff.md`; report
 `tools/reports/cr16-boot-memory-map.json`.
 
 | Fact | Value | Evidence |

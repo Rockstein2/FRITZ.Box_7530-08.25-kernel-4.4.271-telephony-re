@@ -5,7 +5,7 @@
 > firmware upload.
 
 The goal is to confirm, from the running OpenWrt system, which of the links in
-`../fon-d06-sc14448-startup-sequence.md` is already satisfied — **before**
+`../fon-d06-summary.md` is already satisfied — **before**
 any active step is proposed.
 
 ---
@@ -14,7 +14,7 @@ any active step is proposed.
 
 1. Nothing is written.  If a check would need a write, it is not in this list.
 2. `devmem` on a computed TLMM address is **not** given as a ready command.
-   The addresses in `../fon-d06-pcm-pinmux.md` are for verification first.
+   The addresses in `../history/fon-d06-pcm-pinmux.md` are for verification first.
 3. A missing signal is not a diagnosis (§5).
 
 ## 1. GPIO40 state (the reset line)
@@ -41,7 +41,7 @@ a fresh boot tells us whether something changed.
 
 Item 5 is the one that decides whether an I2S function is active: if the pins
 show `gpio` and are unclaimed, the SoC is not driving them, which matches
-AVM's own passive-read design (`../fon-d06-pcm-pinmux.md` §1).
+AVM's own passive-read design (`../history/fon-d06-pcm-pinmux.md` §1).
 
 ## 3. Clocks and reset controllers
 
@@ -62,7 +62,7 @@ AVM's own passive-read design (`../fon-d06-pcm-pinmux.md` §1).
 Absence of a result must not be read as a fault:
 
 - GPIO40 at 0 and unclaimed is **expected** under OpenWrt, because nothing
-  performs the reset (`../fon-d06-dect-reset-path.md`);
+  performs the reset (`../history/fon-d06-dect-reset-path.md`);
 - no `audio_*` clock is **expected**, because no driver enables ADSS;
 - no PCM clocks is **expected** if firmware was never uploaded.
 

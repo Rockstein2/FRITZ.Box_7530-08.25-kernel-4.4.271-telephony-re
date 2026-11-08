@@ -30,7 +30,7 @@ The first hardware test uses `probe_only=1`.
 ## C3 control-only frame layout
 
 `dma_prepare` builds frames that match the AVM `tdm@0` geometry
-(`docs/fon-adss-tdm-channel-map.md`):
+(`docs/history/fon-adss-tdm-channel-map.md`):
 
 ```text
 byte 0x00  0x0000      header

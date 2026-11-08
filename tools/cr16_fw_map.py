@@ -176,7 +176,7 @@ def target_from_operands(operands: str, addr: int = 0,
     """Resolve a branch target.
 
     objdump prints the absolute target, with a sign prefix that only reflects
-    the CR16 sign flag (see docs/fon-dialog-cr16-branches.md).  The printed
+    the CR16 sign flag (see docs/history/fon-dialog-cr16-branches.md). The printed
     magnitude is therefore taken as the target, and where raw bytes are
     available the validated decoder is used instead.
     """

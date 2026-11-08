@@ -1,7 +1,7 @@
 # ADSS clock and reset dependency (IPQ4019)
 
 > **Status: research document.**
-> Evidence for `docs/fon-known-facts.md`; operational steps live in
+> Evidence for `fon-known-facts.md`; operational steps live in
 > `runbook/fon-stage-c1.md`.  Everything here is read from source: no
 > hardware was touched to write it.
 

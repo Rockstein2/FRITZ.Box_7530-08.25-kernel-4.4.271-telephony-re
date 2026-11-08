@@ -17,16 +17,19 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
+DOCS = ROOT / "docs"
+HISTORY = DOCS / "history"
+RUNBOOK = DOCS / "runbook"
 sys.path.insert(0, str(HERE.parent))
 sys.path.insert(0, str(ROOT / "src" / "mock"))
 
 import cr16_cfg as C  # noqa: E402
 
 REPORT = ROOT / "tools" / "reports" / "cr16-branch-validation.json"
-CFG_DOC = ROOT / "docs" / "fon-dialog-cr16-cfg.md"
-BRANCH_DOC = ROOT / "docs" / "fon-dialog-cr16-branches.md"
-PERIPH_DOC = ROOT / "docs" / "fon-dialog-peripheral-init.md"
-FACTS_DOC = ROOT / "docs" / "fon-known-facts.md"
+CFG_DOC = HISTORY / "fon-dialog-cr16-cfg.md"
+BRANCH_DOC = HISTORY / "fon-dialog-cr16-branches.md"
+PERIPH_DOC = HISTORY / "fon-dialog-peripheral-init.md"
+FACTS_DOC = DOCS / "fon-known-facts.md"
 
 fails = 0
 skips = 0
@@ -241,7 +244,7 @@ if report is not None:
 # 7. Address spaces are never merged in the peripheral documents
 # ---------------------------------------------------------------------------
 XREF_REPORT = ROOT / "tools" / "reports" / "peripheral-xrefs.json"
-XREF_DOCS = [ROOT / "docs" / name for name in (
+XREF_DOCS = [HISTORY / name for name in (
     "fon-dialog-peripheral-xrefs.md", "fon-dialog-peripheral-map.md",
     "fon-dialog-init-dependencies.md", "fon-dialog-pcm-hypotheses.md")]
 
@@ -294,7 +297,7 @@ else:
         return sum(v for k, v in xr["images"][image]["stats"].items()
                    if k.endswith("/" + kind))
 
-    doc = ROOT / "docs" / "fon-dialog-peripheral-xrefs.md"
+    doc = HISTORY / "fon-dialog-peripheral-xrefs.md"
     doc_text = doc.read_text()
     for image in ("normal", "p2test"):
         sm = xr["images"][image]["summary"]
@@ -319,7 +322,7 @@ else:
               len(xr["images"][image]["unclassified"]), 0)
 
     # register-effects document must exist and name the corrected semantics
-    eff = ROOT / "docs" / "fon-dialog-cr16-register-effects.md"
+    eff = HISTORY / "fon-dialog-cr16-register-effects.md"
     check("register-effects doc exists", eff.is_file(), True)
     if eff.is_file():
         t = eff.read_text()
@@ -331,8 +334,8 @@ else:
 # ---------------------------------------------------------------------------
 # 8. Fill-loop indices and the position of the 0x2558 call
 # ---------------------------------------------------------------------------
-XREF_DOC = ROOT / "docs" / "fon-dialog-peripheral-xrefs.md"
-DEPS_DOC = ROOT / "docs" / "fon-dialog-init-dependencies.md"
+XREF_DOC = HISTORY / "fon-dialog-peripheral-xrefs.md"
+DEPS_DOC = HISTORY / "fon-dialog-init-dependencies.md"
 if XREF_DOC.is_file():
     text = XREF_DOC.read_text()
     check("xrefs doc: index range is 1...511",
@@ -352,7 +355,7 @@ if DEPS_DOC.is_file():
 # ---------------------------------------------------------------------------
 # 9. The alias verdict must stay UNKNOWN while no evidence exists
 # ---------------------------------------------------------------------------
-ALIAS_DOC = ROOT / "docs" / "fon-dialog-address-alias-hypotheses.md"
+ALIAS_DOC = HISTORY / "fon-dialog-address-alias-hypotheses.md"
 if ALIAS_DOC.is_file():
     t = ALIAS_DOC.read_text()
     check("alias doc: verdict is UNKNOWN", "**Answer: UNKNOWN.**" in t, True)
@@ -382,7 +385,7 @@ if REPORT.is_file() and (ROOT / "tools" / "reports" /
 # ---------------------------------------------------------------------------
 # 10. Boot documents agree with the bootstrap findings
 # ---------------------------------------------------------------------------
-BOOT_DOCS = {n: ROOT / "docs" / n for n in (
+BOOT_DOCS = {n: HISTORY / n for n in (
     "fon-dialog-firstlevel-cfg.md", "fon-dialog-uart-boot-protocol.md",
     "fon-dialog-boot-memory-map.md", "fon-dialog-boot-handoff.md")}
 for name, path in BOOT_DOCS.items():
@@ -404,7 +407,7 @@ if UART.is_file():
     check("protocol doc states the second-level is not relocated",
           "not" in t and "relocated" in t, True)
 
-SYSREG = ROOT / "docs" / "fon-dialog-cr16-system-registers.md"
+SYSREG = HISTORY / "fon-dialog-cr16-system-registers.md"
 if SYSREG.is_file():
     t = SYSREG.read_text()
     check("system-register doc no longer calls 0x28D56 a byte copy",
@@ -424,7 +427,7 @@ if MEM.is_file():
 # ---------------------------------------------------------------------------
 # 11. EXTREF-1 documents
 # ---------------------------------------------------------------------------
-EXT = {n: ROOT / "docs" / n for n in (
+EXT = {n: HISTORY / n for n in (
     "fon-dialog-cr16-vector-map.md",
     "fon-dialog-external-register-map.md",
     "fon-dialog-uart-boot-comparison.md")}
@@ -457,7 +460,7 @@ if UART.is_file():
 # ---------------------------------------------------------------------------
 # 12. EXTREF-1.2 document checks
 # ---------------------------------------------------------------------------
-SYSREG = ROOT / "docs" / "fon-dialog-cr16-system-registers.md"
+SYSREG = HISTORY / "fon-dialog-cr16-system-registers.md"
 if SYSREG.is_file():
     t = SYSREG.read_text()
     check("sysreg: table bytes are the real ones",
@@ -469,7 +472,7 @@ if SYSREG.is_file():
     check("sysreg: states the 31-entry extent", "0x24`–`0x9F`" in t, True)
     check("sysreg: mentions the TLV block at 0xa0", "TLV" in t, True)
 
-VEC = ROOT / "docs" / "fon-dialog-cr16-vector-map.md"
+VEC = HISTORY / "fon-dialog-cr16-vector-map.md"
 if VEC.is_file():
     t = VEC.read_text()
     check("vector doc: no '32 entries' claim",
@@ -479,7 +482,7 @@ if VEC.is_file():
     check("vector doc: stub does not prove different numbering",
           "do not prove the *numbering* differs" in t, True)
 
-ROM = ROOT / "docs" / "fon-dialog-uart-boot-comparison.md"
+ROM = HISTORY / "fon-dialog-uart-boot-comparison.md"
 if ROM.is_file():
     t = ROM.read_text()
     check("rom doc: XOR check described", "challenge–response" in t, True)
@@ -488,7 +491,7 @@ if ROM.is_file():
     check("rom doc: ACK after the comparison", "only if the bytes match" in t,
           True)
 
-HELPER = ROOT / "docs" / "fon-dialog-copy-helper-28d56.md"
+HELPER = HISTORY / "fon-dialog-copy-helper-28d56.md"
 if HELPER.is_file():
     t = HELPER.read_text()
     check("helper doc: p2test range ends 0x9b43", "0x9B43" in t, True)
@@ -497,9 +500,9 @@ if HELPER.is_file():
 # 13. BOOT-3.1: one consistent boot model everywhere
 # ---------------------------------------------------------------------------
 BOOTMAP = ROOT / "tools" / "reports" / "cr16-boot-memory-map.json"
-HAN = ROOT / "docs" / "fon-dialog-boot-handoff.md"
-DEC = ROOT / "docs" / "fon-dialog-boot-branch-decoding.md"
-OQ = ROOT / "docs" / "fon-open-questions.md"
+HAN = HISTORY / "fon-dialog-boot-handoff.md"
+DEC = HISTORY / "fon-dialog-boot-branch-decoding.md"
+OQ = DOCS / "fon-open-questions.md"
 
 if BOOTMAP.is_file():
     bm = json.loads(BOOTMAP.read_text())
@@ -549,7 +552,13 @@ if HAN.is_file():
 if OQ.is_file():
     t = OQ.read_text()
     check("open questions: no _old_ row", "| _old_ |" not in t, True)
-    check("open questions: Q66 says 31 entries", "31 entries" in t, True)
+    check("open questions: no resolved rows", "| answered |" not in t, True)
+    check("open questions: resolved Q66 removed", "| Q66 |" not in t, True)
+
+if FACTS_DOC.is_file():
+    t = FACTS_DOC.read_text()
+    check("known facts: vector table has 31 entries",
+          "**31** entries" in t, True)
 
 # ---------------------------------------------------------------------------
 # 14. cross-report consistency
@@ -591,8 +600,8 @@ if all(p.is_file() for p in (BOOTMAP, VECR, ALR, XREFR)):
 # ---------------------------------------------------------------------------
 # 15. FON-D0.1: UART identification and D0 runbook
 # ---------------------------------------------------------------------------
-UARTID = ROOT / "docs" / "fon-dialog-board-uart-identification.md"
-D0 = ROOT / "docs" / "runbook" / "fon-stage-d0-uart-identification.md"
+UARTID = HISTORY / "fon-dialog-board-uart-identification.md"
+D0 = RUNBOOK / "fon-stage-d0-uart-identification.md"
 check("uart identification doc exists", UARTID.is_file(), True)
 check("stage D0 runbook exists", D0.is_file(), True)
 
@@ -631,7 +640,7 @@ if D0.is_file():
 # ---------------------------------------------------------------------------
 # 16. C3 / D0.4: ADSS channel map and control-only plan
 # ---------------------------------------------------------------------------
-C3 = ROOT / "docs" / "fon-adss-tdm-channel-map.md"
+C3 = HISTORY / "fon-adss-tdm-channel-map.md"
 D04 = ROOT / "docs" / "fon-tdm-control-only-plan.md"
 check("adss channel map exists", C3.is_file(), True)
 check("control-only plan exists", D04.is_file(), True)
@@ -664,7 +673,7 @@ if D04.is_file():
     check("d04 says a flat line does not prove a fault",
           "must not be read as" in t, True)
 
-KF = ROOT / "docs" / "fon-known-facts.md"
+KF = DOCS / "fon-known-facts.md"
 if KF.is_file():
     t = KF.read_text()
     check("known facts separate proprietary disassembly from GPL",
@@ -713,8 +722,8 @@ if KF.is_file():
 # ---------------------------------------------------------------------------
 # 18. D0.5: PCM net identification and runbook
 # ---------------------------------------------------------------------------
-D05 = ROOT / "docs" / "fon-d05-pcm-net-identification.md"
-D05RB = ROOT / "docs" / "runbook" / "fon-stage-d05-pcm-net-identification.md"
+D05 = HISTORY / "fon-d05-pcm-net-identification.md"
+D05RB = RUNBOOK / "fon-stage-d05-pcm-net-identification.md"
 check("d05 pcm net doc exists", D05.is_file(), True)
 check("d05 runbook exists", D05RB.is_file(), True)
 
@@ -786,7 +795,8 @@ if _DMAH.is_file():
     check("fon_dma.h records fs_per_dma as UNRESOLVED",
           "UNRESOLVED (Q76)" in _t, True)
 
-for _name in ("docs/fon-adss-tdm-channel-map.md", "docs/fon-known-facts.md",
+for _name in ("docs/history/fon-adss-tdm-channel-map.md",
+              "docs/fon-known-facts.md",
               "src/fon-driver/README.md"):
     _f = ROOT / _name
     if _f.is_file():
@@ -808,14 +818,13 @@ if D05RB.is_file():
 # ---------------------------------------------------------------------------
 # 20. D0.6: reset path, pinmux, inverter, startup sequence, read-only runbook
 # ---------------------------------------------------------------------------
-_DPATH = ROOT / "docs"
 _d06 = {
-    "reset": _DPATH / "fon-d06-dect-reset-path.md",
-    "pinmux": _DPATH / "fon-d06-pcm-pinmux.md",
-    "inverter": _DPATH / "fon-d06-inverter-hypotheses.md",
-    "startup": _DPATH / "fon-d06-sc14448-startup-sequence.md",
-    "readonly": _DPATH / "runbook" / "fon-stage-d06-readonly.md",
-    "oem_dtb": _DPATH / "fon-d06-oem-dtb-extraction.md",
+    "reset": HISTORY / "fon-d06-dect-reset-path.md",
+    "pinmux": HISTORY / "fon-d06-pcm-pinmux.md",
+    "inverter": HISTORY / "fon-d06-inverter-hypotheses.md",
+    "startup": HISTORY / "fon-d06-sc14448-startup-sequence.md",
+    "readonly": RUNBOOK / "fon-stage-d06-readonly.md",
+    "oem_dtb": RUNBOOK / "fon-oem-dtb-extraction.md",
 }
 for _k, _f in _d06.items():
     check(f"d06 {_k} doc exists", _f.is_file(), True)
@@ -873,6 +882,45 @@ check("d06 OEM DTB extraction reconstructs EVA LZMA",
       and "payload = src[36:36 + compressed_size]" in _t, True)
 check("d06 OEM DTB remains outside Git",
       "Do not add the extracted `.dtb`" in _t, True)
+
+# ---------------------------------------------------------------------------
+# 21. layered documentation structure and relative links
+# ---------------------------------------------------------------------------
+SUMMARY = DOCS / "fon-d06-summary.md"
+check("d06 summary doc exists", SUMMARY.is_file(), True)
+if SUMMARY.is_file():
+    _t = SUMMARY.read_text()
+    check("d06 summary records the API/electrical distinction",
+          "API arguments 0/1 must not be promoted" in _t, True)
+    check("d06 summary lists the three layers",
+          "`history/`" in _t and "`runbook/`" in _t, True)
+    check("d06 summary keeps active reset NO-GO",
+          "does **not** authorize GPIO40 output/toggle" in _t, True)
+
+_root_current = {
+    "README.md", "fon-known-facts.md", "fon-open-questions.md",
+    "fon-go-no-go.md", "fon-d06-summary.md", "fon-adss-clock-reset.md",
+    "fon-dialog-minimal-loader.md", "fon-tdm-control-only-plan.md",
+}
+_root_analysis = [p.name for p in DOCS.glob("*.md")
+                  if p.name not in _root_current]
+check("no analysis documents left in the docs root",
+      sorted(_root_analysis), [])
+
+_broken = []
+_link_re = re.compile(r'(?<!!)\[[^\]]*\]\(([^)]+)\)')
+for _md in DOCS.rglob("*.md"):
+    _text = _md.read_text()
+    if "docs/../" in _text:
+        _broken.append(f"{_md.relative_to(ROOT)}: docs/../ path")
+    for _m in _link_re.finditer(_text):
+        _target = _m.group(1).strip().split("#", 1)[0]
+        if not _target or _target.startswith(
+                ("http://", "https://", "mailto:", "tel:")):
+            continue
+        if not (_md.parent / _target).exists():
+            _broken.append(f"{_md.relative_to(ROOT)}: {_target}")
+check("all docs relative links resolve", sorted(_broken), [])
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")

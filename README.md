@@ -70,13 +70,16 @@ Documentation is split into three layers (see `docs/README.md`):
 docs/fon-known-facts.md          confirmed facts, each with its evidence class
 docs/fon-open-questions.md       every unresolved item and what closes it
 docs/fon-go-no-go.md             gates for each hardware stage
+docs/fon-d06-summary.md          current reset/pinmux/startup reconstruction
 docs/runbook/                    procedures and build records
 docs/history/                    analysis trail (historical, kept for provenance)
 ```
 
-Current conclusion: **CONDITIONAL GO**. The exact SLIC part and the QCA
-IPQ4019 TDM/DMA backend are not yet recovered; no driver code is claimed to
-work.
+Current conclusion: **GO only for documented passive/read-only stages; NO-GO
+for reset, firmware upload, TLMM writes, DMA/C4 and analog line activity.**
+The QCA ADSS TDM/MBOX path and FRITZ!OS GPIO40/pinmux software paths are
+recovered. Electrical reset polarity, physical PCM wiring, initial safe
+slot-5 command, OEM `fs_per_dma`, and clock-gate cleanup remain unresolved.
 
 ## Critical missing vendor-kernel APIs
 
@@ -115,6 +118,7 @@ The exact files needed for the analysis are extracted from:
 ```text
 FRITZ.Box_7530-08.25.image
   -> var/tmp/filesystem.image   (SquashFS rootfs)
+  -> var/tmp/kernel.image       (EVA/LZMA kernel containing OEM HW236 DTBs)
 ```
 
 ### Kernel modules
