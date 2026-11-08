@@ -23,8 +23,12 @@ FORBIDDEN = {
     "gpio_request": "GPIO request can interact with pinctrl",
     "gpiod_": "GPIO descriptor request/value path",
     "gpio_get_value": "GPIO subsystem read path",
+    "gpio_direction": "GPIO direction change",
+    "gpio_set_value": "GPIO output write",
     "pinctrl_": "pinctrl state change",
     "reset_control": "reset framework operation",
+    "request_mem_region": "MMIO resource claim",
+    "request_irq": "interrupt request",
     "ioctl(": "unreviewed ioctl path",
     "/sys/class/gpio": "sysfs GPIO request path",
     "devmem_write": "explicit write mode",
@@ -68,6 +72,18 @@ if kernel.is_file():
     print(("PASS " if "readl(" in ktext else "FAIL ") +
           "kernel skeleton reads through readl()")
     if "readl(" not in ktext:
+        errors += 1
+    init_body = ktext.split("static int __init fon_tlmm_probe_init")[1]
+    init_body = init_body.split("static void __exit")[0]
+    init_ok = "run_measurement(" not in init_body and "ioremap(" not in init_body
+    print(("PASS " if init_ok else "FAIL ") +
+          "kernel module_init is idle (no measurement/ioremap)")
+    if not init_ok:
+        errors += 1
+    trigger_ok = "debugfs_create_file" in ktext and "run_measurement" in ktext
+    print(("PASS " if trigger_ok else "FAIL ") +
+          "kernel trigger creates a debugfs one-shot node")
+    if not trigger_ok:
         errors += 1
 
 print(f"\n{errors} failure(s)")

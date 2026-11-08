@@ -87,8 +87,11 @@ userspace program can map the TLMM window read-only and poll the raw
 `Piglet_noemif.ko` check and it does not request a GPIO line, change pinmux,
 or enable a clock.
 
-The implementation is `tools/fon-tlmm-clock-probe/`; the procedure is
-`runbook/fon-stage-c0plus-software-clock-probe.md`.
+The implementation is `tools/fon-tlmm-clock-probe/`; the userspace procedure
+is `runbook/fon-stage-c0plus-software-clock-probe.md`.  Because stock OpenWrt
+has no `/dev/mem`, the preferred path is the one-shot kernel module in
+`tools/fon-tlmm-clock-probe/kernel/`, governed by
+`runbook/fon-stage-c0plus-kernel-probe.md`.
 
 Limitations:
 
@@ -210,6 +213,7 @@ point**: FRITZ!OS is known to print `TDM: FS: 8000 Hz CLK: 1025720 Hz`.
 |---|---|---|
 | passive level measurement on A/B | **GO** | multimeter, board unpowered for continuity |
 | read-only TLMM software probe | **GO only after separate review** | `CONFIG_DEVMEM=y` test kernel; no writes; see C0+ runbook |
+| one-shot kernel TLMM probe | **GO only after separate review** | stock OpenWrt; C0+-K runbook; no writes; no auto-repeat |
 | scope on an identified TDM net | **GO** | net first identified unpowered; 1.8 V-capable front end |
 | scope on a QFP perimeter pin | **NO-GO** unless a safer pad exists | risk of short/bridging |
 | GPIO40 toggle | **NO-GO** | separate approval |

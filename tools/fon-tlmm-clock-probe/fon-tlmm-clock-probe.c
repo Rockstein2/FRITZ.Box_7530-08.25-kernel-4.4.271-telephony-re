@@ -139,6 +139,12 @@ static double elapsed_seconds(const struct timespec *start,
 	       (double)(end->tv_nsec - start->tv_nsec) / 1000000000.0;
 }
 
+static uint64_t timespec_ns(const struct timespec *ts)
+{
+	return (uint64_t)ts->tv_sec * 1000000000ULL +
+	       (uint64_t)ts->tv_nsec;
+}
+
 static int open_tlmm(void)
 {
 	long page = sysconf(_SC_PAGESIZE);
@@ -229,6 +235,7 @@ static int measure_one(const struct measure_plan *plan,
 	struct timespec start, now;
 	uint32_t cfg_before, cfg_after;
 	uint32_t io_now = 0;
+	uint64_t start_ns, now_ns;
 	double elapsed;
 	int clock_ok = 1;
 
@@ -239,23 +246,27 @@ static int measure_one(const struct measure_plan *plan,
 		fprintf(stderr, "error: clock_gettime: %s\n", strerror(errno));
 		return -1;
 	}
+	start_ns = timespec_ns(&start);
+	probe_counter_start(&counter, start_ns);
 
 	for (;;) {
 		io_now = reg_read(gpio_io_off(plan->gpio));
 		probe_counter_sample(&counter, io_now & 1u);
 
 		/*
-		 * Do not call clock_gettime() on every sample.  The check is
-		 * frequent enough to bound overshoot but leaves the inner loop
-		 * dominated by MMIO reads.
+		 * Check timing every 64 reads.  A shorter interval detects
+		 * gaps more reliably but lowers the maximum sample rate; this
+		 * compromise is deliberate and is reported in the output.
 		 */
-		if ((counter.samples & 0xffu) != 0)
+		if ((counter.samples & 0x3fu) != 0)
 			continue;
 
 		if (clock_gettime(CLOCK_MONOTONIC, &now) != 0) {
 			clock_ok = 0;
 			break;
 		}
+		now_ns = timespec_ns(&now);
+		probe_counter_checkpoint(&counter, now_ns);
 		elapsed = elapsed_seconds(&start, &now);
 		if (elapsed >= duration_s)
 			break;
@@ -272,6 +283,8 @@ static int measure_one(const struct measure_plan *plan,
 	}
 
 	elapsed = elapsed_seconds(&start, &now);
+	now_ns = timespec_ns(&now);
+	probe_counter_checkpoint(&counter, now_ns);
 	cfg_after = reg_read(gpio_cfg_off(plan->gpio));
 	result = probe_finalize(&counter, elapsed, plan->expected_hz,
 				duration_s / 4.0, min_oversampling);
@@ -286,14 +299,21 @@ static int measure_one(const struct measure_plan *plan,
 	printf("gpio=%d signal=%s address=0x%08lx cfg=0x%08x io=0x%08x "
 	       "func=%u oe=%u input=%u samples=%" PRIu64 " edges=%" PRIu64
 	       " elapsed_s=%.6f sample_rate_hz=%.1f freq_hz=%.1f "
-	       "status=%s cfg_changed=%u\n",
+	       "status=%s cfg_changed=%u max_gap_ns=%" PRIu64
+	       " gap_total_ns=%" PRIu64 " gap_count=%" PRIu64
+	       " segments=%" PRIu64 " zero_edge_segments=%" PRIu64
+	       " min_segment_edges=%" PRIu64
+	       " max_segment_edges=%" PRIu64 " timing_suspect=%d\n",
 	       plan->gpio, plan->signal,
 	       (unsigned long)(TLMM_BASE + gpio_io_off(plan->gpio)),
 	       cfg_before, io_now, cfg_func(cfg_before), cfg_oe(cfg_before),
-	       io_now & 1u, result.samples,
-	       result.edges, result.elapsed_s, result.sample_rate_hz,
-	       result.frequency_hz, probe_status_name(result.status),
-	       cfg_before != cfg_after);
+	       io_now & 1u, result.samples, result.edges, result.elapsed_s,
+	       result.sample_rate_hz, result.frequency_hz,
+	       probe_status_name(result.status), cfg_before != cfg_after,
+	       result.max_gap_ns, result.gap_total_ns, result.gap_count,
+	       result.segments, result.zero_edge_segments,
+	       result.min_segment_edges, result.max_segment_edges,
+	       result.timing_suspect);
 
 	if (result.status == PROBE_ERROR)
 		return -1;

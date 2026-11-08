@@ -9,13 +9,19 @@
 > wrong.  The boot line is from `Piglet_noemif.ko:Check_TDMInterface()`; the
 > `pcmlink.ko` function is a separate diagnostic command with a different
 > window.  The old estimate also ignored a 64-bit fixed-point constant.
+>
+> **Correction (C0+-R1):** the first C0+ revision then said the Piglet window
+> was 100 µs.  That was wrong by a factor of 1000.  The recovered window is
+> **100 ms**; the magic/`>>6` sequence produces `cyclefreq/1000`, and the
+> `*100` produces 0.1 s.  The numerical proof is
+> `tools/tests/test_oem_tdm_timing.py`.
 
 Both OEM modules read the raw TLMM input bit and count transitions.  Neither
 needs an oscilloscope.  The two functions are not interchangeable:
 
 | Function | Module | When it runs | Window | Report |
 |---|---|---|---:|---|
-| `Check_TDMInterface` | `Piglet_noemif.ko` | before the boot-time TDM report | **100 µs** | `[piglet]TDM: FS: … CLK: …` |
+| `Check_TDMInterface` | `Piglet_noemif.ko` | before the boot-time TDM report | **100 ms** | `[piglet]TDM: FS: … CLK: …` |
 | `ipq40xxtdm_checkhw` | `pcmlink.ko` | `cmd_general` diagnostic command (`0xa880`), not boot init | **≈195 ms** | `[pcmlink]TDM: FS: … CLK: …` |
 
 The 2026-11-08 OEM capture contains only the Piglet line:
@@ -63,17 +69,29 @@ Function: `Check_TDMInterface`, `0x3f0c..0x414c`.
 
 ```text
 0x3f10  ipq40xx_get_cyclefreq()          -> cyclefreq in cycles/second
-0x3f14  magic = 0x10624dd3
+0x3f14  magic = 0x10624dd3                 (274,877,907)
 0x3f1c  umull                            -> r2:r3 = cyclefreq * magic
-0x3f3c  lsr r6, r3, #6                   -> r6 ≈ cyclefreq / 1,000,000
+0x3f3c  lsr r6, r3, #6                   -> r6 ≈ cyclefreq / 1,000
 0x4064  r3 = 100
-0x406c  mul r6, r3, r6                   -> r6 = cycles in 100 µs
+0x406c  mul r6, r3, r6                   -> r6 = cyclefreq / 10 cycles
 ```
 
-This is a 100 µs hardware-time window, not a fixed number of iterations.
+Numerically, `high32(cyclefreq * 274877907)` is about
+`cyclefreq * 0.064`; shifting that right by 6 gives about
+`cyclefreq * 0.001`, i.e. cycles per millisecond.  Multiplying by 100 gives
+`cyclefreq / 10` cycles, which is **0.1 s = 100 ms**.  For a 25 MHz counter
+this is 2,500,000 cycles.
+
+This is a 100 ms hardware-time window, not a fixed number of iterations.
 The FSC loop samples in chunks of 1001 reads and restarts a chunk when the
 window has not yet elapsed; the DCL loop checks `ipq40xx_get_cycles()` after
-each read.  The edge count covers the whole 100 µs.
+each read.  The edge count covers the whole 100 ms.
+
+**FSC and DCL are measured in sequential windows, not simultaneously.**  The
+FSC loop runs to completion first (`0x4078..0x409c`), then the DCL loop starts
+a new `ipq40xx_get_cycles()` window at `0x40a0..0x40d0`.  The two reported
+frequencies therefore come from different 100 ms intervals; a fast change of
+the source between the windows would not be visible in the comparison.
 
 ### 2.2 Sampling and reporting
 
@@ -94,14 +112,14 @@ each read.  The edge count covers the whole 100 µs.
 0x4104  if fsc_edges <= 99 -> return bit 1
 ```
 
-For a 100 µs window and two transitions per period:
+For a 100 ms window and two transitions per period:
 
 ```text
-frequency = edges / (2 * 100 us) = 5 * edges
+frequency = edges / (2 * 100 ms) = 5 * edges
 ```
 
 That is why the OEM line reports `8000` and `1024355`; the 8 kHz value is
-consistent with 1600 transitions in 100 µs.  The threshold of 100 edges is
+consistent with 1600 transitions in 100 ms.  The threshold of 100 edges is
 500 Hz as printed.
 
 `Check_TDMInterface()` is skipped when `piglet_hostclkmaster` is set.  The
@@ -165,7 +183,7 @@ r1 = 10 * dcl_edges ; >> 1
 printk("[pcmlink]TDM: FS: %u Hz CLK: %u Hz")
 ```
 
-That formula is correct only for a 100 µs window.  If this diagnostic command
+That formula is correct only for a 100 ms window.  If this diagnostic command
 is run with its ~195 ms window, the printed number is about 1.95× the actual
 frequency under the same cycles/second assumption.  It is therefore not a
 substitute for the Piglet boot value and not the source of the `[piglet]TDM`
@@ -253,11 +271,11 @@ alone.
 
 | Claim | Confidence | Basis |
 |---|---|---|
-| Piglet uses a 100 µs window | high | `0x10624dd3`, `lsr #6`, `mul #100` |
+| Piglet uses a 100 ms window | high | `0x10624dd3`, `lsr #6`, `mul #100` |
 | Piglet reports `5 * edges` | high | `0x40dc..0x40f0` |
 | OEM boot line is from Piglet | high | message prefix and call site |
 | `pcmlink` window is ≈195 ms | high | 64-bit constant at `0xa7b8` and the `>>18` sequence |
-| `pcmlink` `5 * edges` is only correct for 100 µs | high | arithmetic; it is a diagnostic command |
+| `pcmlink` `5 * edges` is only correct for 100 ms | high | arithmetic; it is a diagnostic command |
 | TLMM `base+4`, bit 0 | high | `io_reg`/`in_bit` in Linux 6.12 |
 | direct read is side-effect free | medium | no API request, but the pad's electrical role is unverified |
 | stock OpenWrt has `/dev/mem` | **DISPROVED** | `# CONFIG_DEVMEM is not set` |

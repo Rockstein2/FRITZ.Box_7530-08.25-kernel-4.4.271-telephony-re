@@ -8,6 +8,10 @@ TDM clock candidates.
 > and requires the separate approval in
 > `docs/runbook/fon-stage-c0plus-software-clock-probe.md`.
 > It maps MMIO read-only, but it still observes hardware.
+>
+> The stock OpenWrt image has no `/dev/mem`; the preferred hardware path is
+> the one-shot kernel module in `kernel/`, documented in
+> `docs/runbook/fon-stage-c0plus-kernel-probe.md`.
 
 The program is a diagnostic instrument, not a driver.  It answers one narrow
 question:
@@ -135,8 +139,9 @@ Two valid routes:
 1. build a reviewed test kernel with `CONFIG_DEVMEM=y` and verify whether
    `CONFIG_STRICT_DEVMEM`/`CONFIG_IO_STRICT_DEVMEM` still block the TLMM
    range; or
-2. use the optional kernel-side skeleton in `kernel/`, which reads the same
-   registers through `readl()` and is not built by default.
+2. use the one-shot kernel module in `kernel/`, which reads the same
+   registers through `readl()`, is idle after `insmod`, and requires an
+   explicit debugfs trigger.
 
 Neither route is authorized by this document.  The stock-image result is
 **NO-GO** for the userspace probe.
@@ -168,7 +173,11 @@ The default observation is 200 ms per pin.  The accepted range is 10 ms to
 Each measurement prints one machine-readable line:
 
 ```text
-gpio=22 signal=FSC address=0x01016004 cfg=0x0000000c io=0x00000001 func=3 oe=0 input=1 samples=... edges=... elapsed_s=... sample_rate_hz=... freq_hz=... status=FREQUENCY_ESTIMATED cfg_changed=0
+gpio=22 signal=FSC address=0x01016004 cfg=... io=... func=... oe=... input=...
+samples=... edges=... elapsed_s=... sample_rate_hz=... freq_hz=...
+status=... cfg_changed=0 max_gap_ns=... gap_total_ns=... gap_count=...
+segments=... zero_edge_segments=... min_segment_edges=...
+max_segment_edges=... timing_suspect=0
 ```
 
 Exit codes:
@@ -188,10 +197,10 @@ Exit codes:
 
 | Status | Meaning |
 |---|---|
-| `FREQUENCY_ESTIMATED` | transitions seen and the sample rate is at least 4× the expected frequency; the frequency estimate is usable |
-| `DETECTED` | transitions seen, but the sample rate is too low, the observation is too short, or fewer than two edges were counted; frequency is **not** reliable |
-| `STATIC_OBSERVED` | no transitions over a long-enough window with at least 4× oversampling |
-| `INCONCLUSIVE` | no transitions but the sample rate/duration is insufficient, or `CFG` changed during the measurement |
+| `FREQUENCY_ESTIMATED` | transitions seen, sample rate ≥4× expected, timing stable, segments stable and frequency within 0.5–2× the expected value |
+| `DETECTED` | transitions seen, but the sample rate is too low, the window is too short, fewer than two edges were counted, or the frequency is outside the plausible range; frequency is **not** reliable |
+| `STATIC_OBSERVED` | no transitions over a long-enough window with at least 4× oversampling and no significant timing gap |
+| `INCONCLUSIVE` | a significant gap, `CFG` change, unstable segment density, or insufficient sampling/duration |
 | `ERROR` | invalid input or clock/MMIO failure |
 
 Important:
@@ -205,6 +214,13 @@ Important:
   reach that rate; the kernel skeleton exists for that reason.
 - `cfg_changed=1` means another agent modified `GPIO_CFG`; the run is not a
   clean measurement.
+- Timing is checked every 64 reads.  A scheduler gap larger than the normal
+  checkpoint interval is reported in `max_gap_ns`/`gap_total_ns` and forces
+  `INCONCLUSIVE`; this is deliberate and may reduce the maximum sample rate.
+- A high average sample rate is not enough: a large local gap still makes the
+  result inconclusive.
+- A frequency outside the plausible range is reported as `DETECTED`, not as a
+  confident clock.
 
 ---
 
@@ -217,16 +233,17 @@ The OEM boot message:
 ```
 
 comes from `Piglet_noemif.ko:Check_TDMInterface()`, not from the
-`pcmlink.ko` diagnostic command.  Piglet uses a measured **100 µs** window
+`pcmlink.ko` diagnostic command.  Piglet uses a measured **100 ms** window
 and reports:
 
 ```text
-frequency = edges / (2 * 100 us) = 5 * edges
+frequency = edges / (2 * 100 ms) = 5 * edges
 ```
 
 `pcmlink.ko:ipq40xxtdm_checkhw()` is a separate diagnostic command with a
-different, roughly 195 ms window and the same `5 * edges` expression.  It is
-not the source of the OEM boot line.  See
+different, roughly 195 ms window and the same `5 * edges` expression.  Over
+that window the expression is about 1.95× high; it is not the source of the
+OEM boot line.  See
 `docs/history/fon-tdm-clock-software-check.md` for the instruction-level
 correction.
 
@@ -236,11 +253,15 @@ correction.
 
 `make test` runs:
 
-- `tests/test_core.c` — synthetic static, 8 kHz, 1.024 MHz, 1.025 MHz,
-  undersampled/missed-edge, sampling-gap, noise-like, short-window and
-  invalid-input cases;
+- `tests/test_core.c` — 52 checks: static, 8 kHz, 1.024 MHz, 1.025 MHz,
+  4x/8x/16x oversampling, undersampled/aliased BCLK, scheduler gaps,
+  high-average/local-gap, frequency change, short pulses, noise-like
+  toggling, short window and invalid input;
 - `tests/check_readonly.py` — source guard against MMIO writes, GPIO requests,
-  pinctrl, clock and reset operations.
+  pinctrl, clock and reset operations, plus an idle-`module_init` guard.
+
+The repository-level `tools/tests/test_oem_tdm_timing.py` separately checks
+the Piglet 100 ms magic constant and the PCMLINK 195 ms arithmetic.
 
 The synthetic tests do not touch hardware.
 
@@ -248,10 +269,16 @@ The synthetic tests do not touch hardware.
 
 ## 9. Kernel alternative
 
-`kernel/fon_tlmm_probe.c` is a skeleton that reads the same TLMM registers
-with `readl()`.  It is deliberately excluded from `make` and `make test`.
-Build it only in an offline kernel tree; do not load it without the separate
-hardware approval.
+`kernel/fon_tlmm_probe.c` is the preferred stock-image path.  It is idle
+after `insmod`: `module_init` only creates
+`/sys/kernel/debug/fon_tlmm_probe`.  Writing `1` to that file performs one
+bounded 20–50 ms measurement of GPIO21/22/25/26; reading returns the last
+result.  It maps one 4 KiB TLMM page, uses `readl()` only, and calls
+`cond_resched()` without disabling preemption or interrupts.
+
+It is deliberately excluded from `make` and `make test`.  It has been
+compiled offline against 6.12.112 as a compile check, but it has not been
+loaded.  The separate C0+-K runbook governs load, trigger and unload.
 
 The kernel path can sample faster than userspace, but it has the same
 limitations: it observes only the IPQ4019 input path, not the physical wire
@@ -270,5 +297,7 @@ tests/test_core.c
 tests/check_readonly.py
 kernel/fon_tlmm_probe.c
 kernel/Makefile
+kernel/README.md
+.gitignore
 README.md
 ```

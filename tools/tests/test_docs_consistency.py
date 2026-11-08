@@ -1102,40 +1102,74 @@ check("known facts: OEM-CAPTURE class and HWS(2)",
       "| **OEM-CAPTURE** |" in _facts and "HWS(2)" in _facts, True)
 
 # ---------------------------------------------------------------------------
-# 24. FON-C0+ read-only TLMM software clock probe
+# 24. FON-C0+ / C0+-R1 read-only TLMM clock probe
 # ---------------------------------------------------------------------------
 TOOL = ROOT / "tools" / "fon-tlmm-clock-probe"
-for _name in ("Makefile", "fon-tlmm-clock-probe.c",
+for _name in ("Makefile", "README.md", ".gitignore",
+              "fon-tlmm-clock-probe.c",
               "fon-tlmm-clock-probe-core.c",
-              "fon-tlmm-clock-probe-core.h", "README.md",
+              "fon-tlmm-clock-probe-core.h",
               "tests/test_core.c", "tests/check_readonly.py",
-              "kernel/fon_tlmm_probe.c", "kernel/Makefile"):
+              "kernel/fon_tlmm_probe.c", "kernel/Makefile",
+              "kernel/README.md"):
     check(f"C0+ tool file exists: {_name}", (TOOL / _name).is_file(), True)
 
+OEM_TIMING_TEST = ROOT / "tools" / "tests" / "test_oem_tdm_timing.py"
 _clock_doc = HISTORY / "fon-tdm-clock-software-check.md"
 _c0_runbook = RUNBOOK / "fon-stage-c0plus-software-clock-probe.md"
+_c0k_runbook = RUNBOOK / "fon-stage-c0plus-kernel-probe.md"
 _c0_validation = HISTORY / "fon-c0plus-offline-validation.md"
+check("C0+ OEM timing test exists", OEM_TIMING_TEST.is_file(), True)
+if OEM_TIMING_TEST.is_file():
+    _ot = OEM_TIMING_TEST.read_text()
+    check("C0+ OEM timing test encodes the Piglet magic",
+          "PIGLET_MAGIC" in _ot and "0x10624DD3" in _ot, True)
+    check("C0+ OEM timing test encodes the PCMLINK constant",
+          "PCMLINK_CONST" in _ot and "0x82DE1B43DB34B6D7" in _ot, True)
+    check("C0+ OEM timing test asserts 100 ms and 195 ms",
+          "100 ms" in _ot and "195 ms" in _ot, True)
 check("C0+ clock history exists", _clock_doc.is_file(), True)
-check("C0+ runbook exists", _c0_runbook.is_file(), True)
+check("C0+ userspace runbook exists", _c0_runbook.is_file(), True)
+check("C0+-K kernel runbook exists", _c0k_runbook.is_file(), True)
 check("C0+ validation record exists", _c0_validation.is_file(), True)
+
 if _c0_validation.is_file():
     _vt = _c0_validation.read_text()
-    check("C0+ validation records 31 synthetic passes",
-          "31 PASS, 0 FAIL" in _vt, True)
+    check("C0+ validation records 52 synthetic passes",
+          "52 PASS, 0 FAIL" in _vt, True)
+    check("C0+ validation records the source guard",
+          "7 PASS, 0 FAIL" in _vt, True)
+    check("C0+ validation records the OEM numeric test",
+          "20 PASS, 0 FAIL" in _vt, True)
+    check("C0+ validation records the kernel module build",
+          "vermagic 6.12.112" in _vt and "not loaded" in _vt, True)
     check("C0+ validation records no router run",
           "Router run" in _vt and "NOT RUN" in _vt, True)
 
 if _clock_doc.is_file():
     _ct = _clock_doc.read_text()
     for _needle in ("Piglet_noemif.ko", "Check_TDMInterface",
-                    "100 µs", "5 * edges", "0x82de1b43db34b6d7",
-                    "195 ms", "0.1950079", "[piglet]TDM", "[pcmlink]TDM",
-                    "not the source of the"):
+                    "100 ms", "5 * edges", "0x10624dd3",
+                    "0x82de1b43db34b6d7", "195 ms", "0.1950079",
+                    "[piglet]TDM", "[pcmlink]TDM",
+                    "FSC and DCL are measured in sequential windows"):
         check(f"C0+ clock doc records {_needle}", _needle in _ct, True)
     check("C0+ clock doc rejects the old 0.38 s-only estimate",
           "0.38147" in _ct and "missed the `C` factor" in _ct, True)
+    check("C0+ clock doc records the 100 us -> 100 ms R1 correction",
+          "100 µs" in _ct and "100 ms" in _ct and "factor of 1000" in _ct,
+          True)
     check("C0+ clock doc does not claim stock /dev/mem works",
           "cannot run on the stock image" in _ct, True)
+
+# Current docs must no longer use the incorrect 100 us window.
+for _p in (FACTS_DOC, DOCS / "fon-go-no-go.md", DOCS / "README.md",
+           DOCS / "fon-d06-summary.md",
+           HISTORY / "fon-d06-pcm-pinmux.md",
+           TOOL / "README.md"):
+    check(f"{_p.name}: stale 100 us window absent",
+          "100 µs" not in _p.read_text() and "100 us" not in _p.read_text(),
+          True)
 
 if _c0_runbook.is_file():
     _rt = _c0_runbook.read_text()
@@ -1143,35 +1177,49 @@ if _c0_runbook.is_file():
                     "writes MMIO", "cfg_changed=1",
                     "STATIC_OBSERVED", "DETECTED",
                     "hardware action"):
-        check(f"C0+ runbook records {_needle}", _needle in _rt, True)
-    check("C0+ runbook is marked prepared, not executed",
+        check(f"C0+ userspace runbook records {_needle}", _needle in _rt, True)
+    check("C0+ userspace runbook is marked prepared, not executed",
           "prepared, never executed" in _rt, True)
+
+if _c0k_runbook.is_file():
+    _kt = _c0k_runbook.read_text()
+    for _needle in ("debugfs", "vermagic", "echo 1", "rmmod",
+                    "GPIO40", "NO-GO", "20-50"):
+        check(f"C0+-K runbook records {_needle}", _needle in _kt, True)
+    check("C0+-K runbook is marked prepared, not executed",
+          "prepared, never executed" in _kt, True)
 
 _c0_control = (DOCS / "fon-tdm-control-only-plan.md").read_text()
 _c0_passive = (RUNBOOK / "fon-tdm-passive-test.md").read_text()
 check("C0+ control plan mentions the software probe",
       "C0+" in _c0_control and "software probe" in _c0_control, True)
+check("C0+ control plan records the kernel-module preference",
+      "one-shot kernel module" in _c0_control, True)
 check("C0+ passive runbook says a scope is not the only method",
       "A scope is not the only way to detect input edges" in _c0_passive,
       True)
+check("C0+ passive runbook mentions the one-shot kernel module",
+      "one-shot kernel module" in _c0_passive, True)
 
 for _qid, _needle in (("Q4", "software probe"), ("Q5", "4.1 MS/s"),
                       ("Q27", "software probe"), ("Q31", "C0+"),
-                      ("Q37", "partly answered")):
+                      ("Q37", "C0+-K")):
     _row = find_row(OQ, _qid)
     check(f"C0+ open question {_qid} remains listed and updated",
           _row is not None and _needle in " ".join(_row[1:]), True)
 
-check("C0+ known facts record the pcmlink diagnostic window",
-      "pcmlink diagnostic" in _facts and "100 µs window" in _facts, True)
+check("C0+ known facts record the 100 ms window",
+      "100 ms" in _facts and "C0+-K" in _facts, True)
 check("C0+ known facts record the stock CONFIG_DEVMEM blocker",
       "# CONFIG_DEVMEM is not set" in _facts, True)
 check("C0+ go/no-go has a stage table",
       "Stage C0+" in (DOCS / "fon-go-no-go.md").read_text()
-      and "C0+ hardware run" in (DOCS / "fon-go-no-go.md").read_text(), True)
-check("C0+ docs index links the runbook",
+      and "C0+-K" in (DOCS / "fon-go-no-go.md").read_text(), True)
+check("C0+ docs index links the userspace runbook",
       "runbook/fon-stage-c0plus-software-clock-probe.md" in _docs_index,
       True)
+check("C0+ docs index links the kernel runbook",
+      "runbook/fon-stage-c0plus-kernel-probe.md" in _docs_index, True)
 
 _main = (TOOL / "fon-tlmm-clock-probe.c").read_text()
 _kernel = (TOOL / "kernel" / "fon_tlmm_probe.c").read_text()
@@ -1182,14 +1230,25 @@ check("C0+ userspace uses O_RDONLY", 'open("/dev/mem", O_RDONLY' in _main,
 check("C0+ userspace has no PROT_WRITE", "PROT_WRITE" not in _main, True)
 check("C0+ kernel skeleton uses readl", "readl(" in _kernel, True)
 check("C0+ kernel skeleton has no writel", "writel(" not in _kernel, True)
+_init = _kernel.split("static int __init fon_tlmm_probe_init")[1]
+_init = _init.split("static void __exit")[0]
+check("C0+ kernel module_init is idle",
+      "run_measurement(" not in _init and "ioremap(" not in _init, True)
+check("C0+ kernel module has a debugfs one-shot trigger",
+      "debugfs_create_file" in _kernel and "run_measurement" in _kernel,
+      True)
 _all_c0 = _main + _kernel + _core + _test
-for _needle in ("gpio_request", "gpiod_", "pinctrl_", "reset_control"):
+for _needle in ("gpio_request", "gpiod_", "pinctrl_", "reset_control",
+                "request_mem_region"):
     check(f"C0+ sources have no {_needle}", _needle not in _all_c0, True)
 check("C0+ sources have no clk_* API call",
       re.search(r"(?<![A-Za-z0-9_])clk_", _all_c0) is None, True)
 check("C0+ tests cover synthetic 8 kHz and 1.024 MHz",
       "8000" in _test and "1024000" in _test, True)
-check("C0+ tests cover undersampling", "undersampled" in _test, True)
+check("C0+ tests cover undersampling and gaps",
+      "undersampled" in _test and "scheduler gap" in _test, True)
+check("C0+ tests cover frequency change and stability",
+      "frequency change" in _test and "timing_suspect" in _test, True)
 check("C0+ source guard is wired into make test",
       "check_readonly.py" in (TOOL / "Makefile").read_text(), True)
 

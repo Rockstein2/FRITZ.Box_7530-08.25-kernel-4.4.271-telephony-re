@@ -53,7 +53,7 @@ and then:
 ```
 
 The same block repeats for `dcl` at `0x4024`.  Afterwards it counts
-transitions by polling the mapped register over a **100 µs** window and
+transitions by polling the mapped register over a **100 ms** window and
 computes frequencies (`0x4078..0x40f4`), ending in the
 `[piglet]TDM: FS: %u Hz CLK: %u Hz` report with `frequency = 5 * edges`.
 The `[pcmlink]TDM` string belongs to a separate `pcmlink` diagnostic command,

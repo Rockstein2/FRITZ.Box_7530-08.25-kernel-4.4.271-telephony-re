@@ -353,11 +353,12 @@ API transformation, electrical connection, and any inversion are unresolved
 | PINMUX2/PINMUX3 values | compiled DTB contains `function=<2>` for GPIO20–22 and `<3>` for GPIO23–27 | OEM-DTB |
 | Linux TLMM selector | `i2s_rx` index 2 for GPIO20–22; `i2s_rx/tx/td` index 3 for GPIO23–27; `mux_bit=2` gives field bits `0x08/0x0c` | GPL |
 | PCMLINK applies pin config | `pcmlink.ko:ipq40xxtdm_linkinit()` calls `dakota_gpio_pinconfig(gpio, profile_field, 1)` at `0xa168` | DISASM |
-| Piglet clock check | `Check_TDMInterface()` uses a measured 100 µs window and reports `frequency = 5 * edges`; it reads the TLMM input bit after `dakota_gpio_ctrl(gpio, 0, 0)`, has no explicit `dakota_gpio_pinconfig()` in this path, does not generate FSC/BCLK, and produces the `[piglet]TDM` boot line | DISASM |
-| Piglet TDM window | `cyclefreq` magic `0x10624dd3`, `lsr #6`, `mul #100` -> cycles in 100 µs; threshold 100 edges | DISASM |
-| pcmlink diagnostic check | `ipq40xxtdm_checkhw()` is a `cmd_general` diagnostic, not boot init; it uses a 64-bit fixed-point constant and a ~195 ms window, then the same `5 * edges` expression, so its printed value is not the Piglet boot value | DISASM |
-| C0+ userspace probe | `tools/fon-tlmm-clock-probe/` reads TLMM `GPIO_IO(n)` bit 0 through a read-only `/dev/mem` mapping; no MMIO writes, GPIO requests, pinctrl, clock or reset calls; offline tests cover 8 kHz, 1.024 MHz and undersampling | DISASM, GPL, OFFLINE |
-| Stock OpenWrt `/dev/mem` | OpenWrt 25.12.6 build config has `# CONFIG_DEVMEM is not set`; the userspace probe therefore needs a reviewed `CONFIG_DEVMEM=y` test kernel, or the kernel skeleton | OFFLINE |
+| Piglet clock check | `Check_TDMInterface()` uses a measured 100 ms window and reports `frequency = 5 * edges`; it reads the TLMM input bit after `dakota_gpio_ctrl(gpio, 0, 0)`, has no explicit `dakota_gpio_pinconfig()` in this path, does not generate FSC/BCLK, and produces the `[piglet]TDM` boot line | DISASM |
+| Piglet TDM window | `cyclefreq` magic `0x10624dd3`, `lsr #6`, `mul #100` -> cycles in 100 ms; FSC and DCL use sequential windows; threshold 100 edges | DISASM |
+| pcmlink diagnostic check | `ipq40xxtdm_checkhw()` is a `cmd_general` diagnostic, not boot init; it uses a 64-bit fixed-point constant and a ~195 ms window, then the same `5 * edges` expression, so its printed value is ~1.95x high and is not the Piglet boot value | DISASM |
+| C0+ userspace probe | `tools/fon-tlmm-clock-probe/` reads TLMM `GPIO_IO(n)` bit 0 through a read-only `/dev/mem` mapping; no MMIO writes, GPIO requests, pinctrl, clock or reset calls; checkpoints every 64 reads detect gaps; 52 synthetic checks | DISASM, GPL, OFFLINE |
+| C0+-K kernel module | `kernel/fon_tlmm_probe.c` is idle after `insmod`; one debugfs write triggers one 20–50 ms measurement of GPIO21/22/25/26; maps one 4 KiB page; `readl` only; built offline against 6.12.112, not loaded | DISASM, GPL, OFFLINE |
+| Stock OpenWrt `/dev/mem` | OpenWrt 25.12.6 build config has `# CONFIG_DEVMEM is not set`; the userspace probe therefore needs a reviewed `CONFIG_DEVMEM=y` test kernel, or the one-shot kernel module | OFFLINE |
 | Piglet ctrl side effects | `dakota_gpio_ctrl()` may reconfigure the pad; its body is unavailable, so this is **not** a proven hardware read-only procedure | **UNKNOWN** |
 | AVM API transformation | body of `dakota_gpio_pinconfig()` and physical effect of `dakota_gpio_out_bit()` are unavailable | **UNKNOWN** |
 | OEM DTB selection | three HW236 DTBs are present in `kernel.image`: `0x98d038` (`subrevision=2`), `0x993990`/`0x99a2e8` (`subrevision=0`); FON-relevant properties are identical. The OEM runtime log reports `HWS(2)`, so this board is **subrevision 2** and the first blob matches it. Which blob the bootloader actually selects is still not observed (Q80) | OEM-DTB, OEM-CAPTURE / **selection UNKNOWN** |
@@ -430,14 +431,15 @@ Consequences, kept narrow:
 | Fact | Value | Evidence |
 |---|---|---|
 | OEM boot check | `Piglet_noemif.ko:Check_TDMInterface()` at `0x3f0c..0x414c` | DISASM |
-| OEM window | 100 µs, `cyclefreq ≈ /1,000,000 * 100` | DISASM |
-| OEM formula | `frequency = edges / (2 * 100 us) = 5 * edges` | DISASM |
+| OEM window | 100 ms: `high32(cyclefreq * 0x10624dd3) >> 6` = cyclefreq/1000, then `* 100` = cyclefreq/10 cycles | DISASM |
+| OEM formula | `frequency = edges / (2 * 100 ms) = 5 * edges` | DISASM |
+| OEM window order | FSC and DCL are measured in sequential 100 ms windows, not simultaneously | DISASM |
 | OEM message | `[piglet]TDM: FS: 8000 Hz CLK: 1024355 Hz` | OEM-CAPTURE |
 | pcmlink diagnostic | `ipq40xxtdm_checkhw()` at `0xa3b4..0xa7f0`, reached from `cmd_general` `0xa880`; not the boot line | DISASM |
 | pcmlink window | 64-bit constant `0x82de1b43db34b6d7`; `window ≈ cyclefreq * 0.195008` cycles (≈195 ms), not 0.381 s | DISASM |
 | TLMM map | base `0x01000000`, `GPIO_IO(n) = + n*0x1000 + 4`, input bit 0 | GPL (`pinctrl-ipq4019.c`) |
 | Userspace probe | `tools/fon-tlmm-clock-probe/`; `PROT_READ` only, no GPIO/pinctrl/clk/reset API | OFFLINE |
-| Synthetic tests | 8 kHz and 1.024 MHz estimated; 2 MS/s BCLK reported `DETECTED`, not estimated; static and short-window cases classified | OFFLINE |
+| Synthetic tests | 52 checks: 8 kHz at 4×/8×/16×, 1.024 MHz, undersampled/aliased BCLK, scheduler gaps, frequency change, pulses, noise, static and short-window | OFFLINE |
 | Stock image blocker | `# CONFIG_DEVMEM is not set`; `CONFIG_IO_STRICT_DEVMEM=y` | OFFLINE |
 | Hardware run | **not run**; requires separate approval | — |
 

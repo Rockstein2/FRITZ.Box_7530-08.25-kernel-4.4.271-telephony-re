@@ -11,9 +11,10 @@ currently producing TDM clocks, and whether the IPQ4019 sees them.
 > counts transitions by reading the TLMM input register.  A read-only
 > userspace probe can do the same under a reviewed `CONFIG_DEVMEM=y` test
 > kernel; see `fon-stage-c0plus-software-clock-probe.md` and
-> `../../tools/fon-tlmm-clock-probe/`.  It observes the IPQ4019 input path
-> only and does not replace the electrical measurement for the physical wire,
-> amplitude or signal quality.
+> `../../tools/fon-tlmm-clock-probe/`.  On stock OpenWrt the preferred path is
+> the one-shot kernel module in `fon-stage-c0plus-kernel-probe.md`.  Either
+> method observes the IPQ4019 input path only and does not replace the
+> electrical measurement for the physical wire, amplitude or signal quality.
 
 ---
 
