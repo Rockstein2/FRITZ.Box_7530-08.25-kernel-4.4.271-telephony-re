@@ -815,6 +815,7 @@ _d06 = {
     "inverter": _DPATH / "fon-d06-inverter-hypotheses.md",
     "startup": _DPATH / "fon-d06-sc14448-startup-sequence.md",
     "readonly": _DPATH / "runbook" / "fon-stage-d06-readonly.md",
+    "oem_dtb": _DPATH / "fon-d06-oem-dtb-extraction.md",
 }
 for _k, _f in _d06.items():
     check(f"d06 {_k} doc exists", _f.is_file(), True)
@@ -824,18 +825,21 @@ check("d06 records assert=0 at the API", "assert = 0" in _t, True)
 check("d06 records the profile slot +0x28", "profile+0x28" in _t, True)
 check("d06 keeps electrical polarity UNKNOWN",
       "Electrical level at the SC14448 pin" in _t, True)
-check("d06 puts reset before the upload",
-      "reset pulse first" in _t or "before** `msm_dectuart_init()`" in _t,
-      True)
+check("d06 puts UART init before reset release",
+      "0xb80 < 0xb9c" in _t and "GPIO40 = 0" in _t, True)
+check("d06 does not promote API value to pad level",
+      "| Pad electrical level | **UNKNOWN** | **UNKNOWN**" in _t, True)
 
 _t = _d06["pinmux"].read_text() if _d06["pinmux"].is_file() else ""
 check("d06 pinmux records pinconfig by pcmlink",
       "dakota_gpio_pinconfig" in _t, True)
 check("d06 pinmux disproves the earlier 'no pinmux' claim",
       "DISPROVED" in _t, True)
-check("d06 pinmux does not invent FUNC_SEL",
-      "Why FUNC_SEL is left UNKNOWN" in _t
-      and "selector UNKNOWN" in _t, True)
+check("d06 pinmux records compiled FUNC_SEL values",
+      "AVM_DEF_HW_FUNCTION_PINMUX2 = 2" in _t
+      and "AVM_DEF_HW_FUNCTION_PINMUX3 = 3" in _t, True)
+check("d06 pinmux keeps AVM API transformation unresolved",
+      "API pass-through **UNKNOWN**" in _t, True)
 check("d06 pinmux gives the TLMM base", "0x01000000" in _t, True)
 
 _t = _d06["inverter"].read_text() if _d06["inverter"].is_file() else ""
@@ -843,6 +847,9 @@ check("d06 inverter does not claim reset",
       "UNKNOWN — not assumed" in _t, True)
 check("d06 inverter keeps the truth-table measurement",
       "A high → Y low" in _t, True)
+check("d06 inverter measurement is OpenWrt-only",
+      "under OpenWrt only" in _t
+      and "cannot be extrapolated to working" in _t, True)
 
 _t = _d06["startup"].read_text() if _d06["startup"].is_file() else ""
 check("d06 startup lists the reset links", "RESET release" in _t, True)
@@ -854,6 +861,18 @@ check("d06 read-only runbook refuses devmem commands",
       "not** given as a ready command" in _t, True)
 check("d06 read-only runbook is passive",
       "No GPIO write, no TLMM write" in _t, True)
+
+_t = _d06["oem_dtb"].read_text() if _d06["oem_dtb"].is_file() else ""
+check("d06 OEM DTB records exact provenance",
+      "0x98d038" in _t and "26963" in _t, True)
+check("d06 OEM DTB records verified hash",
+      "3083e2acedc800015fea5ee7e57fa6cc8da551e21ee792095cbd8a7224bb841f"
+      in _t, True)
+check("d06 OEM DTB extraction reconstructs EVA LZMA",
+      "lzma_header = src[28:33]" in _t
+      and "payload = src[36:36 + compressed_size]" in _t, True)
+check("d06 OEM DTB remains outside Git",
+      "Do not add the extracted `.dtb`" in _t, True)
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")

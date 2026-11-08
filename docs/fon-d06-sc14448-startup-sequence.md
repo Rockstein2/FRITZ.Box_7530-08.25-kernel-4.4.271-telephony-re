@@ -10,8 +10,8 @@
 |---|---|---|---|---|---|
 | POWER | board hardware | 1.8 V rail present (measured) | — | — | **CONFIRMED (measurement)** |
 | RESET assert | `dect_loader` `0xb44`,`0xb54` | `ctrl(gpio,0,1)`, `out_bit(gpio,0)` | yes | no | **CONFIRMED** |
-| RESET release | `dect_loader` `0xb9c` | `out_bit(gpio,1)` | yes | no | **CONFIRMED** |
-| UART ready | `msm_dectuart_init` `0xb80` | serial port configured for the loader | no | yes | **CONFIRMED** |
+| UART ready (reset held) | `msm_dectuart_init` `0xb80` | serial port configured **while reset is still asserted** | no | yes | **CONFIRMED** |
+| RESET release | `dect_loader` `0xb9c` | `out_bit(gpio,1)` — **after** UART init | yes | no | **CONFIRMED** |
 | First-level load | `dect_loader` → `dect_file_process` | `dectfw_firstlevel_441_slow.hex` over UART | no | yes | **CONFIRMED** (code path), upload itself not observed by us |
 | Second-level load | same | `dectfw_secondlevel_441.hex` | no | yes | **CONFIRMED** (code path) |
 | Firmware runs | SC14448 | starts emitting FSC/BCLK | — | — | **UNKNOWN** |
@@ -22,17 +22,22 @@
 ### 0.1 The order is hard-coded
 
 ```
-b3c..b54   assert reset (level 0)
+b44        dakota_gpio_ctrl(gpio, 0, 1)   request as output
+b54        dakota_gpio_out_bit(gpio, 0)   RESET = 0 (assert)
 b58..b64   delay (11 iterations)
-b84..b9c   release reset (level 1)
+b74        log_piglet("dect_reset")
+b80        msm_dectuart_init(...)          UART init while reset held
+b98..b9c   dakota_gpio_out_bit(gpio, 1)   RESET = 1 (release)
 ba0..bac   settle (16 iterations)
-b74        log_piglet(...)
-b80        msm_dectuart_init(...)
 ```
 
-`msm_dectuart_init` is **after** the reset pulse, so a loader that skipped the
-reset could still configure the UART but would talk to a chip that is either
-held in reset or in an unknown state.
+**Corrected.**  An earlier revision had the release at `b9c` before the UART
+at `b80`; the addresses prove the opposite (`0xb80 < 0xb9c`).  The second
+`dect_loader` branch agrees: `msm_dectuart_init` at `d10`, release at `d28`.
+
+So the loader holds the chip in reset until the port is ready, then releases
+it and starts the firmware transfer.  A loader that released reset first
+would wake the chip with no host listening.
 
 ### 0.2 The clock check is passive
 

@@ -3,9 +3,11 @@
 > **Status: hypotheses only.**  The inverter is **not** identified as the
 > reset line.  Nothing here is a measurement or a trace.
 
-Measured by the owner under OpenWrt: **VCC = 3.3 V, A = 3.3 V, Y = 0 V**.
+Measured by the owner **under OpenWrt only**: **VCC = 3.3 V, A = 3.3 V,
+Y = 0 V**.
 That is the correct truth table for an inverter (A high → Y low), so the part
-is powered and functioning.
+was powered and functioning during that OpenWrt measurement. It says nothing
+about the levels under a running FRITZ!OS.
 
 ---
 
@@ -39,17 +41,14 @@ The inverter sits near the SC14448, which is the usual reason people assume
 - reset is driven by GPIO40, and no source ties that net to this part;
 - an inverter used to translate 3.3 V → something else (H5) is just as common
   next to a mixed-voltage chip;
-- the measured **A = 3.3 V** means the *input* is sitting high during a
-  running system.  For an active-low reset that would mean "reset released",
-  i.e. Y should be high, not 0 — unless the input is a different signal.
+- the measured **A = 3.3 V, Y = 0 V** applies only to OpenWrt, where the DECT
+  start-up sequence has not run. It cannot be extrapolated to working
+  FRITZ!OS.
 
-That last point is the strongest hint against H1 **as wired**: with A high
-and an inverter, Y is low; if Y were the reset pin and reset is active-low,
-the chip would be held in reset during normal operation, which cannot be
-true under FRITZ!OS while DECT works.
-
-**Consequence:** H1 can only hold if the SC14448 reset is **active-high**, or
-if A is not GPIO40.  Both are unproven.
+Therefore the measurement neither supports nor disproves H1. It is compatible
+with the SC14448 being held in some inactive state under OpenWrt, but GPIO40
+has not been electrically connected to A/Y and the SC14448 reset polarity is
+unknown.
 
 ## 2. Status
 

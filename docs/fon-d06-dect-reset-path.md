@@ -6,6 +6,8 @@
 
 Binary used: `lib/modules/4.4.271/piglet_noemif/Piglet_noemif.ko` from the
 FRITZ!OS 08.25 squashfs.  The module is not committed; only its analysis is.
+The compiled OEM HW236 DTB was also extracted from `kernel.image`; see
+`fon-d06-oem-dtb-extraction.md` for the exact offset, hash and procedure.
 
 ---
 
@@ -19,15 +21,24 @@ GPIO40 (board table gpio_avm_dect_reset)
    v  get_profile() looks the name up in the board config
 profile + 0x28  = GPIO number
    |
-   v  dect_loader(), state PREPARE
-dakota_gpio_ctrl(gpio, 0, 1)      -> request as output
-dakota_gpio_out_bit(gpio, 0)      -> drive LOW      (assert)
-   ... 11 x ~1 unit of delay ...
-dakota_gpio_out_bit(gpio, 1)      -> drive HIGH     (release)
-   |
-   v
-msm_dectuart_init(...)            -> UART ready for the firmware upload
+   v  dect_loader()
+dakota_gpio_ctrl(gpio, 0, 1)      -> request as output        (0xb44)
+dakota_gpio_out_bit(gpio, 0)      -> API value 0 (assert)     (0xb54)
+   ... 11 x delay ...
+msm_dectuart_init(...)            -> UART ready, reset held   (0xb80)
+dakota_gpio_out_bit(gpio, 1)      -> API value 1 (release)    (0xb9c)
+   ... 16 x settle ...
+firmware upload over the UART
 ```
+
+### Logical level vs electrical level
+
+`dakota_gpio_out_bit(gpio, v)` forwards `v` unchanged; the recovered call
+sites only ever pass 0 or 1 (`XBIT_WritePort_XBIT_CLK` shows the pass-through).
+So the **argument** to reset is 0 (assert) and 1 (release).  What the pad
+physically does with that argument — including whether the AVM wrapper or any
+external part inverts it — is **UNKNOWN**; the internals of
+`dakota_gpio_out_bit()` are not in the GPL drop.
 
 Key results:
 
@@ -35,9 +46,10 @@ Key results:
 |---|---|---|
 | Owner of GPIO40 in FRITZ!OS | `Piglet_noemif.ko`, `dect_loader()` | **CONFIRMED** |
 | Which profile slot | `profile+0x28`, resolved from the string `gpio_avm_dect_reset` | **CONFIRMED** |
+| Compiled DT property | `gpio_avm_dect_reset { value = <0x28>; param = <0x0b>; }` | **CONFIRMED** |
 | Direction / initial level | `dakota_gpio_ctrl(gpio, 0, 1)`, then `out_bit(gpio, 0)` | **CONFIRMED** |
 | Logical assert / deassert | **assert = 0**, **deassert = 1** at the API | **CONFIRMED** |
-| Reset occurs before or after the upload | **before** `msm_dectuart_init()` | **CONFIRMED** |
+| Order: UART init vs reset release | UART (`0xb80`) is initialised **before** release (`0xb9c`) | **CONFIRMED** |
 | Hardware inversion between IO and SC14448 | **UNKNOWN** | — |
 
 ## 1. How the GPIO number is obtained
@@ -131,7 +143,7 @@ UNKNOWN**; only "non-zero, fixed count" is CONFIRMED.
 |---|---|---|---|
 | AVM board table param | `GPIO_OUT_ACTIVE_HIGH` | — | DTSI text |
 | `dakota_gpio_out_bit` argument | **0** | **1** | `b4c`/`b98` |
-| Pad electrical level | LOW | HIGH | **UNKNOWN** — TLMM + any external inverter |
+| Pad electrical level | **UNKNOWN** | **UNKNOWN** | implementation of `dakota_gpio_out_bit`, TLMM and any external inverter are unresolved |
 | SC14448 reset pin | **UNKNOWN** | **UNKNOWN** | no datasheet pin, no trace |
 
 Two things must not be merged:
@@ -152,21 +164,40 @@ would reconcile the two readings — but that is a hypothesis, see
 ## 4. When reset happens relative to the upload
 
 ```
-b3c..b54   assert (level 0)
-b58..b64   delay 11
-b84..b9c   deassert (level 1)
-ba0..bac   settle 16
-b74        log_piglet(...)
-b80        msm_dectuart_init(...)      <-- UART configured after reset
+b44   dakota_gpio_ctrl(gpio, 0, 1)   request as output
+b54   dakota_gpio_out_bit(gpio, 0)   RESET = 0  (assert)
+b58   delay loop (11 iterations)
+b74   log_piglet("dect_reset")
+b80   msm_dectuart_init(...)         UART initialised while reset is held
+b98   mov r1, #1
+b9c   dakota_gpio_out_bit(gpio, 1)   RESET = 1  (release)
+ba0   settle loop (16 iterations)
+...   loader continues (first/second-level firmware)
 ```
 
-So the order is **reset pulse first, UART afterwards**, and only then the
-first-level/second-level `dectfw` transfer.  This matches the OEM boot log
-(`11.9 s` piglet start, `17.77 s` second-level loaded).
+**Corrected.**  An earlier revision of this document placed the release at
+`b9c` *before* `msm_dectuart_init` at `b80`.  That was wrong: the addresses
+are `0xb80 < 0xb9c`, so the UART is initialised **first** and the reset is
+released **afterwards**.  Verified in `reports/piglet.annotated.txt`.
 
-**Consequence for our driver:** a firmware upload cannot succeed on a chip
-that was never released from reset, and nothing in this path uses the UART to
-perform the reset.
+The second `dect_loader` branch shows the same order:
+
+```
+d10   msm_dectuart_init(...)
+d28   dakota_gpio_out_bit(gpio, 1)   RESET = 1
+```
+
+So the real sequence is:
+
+```
+GPIO40 = 0  ->  msm_dectuart_init()  ->  GPIO40 = 1  ->  firmware upload
+```
+
+**Consequence for our driver:** the reset line is deliberately held low
+**while** the UART is being configured, and released only when the port is
+ready.  A loader that releases reset before bringing up the UART would start
+the chip with no host listening, so the order matters for any future upload
+attempt.
 
 ## 5. Is GPIO40 also touched anywhere else?
 
@@ -186,7 +217,8 @@ following stage; it is not part of the reset pulse.
 | Loader init | `get_profile()` `0x3844` | reads `gpio_avm_dect_reset` into `profile+0x28` | n/a | **CONFIRMED** |
 | Reset assert | `dect_loader()` `0xb44`,`0xb54` | `ctrl(gpio,0,1)`, `out_bit(gpio,0)` | **0** | **CONFIRMED** |
 | Reset release | `dect_loader()` `0xb9c` | `out_bit(gpio,1)` | **1** | **CONFIRMED** |
-| Firmware upload | `msm_dectuart_init` `0xb80` then `dectfw_*` | UART, not GPIO40 | — | **CONFIRMED** (order) |
+| UART init (reset held) | `msm_dectuart_init` `0xb80` | UART configured, reset still 0 | — | **CONFIRMED** |
+| Firmware upload | `dectfw_*` after release | UART, not GPIO40 | — | **CONFIRMED** (order) |
 | Normal run | `pcmlink.ko` | does not touch reset | — | **INFERRED** from absence of the name in `pcmlink` |
 | Error recovery | `dect_loader` re-entry (`piglet_loader_thread`) | repeats the same block | 0 → 1 | **INFERRED** |
 

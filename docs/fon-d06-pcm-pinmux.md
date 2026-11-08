@@ -1,6 +1,6 @@
 # D0.6-B — PCMLINK pinmux and TLMM register map
 
-> **Status: offline source + disassembly analysis.**  No TLMM write, no
+> **Status: offline OEM DTB + source + disassembly analysis.**  No TLMM write, no
 > router access.  The register map below is for a future **read-only** check;
 > no write sequence is given.
 
@@ -12,7 +12,7 @@
 |---|---|---|
 | Does `pcmlink.ko` set the I2S pinmux itself? | **Yes** — `ipq40xxtdm_linkinit` calls `dakota_gpio_pinconfig(gpio, profile->field, 1)` | **CONFIRMED** |
 | Does `Piglet_noemif.ko` set the pinmux? | No — it requests them as **input** via `dakota_gpio_ctrl(gpio, 0, 0)` and only reads | **CONFIRMED** |
-| What are `AVM_DEF_HW_FUNCTION_PINMUX2/3`? | The numeric values stored in the profile fields `+0x1c`/`+0x20`, passed to `dakota_gpio_pinconfig`; the macro itself is still not in the GPL drop | **partly CONFIRMED** |
+| What are `AVM_DEF_HW_FUNCTION_PINMUX2/3`? | The compiled OEM DTB contains `function = <2>` and `<3>`; these match TLMM FUNC_SEL **2** and **3** (bits [5:2] = `0x08`/`0x0C`) | **values CONFIRMED**, API pass-through **UNKNOWN** |
 | Which group is used for `tdm@0`? | `pcmlink` reads `profile+0x1c` or `profile+0x20` depending on a mode flag | **CONFIRMED (mechanism)**, which one on HW236 **UNKNOWN** |
 | Is I2S actually muxed on those pads under OpenWrt? | Stage C0 saw them as unclaimed GPIO inputs, so **not muxed** | **CONFIRMED (negative)** |
 
@@ -95,10 +95,11 @@ was meant to express, stored in the profile at `+0x1c` or `+0x20`.  The
 choice between the two fields is a mode flag (`[sp,#0x14]`), so both groups
 exist as **data**, and which one is used depends on that flag.
 
-The numeric values themselves are still not available: they live in
-`avm_get_hw_config_table`, which is closed.  What changed is that the
-**mechanism** is now confirmed rather than assumed, and the earlier statement
-"pcmlink does not set the pinmux" is **DISPROVED**.
+The compiled OEM DTB settles the numeric profile values: PINMUX2 is `2` and
+PINMUX3 is `3` (see `fon-d06-oem-dtb-extraction.md`). What remains unknown is
+whether `dakota_gpio_pinconfig()` passes the profile value to TLMM unchanged.
+The **mechanism** is confirmed, and the earlier statement "pcmlink does not
+set the pinmux" is **DISPROVED**.
 
 ## 2.1 `Piglet_noemif.ko` does not
 
@@ -115,12 +116,22 @@ Which physical pins that ends up meaning is still the board table's answer.
 
 ## 2.2 `AVM_DEF_HW_FUNCTION_PINMUX2/3`
 
-Searched the whole GPL drop: the macro appears **only** in the DTSI lines
-that assign it.  No `#define`, no consumer, no `avm_gpio` driver source.
+The macro definitions are absent from the partial GPL drop, but the compiled
+OEM DTB preserves their results:
 
-**Status:** the *name* remains UNKNOWN, but its **role** is now confirmed —
-it is the value handed to `dakota_gpio_pinconfig`.  Treat PINMUX2/PINMUX3 as
-two alternative values for that field:
+```text
+gpio_avm_pcmlink_mcl/dcl/fsc:       function = <0x02>
+gpio_avm_pcmlink_di/mcl_2/dcl_2/
+                    fsc_2/do:      function = <0x03>
+```
+
+Therefore the macro values themselves are **CONFIRMED**:
+
+- `AVM_DEF_HW_FUNCTION_PINMUX2 = 2`;
+- `AVM_DEF_HW_FUNCTION_PINMUX3 = 3`.
+
+The complete compiled-node provenance and DTB hash are in
+`fon-d06-oem-dtb-extraction.md`.
 
 | Signal | PINMUX2 | PINMUX3 |
 |---|---|---|
@@ -154,29 +165,64 @@ pinctrl@1000000 {
 so the base is **`0x01000000`**.  Per-pin `CFG` (ctl) address is
 `0x01000000 + 0x1000 * id`.
 
-| GPIO | ctl/CFG address | io address | AVM name(s) | I2S function | FUNC_SEL for I2S | Confidence |
-|---|---|---|---|---|---|---|
-| 20 | `0x01014000` | `0x01014004` | MCL (MUX2) | `i2s_rx` | **UNKNOWN** | address CONFIRMED, selector UNKNOWN |
-| 21 | `0x01015000` | `0x01015004` | DCL (MUX2) | `i2s_rx` | **UNKNOWN** | same |
-| 22 | `0x01016000` | `0x01016004` | FSC (MUX2) | `i2s_rx` | **UNKNOWN** | same |
-| 23 | `0x01017000` | `0x01017004` | DI (MUX3) | `i2s_rx` | **UNKNOWN** | same |
-| 24 | `0x01018000` | `0x01018004` | MCL_2 (MUX3) | `i2s_tx` | **UNKNOWN** | same |
-| 25 | `0x01019000` | `0x01019004` | DCL_2 (MUX3) | `i2s_tx` | **UNKNOWN** | same |
-| 26 | `0x0101a000` | `0x0101a004` | FSC_2 (MUX3) | `i2s_tx` | **UNKNOWN** | same |
-| 27 | `0x0101b000` | `0x0101b004` | DO (MUX3) | `i2s_td` | **UNKNOWN** | same |
+| GPIO | ctl/CFG address | io address | AVM name(s) | I2S function | `.funcs[]` index | FUNC_SEL | Bits [5:2] | Confidence |
+|---|---|---|---|---|---|---|---|---|
+| 20 | `0x01014000` | `0x01014004` | MCL (MUX2) | `i2s_rx` | 2 | **2** | `0x08` | CONFIRMED |
+| 21 | `0x01015000` | `0x01015004` | DCL (MUX2) | `i2s_rx` | 2 | **2** | `0x08` | CONFIRMED |
+| 22 | `0x01016000` | `0x01016004` | FSC (MUX2) | `i2s_rx` | 2 | **2** | `0x08` | CONFIRMED |
+| 23 | `0x01017000` | `0x01017004` | DI (MUX3) | `i2s_rx` | 3 | **3** | `0x0C` | CONFIRMED |
+| 24 | `0x01018000` | `0x01018004` | MCL_2 (MUX3) | `i2s_tx` | 3 | **3** | `0x0C` | CONFIRMED |
+| 25 | `0x01019000` | `0x01019004` | DCL_2 (MUX3) | `i2s_tx` | 3 | **3** | `0x0C` | CONFIRMED |
+| 26 | `0x0101a000` | `0x0101a004` | FSC_2 (MUX3) | `i2s_tx` | 3 | **3** | `0x0C` | CONFIRMED |
+| 27 | `0x0101b000` | `0x0101b004` | DO (MUX3) | `i2s_td` | 3 | **3** | `0x0C` | CONFIRMED |
 
-### 3.1 Why FUNC_SEL is left UNKNOWN
+### 3.1 How FUNC_SEL is derived
 
-`PINGROUP` builds `.funcs = (int[]){ qca_mux_gpio, qca_mux_f1, ... }`.
-`i2s_rx` is the **second** entry (`f1`) for GPIO20–23 and `i2s_tx`/`i2s_td`
-are also `f1` for 24–27.  That suggests the runtime value is one of the
-`qca_mux_*` enum members, but the **numeric encoding written into
-`FUNC_SEL`** is set by `msm_pinctrl_set_mux()` from an index we do not have a
-documented table for here.  Do **not** program a value from this document.
+`PINGROUP(id, f1, f2, ...)` expands to:
 
-The safe read-only check is: read `cfg` for each pin and compare the
-`FUNC_SEL` field against the observed mux under FRITZ!OS, using the kernel's
-own `debugfs` pinctrl view as the reference rather than an assumed constant.
+```c
+.funcs = (int[]){ qca_mux_gpio,  /* index 0 */
+                  qca_mux_##f1,  /* index 1 */
+                  qca_mux_##f2,  /* index 2 */
+                  ... },
+.nfuncs = 15,
+.mux_bit = 2,
+```
+
+and `msm_pinmux_set_mux()` (`pinctrl-msm.c`) picks the **index** of the
+requested function and writes it shifted by `mux_bit`:
+
+```c
+for (i = 0; i < g->nfuncs; i++)
+        if (g->funcs[i] == function)
+                break;
+...
+val |= i << g->mux_bit;
+```
+
+So the value written is the array index, and the field is bits **[5:2]**
+(`mux_bit = 2`).  For the pins in question:
+
+| GPIO | `PINGROUP(...)` arguments | `i2s_*` position | index |
+|---|---|---|---|
+| 20, 21 | `blsp_i2c0, i2s_rx, …` | `f2` | **2** |
+| 22 | `rgmii, i2s_rx, …` | `f2` | **2** |
+| 23–27 | `sdio, rgmii, i2s_rx/tx/td, …` | `f3` | **3** |
+
+This is exactly the split the AVM names describe:
+
+- **PINMUX2** group (GPIO20/21/22) → FUNC_SEL **2** → bits `0x08`;
+- **PINMUX3** group (GPIO23/24/25/26/27) → FUNC_SEL **3** → bits `0x0C`.
+
+The Linux pinctrl derivation and the compiled OEM DTB independently agree:
+`AVM_DEF_HW_FUNCTION_PINMUX2/3` carry values **2/3**. This is **CONFIRMED**.
+It remains **UNKNOWN** whether the closed `dakota_gpio_pinconfig()` wrapper
+passes those values to the TLMM field unchanged.
+
+**Read-only check, not a write recipe:** reading `cfg` for each pin and
+masking bits [5:2] should yield `0x08` or `0x0C` when the pin is muxed for
+I2S, and `0x00` when it is a plain GPIO.  Nothing in this document is to be
+written.
 
 ## 4. Why the mux state matters, and what it means for us
 
@@ -208,5 +254,6 @@ and is **not** part of any current stage.
 | Unknown | Needs |
 |---|---|
 | which of MUX2/MUX3 is populated | board table dump (`avm_get_hw_config_table` output) |
-| FUNC_SEL numeric value for I2S | kernel `debugfs` pinmux under FRITZ!OS, read-only |
+| whether AVM passes FUNC_SEL 2/3 through unchanged | `dakota_gpio_pinconfig()` body, not in the GPL drop |
+| observed FUNC_SEL under FRITZ!OS | kernel `debugfs` pinmux, read-only |
 | whether pads reach the SC14448 | continuity, or a schematic |

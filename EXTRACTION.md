@@ -20,7 +20,7 @@ it, the rootfs is a separate SquashFS file:
 
 ```text
 ./var/tmp/filesystem.image   SquashFS (xz), root filesystem
-./var/tmp/kernel.image       vendor kernel, not needed here
+./var/tmp/kernel.image       EVA/LZMA vendor kernel; contains the OEM DTBs
 ./var/install                AVM installer
 ./var/version                firmware version
 ```
@@ -70,7 +70,26 @@ Expected:
 Squashfs filesystem, little endian, version 4.0, xz compressed
 ```
 
-## 2. Extract the SquashFS rootfs
+## 2. Extract the OEM HW236 DTB
+
+The OEM DTB is embedded in the LZMA-compressed EVA `kernel.image`; direct
+search for FDT magic in the compressed file will not find it. The complete,
+verified extraction procedure is documented in:
+
+```text
+docs/fon-d06-oem-dtb-extraction.md
+```
+
+For FRITZ!OS 08.25 the selected HW236 DTB is at decompressed-kernel offset
+`0x98d038`, is 26,963 bytes long, and has SHA256:
+
+```text
+3083e2acedc800015fea5ee7e57fa6cc8da551e21ee792095cbd8a7224bb841f
+```
+
+Keep the extracted binary outside Git under `.work/`.
+
+## 3. Extract the SquashFS rootfs
 
 No root and no loop mount are required:
 
@@ -97,7 +116,7 @@ sudo mount -t squashfs -o loop,ro "$ROOTFS_IMG" /mnt/fritz7530-rootfs
 
 `unsquashfs` is safer for inspection because it never writes to the image.
 
-## 3. Copy the selected artifacts into this repository
+## 4. Copy the selected artifacts into this repository
 
 The repository contains only the telephony/DECT dependency chain, not every
 module from the firmware.
@@ -199,7 +218,7 @@ reference/init.d/
   rc.voip
 ```
 
-## 4. Verify hashes
+## 5. Verify hashes
 
 From the repository root:
 
@@ -213,7 +232,7 @@ firmware version is different, or a file was copied from another prefix.
 The hash manifest covers only this selected set. It is not a complete copy of
 all vendor modules.
 
-## 5. What each selected component is
+## 6. What each selected component is
 
 | Repository path | Vendor path | Role | Depends on |
 |---|---|---|---|
@@ -244,7 +263,7 @@ Reference scripts:
 | `reference/init.d/S11-piglet` | `etc/init.d/S11-piglet` | Piglet firmware parameters |
 | `reference/init.d/rc.voip` | `etc/init.d/rc.voip` | `telefon` / `voipd` startup |
 
-## 6. Userspace binaries (not copied here)
+## 7. Userspace binaries (not copied here)
 
 The rootfs also contains the userspace stack:
 
@@ -258,7 +277,7 @@ These are uClibc ARM binaries. They are not part of the selected kernel-module
 set and are not copied into `modules/`. They can be extracted separately for
 userspace/ABI work.
 
-## 7. Important warnings
+## 8. Important warnings
 
 - These are ARM EABI5 modules for kernel `4.4.271`; do not load them on the
   OpenWrt `6.12` kernel.
@@ -268,7 +287,7 @@ userspace/ABI work.
   Keep them local unless you have made a licensing decision.
 - The extraction commands are read-only with respect to the firmware image.
 
-## 8. One-command check after extraction
+## 9. One-command check after extraction
 
 ```bash
 cd "$REPO"
