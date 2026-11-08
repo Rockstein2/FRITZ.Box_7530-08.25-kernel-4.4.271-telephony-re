@@ -5,7 +5,7 @@
 
 > **Status: CONFIRMED offline extraction.** No router access and no flash
 > operation were used. The proprietary DTB and its decompiled DTS are kept
-> outside Git under `/home/rck/Downloads/OpenWrt7530/.work/`.
+> outside Git under `/home/rck/Downloads/OpenWrt7530/reference/oem-08.25/`.
 
 ## Result
 
@@ -22,8 +22,8 @@ A HW236 DTB was extracted from the EVA/LZMA kernel in the original FRITZ!OS
 | Model | `AVM FRITZ!Box 7530` |
 | Compatible | `qcom,ipq4019` |
 | SHA256 | `3083e2acedc800015fea5ee7e57fa6cc8da551e21ee792095cbd8a7224bb841f` |
-| Local DTB | `.work/fon-d06/oem-dtb/Fritz_Box_HW236-oem.dtb` |
-| Local DTS | `.work/fon-d06/oem-dtb/Fritz_Box_HW236-oem.dts` |
+| Local DTB | `reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dtb` |
+| Local DTS | `reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dts` |
 
 The SHA256 is identical to the value previously recorded in
 `../history/fon-dialog-board-uart-identification.md` and
@@ -57,13 +57,13 @@ and the compressed payload beginning at `0x24`.
 Run from `/home/rck/Downloads/OpenWrt7530` after extracting the outer tar:
 
 ```bash
-mkdir -p .work/fon-d06/oem-dtb
+mkdir -p reference/oem-08.25/dtb
 
 python3 - <<'PY'
 from pathlib import Path
 import struct
 
-src = Path("fritz7530/var/tmp/kernel.image").read_bytes()
+src = Path("reference/oem-08.25/image-extracted/var/tmp/kernel.image").read_bytes()
 magic, record_len, load_addr, image_type, compressed_size, \
     uncompressed_size, crc = struct.unpack_from("<7I", src, 0)
 
@@ -73,14 +73,14 @@ assert 36 + compressed_size <= len(src)
 lzma_header = src[28:33] + struct.pack("<Q", uncompressed_size)
 payload = src[36:36 + compressed_size]
 
-Path(".work/fon-d06/oem-dtb/kernel.lzma").write_bytes(
+Path("reference/oem-08.25/dtb/kernel.lzma").write_bytes(
     lzma_header + payload
 )
 PY
 
 xz --format=lzma -dc \
-  .work/fon-d06/oem-dtb/kernel.lzma \
-  > .work/fon-d06/oem-dtb/kernel.dec
+  reference/oem-08.25/dtb/kernel.lzma \
+  > reference/oem-08.25/dtb/kernel.dec
 ```
 
 Extract every self-consistent FDT and print its provenance:
@@ -91,7 +91,7 @@ from pathlib import Path
 import hashlib
 import struct
 
-src = Path(".work/fon-d06/oem-dtb/kernel.dec").read_bytes()
+src = Path("reference/oem-08.25/dtb/kernel.dec").read_bytes()
 magic = b"\xd0\x0d\xfe\xed"
 pos = 0
 index = 0
@@ -104,7 +104,7 @@ while True:
     if 40 <= totalsize <= len(src) - pos:
         index += 1
         blob = src[pos:pos + totalsize]
-        out = Path(f".work/fon-d06/oem-dtb/fdt-{index}-0x{pos:x}.dtb")
+        out = Path(f"reference/oem-08.25/dtb/fdt-{index}-0x{pos:x}.dtb")
         out.write_bytes(blob)
         print(hex(pos), totalsize, hashlib.sha256(blob).hexdigest(), out)
     pos += 4
@@ -150,15 +150,15 @@ the `subrevision` property. Therefore:
 Save and decompile the first blob:
 
 ```bash
-cp .work/fon-d06/oem-dtb/fdt-1-0x98d038.dtb \
-   .work/fon-d06/oem-dtb/Fritz_Box_HW236-oem.dtb
+cp reference/oem-08.25/dtb/fdt-1-0x98d038.dtb \
+   reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dtb
 
 dtc -I dtb -O dts \
-  -o .work/fon-d06/oem-dtb/Fritz_Box_HW236-oem.dts \
-  .work/fon-d06/oem-dtb/Fritz_Box_HW236-oem.dtb
+  -o reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dts \
+  reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dtb
 
-sha256sum .work/fon-d06/oem-dtb/Fritz_Box_HW236-oem.dtb
-fdtget .work/fon-d06/oem-dtb/Fritz_Box_HW236-oem.dtb / model
+sha256sum reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dtb
+fdtget reference/oem-08.25/dtb/Fritz_Box_HW236-oem.dtb / model
 ```
 
 ## D0.6 evidence from the compiled DTB

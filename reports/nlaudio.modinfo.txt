@@ -1,4 +1,4 @@
-filename:       ~/Downloads/OpenWrt7530/fritz7530-rootfs/lib/modules/4.4.271/nlaudio/nlaudio.ko
+filename:       ~/Downloads/OpenWrt7530/reference/oem-08.25/rootfs/lib/modules/4.4.271/nlaudio/nlaudio.ko
 author:         Jens Braeuer, AVM GmbH, 2009
 description:    AVM Dect Audio Driver
 license:        Proprietary

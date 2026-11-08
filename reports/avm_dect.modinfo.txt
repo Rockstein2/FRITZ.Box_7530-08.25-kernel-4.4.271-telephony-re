@@ -1,4 +1,4 @@
-filename:       ~/Downloads/OpenWrt7530/fritz7530-rootfs/lib/modules/4.4.271/avm_dect/avm_dect.ko
+filename:       ~/Downloads/OpenWrt7530/reference/oem-08.25/rootfs/lib/modules/4.4.271/avm_dect/avm_dect.ko
 license:        Proprietary
 description:    AVM DECT Stack
 depends:        pcmlink

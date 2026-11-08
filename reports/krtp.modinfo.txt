@@ -1,4 +1,4 @@
-filename:       ~/Downloads/OpenWrt7530/fritz7530-rootfs/lib/modules/4.4.271/extra/rtp/krtp.ko
+filename:       ~/Downloads/OpenWrt7530/reference/oem-08.25/rootfs/lib/modules/4.4.271/extra/rtp/krtp.ko
 license:        Proprietary
 description:    In-kernel RTP datapath
 author:         AVM GmbH

@@ -117,7 +117,7 @@ so a local extraction can be verified without publishing the binaries.
 The exact files needed for the analysis are extracted from:
 
 ```text
-FRITZ.Box_7530-08.25.image
+reference/oem-08.25/installers/FRITZ.Box_7530-08.25.image
   -> var/tmp/filesystem.image   (SquashFS rootfs)
   -> var/tmp/kernel.image       (EVA/LZMA kernel containing OEM HW236 DTBs)
 ```
@@ -172,7 +172,7 @@ The vendor `.image` is a tar archive. Its rootfs is a separate SquashFS file:
 WORK="$HOME/fritz7530-extract"
 ROOTFS="$WORK/rootfs"
 
-tar -xf FRITZ.Box_7530-08.25.image -C "$WORK"
+tar -xf reference/oem-08.25/installers/FRITZ.Box_7530-08.25.image -C "$WORK"
 unsquashfs -d "$ROOTFS" "$WORK/var/tmp/filesystem.image"
 ```
 

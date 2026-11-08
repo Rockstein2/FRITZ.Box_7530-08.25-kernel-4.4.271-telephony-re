@@ -1,4 +1,4 @@
-filename:       ~/Downloads/OpenWrt7530/fritz7530-rootfs/lib/modules/4.4.271/isdn_fon5/isdn_fbox_fon5.ko
+filename:       ~/Downloads/OpenWrt7530/reference/oem-08.25/rootfs/lib/modules/4.4.271/isdn_fon5/isdn_fbox_fon5.ko
 license:        
 (C) Copyright 2007-2024 AVM
 

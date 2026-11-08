@@ -32,7 +32,7 @@ Do not try to `mount` the outer `.image`; that was the original mistake.
 Set paths:
 
 ```bash
-IMG="$HOME/Downloads/OpenWrt7530/FRITZ.Box_7530-08.25.image"
+IMG="$HOME/Downloads/OpenWrt7530/reference/oem-08.25/installers/FRITZ.Box_7530-08.25.image"
 WORK="$HOME/fritz7530-extract"
 REPO="$HOME/Downloads/OpenWrt7530/FRITZ.Box_7530-08.25-kernel-4.4.271-telephony-re"
 
@@ -87,7 +87,7 @@ For FRITZ!OS 08.25 the selected HW236 DTB is at decompressed-kernel offset
 3083e2acedc800015fea5ee7e57fa6cc8da551e21ee792095cbd8a7224bb841f
 ```
 
-Keep the extracted binary outside Git under `.work/`.
+Keep the extracted binary outside Git under `reference/oem-08.25/`.
 
 ## 3. Extract the SquashFS rootfs
 
