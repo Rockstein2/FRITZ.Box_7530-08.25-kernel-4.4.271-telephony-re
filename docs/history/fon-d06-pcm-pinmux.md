@@ -21,7 +21,7 @@
 | Does `pcmlink.ko` set the I2S pinmux itself? | **Yes** — `ipq40xxtdm_linkinit` calls `dakota_gpio_pinconfig(gpio, profile->field, 1)` | **CONFIRMED** |
 | Does `Piglet_noemif.ko` call the pinmux API? | No explicit `dakota_gpio_pinconfig()`; it calls `dakota_gpio_ctrl(gpio, 0, 0)` and reads edges. The side effects of `ctrl()` are not recovered, so this is not proven to be hardware read-only | **no pinconfig CONFIRMED**, `ctrl()` effects **UNKNOWN** |
 | What are `AVM_DEF_HW_FUNCTION_PINMUX2/3`? | The compiled OEM DTB contains `function = <2>` and `<3>`; these match TLMM FUNC_SEL **2** and **3** (bits [5:2] = `0x08`/`0x0C`) | **values CONFIRMED**, API pass-through **UNKNOWN** |
-| Which group is used for `tdm@0`? | `pcmlink` reads `profile+0x1c` or `profile+0x20` depending on a mode flag | **CONFIRMED (mechanism)**, which one on HW236 **UNKNOWN** |
+| Which group is used for `tdm@0`? | OEM 08.25 live readback: GPIO21/22=2, GPIO23/25/26/27=3, GPIO20/24=0. Both groups are partly active; the earlier “either MUX2 or MUX3” reading is superseded. | **CONFIRMED (OEM runtime)**, MCL=0 reason **UNKNOWN** |
 | Is I2S actually muxed on those pads under OpenWrt? | Stage C0 reported the pins as unclaimed by Linux; this is not a hardware register readback, so the actual `FUNC_SEL` is unknown | **Linux owner: none (RUNTIME-RO)**, hardware mux **UNKNOWN** |
 
 `Check_TDMInterface` **reads** the clocks through the GPIO API. It does not
@@ -256,6 +256,31 @@ Two consequences:
 
 Configuring `i2s_rx`/`i2s_tx` ourselves would move the pads to the ADSS side
 and is **not** part of any current stage.
+
+## 4a. OEM 08.25 live readback (2026-11-08)
+
+`/proc/avm/gpio/list` from the running OEM firmware gives the actual TLMM
+configuration:
+
+| GPIO | `func` | `TLMM_GPIO_CFG` |
+|---|---:|---|
+| 20 | 0 | `0x00004802` |
+| 21 | 2 | `0x0000480a` |
+| 22 | 2 | `0x0000480a` |
+| 23 | 3 | `0x0000480e` |
+| 24 | 0 | `0x00004802` |
+| 25 | 3 | `0x0000480e` |
+| 26 | 3 | `0x0000480e` |
+| 27 | 3 | `0x00004a0e` |
+
+At the same time `pinmux-pins` reports `(MUX UNCLAIMED)` for GPIO20–27.
+Therefore Linux ownership output is **not** a hardware `FUNC_SEL` readback.
+The earlier conclusion “unclaimed, so not muxed” is **DISPROVED**.
+
+The OEM state is mixed: MUX2 on GPIO21/22 and MUX3 on GPIO23/25/26/27,
+while MCL GPIO20/24 remain `func=0`. This supersedes the “either MUX2 or
+MUX3” reading. Why the profile’s MCL function is not applied, or is later
+reset, remains **UNKNOWN** (Q77).
 
 ## 5. What would confirm the group
 

@@ -97,3 +97,10 @@ is `2`. It still does **not** prove which DTB the OEM bootloader selects.
 The capture is referenced from `../../fon-known-facts.md` (evidence class
 `OEM-CAPTURE`) and from the DTB provenance section of
 `../../fon-d06-summary.md`.
+
+The later live read-only console readback (GPIO/TLMM, ISDN/PCMLINK registers)
+is stored outside Git at:
+
+```text
+/home/rck/Downloads/OpenWrt7530/reference/oem-08.25/console/2026-11-08/
+```

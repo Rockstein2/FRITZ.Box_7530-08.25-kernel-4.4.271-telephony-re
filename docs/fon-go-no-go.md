@@ -59,6 +59,7 @@ probe-only preparation:   READY
 probe-only hardware:      PASS (2026-11-07)
 C1 MMIO read:             PASS (2026-11-07)
 D0.6 offline RE:          COMPLETE
+OEM 08.25 live readback:  PASS (read-only console)
 D0.6 read-only snapshot:  NOT RUN
 C2 rerun / C4 DMA:        NOT READY
 SC14448 reset/upload:     NOT READY
@@ -97,8 +98,10 @@ above ask for; the *expectation* is no longer unknown.
 | GPIO40 software path | `get_profile()` → `profile+0x28` → `dect_loader()` | **PASS** |
 | UART/reset API order | `0xb54` value 0 → `0xb80` UART init → `0xb9c` value 1 | **PASS** |
 | PINMUX2/PINMUX3 numeric values | OEM DTB `function=<2>/<3>` + Linux pinctrl indices | **PASS** |
-| Actual hardware TLMM `FUNC_SEL` / physical wiring | Q27/Q31 | **UNKNOWN** |
+| Actual OEM live TLMM `FUNC_SEL` | GPIO21/22=2; GPIO23/25/26/27=3; GPIO20/24=0 (`/proc/avm/gpio/list`) | **PASS (OEM-CAPTURE)** |
+| OpenWrt TLMM `FUNC_SEL` / physical wiring | Q27/Q31 | **UNKNOWN** |
 | `Check_TDMInterface` pad side effects | `dakota_gpio_ctrl()` body (Q81) | **UNKNOWN** |
+| GPIO40 OEM live pad | `OUT func=0 val=1`, `CFG=0x00004a02` | **PASS (OEM-CAPTURE)** |
 | Physical reset polarity/net | Q13/Q39 | **pending** |
 | `dakota_gpio_*` electrical/register transformation | Q77 | **pending** |
 | Inverter role | no connection to GPIO40 or reset proven | **UNKNOWN** |

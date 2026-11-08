@@ -45,9 +45,9 @@ checks; those results are in `fon-known-facts.md` §9c/§9d.
 
 | # | Question | Closes with | Stage |
 |---|---|---|---|
-| Q13 | Which net does GPIO40 actually drive, and with what polarity? | schematic or scope on the reset pin | D0 / bench |
+| Q13 | Which net does GPIO40 drive, and what is the polarity at the SC14448 reset pin? OEM 08.25 shows GPIO40 `OUT func=0 val=1`; OpenWrt shows input 0. Direct connection vs inverter is still unknown. | schematic, continuity, or scope on the reset pin | D0 / bench |
 | Q15 | Does a GPIO40 reset leave the SC14448 in a state where it will still accept firmware? | D0 plan + measurement | D0 |
-| Q77 | Do `dakota_gpio_out_bit()` and `dakota_gpio_pinconfig()` transform their logical/profile arguments before writing TLMM? | recover the function bodies or compare read-only TLMM state with the compiled OEM DTB | research / read-only |
+| Q77 | How exactly do `dakota_gpio_out_bit()` and `dakota_gpio_pinconfig()` transform their arguments? OEM live readback shows `func` 2/3 for GPIO21/22/23/25/26/27, but GPIO20/24 are `func=0` despite profile values 2/3; MCL handling and the OpenWrt path remain unknown. | recover the function bodies or compare read-only OpenWrt TLMM state with OEM | research / read-only |
 | Q81 | What exactly does `dakota_gpio_ctrl(gpio, 0, 0)` change on the pad, and can the AVM `Check_TDMInterface()` sequence be replayed without altering hardware state? | recover the function body or prove the side effects with a reviewed read-only test | research / read-only |
 
 `AVM_DEF_HW_PARAM_GPIO_OUT_ACTIVE_HIGH` is a software convention and does
@@ -102,10 +102,10 @@ checks; those results are in `fon-known-facts.md` §9c/§9d.
 | Q46 | Is `0x01000000` the PCM buffer, and what does `0x1001` mean? | **still open**: the fill helper writes one word per call and resets a counter at `0x937C`; the base and the value are proven, their meaning is not | research |
 | Q50 | The CR16A manual puts `cc` in bits 8..5 and `d1..d4` in bits 4..0, binutils uses bits 7..4 and 3..0. Which does the SC14448 core use? | **evidence for binutils**: assembler round trip (condition changes never move the displacement), 7 807 firmware matches over both images, the reachable set from `0x1602` is coherent; the CR16C/B manuals could not be read offline | offline |
 | Q47 | Does the hardware reset sequence fetch its entry from the exception table at `INTBASE = 0x24`, or jump directly to a fixed address? The table itself is found (31 entries); its runtime use is not proven. | reset-vector documentation, a bus trace, or a controlled capture | research |
-| Q39 | What electrical level reaches the SC14448 reset pin under OpenWrt, and is it asserted? GPIO40 being an input that reads 0 does not answer this. | establish the net/polarity first, then passive simultaneous observation; no toggle without separate approval | D / bench |
+| Q39 | What electrical level reaches the SC14448 reset pin under OpenWrt, and is it asserted? OEM shows GPIO40 high/out; OpenWrt shows input 0. The pad state is known on both sides, the SC14448-side level is not. | establish the net/polarity first, then passive simultaneous observation; no toggle without separate approval | D / bench |
 | Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
 | Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |
-| Q31 | Which physical PCM group is connected/live on HW236, and what are the actual TLMM `FUNC_SEL` values? The OEM DTB confirms selector values 2/3 and Linux reports no mux owner, but neither proves PCB connectivity nor reads back the hardware register. | schematic, continuity to an identified net, read-only TLMM readback, or passive waveform evidence | probe |
+| Q31 | Which physical PCM group is wired to the SC14448, and what will the TLMM `FUNC_SEL` be under OpenWrt? OEM live readback shows a mixed group: GPIO21/22=2, GPIO23/25/26/27=3, GPIO20/24=0. PCB connectivity and the OpenWrt state remain unknown. | schematic, continuity to an identified net, OpenWrt TLMM readback, or passive waveform evidence | probe |
 | Q32 | Does the console UART tolerate a userspace uploader without corrupting the stream? | C-controlled test with `quiet loglevel=0` | D |
 | Q33 | What are the SC14448 boot reply timings on this unit? | measurement during a controlled handshake | D |
 
@@ -113,7 +113,6 @@ checks; those results are in `fon-known-facts.md` §9c/§9d.
 
 | # | Question | How to answer | Stage |
 |---|---|---|---|
-| Q78 | What is the physical role of GPIO16, which is both a `blsp_uart0` pin and the board-table `gpio_avm_dect_rd`? Can both roles operate concurrently? | schematic/trace plus a reviewed runtime check | research / bench |
 | Q79 | How are the console and `msm_dectuart_*` arbitrated on the shared `blsp_uart0` controller, and can a Dialog upload coexist with console traffic? | review `msm_serial.c`/loader ownership, then a controlled test | D0 / bench |
 | Q80 | Which of the three HW236 DTBs in `kernel.image` does the OEM bootloader select? The board subrevision is now known to be `2` from the OEM 08.25 capture, and the first blob matches it; bootloader selection itself is still not observed. | bootloader selection code or a capture of the chosen DTB | research |
 

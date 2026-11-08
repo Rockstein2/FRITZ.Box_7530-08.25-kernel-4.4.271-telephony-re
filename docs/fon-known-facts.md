@@ -281,7 +281,7 @@ side; neither proves the SC14448 side.
 | Function | GPIO | Notes | Evidence |
 |---|---|---|---|
 | DECT reset (`gpio_avm_dect_reset`) | **40** | source macro `AVM_DEF_HW_PARAM_GPIO_OUT_ACTIVE_HIGH`; compiled `param=<0x0b>` | GPL, OEM-DTB |
-| DECT RD (`gpio_avm_dect_rd`) | 16 | DT name only; the same GPIO is also a `blsp_uart0` pin, and independent concurrent use is not proven (Q78) | GPL, OEM-DTB |
+| DECT RD (`gpio_avm_dect_rd`) | 16 | OEM live readback: `func=1`, UART RX; the name does not create a second GPIO function (Q78 closed) | GPL, OEM-DTB, OEM-CAPTURE |
 | PCMLINK FSC | 22 (mux2) / 26 (mux3) | input; compiled `function=<2>/<3>` | GPL, OEM-DTB |
 | PCMLINK DCL | 21 (mux2) / 25 (mux3) | input; compiled `function=<2>/<3>` | GPL, OEM-DTB |
 | PCMLINK MCL | 20 (mux2) / 24 (mux3) | input; compiled `function=<2>/<3>` | GPL, OEM-DTB |
@@ -382,6 +382,41 @@ These confirm the OEM-side sequence and the board subrevision, but they do
 **not** prove GPIO40 polarity, the actual TLMM `FUNC_SEL`, physical PCM
 wiring, or any OpenWrt behaviour. Q13/Q15/Q27/Q31/Q39/Q77/Q81 stay open.
 
+### 5d. OEM 08.25 live console readback (2026-11-08)
+
+Primary reference: `/home/rck/Downloads/OpenWrt7530/reference/oem-08.25/console/2026-11-08/`.
+Read-only console commands; no write, no toggle, no module load.
+
+| Fact | Value | Evidence |
+|---|---|---|
+| GPIO40 at rest | `OUT`, `func=0`, `val=1`, `TLMM_GPIO_CFG=0x00004a02` | OEM-CAPTURE |
+| GPIO16 | `IN`, `func=1` (blsp_uart0 RX), `val=1`, `CFG=0x00000004` | OEM-CAPTURE |
+| GPIO17 | `OUT`, `func=1` (blsp_uart0 TX), `val=1`, `CFG=0x00000204` | OEM-CAPTURE |
+| GPIO20 / GPIO24 | `func=0`, PU, `CFG=0x00004802` | OEM-CAPTURE |
+| GPIO21 / GPIO22 | `func=2`, PU, `CFG=0x0000480a` | OEM-CAPTURE |
+| GPIO23 / GPIO25 / GPIO26 | `func=3`, PU, `CFG=0x0000480e` | OEM-CAPTURE |
+| GPIO27 | `OUT`, `func=3`, PU, `CFG=0x00004a0e` | OEM-CAPTURE |
+| `pinmux-pins` for GPIO20–27 | `(MUX UNCLAIMED)` while `/proc/avm/gpio/list` shows func 2/3 | OEM-CAPTURE |
+| ISDN/PCMLINK | `Codecslots=9 Slics=1 Pots=0 TE=0 NT=0 DECT=4 no HwCross DSP-EC: 0` | OEM-CAPTURE |
+| ISDN registers | `REG_DIR=01100076`, `REG_ANALOG_IN=00000088`, `REG_ANALOG_OUT=01100026`; others zero | OEM-CAPTURE |
+| `slic0/offhook` | `0` | OEM-CAPTURE |
+| Piglet parameters | `piglet_dectmode=261`, `piglet_bitfilemode=2`, `hostclkmaster=0`, `dect_serial=0` | OEM-CAPTURE |
+| PCMLINK parameters | `abmode=1`, `c55x_hexfile=/lib/modules/c55fw.hex`, `noslic=N`, `nocapi=N` | OEM-CAPTURE |
+
+Consequences, kept narrow:
+
+- **GPIO40 is high (logical 1) as an output while OEM is running.** The OEM
+  reset sequence uses API 0 then 1, so this is consistent with reset released.
+  It does not prove the SC14448 pin polarity or exclude an inverter.
+- **GPIO16 is the UART RX pin** (`func=1`, owned by `78af000.serial`); the
+  board-table name `gpio_avm_dect_rd` does not create a second GPIO function.
+- **The OEM PCM mux is mixed:** MUX2 on GPIO21/22, MUX3 on GPIO23/25/26/27,
+  while MCL GPIO20/24 remain `func=0`.
+- `pinmux-pins` showing `(MUX UNCLAIMED)` is therefore **not** a hardware
+  `FUNC_SEL` readback; the same pins show func 2/3 in `/proc/avm/gpio/list`.
+- This is still OEM 08.25 state, not OpenWrt. The OpenWrt `FUNC_SEL`, physical
+  PCB connectivity and reset-net polarity remain **UNKNOWN**.
+
 ### UART routing, established from the DTS (2026-11-08)
 
 | Fact | Source |
@@ -407,12 +442,12 @@ configuration.  This does **not** prove that the four pads or
 `gpio16`/`gpio17` reach the SC14448, nor that no other UART hardware exists on
 the board, and **no source states the voltage on the Dialog side**.
 
-GPIO16 has two independent DT roles: it is one of the `blsp_uart0` pins and it
-is also the board-table `gpio_avm_dect_rd` signal. No source establishes that
-`dect_rd` is a separate physical net, and no source proves that both roles can
-operate concurrently (Q78). Likewise, the console and `msm_dectuart_*` attach
-to the same controller; the software arbitration between them is not recovered
-(Q79).
+Under OEM 08.25, GPIO16 is live as `func=1` UART **RX** (`pinmux-pins`:
+`78af000.serial ... function blsp_uart0 group gpio16`), and GPIO17 is the
+matching UART TX. The board-table name `gpio_avm_dect_rd` therefore identifies
+the UART RX line; no independent GPIO role is observed. Q78 is closed. The
+console and `msm_dectuart_*` still share the controller, and the software
+arbitration between them is not recovered (Q79).
 
 Correction: an earlier revision of this section claimed the HW236 override
 *drops* `function` and `bias-disable`.  That was wrong; `merge_nodes()` keeps
@@ -463,6 +498,7 @@ slot 5 (Q16/Q17/Q75). The source-class split is repeated in §4c.
 | Device | `serial@78af000`, 0x200 bytes | DT |
 | GIC SPI | 107 | DT |
 | Pins | GPIO16/17 | DT |
+| Pin roles at runtime | GPIO16 `IN func=1` UART RX; GPIO17 `OUT func=1` UART TX | OEM-CAPTURE |
 | DECT port selection | `msm_dectuart_probe: set dectuart_port to ttyMSM0` | OEM-CAPTURE |
 | Shared use | DECT loader and kernel console; OEM 08.25 prints `shared usage of UART (DECT and CONSOLE)` | OEM, OEM-CAPTURE |
 | Arbitration | console and `msm_dectuart_*` share the controller; the arbitration is not recovered (Q79) | **UNKNOWN** |

@@ -64,8 +64,10 @@ functions**.
 
 Stage C0 (passive, already run) found that **no Linux consumer owns the PCM
 pins** and that mainline `pinctrl-ipq4019.c` exposes no PCM/TDM function for
-GPIO20-27.  AVM's proprietary `dakota_gpio_pinconfig()` does use TLMM selectors
-2/3, but the actual TLMM `FUNC_SEL` value has not been read back (Q31/Q77).
+GPIO20-27.  OEM 08.25 live readback now shows the actual mixed state:
+GPIO21/22=`func 2`, GPIO23/25/26/27=`func 3`, GPIO20/24=`func 0`
+(`reference/oem-08.25/console/2026-11-08/`). The OpenWrt-side `FUNC_SEL`
+remains unknown (Q31/Q77).
 
 Consequences:
 

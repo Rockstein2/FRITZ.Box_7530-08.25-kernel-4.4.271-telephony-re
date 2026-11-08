@@ -1002,7 +1002,7 @@ for _closed in ("Q1", "Q6", "Q7", "Q51"):
     check(f"open questions: closed {_closed} removed",
           find_row(OQ, _closed) is None, True)
 for _open in ("Q13", "Q39", "Q44", "Q47", "Q70", "Q76", "Q77",
-              "Q78", "Q79", "Q80", "Q81"):
+              "Q79", "Q80", "Q81"):
     check(f"open questions: {_open} remains listed",
           find_row(OQ, _open) is not None, True)
 _q47 = find_row(OQ, "Q47")
@@ -1014,10 +1014,17 @@ check("Q44: narrowed to effective translation/alias",
       _q44 is not None and "effective bus address" in _q44[1]
       and "18, 19 or 20 bits" not in _q44[1], True)
 
-# UART / GPIO16 distinction.
-check("known facts: GPIO16 dual role is UNKNOWN",
-      "GPIO16 has two independent DT roles" in _facts
-      and "Q78" in _facts and "Q79" in _facts, True)
+# UART / GPIO16 distinction: the live OEM readback resolves the pin role.
+check("known facts: GPIO16 live role is UART RX",
+      "GPIO16" in _facts and "UART **RX**" in _facts
+      and "Q78 is closed" in _facts, True)
+check("open questions: closed Q78 removed",
+      find_row(OQ, "Q78") is None, True)
+check("known facts: OEM live TLMM readback is recorded",
+      "TLMM_GPIO_CFG=0x00004a02" in _facts
+      and "CFG=0x0000480a" in _facts
+      and "CFG=0x0000480e" in _facts
+      and "Codecslots=9" in _facts, True)
 
 # OEM DTB provenance: three variants, selection not proven.
 for _needle in ("0x98d038", "0x993990", "0x99a2e8",

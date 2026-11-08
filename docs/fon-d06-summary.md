@@ -7,9 +7,10 @@
 
 ## Outcome
 
-D0.6 recovered the Linux-side reset and pinmux paths but did **not** establish
-the electrical reset polarity, the hardware TLMM `FUNC_SEL` values or the
-physical PCM wiring, and did not authorize an active reset/upload.
+D0.6 recovered the Linux-side reset and pinmux paths. The OEM 08.25 live
+readback later supplied the actual OEM-side `FUNC_SEL` and GPIO40 state; the
+OpenWrt-side values, electrical reset polarity and physical PCM wiring remain
+unknown. D0.6 did not authorize an active reset/upload.
 
 | Topic | Current answer | Status |
 |---|---|---|
@@ -21,6 +22,9 @@ physical PCM wiring, and did not authorize an active reset/upload.
 | PINMUX2/PINMUX3 values | OEM DTB `function=<2>/<3>`; Linux TLMM selector indices are 2/3 | **CONFIRMED (DTB/value)** |
 | AVM pinmux owner | `pcmlink.ko:ipq40xxtdm_linkinit()` calls `dakota_gpio_pinconfig()` | **CONFIRMED (call site)** |
 | AVM API transformation of 2/3 | body of `dakota_gpio_pinconfig()` unavailable | **UNKNOWN** |
+| OEM live GPIO40 | `OUT func=0 val=1`, `TLMM_GPIO_CFG=0x00004a02` | **CONFIRMED (OEM-CAPTURE)** |
+| OEM live PCM `FUNC_SEL` | GPIO21/22=2; GPIO23/25/26/27=3; GPIO20/24=0 | **CONFIRMED (OEM-CAPTURE)** |
+| `pinmux-pins` vs actual mux | OEM shows `MUX UNCLAIMED` for GPIO20–27 while `/proc/avm/gpio/list` shows func 2/3 | **CONFIRMED (not a hardware readback)** |
 | Actual hardware `FUNC_SEL` under OpenWrt | Linux reports no mux owner, but that is not a TLMM register readback | **UNKNOWN** |
 | Clock check | `Piglet_noemif.ko:Check_TDMInterface()` calls `dakota_gpio_ctrl(gpio,0,0)` and counts edges; it does not generate clocks | **CONFIRMED (code)** |
 | Piglet ctrl side effects | `dakota_gpio_ctrl()` may change pad configuration; body unavailable | **UNKNOWN** |
