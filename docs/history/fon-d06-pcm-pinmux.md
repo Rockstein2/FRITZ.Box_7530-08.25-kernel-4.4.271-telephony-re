@@ -8,6 +8,10 @@
 > router access.  The register map below is for a future **read-only** check;
 > no write sequence is given.
 
+> **Evidence boundary (2026-11-08).** `MUX UNCLAIMED` is a **Linux ownership**
+> report. It is not a readback of the TLMM `FUNC_SEL` field, so it does not
+> prove that the hardware field is `0` or that the pad is disconnected.
+
 ---
 
 ## 0. Bottom line
@@ -15,16 +19,15 @@
 | Question | Answer | Status |
 |---|---|---|
 | Does `pcmlink.ko` set the I2S pinmux itself? | **Yes** — `ipq40xxtdm_linkinit` calls `dakota_gpio_pinconfig(gpio, profile->field, 1)` | **CONFIRMED** |
-| Does `Piglet_noemif.ko` set the pinmux? | No — it requests them as **input** via `dakota_gpio_ctrl(gpio, 0, 0)` and only reads | **CONFIRMED** |
+| Does `Piglet_noemif.ko` call the pinmux API? | No explicit `dakota_gpio_pinconfig()`; it calls `dakota_gpio_ctrl(gpio, 0, 0)` and reads edges. The side effects of `ctrl()` are not recovered, so this is not proven to be hardware read-only | **no pinconfig CONFIRMED**, `ctrl()` effects **UNKNOWN** |
 | What are `AVM_DEF_HW_FUNCTION_PINMUX2/3`? | The compiled OEM DTB contains `function = <2>` and `<3>`; these match TLMM FUNC_SEL **2** and **3** (bits [5:2] = `0x08`/`0x0C`) | **values CONFIRMED**, API pass-through **UNKNOWN** |
 | Which group is used for `tdm@0`? | `pcmlink` reads `profile+0x1c` or `profile+0x20` depending on a mode flag | **CONFIRMED (mechanism)**, which one on HW236 **UNKNOWN** |
-| Is I2S actually muxed on those pads under OpenWrt? | Stage C0 saw them as unclaimed GPIO inputs, so **not muxed** | **CONFIRMED (negative)** |
+| Is I2S actually muxed on those pads under OpenWrt? | Stage C0 reported the pins as unclaimed by Linux; this is not a hardware register readback, so the actual `FUNC_SEL` is unknown | **Linux owner: none (RUNTIME-RO)**, hardware mux **UNKNOWN** |
 
-The decisive new finding: `Check_TDMInterface` **reads** the clocks as plain
-GPIO inputs.  For that to produce clean edges, the pads must already be in an
-input-capable state from the board/bootloader side, not driven by the SoC's
-I2S block.  That is consistent with the SC14448 being the clock master and
-the SoC only observing.
+`Check_TDMInterface` **reads** the clocks through the GPIO API. It does not
+generate FSC/BCLK. For clean edges the pads would need an input-capable state,
+but whether `dakota_gpio_ctrl()` leaves them untouched is not known. The
+clock-master hypothesis is therefore **INFERRED**, not a hardware proof.
 
 ## 1. Evidence: `Check_TDMInterface`
 
@@ -107,10 +110,11 @@ set the pinmux" is **DISPROVED**.
 
 ## 2.1 `Piglet_noemif.ko` does not
 
-`Check_TDMInterface` (`0x3f0c`) only calls `dakota_gpio_ctrl(gpio, 0, 0)` —
+`Check_TDMInterface` (`0x3f0c`) calls `dakota_gpio_ctrl(gpio, 0, 0)` — an
 input request — and `dakota_gpio_get_membase` to poll.  It never calls
 `pinconfig`.  That is consistent with the sequence: PCMLINK configures the
-TDM pins, Piglet only observes them.
+TDM pins, Piglet observes them.  It does **not** prove that `dakota_gpio_ctrl`
+has no side effect on the pad; that function is closed (Q81).
 
 Because `Check_TDMInterface` resolves only `gpio_avm_pcmlink_fsc` and
 `gpio_avm_pcmlink_dcl`, while `pcmlink.ko` carries `_fsc_2`, `_dcl_2`, `di`
@@ -230,25 +234,25 @@ written.
 
 ## 4. Why the mux state matters, and what it means for us
 
-The two modules deliberately use the pads differently:
+The two modules request the pads differently:
 
-| Module | Pad state it wants | Why |
+| Module | Requested pad state | Why |
 |---|---|---|
-| `Piglet_noemif.ko` (`Check_TDMInterface`) | plain **GPIO input** | it polls edges to measure FSC/BCLK |
+| `Piglet_noemif.ko` (`Check_TDMInterface`) | plain **GPIO input** request (`ctrl()` side effects not proven) | it polls edges to measure FSC/BCLK |
 | `pcmlink.ko` (`ipq40xxtdm_linkinit`) | **pinconfig** value from the profile | it needs the ADSS block connected to the pins for TDM |
 
-Under OpenWrt, Stage C0 found the pads as **unclaimed GPIO inputs**, which is
-the Piglet-side state, not the PCMLINK-side one.  That is expected: nothing
-has run `dakota_gpio_pinconfig` because `pcmlink` never loaded and its TDM
-link never initialised.
+Under OpenWrt, Stage C0 reported the pads as **unclaimed by Linux**.  That is
+a software-ownership observation, not a readback of the TLMM register.  It is
+consistent with nothing having run `dakota_gpio_pinconfig` because `pcmlink`
+never loaded, but the actual pad state and `FUNC_SEL` remain **UNKNOWN**.
 
 Two consequences:
 
-1. The absence of an I2S mux is **not** an error and not evidence of a broken
-   board.  It simply means the second consumer never started.
-2. For a **passive** software check the GPIO-input state is actually the
-   useful one: the pads are readable, so a future kernel edge counter could
-   measure FSC/BCLK the same way AVM does — without touching TLMM.
+1. The absence of a **Linux mux owner** is not an error and not evidence of a
+   broken board.  It does not prove the hardware mux is `0`.
+2. A future kernel edge counter could measure FSC/BCLK only after proving that
+   its GPIO setup does not change the pad; the `dakota_gpio_ctrl()` side
+   effects are unresolved.
 
 Configuring `i2s_rx`/`i2s_tx` ourselves would move the pads to the ADSS side
 and is **not** part of any current stage.
@@ -260,4 +264,5 @@ and is **not** part of any current stage.
 | which of MUX2/MUX3 is populated | board table dump (`avm_get_hw_config_table` output) |
 | whether AVM passes FUNC_SEL 2/3 through unchanged | `dakota_gpio_pinconfig()` body, not in the GPL drop |
 | observed FUNC_SEL under FRITZ!OS | kernel `debugfs` pinmux, read-only |
+| actual FUNC_SEL under OpenWrt | reviewed read-only TLMM register readback |
 | whether pads reach the SC14448 | continuity, or a schematic |

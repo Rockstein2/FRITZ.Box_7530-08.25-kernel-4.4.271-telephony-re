@@ -64,8 +64,9 @@ GPIO20-27 are live just because the DTS names them.
 
 All of these are passive and already available in the Stage C0 collector:
 
-1. `pinmux-pins` — confirms the pins are unclaimed (they are not muxed to
-   any peripheral function);
+1. `pinmux-pins` — shows that no Linux consumer claims the pins; it does not
+   read back the hardware `FUNC_SEL` and does not prove the peripheral mux is
+   off;
 2. `clk_summary` — confirms the ADCC/AHB state;
 3. `dmesg` — no ADSS traffic;
 4. `/proc/interrupts` — no SPI 156/159 activity (a running TDM with DMA

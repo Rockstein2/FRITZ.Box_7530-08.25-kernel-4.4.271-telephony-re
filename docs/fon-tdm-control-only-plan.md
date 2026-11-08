@@ -60,18 +60,19 @@ Only **PINMUX3** has data lines, so a full channel is the second column.  But
 see §2: these are **AVM board-table class names, not IPQ4019 TLMM
 functions**.
 
-## 2. The decisive constraint: the pads are not muxed
+## 2. The constraint: Linux has no mux owner
 
-Stage C0 (passive, already run) found that **no GPIO in the PCM group is
-muxed to `i2s_rx`/`i2s_tx`/`i2s_td`**.  Mainline `pinctrl-ipq4019.c` exposes
-no PCM/TDM function for GPIO20-27 at all; the ADSS block and the board wiring
-drive those signals, not TLMM.
+Stage C0 (passive, already run) found that **no Linux consumer owns the PCM
+pins** and that mainline `pinctrl-ipq4019.c` exposes no PCM/TDM function for
+GPIO20-27.  AVM's proprietary `dakota_gpio_pinconfig()` does use TLMM selectors
+2/3, but the actual TLMM `FUNC_SEL` value has not been read back (Q31/Q77).
 
 Consequences:
 
-1. Linux cannot read the TDM activity through any GPIO/pinmux state.
+1. Mainline Linux cannot read TDM activity through its pinctrl state; the
+   hardware mux value is unknown.
 2. The **only** way to answer Q4/Q27 is an electrical measurement at a real
-   test point.
+   test point (or a reviewed TLMM readback).
 3. Absence of a Linux-visible signal is **not** evidence that the SC14448 is
    silent.
 

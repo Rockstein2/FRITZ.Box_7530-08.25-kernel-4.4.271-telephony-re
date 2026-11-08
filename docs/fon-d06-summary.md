@@ -8,7 +8,8 @@
 ## Outcome
 
 D0.6 recovered the Linux-side reset and pinmux paths but did **not** establish
-the electrical reset polarity or authorize an active reset/upload.
+the electrical reset polarity, the hardware TLMM `FUNC_SEL` values or the
+physical PCM wiring, and did not authorize an active reset/upload.
 
 | Topic | Current answer | Status |
 |---|---|---|
@@ -17,11 +18,14 @@ the electrical reset polarity or authorize an active reset/upload.
 | Loader order | API value 0 → delay → `msm_dectuart_init()` → API value 1 → firmware transfer | **CONFIRMED** |
 | Electrical level at GPIO40/SC14448 reset | not established by the API arguments | **UNKNOWN** |
 | Hardware inversion between GPIO40 and SC14448 | no electrical connection proven | **UNKNOWN** |
-| PINMUX2/PINMUX3 values | OEM DTB `function=<2>/<3>`; Linux TLMM selector indices are 2/3 | **CONFIRMED** |
-| AVM pinmux owner | `pcmlink.ko:ipq40xxtdm_linkinit()` calls `dakota_gpio_pinconfig()` | **CONFIRMED** |
+| PINMUX2/PINMUX3 values | OEM DTB `function=<2>/<3>`; Linux TLMM selector indices are 2/3 | **CONFIRMED (DTB/value)** |
+| AVM pinmux owner | `pcmlink.ko:ipq40xxtdm_linkinit()` calls `dakota_gpio_pinconfig()` | **CONFIRMED (call site)** |
 | AVM API transformation of 2/3 | body of `dakota_gpio_pinconfig()` unavailable | **UNKNOWN** |
-| Clock check | `Piglet_noemif.ko:Check_TDMInterface()` reads FSC/DCL as GPIO inputs and counts edges | **CONFIRMED** |
+| Actual hardware `FUNC_SEL` under OpenWrt | Linux reports no mux owner, but that is not a TLMM register readback | **UNKNOWN** |
+| Clock check | `Piglet_noemif.ko:Check_TDMInterface()` calls `dakota_gpio_ctrl(gpio,0,0)` and counts edges; it does not generate clocks | **CONFIRMED (code)** |
+| Piglet ctrl side effects | `dakota_gpio_ctrl()` may change pad configuration; body unavailable | **UNKNOWN** |
 | Active physical mux group/wiring | software names and selectors do not prove PCB connectivity | **UNKNOWN** |
+| OEM DTB selection | three HW236 DTBs in `kernel.image`; FON properties identical, only `subrevision` differs | **UNKNOWN (bootloader choice, Q80)** |
 | 74LVC1G04 role | measurements exist only under OpenWrt; no connection to GPIO40/reset proven | **UNKNOWN** |
 | First missing OpenWrt startup actions | no recovered reset sequence and no firmware upload are performed | **CONFIRMED (software state)** |
 | Why FSC/BCLK are absent/present on this board | not passively measured on an identified net | **UNKNOWN** |
@@ -46,17 +50,24 @@ without the `dakota_gpio_out_bit()` implementation and electrical evidence.
 
 ## OEM DTB provenance
 
-The compiled HW236 DTB was extracted offline from the EVA/LZMA OEM kernel:
+The EVA/LZMA OEM kernel contains **three** self-consistent HW236 DTBs. They
+share the same model, compatible string, GPIO, UART and TDM properties; the
+only difference found in the decompiled trees is `avm-hw-revision/subrevision`.
 
-| Property | Value |
-|---|---|
-| Decompressed-kernel offset | `0x98d038` |
-| Size | `26963` bytes |
-| SHA256 | `3083e2acedc800015fea5ee7e57fa6cc8da551e21ee792095cbd8a7224bb841f` |
-| Model | `AVM FRITZ!Box 7530` |
+| Decompressed offset | Size | SHA256 | Subrevision |
+|---|---:|---|---|
+| `0x98d038` | `26963` | `3083e2acedc800015fea5ee7e57fa6cc8da551e21ee792095cbd8a7224bb841f` | `2` |
+| `0x993990` | `26963` | `497fe05825d104c7d781729ce37e2f9cb101cccb85bdcbdab67be1eb1aedb4f4` | `0` |
+| `0x99a2e8` | `26963` | `497fe05825d104c7d781729ce37e2f9cb101cccb85bdcbdab67be1eb1aedb4f4` | `0` |
 
-The binary remains outside Git. Reproduction instructions are in
-`runbook/fon-oem-dtb-extraction.md`.
+The repository analyses the first blob. That is a documented choice, **not**
+proof that the OEM bootloader selects it. Which subrevision this board is, and
+which blob the bootloader chooses, remain **UNKNOWN** (Q80). Because the
+FON-relevant properties are identical in all three, D0.6 conclusions do not
+depend on that choice.
+
+The binaries remain outside Git. Reproduction and comparison instructions are
+in `runbook/fon-oem-dtb-extraction.md`.
 
 ## Document map
 

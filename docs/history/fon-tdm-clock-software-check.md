@@ -97,10 +97,11 @@ Yes for the **reading** part, with two important conditions.
 
 ### 2.1 The pinmux question
 
-`Check_TDMInterface` calls `dakota_gpio_ctrl(pin, 0, 0)` first, which sets the
-pin to plain GPIO **input**.  Our board DTS leaves GPIO20-27 unclaimed, and
-Stage C0 confirmed `(MUX UNCLAIMED)`, so the pins are *not* routed to any
-peripheral function right now.
+`Check_TDMInterface` calls `dakota_gpio_ctrl(pin, 0, 0)` first, which requests
+a plain GPIO **input**; the function's side effects are not recovered (Q81).
+Our board DTS leaves GPIO20-27 unclaimed, and Stage C0 reported
+`(MUX UNCLAIMED)`.  That is a Linux-ownership report, not a readback of the
+hardware `FUNC_SEL`, so the actual peripheral mux remains **UNKNOWN**.
 
 Two different questions are hidden here:
 

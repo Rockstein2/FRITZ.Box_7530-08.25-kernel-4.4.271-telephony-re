@@ -922,6 +922,115 @@ for _md in DOCS.rglob("*.md"):
             _broken.append(f"{_md.relative_to(ROOT)}: {_target}")
 check("all docs relative links resolve", sorted(_broken), [])
 
+# ---------------------------------------------------------------------------
+# 22. DOCS-EVIDENCE-REVIEW: stale conclusions and evidence classes
+# ---------------------------------------------------------------------------
+_facts = FACTS_DOC.read_text() if FACTS_DOC.is_file() else ""
+_summary = SUMMARY.read_text() if SUMMARY.is_file() else ""
+_oq = OQ.read_text() if OQ.is_file() else ""
+_pinmux_history = (HISTORY / "fon-d06-pcm-pinmux.md")
+_pinmux_text = (_pinmux_history.read_text()
+                if _pinmux_history.is_file() else "")
+_dtb_runbook = RUNBOOK / "fon-oem-dtb-extraction.md"
+_dtb_text = _dtb_runbook.read_text() if _dtb_runbook.is_file() else ""
+
+# Evidence classes are source classes, not truth status.
+check("known facts: RUNTIME split into RUNTIME-RO / HW-TEST",
+      "| **RUNTIME-RO** |" in _facts
+      and "| **HW-TEST** |" in _facts
+      and "\n| **RUNTIME** |" not in _facts, True)
+check("known facts: HW-TEST covers the module-load run",
+      "**HW-TEST (§9d)**" in _facts, True)
+
+# §7 rows sourced from pcmlink.ko must be DISASM, not GPL.
+for _label in ("FON register transport", "Hook detection",
+               "Ring control", "Line feed"):
+    _row = find_row(FACTS_DOC, _label)
+    check(f"known facts: {_label} is DISASM",
+          (_row[2].startswith("DISASM")
+           if _row and len(_row) > 2 else None), True)
+
+# Stale CR16 conclusions must not survive in current facts.
+for _stale in ("hand-off branch target | **UNKNOWN**",
+               "0x24F8 (recursion)", "fills 512 words",
+               "32 entries", "block at `0x000000` is data",
+               "Piglet clock check is passive"):
+    check(f"known facts: stale claim absent: {_stale}",
+          _stale not in _facts, True)
+
+check("known facts: 0x0 is not a valid entry, 0x8 is executable",
+      "`0x000000` is not a valid entry point" in _facts
+      and "`0x000008` is executable" in _facts, True)
+_handoff = find_row(FACTS_DOC, "hand-off chain")
+check("known facts: hand-off chain is static 0x10284 -> 0x8 -> 0x15AA/0x1026",
+      _handoff is not None
+      and "0x10284" in _handoff[1]
+      and "0x8" in _handoff[1]
+      and "0x15AA" in _handoff[1]
+      and "0x1026" in _handoff[1]
+      and "L3, static" in _handoff[2], True)
+
+# Linux ownership is not a hardware FUNC_SEL readback.
+for _text, _name in ((_facts, "known facts"), (_summary, "D0.6 summary"),
+                     (_pinmux_text, "D0.6 pinmux history"),
+                     (_oq, "open questions")):
+    check(f"{_name}: MUX UNCLAIMED is not hardware proof",
+          "MUX UNCLAIMED" not in _text
+          or ("not a readback" in _text or "not a hardware register readback"
+              in _text or "hardware `FUNC_SEL`" in _text), True)
+for _stale in ("so **not muxed**", "decisive passive result",
+               "the ADSS pads are not connected",
+               "C0 already proved the ADSS pads are not muxed",
+               "The absence of an I2S mux"):
+    check(f"no stale mux conclusion: {_stale}",
+          all(_stale not in p.read_text() for p in DOCS.rglob("*.md")), True)
+
+# Piglet's GPIO API call is not proven side-effect free.
+_piglet = find_row(FACTS_DOC, "Piglet clock check")
+check("known facts: Piglet clock check has no explicit pinconfig",
+      _piglet is not None and "dakota_gpio_ctrl" in _piglet[1]
+      and "pinconfig" in _piglet[1], True)
+_piglet_side = find_row(FACTS_DOC, "Piglet ctrl side effects")
+check("known facts: Piglet ctrl side effects are UNKNOWN",
+      _piglet_side is not None and _piglet_side[2] == "UNKNOWN", True)
+check("D0.6 summary: Piglet ctrl side effects are UNKNOWN",
+      (find_row(SUMMARY, "Piglet ctrl side effects") or
+       [None, None, None])[2] == "UNKNOWN", True)
+
+# Open questions reflect what is actually resolved.
+for _closed in ("Q1", "Q6", "Q7", "Q51"):
+    check(f"open questions: closed {_closed} removed",
+          find_row(OQ, _closed) is None, True)
+for _open in ("Q13", "Q39", "Q44", "Q47", "Q70", "Q76", "Q77",
+              "Q78", "Q79", "Q80", "Q81"):
+    check(f"open questions: {_open} remains listed",
+          find_row(OQ, _open) is not None, True)
+_q47 = find_row(OQ, "Q47")
+check("Q47: vector table found, hardware reset entry still open",
+      _q47 is not None and "INTBASE" in _q47[1]
+      and "vector table we have not found" not in _q47[1], True)
+_q44 = find_row(OQ, "Q44")
+check("Q44: narrowed to effective translation/alias",
+      _q44 is not None and "effective bus address" in _q44[1]
+      and "18, 19 or 20 bits" not in _q44[1], True)
+
+# UART / GPIO16 distinction.
+check("known facts: GPIO16 dual role is UNKNOWN",
+      "GPIO16 has two independent DT roles" in _facts
+      and "Q78" in _facts and "Q79" in _facts, True)
+
+# OEM DTB provenance: three variants, selection not proven.
+for _needle in ("0x98d038", "0x993990", "0x99a2e8",
+                "subrevision", "Q80"):
+    check(f"D0.6 summary: OEM DTB provenance records {_needle}",
+          _needle in _summary, True)
+check("OEM DTB runbook: three variants and selection caveat",
+      all(x in _dtb_text for x in ("0x98d038", "0x993990", "0x99a2e8",
+                                   "subrevision", "Q80")), True)
+check("OEM DTB runbook: model alone is not selection proof",
+      "model` string alone is not evidence of bootloader selection"
+      in _dtb_text, True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)

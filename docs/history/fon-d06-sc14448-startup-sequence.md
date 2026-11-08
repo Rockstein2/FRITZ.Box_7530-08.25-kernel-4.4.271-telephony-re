@@ -42,12 +42,14 @@ So the loader holds the chip in reset until the port is ready, then releases
 it and starts the firmware transfer.  A loader that released reset first
 would wake the chip with no host listening.
 
-### 0.2 The clock check is passive
+### 0.2 The clock check does not generate clocks
 
 `Check_TDMInterface` requests FSC and DCL as **GPIO inputs**
 (`dakota_gpio_ctrl(gpio, 0, 0)`), maps their registers and counts transitions
 for ~1000 loop iterations.  It **does not** configure the ADSS block and does
-not enable any clock from the SoC side.
+not enable any clock from the SoC side.  The side effects of
+`dakota_gpio_ctrl()` are not recovered, so the sequence is not proven to be
+hardware read-only (Q81).
 
 **This is the key point for our driver:** AVM verifies that the SC14448 is
 producing clocks *before* bringing up PCMLINK, and it does so by observing the
@@ -69,7 +71,7 @@ So the causal chain the evidence supports is:
 power -> reset released -> UART upload of first+second level
       -> SC14448 starts executing firmware
       -> SC14448 drives FSC/BCLK
-      -> AVM's passive check succeeds
+      -> AVM's GPIO edge-count check succeeds
       -> pcmlink opens TDM and exchanges slot 5
 ```
 

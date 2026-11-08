@@ -12,10 +12,10 @@ stage at a time.  Do not skip from probe-only to DMA or line control.
 | Gate | Evidence required | Produced by | Status |
 |---|---|---|---|
 | Target artifact integrity | `sha256sum` matches `bench/fon_tdm_drv.sha256` (`cd5c05fb…aff6`) | workstation + router | **PASS 2026-11-07** |
-| Probe-only module loads (Q6) | `bench/load-probe-only.sh` PASS + dmesg | Stage B | **PASS 2026-11-07** |
-| FON DT node binds (Q6) | `stage = 0x23`, `mode=probe-only` | Stage B | **PASS 2026-11-07** |
-| IRQ not requested in probe-only (Q7) | `irq_spi=156/159`, `irq_intid=188/191`, `irq=-1` | Stage B diagnostics | **PASS 2026-11-07** |
-| No resource overlap (Q1) | `/proc/iomem` identical before/after | Stage A/B | **PASS 2026-11-07** |
+| Probe-only module loads (closed Stage B check) | `bench/load-probe-only.sh` PASS + dmesg | Stage B | **PASS 2026-11-07** |
+| FON DT node binds (closed Stage B check) | `stage = 0x23`, `mode=probe-only` | Stage B | **PASS 2026-11-07** |
+| IRQ not requested in probe-only (closed Stage B check) | `irq_spi=156/159`, `irq_intid=188/191`, `irq=-1` | Stage B diagnostics | **PASS 2026-11-07** |
+| No visible resource overlap (closed Stage A/B check) | `/proc/iomem` identical before/after | Stage A/B | **PASS 2026-11-07** |
 | Clock/reset/pinctrl ownership (Q2, Q3) | `/proc/iomem`, `/proc/interrupts`, pinctrl/clk export | Stage A + review | **PARTIAL 2026-11-07** — probe-only holds `clock_refs=0 reset_refs=0 pinctrl_ref=0`; GPIO40 unclaimed was confirmed in D0.6; real ownership under DMA still open |
 | TDM clocks present (Q4, Q5) | passive FSC/DCL/MCL measurement | scope/logic analyzer | **pending** |
 | SC14448 running (Q4) | passive UART/clock evidence | scope/logic analyzer | **pending** |
@@ -81,7 +81,8 @@ These were open before the OEM bootlog was cross-checked; see
 - `dect_loader` holds reset API value 0 while initialising the UART, then
   supplies API value 1 before firmware transfer.
 - PINMUX2/PINMUX3 compile to profile values 2/3; `pcmlink.ko` applies the
-  profile through `dakota_gpio_pinconfig()`.
+  profile through `dakota_gpio_pinconfig()`. The actual TLMM `FUNC_SEL` field
+  and PCB connectivity are still UNKNOWN (Q27/Q31/Q77).
 
 They still need runtime confirmation on our kernel, which is what the gates
 above ask for; the *expectation* is no longer unknown.
@@ -90,10 +91,13 @@ above ask for; the *expectation* is no longer unknown.
 
 | Gate | Evidence | Status |
 |---|---|---|
-| OEM HW236 DTB recovered | offset `0x98d038`, size 26,963, SHA256 `3083e2ac…b841f` | **PASS** |
+| OEM HW236 DTBs extracted | three self-consistent blobs at `0x98d038`, `0x993990`, `0x99a2e8`; FON properties identical; only `subrevision` differs | **PASS (extraction)** |
+| Which DTB the OEM bootloader selects | Q80 | **UNKNOWN** |
 | GPIO40 software path | `get_profile()` → `profile+0x28` → `dect_loader()` | **PASS** |
 | UART/reset API order | `0xb54` value 0 → `0xb80` UART init → `0xb9c` value 1 | **PASS** |
 | PINMUX2/PINMUX3 numeric values | OEM DTB `function=<2>/<3>` + Linux pinctrl indices | **PASS** |
+| Actual hardware TLMM `FUNC_SEL` / physical wiring | Q27/Q31 | **UNKNOWN** |
+| `Check_TDMInterface` pad side effects | `dakota_gpio_ctrl()` body (Q81) | **UNKNOWN** |
 | Physical reset polarity/net | Q13/Q39 | **pending** |
 | `dakota_gpio_*` electrical/register transformation | Q77 | **pending** |
 | Inverter role | no connection to GPIO40 or reset proven | **UNKNOWN** |

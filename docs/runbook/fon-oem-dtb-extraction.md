@@ -9,8 +9,8 @@
 
 ## Result
 
-The OEM HW236 DTB was extracted from the EVA/LZMA kernel in the original
-FRITZ!OS 08.25 image:
+A HW236 DTB was extracted from the EVA/LZMA kernel in the original FRITZ!OS
+08.25 image; the kernel contains three HW236 variants (see below):
 
 | Item | Value |
 |---|---|
@@ -119,8 +119,33 @@ The output for FRITZ!OS 08.25 is:
 0x99a2e8 26963 497fe05825d104c7d781729ce37e2f9cb101cccb85bdcbdab67be1eb1aedb4f4
 ```
 
-The second and third blobs are byte-identical. The first blob is the HW236
-DTB used throughout this repository. Save and decompile it:
+The second and third blobs are byte-identical. All three are HW236 trees;
+the repository uses the first blob for analysis. This is a documented choice,
+not proof that the OEM bootloader selects it.
+
+## What distinguishes the three blobs
+
+An offline decompile and comparison shows:
+
+| Property | First blob (`0x98d038`) | Second/third (`0x993990`/`0x99a2e8`) |
+|---|---|---|
+| `model` | `AVM FRITZ!Box 7530` | `AVM FRITZ!Box 7530` |
+| `compatible` | `qcom,ipq4019` | `qcom,ipq4019` |
+| HW revision | `236` | `236` |
+| `avm-hw-revision/subrevision` | `2` | `0` |
+| GPIO / UART / TDM properties | identical | identical |
+| SHA256 | `3083e2ac…b841f` | `497fe058…b4f4` |
+
+The full decompiled-device-tree diff between the first and second blob is only
+the `subrevision` property. Therefore:
+
+- the D0.6 GPIO40, UART and PINMUX facts do not depend on which of the three
+  blobs is selected — those properties are identical;
+- **which blob the OEM bootloader actually chooses, and which hardware
+  subrevision this board is, remain UNKNOWN (Q80)**;
+- the `model` string alone is not evidence of bootloader selection.
+
+Save and decompile the first blob:
 
 ```bash
 cp .work/fon-d06/oem-dtb/fdt-1-0x98d038.dtb \

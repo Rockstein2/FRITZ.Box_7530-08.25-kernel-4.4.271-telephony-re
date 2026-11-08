@@ -32,8 +32,9 @@ Evidence classes used by `fon-known-facts.md`:
 | **OEM** | observed in `history/wiki-fritzos-oem-bootlog-reference.txt` |
 | **DISASM** | recovered from a proprietary AVM binary; file/function/address cited |
 | **OFFLINE** | computed from an image or report without touching hardware |
-| **RUNTIME** | observed on the running OpenWrt system |
-| **CONFIRMED / INFERRED / UNKNOWN / DISPROVED** | truth status; static evidence is never promoted to hardware proof |
+| **RUNTIME-RO** | observation through read-only interfaces: console, `/proc`, sysfs or debugfs; no module load and no intentional GPIO/MMIO writes. A debugfs read is not proof of zero hardware side effects |
+| **HW-TEST** | controlled hardware execution: test-image boot, module load, clock/reset/MMIO writes, or a bench measurement requiring explicit authorisation |
+| **CONFIRMED / INFERRED / UNKNOWN / DISPROVED** | truth status; source class and truth status are separate, and static evidence is never promoted to hardware proof |
 
 ## Layer 2 — runbooks (`runbook/`)
 

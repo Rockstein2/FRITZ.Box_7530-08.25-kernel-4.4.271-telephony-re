@@ -23,14 +23,14 @@ build must confirm.
 
 | # | Question | Closes with | Stage |
 |---|---|---|---|
-| Q1 | Does anyone already claim `0x07700000`-`0x077fffff` in `/proc/iomem`? | Stage A snapshot | A |
 | Q2 | Which virq is assigned to INTID 188 and 191 on our kernel? | `/proc/interrupts` | A |
 | Q3 | Is the DT trigger `IRQ_TYPE_LEVEL_HIGH` what the GIC actually reports? | `/sys/kernel/irq/*/trigger` or `debugfs` | A |
 | Q4 | Is the TDM frame sync (8 kHz) actually present when the SC14448 runs under OpenWrt? | passive scope/logic analyser | A / bench |
 | Q5 | Is the bit clock really ~1.025 MHz on this board under OpenWrt? | scope | bench |
-| Q6 | Does the FON DT node bind with `stage=0x23` and `mode=probe-only`? | Stage B | B |
-| Q7 | Does our driver stay at `irq=-1` in probe-only on real hardware? | Stage B diagnostics | B |
 | Q8 | Do the six register blocks map without conflict? | Stage C | C |
+
+Stage A/B already closed the resource-claim, probe-bind and probe-only IRQ
+checks; those results are in `fon-known-facts.md` §9c/§9d.
 
 ## 2. Driver and DT correctness
 
@@ -48,6 +48,7 @@ build must confirm.
 | Q13 | Which net does GPIO40 actually drive, and with what polarity? | schematic or scope on the reset pin | D0 / bench |
 | Q15 | Does a GPIO40 reset leave the SC14448 in a state where it will still accept firmware? | D0 plan + measurement | D0 |
 | Q77 | Do `dakota_gpio_out_bit()` and `dakota_gpio_pinconfig()` transform their logical/profile arguments before writing TLMM? | recover the function bodies or compare read-only TLMM state with the compiled OEM DTB | research / read-only |
+| Q81 | What exactly does `dakota_gpio_ctrl(gpio, 0, 0)` change on the pad, and can the AVM `Check_TDMInterface()` sequence be replayed without altering hardware state? | recover the function body or prove the side effects with a reviewed read-only test | research / read-only |
 
 `AVM_DEF_HW_PARAM_GPIO_OUT_ACTIVE_HIGH` is a software convention and does
 **not** answer Q13.
@@ -80,7 +81,7 @@ build must confirm.
 
 | # | Question | How to answer | Stage |
 |---|---|---|---|
-| Q27 | Does the SC14448 currently emit FSC/BCLK, i.e. is it running? | scope measurement, `runbook/fon-tdm-passive-test.md`; C0 already proved the ADSS pads are not muxed, so Linux cannot see them | probe |
+| Q27 | Does the SC14448 currently emit FSC/BCLK, i.e. is it running? | scope measurement on an identified net, `runbook/fon-tdm-passive-test.md`; C0 only showed that Linux has no mux owner, which does not read back hardware `FUNC_SEL` and does not prove the line is inactive | probe |
 | Q28 | Is `GCC_AUDIO_AHB_CLK` required to read the ADSS registers? | C1 with clock enabled, then a controlled negated run | C1 |
 | Q34 | Does the audio AHB gate actually close when disabled? | one post-disable `readl()` of `0x181b010` (bit 31 + FSM bits) | C2.2 |
 | Q76 | Is `fs_per_dma = 32` correct for the FON `tdm_if_adss_dma_init()` call site? | **narrowed**: `fs_per_dma` is `[r5] / [r5+8]` from the board config in `ipq40xxtdm_linkinit`, not a literal 32; the numeric board values are in the closed `avm_get_hw_config_table`.  Needs the 7530 board table or a runtime `DBG_TRC_API` readback | C4 |
@@ -92,7 +93,7 @@ build must confirm.
 | Q57 | Do `0x000Fxxxx` and `0x00FFxxxx` map to different hardware, or is there an address decode that aliases them? | **still open after PERIPH-3**: 12 pairs share the low 20 bits in both images, but the access structures differ and no document or measurement exists.  Needs a SC14448 map, a bus trace, or a write/read-back experiment | research |
 | Q40 | Which dispatch key reaches the `0x2558` arm? | data-flow across blocks; no symbol table in the image | research |
 | Q43 | What does `BIT(7)` of `0x00FF6006` do on the SC14448? | dynamic test once firmware runs (note: the `0x000F6006` writers `0x1348`/`0x145C` are a separate register) | D |
-| Q44 | Is the absolute load/store field 18, 19 or 20 bits on this core? | **narrowed**: the field is `((b0 & 0x0F) << 16) \| word1` and bit 19 is used (`0xF6006`), while the CR16A figure A-9 shows only 18 address bits; no segment or page translation exists | research |
+| Q44 | How does the encoded 20-bit absolute field translate into the effective bus address that the SC14448 actually uses? The field encoding is known; the hardware translation and possible `0x000Fxxxx`/`0x00FFxxxx` alias are not (see Q57). | a SC14448 bus/memory map, a bus trace, or a controlled read-back | research |
 | Q53 | What do the 11 230 decoded instructions not reached from `0x1602` contain — code reachable only through an unfound dispatch, or data decoded as code? | classify by data/code heuristics and entry evidence; linear disassembly counts data as instructions | offline |
 | Q54 | Does an indirect dispatch exist that no site currently reveals (table built at run time, or read from RAM initialised by the loader)? | trace any load-then-jump pattern over the whole image, including the 11 230 unreached instructions | offline |
 | Q55 | Can the address written at `0x25D0` (`0x01000000 + 2·index`) be resolved far enough to decide whether any other instruction reads the same area? | **partly answered**: the store is now reported as `SYMBOLIC` `0x01000000 + 2*r3` by the general rules (no special case for `0x25D0`), provenance `0x25C4`/`0x25CE`; no reader resolves to a constant. Inter-block liveness is still not implemented, which is the remaining gap | offline |
@@ -100,14 +101,21 @@ build must confirm.
 | Q52 | Is `0x000F6002` a status register whose value 1 means "ready", and which event sets it? | no L5 observation; the loop at `0x25FAE` has no timeout | D |
 | Q46 | Is `0x01000000` the PCM buffer, and what does `0x1001` mean? | **still open**: the fill helper writes one word per call and resets a counter at `0x937C`; the base and the value are proven, their meaning is not | research |
 | Q50 | The CR16A manual puts `cc` in bits 8..5 and `d1..d4` in bits 4..0, binutils uses bits 7..4 and 3..0. Which does the SC14448 core use? | **evidence for binutils**: assembler round trip (condition changes never move the displacement), 7 807 firmware matches over both images, the reachable set from `0x1602` is coherent; the CR16C/B manuals could not be read offline | offline |
-| Q47 | Is `0x1602` the reset entry, or is there a vector table we have not found? | no vector table at a fixed address identified | research |
-| Q51 | How is a backward 4-byte conditional branch encoded? | current decoder leaves 112 four-byte conditionals (`word1 > 0x8000`) unsupported; the assembler always emits `40 18` + forward word | offline |
+| Q47 | Does the hardware reset sequence fetch its entry from the exception table at `INTBASE = 0x24`, or jump directly to a fixed address? The table itself is found (31 entries); its runtime use is not proven. | reset-vector documentation, a bus trace, or a controlled capture | research |
 | Q39 | What electrical level reaches the SC14448 reset pin under OpenWrt, and is it asserted? GPIO40 being an input that reads 0 does not answer this. | establish the net/polarity first, then passive simultaneous observation; no toggle without separate approval | D / bench |
 | Q29 | What is the real trailer format of the AVM firmware images? | analysis of `firmware/*.hex` blocks after the last payload | D0 |
 | Q30 | Is the analog FON usable without the AVM DECT userspace? | run boot firmware, then speak slot 5 | E |
-| Q31 | Which physical PCM group is connected/live on HW236? The OEM DTB confirms selector values 2/3, but not PCB connectivity; C0 found all candidates unclaimed by OpenWrt. | schematic, continuity to an identified net, or passive waveform evidence | probe |
+| Q31 | Which physical PCM group is connected/live on HW236, and what are the actual TLMM `FUNC_SEL` values? The OEM DTB confirms selector values 2/3 and Linux reports no mux owner, but neither proves PCB connectivity nor reads back the hardware register. | schematic, continuity to an identified net, read-only TLMM readback, or passive waveform evidence | probe |
 | Q32 | Does the console UART tolerate a userspace uploader without corrupting the stream? | C-controlled test with `quiet loglevel=0` | D |
 | Q33 | What are the SC14448 boot reply timings on this unit? | measurement during a controlled handshake | D |
+
+### OEM DTB, UART and pad provenance (opened 2026-11-08)
+
+| # | Question | How to answer | Stage |
+|---|---|---|---|
+| Q78 | What is the physical role of GPIO16, which is both a `blsp_uart0` pin and the board-table `gpio_avm_dect_rd`? Can both roles operate concurrently? | schematic/trace plus a reviewed runtime check | research / bench |
+| Q79 | How are the console and `msm_dectuart_*` arbitrated on the shared `blsp_uart0` controller, and can a Dialog upload coexist with console traffic? | review `msm_serial.c`/loader ownership, then a controlled test | D0 / bench |
+| Q80 | Which of the three HW236 DTBs in `kernel.image` does the OEM bootloader select, and what is this board's `avm-hw-revision` subrevision? | bootloader log/selection code, or reading the revision straps/OTP | research |
 
 ## 7. Explicitly out of scope
 

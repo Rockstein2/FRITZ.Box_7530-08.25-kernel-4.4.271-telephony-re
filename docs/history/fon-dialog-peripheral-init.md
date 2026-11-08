@@ -138,8 +138,8 @@ Details:
   the address is complete in the instruction.  The CR16A manual's absolute
   load/store figure (A-9) shows only the low 16 bits plus two upper bits,
   while the firmware needs bit 19 for `0xF6006`, so the SC14448 uses a wider
-  field than the CR16A drawing shows; this is recorded as the remaining
-  format question (Q44), not as a segment translation.
+  field than the CR16A drawing shows; this is recorded under Q44 (effective
+  translation) and Q57 (possible alias), not as a segment translation.
 
 ## 3. Access widths
 

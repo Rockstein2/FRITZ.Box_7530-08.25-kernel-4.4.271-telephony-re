@@ -39,9 +39,11 @@ a fresh boot tells us whether something changed.
 | 8 | `/proc/iomem` for `7700000`-`77fffff` | does any driver own ADSS |
 | 9 | `ls /sys/bus/platform/devices/` for audio/mbox nodes | are the DT nodes bound |
 
-Item 5 is the one that decides whether an I2S function is active: if the pins
-show `gpio` and are unclaimed, the SoC is not driving them, which matches
-AVM's own passive-read design (`../history/fon-d06-pcm-pinmux.md` §1).
+Item 5 is the one that decides whether Linux owns the pins: if they show
+`gpio` and are unclaimed, no Linux consumer is driving them. This does **not**
+read back the hardware `FUNC_SEL`, so it neither proves nor disproves the
+AVM/SC14448 mux state. AVM's own path uses a GPIO-input request whose side
+effects are not recovered (`../history/fon-d06-pcm-pinmux.md` §1, Q81).
 
 ## 3. Clocks and reset controllers
 

@@ -129,9 +129,10 @@ called with are 0 and 1.  So `dakota_gpio_out_bit(gpio, v)` sets the pad to
 we do not have; the AVM layer adds no inversion here.
 
 `dakota_gpio_ctrl(gpio, 0, 1)` is the same call shape used elsewhere with
-`dir = 0`, and `Check_TDMInterface` uses `dakota_gpio_ctrl(gpio, 0, 0)` for
-pure input reads (see `fon-d06-pcm-pinmux.md`).  So `(gpio, 0, 1)` = request
-as output, `(gpio, 0, 0)` = request as input.
+`dir = 0`, and `Check_TDMInterface` uses `dakota_gpio_ctrl(gpio, 0, 0)` to
+request an input (see `fon-d06-pcm-pinmux.md`).  The body of `ctrl()` is not
+recovered, so `(gpio, 0, 1)` = request output and `(gpio, 0, 0)` = request
+input, but the complete side effects of either call remain **UNKNOWN**.
 
 ### 2.2 Delay length
 

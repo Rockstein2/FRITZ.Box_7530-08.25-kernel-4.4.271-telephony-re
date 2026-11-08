@@ -1,8 +1,8 @@
 # FON: known facts (single source of truth)
 
-Status: **confirmed evidence only.  Anything not listed here is either an open
-question (`fon-open-questions.md`) or historical reasoning (the other
-`docs/fon-*.md` files).**
+Status: **confirmed evidence only. Anything not listed here is either an open
+question (`fon-open-questions.md`) or historical reasoning under
+`docs/history/`.**
 
 Every row names its evidence class:
 
@@ -15,11 +15,16 @@ Every row names its evidence class:
 | **DISASM** | recovered from a proprietary AVM binary; file/function/address must be cited |
 | **CODE** | implemented and offline-tested in `src/fon-driver/` |
 | **OFFLINE** | verified on this workstation, no hardware |
-| **RUNTIME** | read from the real board over the serial console; no writes, no module load |
+| **RUNTIME-RO** | observation through read-only interfaces: serial console, `/proc`, sysfs or debugfs; no module load and no intentional GPIO/MMIO writes. A debugfs read is not proof of zero hardware side effects |
+| **HW-TEST** | controlled hardware execution: test-image boot, module load, clock/reset/MMIO writes, or a bench measurement that requires explicit authorisation |
 
 **A row marked GPL/DT/OEM is not automatically true for our kernel.**  The OEM
 log comes from 4.4.60, we run 6.12/4.4.271-OpenWrt.  Rows needing runtime
 confirmation on our build are marked `(runtime)`.
+
+The evidence class describes **where** a fact came from. The truth status
+(`CONFIRMED` / `INFERRED` / `UNKNOWN` / `DISPROVED`) is separate: static
+evidence is never promoted to hardware proof.
 
 ---
 
@@ -50,16 +55,16 @@ performed.
 
 | Fact | Value | Evidence |
 |---|---|---|
-| Board | `AVM FRITZ!Box 7530`, compatible `avm,fritzbox-7530` | RUNTIME |
-| Firmware | OpenWrt 25.12.6 `r33311-981c978eff` (official release) | RUNTIME |
-| Kernel | 6.12.112, `#0 SMP Sat Oct 17 21:45:38 2026` | RUNTIME |
-| Kernel command line | ` coherent_pool=4M` only; **no `root=`** | RUNTIME |
-| Root filesystem | squashfs `/dev/ubiblock0_1`, read-only, mounted on `/rom` | RUNTIME |
-| Overlay | UBIFS `/dev/ubi0_4`, mounted on `/overlay` (71.5 MiB, 16.6 MiB used) | RUNTIME |
-| Console | `/dev/ttyUSB0`, 115200 8N1, root shell `root@RckBox:~#` | RUNTIME |
-| `sysupgrade` | `/sbin/sysupgrade` present | RUNTIME |
-| NAND health | 872 good PEBs, 0 bad, 0 corrupted, max erase counter 10 | RUNTIME |
-| Recovery partitions | `urlader0` / `urlader1` present (`mtd5`/`mtd6`) | RUNTIME |
+| Board | `AVM FRITZ!Box 7530`, compatible `avm,fritzbox-7530` | RUNTIME-RO |
+| Firmware | OpenWrt 25.12.6 `r33311-981c978eff` (official release) | RUNTIME-RO |
+| Kernel | 6.12.112, `#0 SMP Sat Oct 17 21:45:38 2026` | RUNTIME-RO |
+| Kernel command line | ` coherent_pool=4M` only; **no `root=`** | RUNTIME-RO |
+| Root filesystem | squashfs `/dev/ubiblock0_1`, read-only, mounted on `/rom` | RUNTIME-RO |
+| Overlay | UBIFS `/dev/ubi0_4`, mounted on `/overlay` (71.5 MiB, 16.6 MiB used) | RUNTIME-RO |
+| Console | `/dev/ttyUSB0`, 115200 8N1, root shell `root@RckBox:~#` | RUNTIME-RO |
+| `sysupgrade` | `/sbin/sysupgrade` present | RUNTIME-RO |
+| NAND health | 872 good PEBs, 0 bad, 0 corrupted, max erase counter 10 | RUNTIME-RO |
+| Recovery partitions | `urlader0` / `urlader1` present (`mtd5`/`mtd6`) | RUNTIME-RO |
 
 MTD layout (size / erasesize 128 KiB):
 
@@ -202,7 +207,7 @@ be reproduced, but the INTID arithmetic is confirmed.
 | DMA RX channel | 7 (MBOX3) | GPL, OEM |
 | Stereo TX port | 0 | GPL, OEM |
 | Stereo RX port | 3 | GPL, OEM |
-| Frames per DMA buffer | `fs_per_dma` is computed as `[r5] / [r5+8]` from the board config (`ipq40xxtdm_linkinit` `0x9ef0..0x9f28`), not a literal 32; the 7530 board values are in the closed `avm_get_hw_config_table` → **UNRESOLVED (Q76)**.  The GPL comment `4 ms == 32` describes the intent, not the passed number | GPL (doc comment) / proprietary disassembly |
+| Frames per DMA buffer | `fs_per_dma` is computed as `[r5] / [r5+8]` from the board config (`ipq40xxtdm_linkinit` `0x9ef0..0x9f28`), not a literal 32; the 7530 board values are in the closed `avm_get_hw_config_table` → **UNRESOLVED (Q76)**.  The GPL comment `4 ms == 32` describes the intent, not the passed number | GPL (doc comment), DISASM |
 | Buffer size | 512 bytes per ping-pong half **only if** `fs_per_dma = 32` and `slots = 8` (`32 * 8 * 2`); 32 is the offline driver's constant, not an OEM-proven value | derived, UNRESOLVED (Q76) |
 | DMA descriptors | 16 | GPL |
 | Descriptor size (IPQ4019) | 156 bytes, `L1_CACHE_ALIGN` = 192 | GPL |
@@ -261,21 +266,21 @@ from disassembling proprietary AVM modules and are labelled accordingly:
 
 | Fact | Source class |
 |---|---|
-| slot-5 control word at frame offset `0x0a` | **proprietary disassembly** (`pcmlink.ko`) |
-| hook = RX status bit 3 → reg 0x44 bit 7 | **proprietary disassembly** (`pcmlink.ko`) |
-| `build_slic_ctrl` bit layout | **proprietary disassembly** (`pcmlink.ko`) |
+| slot-5 control word at frame offset `0x0a` | **DISASM** (`pcmlink.ko`) |
+| hook = RX status bit 3 → reg 0x44 bit 7 | **DISASM** (`pcmlink.ko`) |
+| `build_slic_ctrl` bit layout | **DISASM** (`pcmlink.ko`) |
 | MBOX/stereo/TDM channel selection | **GPL** (`ipq-adss-avm.c`) + DTB + OEM log |
 | 8 slots × 16 bit, slave mode, delays | **GPL** (`ipq-adss-avm.c`) |
 
-Do not describe a `proprietary disassembly` fact as "GPL".  Both are
-`CONFIRMED` on the Linux side; neither proves the SC14448 side.
+Do not describe a `DISASM` fact as "GPL".  Both are `CONFIRMED` on the Linux
+side; neither proves the SC14448 side.
 
 ## 5. GPIO (board HW236)
 
 | Function | GPIO | Notes | Evidence |
 |---|---|---|---|
 | DECT reset (`gpio_avm_dect_reset`) | **40** | source macro `AVM_DEF_HW_PARAM_GPIO_OUT_ACTIVE_HIGH`; compiled `param=<0x0b>` | GPL, OEM-DTB |
-| DECT RD (`gpio_avm_dect_rd`) | 16 | | GPL |
+| DECT RD (`gpio_avm_dect_rd`) | 16 | DT name only; the same GPIO is also a `blsp_uart0` pin, and independent concurrent use is not proven (Q78) | GPL, OEM-DTB |
 | PCMLINK FSC | 22 (mux2) / 26 (mux3) | input; compiled `function=<2>/<3>` | GPL, OEM-DTB |
 | PCMLINK DCL | 21 (mux2) / 25 (mux3) | input; compiled `function=<2>/<3>` | GPL, OEM-DTB |
 | PCMLINK MCL | 20 (mux2) / 24 (mux3) | input; compiled `function=<2>/<3>` | GPL, OEM-DTB |
@@ -347,9 +352,11 @@ API transformation, electrical connection, and any inversion are unresolved
 | PINMUX2/PINMUX3 values | compiled DTB contains `function=<2>` for GPIO20–22 and `<3>` for GPIO23–27 | OEM-DTB |
 | Linux TLMM selector | `i2s_rx` index 2 for GPIO20–22; `i2s_rx/tx/td` index 3 for GPIO23–27; `mux_bit=2` gives field bits `0x08/0x0c` | GPL |
 | PCMLINK applies pin config | `pcmlink.ko:ipq40xxtdm_linkinit()` calls `dakota_gpio_pinconfig(gpio, profile_field, 1)` at `0xa168` | DISASM |
-| Piglet clock check is passive | `Check_TDMInterface()` requests FSC/DCL as GPIO inputs and counts edges | DISASM |
+| Piglet clock check | `Check_TDMInterface()` calls `dakota_gpio_ctrl(gpio, 0, 0)`, then reads and counts edges; there is no explicit `dakota_gpio_pinconfig()` in this path, and it does not generate FSC/BCLK | DISASM |
+| Piglet ctrl side effects | `dakota_gpio_ctrl()` may reconfigure the pad; its body is unavailable, so this is **not** a proven hardware read-only procedure | **UNKNOWN** |
 | AVM API transformation | body of `dakota_gpio_pinconfig()` and physical effect of `dakota_gpio_out_bit()` are unavailable | **UNKNOWN** |
-| 74LVC1G04 | VCC/A/Y = 3.3/3.3/0 V measured under OpenWrt only; no link to GPIO40 or reset proven | RUNTIME / **UNKNOWN role** |
+| OEM DTB selection | three HW236 DTBs are present in `kernel.image`: `0x98d038` (`subrevision=2`), `0x993990`/`0x99a2e8` (`subrevision=0`); FON-relevant properties are identical. Which one the bootloader selects is not proven (Q80) | OEM-DTB / **UNKNOWN** |
+| 74LVC1G04 | VCC/A/Y = 3.3/3.3/0 V measured under OpenWrt only; no link to GPIO40 or reset proven | RUNTIME-RO / **UNKNOWN role** |
 
 Current D0.6 status and document navigation: `fon-d06-summary.md`.
 Detailed disassembly is retained under `history/fon-d06-*.md`; the DTB
@@ -380,6 +387,13 @@ configuration.  This does **not** prove that the four pads or
 `gpio16`/`gpio17` reach the SC14448, nor that no other UART hardware exists on
 the board, and **no source states the voltage on the Dialog side**.
 
+GPIO16 has two independent DT roles: it is one of the `blsp_uart0` pins and it
+is also the board-table `gpio_avm_dect_rd` signal. No source establishes that
+`dect_rd` is a separate physical net, and no source proves that both roles can
+operate concurrently (Q78). Likewise, the console and `msm_dectuart_*` attach
+to the same controller; the software arbitration between them is not recovered
+(Q79).
+
 Correction: an earlier revision of this section claimed the HW236 override
 *drops* `function` and `bias-disable`.  That was wrong; `merge_nodes()` keeps
 them, as the decompiled DTB shows.
@@ -406,12 +420,16 @@ probe-only test must not assume an unprogrammed chip.
 
 | Fact | Value | Evidence |
 |---|---|---|
-| FON register transport | `TxDMA` / `PutRxDMA`, 16-bit word in TDM/MBOX **slot 5** | GPL |
-| Hook detection | RX slot 5 status bit 3 -> `reg 0x44` bit 7 | GPL |
-| Ring control | `reg 0x48` bits 5/6 -> ring command -> TX slot 5 | GPL |
-| Line feed | `reg 0x48` writes + `build_slic_ctrl` | GPL (exact SC14448 bits unproven) |
+| FON register transport | `TxDMA` / `PutRxDMA`, 16-bit word in TDM/MBOX **slot 5** | DISASM |
+| Hook detection | RX slot 5 status bit 3 -> `reg 0x44` bit 7 | DISASM |
+| Ring control | `reg 0x48` bits 5/6 -> ring command -> TX slot 5 | DISASM |
+| Line feed | `reg 0x48` writes + `build_slic_ctrl` | DISASM (exact SC14448 bits unproven) |
 | FON over UART | **disproved** — no UART imports in `pcmlink`, `isdn_fbox_fon5`, `avm_dect` | GPL |
-| `pcmlink_ll_set_status` as FON transport | **disproved** — real link is `FPGALink` / QCA-ADSS | GPL |
+| `pcmlink_ll_set_status` as FON transport | **disproved** — real link is `FPGALink` / QCA-ADSS | GPL, DISASM |
+
+These are Linux-side facts from the proprietary `pcmlink.ko` disassembly. They
+are **CONFIRMED on the Linux side** but do not prove how the SC14448 interprets
+slot 5 (Q16/Q17/Q75). The source-class split is repeated in §4c.
 
 ## 8. Console UART
 
@@ -425,22 +443,22 @@ probe-only test must not assume an unprogrammed chip.
 
 ## 9. Our driver — first hardware run
 
-### 9a. Boot path proven on hardware (2026-11-07)
+### 9a. Boot path proven on hardware (HW-TEST, 2026-11-07)
 
 The probe-only initramfs was booted **into RAM over TFTP** on the real
 FRITZ!Box 7530.  NAND was not written at any point.
 
 | Fact | Value | Evidence |
 |---|---|---|
-| Bootloader | `U-Boot 2012.07 [local,r35279-c2a758b16a]`, EVA `1.11581` | RUNTIME |
-| U-Boot environment | **`bad CRC, using default environment`** | RUNTIME |
-| NAND | `Macronix MX30LF1G18AC`, 128 MiB, 872 good PEBs, 0 bad | RUNTIME |
-| Recovery route | started from `(FRITZ7530) #`, `run tftpboot` | RUNTIME |
-| U-Boot net settings | `serverip=192.168.1.70`, `ipaddr=192.168.1.1` (RAM only, no `saveenv`) | RUNTIME |
-| TFTP | `Bytes transferred = 9129136` (matches the probe FIT exactly) | RUNTIME |
-| Kernel process | `Run /init as init process` — initramfs, not NAND rootfs | RUNTIME |
-| Shell after boot | `root@OpenWrt:~#` on `192.168.1.1`, SSH reachable | RUNTIME |
-| USB storage | `usb-storage` + `uas` + SCSI load; stick appears as `sda1` | RUNTIME |
+| Bootloader | `U-Boot 2012.07 [local,r35279-c2a758b16a]`, EVA `1.11581` | HW-TEST |
+| U-Boot environment | **`bad CRC, using default environment`** | HW-TEST |
+| NAND | `Macronix MX30LF1G18AC`, 128 MiB, 872 good PEBs, 0 bad | HW-TEST |
+| Recovery route | started from `(FRITZ7530) #`, `run tftpboot` | HW-TEST |
+| U-Boot net settings | `serverip=192.168.1.70`, `ipaddr=192.168.1.1` (RAM only, no `saveenv`) | HW-TEST |
+| TFTP | `Bytes transferred = 9129136` (matches the probe FIT exactly) | HW-TEST |
+| Kernel process | `Run /init as init process` — initramfs, not NAND rootfs | HW-TEST |
+| Shell after boot | `root@OpenWrt:~#` on `192.168.1.1`, SSH reachable | HW-TEST |
+| USB storage | `usb-storage` + `uas` + SCSI load; stick appears as `sda1` | HW-TEST |
 
 The stock NAND boot does **not** provide USB storage: on the production image
 `/lib/modules/6.12.112/` contains no `usb-storage`, `uas`, `scsi-core` or
@@ -460,7 +478,7 @@ with a kernel built from the full source tree, even for the same release.
 The kernel in the test image is built from the workspace tree
 (`gcc` owner `rck@Rck-1`), not from the SDK.
 
-### 9c. Stage A result (passive, no module)
+### 9c. Stage A result (RUNTIME-RO, no module)
 
 | Observation | Value |
 |---|---|
@@ -475,7 +493,7 @@ The kernel in the test image is built from the workspace tree
 
 Evidence: `../../restore/stage-a/stage-a.tar.gz` and the console boot log.
 
-### 9d. Stage B result (probe-only, verified)
+### 9d. Stage B result (probe-only, HW-TEST)
 
 `load-probe-only.sh --yes` passed.  Console and `dmesg`:
 
@@ -523,7 +541,7 @@ Isolation checks:
 
 Evidence: `../../restore/stage-b/stage-b-2/`.
 
-### 9d-2. Stage C0 on hardware (2026-11-07, passive)
+### 9d-2. Stage C0 on hardware (RUNTIME-RO, 2026-11-07)
 
 `bench/collect-stage-c0.sh` ran on the probe-only image.  It only read DT,
 `/proc`, debugfs clocks and debugfs pinctrl.
@@ -545,10 +563,12 @@ Comparison with a clock that *is* in use: `gcc_blsp1_ahb_clk` has
 same parent (`pcnoc_clk_src`, enabled) but no consumer.  The audio branch is
 gated by the absence of an owner, not by a dead parent.
 
-The pinmux state is the decisive passive result: no GPIO in the PCM group is
-muxed to `i2s_rx`/`i2s_tx`/`i2s_td`, so **the ADSS pads are not connected to
-the PCM pins in the current configuration**.  Whether the SC14448 toggles
-them anyway cannot be answered by software.
+The pinmux observation is about **Linux ownership**, not the hardware
+register. `(MUX UNCLAIMED)` means that no Linux pinctrl/GPIO consumer owns the
+pin; it is not a readback of the TLMM `FUNC_SEL` field and does not prove that
+the field is `0`. The actual mux value, the pad state, the electrical
+connection to the SC14448 and the presence of FSC/BCLK all remain **UNKNOWN**
+(Q27/Q31). A read-only TLMM readback or a passive measurement is required.
 
 Evidence: `../../restore/stage-c0-final/stage-c0g/`, archive sha256
 `2a9f4afc3164131a180e579e55fa9c43b1bb9c02146e23e32d993e95a4030d7e`.
@@ -585,7 +605,7 @@ The module did not change, so the Stage B kit on the stick stays valid, and
 the probe-only behaviour (`clock_refs=0`, `reset_refs=0`) must stay identical
 after this image boots — that is the first thing to confirm.
 
-### 9d-4. Probe-only still side-effect free with the C1 links (2026-11-07)
+### 9d-4. Probe-only still side-effect free with the C1 links (HW-TEST, 2026-11-07)
 
 The C1 preparation image was booted into RAM and Stage B was repeated.
 
@@ -677,7 +697,7 @@ printed from that same run.
 Artifacts: module `a9ee7a13...d30f` (76 412 B), image `154bd755...4811`,
 evidence `../../restore/stage-b-c1b/stage-b-c1b/`.
 
-### 9d-7. Stage C1: the ADSS block answers on the bus (2026-11-07)
+### 9d-7. Stage C1: the ADSS block answers on the bus (HW-TEST, 2026-11-07)
 
 First authorised clock/reset/MMIO access.  Module `2b523aec...9e40`,
 loaded as `probe_only=0 run_c1=1`.
@@ -736,7 +756,7 @@ asserted, but the warning means the stop is **not confirmed**.
 After `rmmod`: no module, `gcc_audio_ahb_clk` back to enable 0, no
 `0x77000000` region in `/proc/iomem`, no leftover attributes.
 
-### 9d-8. Stage C2: the ADSS accepts the FON configuration (2026-11-07)
+### 9d-8. Stage C2: the ADSS accepts the FON configuration (HW-TEST, 2026-11-07)
 
 First stage that **writes** to ADSS.  Module `3546c2b9...85c6`, loaded as
 `probe_only=0 allow_hw_writes=1 run_c2=1`.
@@ -815,7 +835,7 @@ blocks.
 A CR16 `objdump` was built locally from `binutils-2.44` and validated on the
 known-good `0x2582` snippet.  Nothing was installed system-wide.
 
-**Proven:**
+**Proven from the image:**
 
 | Claim | Evidence |
 |---|---|
@@ -823,22 +843,25 @@ known-good `0x2582` snippet.  Nothing was installed system-wide.
 | `0x80` is `BIT(7)` | by value |
 | it is a trigger, not a format register | set and cleared nine instructions later; no rate/word-size/master field exists in the function |
 | the read-back is discarded | `movw $0x400:m,r2` overwrites the value at `0x25ac` |
-| the block at `0x000000` is data | linear disassembly gives `illegal` almost everywhere |
-| no direct branch targets `0x2558` or `0x24F8` | whole-image search |
+| `0x000000` is not a valid entry point | `loadm $1,r0` then `illegal`; execution instead reaches `0x000008` through the loader hand-off |
 | no slot-5 / FON command handler found | bounded search over all immediate peripheral references and both large code blocks |
+| `0x2570` calls `0x3C8C`, `0x257E` calls `0x24F8` | branch decoder, §9d-11 |
+| `0x24F8` is not recursive | decompiled as a bounded loop; its only `bal` caller is `0x257E` |
+| `0x000008` is executable | `br 0x15AA` in `normal`, `br 0x1026` in `p2test` |
 
-**Not proven:**
+**Still unproven:**
 
 | Question | Why |
 |---|---|
-| where the `0x2570` / `0x257E` calls go | the two candidate interpretations of `objdump`'s printed target give different answers, and neither survives every test (see the call-graph document) |
-| who calls the `0x24F8` selector | no direct branch, no pointer table found |
+| which top-level path reaches `0x2558` on the real chip | a static CFG path from `0x1602` exists, but `0x1602` is not proven to be the reset entry (Q47/Q64) |
 | what `BIT(7)` of `0xFF6006` does | no code reads it back |
 | whether `0xFF600E` is used | not found as an immediate; indirect access not excluded |
+| whether `0x000F6002` is set by `0x00FF6006` | the two addresses are not proven to alias |
+| whether the table at `0x24` is used as the hardware vector table | the runtime copy at `0x15F6` is unresolved |
 
-Branch targets in the firmware analysis are therefore **provisional**.
-Instruction bytes, instruction boundaries and all immediate constants are
-unaffected.
+Branch targets are decoded by the validated rule. Executing this code on the
+SC14448 remains unverified; instruction bytes, boundaries and immediate
+constants are unaffected.
 
 ### 9d-11. CR16 branch decoding solved; call graph re-derived (2026-11-07)
 
@@ -867,12 +890,7 @@ magnitude is the target.
 | Call | Target | Content |
 |---|---|---|
 | `0x2570` | `0x3C8C` | `push $0x3,r7,RA`; copies or clears an array through `0x28CF4` / `0x28D3C` |
-| `0x257E` | `0x24F8` | the `0xFF400A` bit loop — **corrected: not recursive**, `0x24F8` contains no call to itself |
-
-> **Correction (2026-11-07).**  Earlier revisions of this section described
-> `0x257E → 0x24F8` as "recursive re-entry".  Decompiling `0x24F8` shows a
-> bounded loop over one bit mask with an early return when `r2 == 0`; there is
-> no self-call.  The recursion claim is withdrawn and must not be reused.
+| `0x257E` | `0x24F8` | the `0xFF400A` bit loop — **not recursive**; `0x24F8` contains no call to itself |
 
 **Caller of `0x24F8`:** `0x257E` is the only `bal` site that targets it.
 
@@ -897,55 +915,27 @@ Instruction sizes in `dectfw_secondlevel_441.hex`: 2 B x 13 546, 4 B x
 ```text
 0x1602 (candidate top level, no caller in the image)
   -> 0x39F8 -> 0x3A2C -> 0x25FB8 -> 0x25F90
-       -> 0x25FAA -> 0x2558 -> 0x257E -> 0x24F8 (recursion)
+       -> 0x25FAA -> 0x2558 -> 0x257E -> 0x24F8 (not recursive)
 ```
 
-### 9d-12 (superseded)
-
-> **Superseded by §9g (2026-11-07).**  The text below was written from a
-> decoder that applied the `bal` rule to every 4/6-byte instruction and from a
-> one-hop reachability walk.  Its "512 words", "poll until ready" and
-> "recursion" statements are withdrawn; the edge statistics in it are wrong.
-> Kept only as history.
-
-**`0x25F90` is a PCM bring-up routine:**
-
-```text
-25f92  movd $0x937c:l,(r8,r7)
-25f98  storw $0x1:s,0x0:s(r8,r7)     ; counter = 1
-25f9a  movw $0x1001:m,r2             ; fill value
-25f9e  bal  -> 0x25BA                ; table[base + index*2] = value
-25fa4  cmpw $0x200:m,r0
-25fa8  bhi  *-0x25f9a                ; 512 words at 0x01000000
-25faa  bal  -> 0x2558                ; pulse 0xFF6006
-25fae  loadw 0xf6002:m,r0
-25fb4  bne  *-0x25fae                ; wait for readiness == 1
-```
-
-So the previous iteration's "only recursion, no caller" conclusion was
-**incomplete**: the caller lives in the `0x25Fxx` block that the old
-per-run CFG could not reach.
-
-What is proven and what is not:
+Current loop facts (the earlier "512 words" and "recursion" readings are
+withdrawn; see `history/fon-dialog-cr16-cfg.md` and
+`history/fon-dialog-peripheral-init.md`):
 
 | Claim | Status |
 |---|---|
-| `0x24F8` is reachable from top-level code | **proven** (CFG path above) |
-| `0x257E` re-enters with the high byte of its argument | **proven** |
-| there is no external caller of `0x24F8` other than `0x257E` | **proven** |
-| `0x25F90` fills 512 words at `0x01000000` with `0x1001` | **proven** |
-| it then pulses `0xFF6006` and polls `0xF6002` for `1` | **proven** |
+| `0x24F8` is reachable from the top-level CFG | **proven statically** |
+| `0x257E` is the only caller of `0x24F8` | **proven statically** |
+| `0x24F8` contains no self-call | **proven statically** |
+| `0x25F90` writes **511** 16-bit words with `0x1001` at `0x01000002`–`0x010003FE` | **proven** (indices 1–511; `0x01000000` itself is not written) |
+| it then pulses `0x00FF6006` and polls `0x000F6002` for `1` | **proven** |
 | the buffer is the PCM buffer | **not proven** — `0x01000000` is in no loaded run |
 | `0x1001` has a known field layout | **not proven** |
 
-Statistics (second-level image): 9 blocks, 19 570 decoded, 0 verified
-entries, 404 candidate entries, 8 178 reachable, 1 490 direct calls, 376
-cross-block calls, 0 resolved indirect edges, 2 706 unresolved, 204
-invalid targets.
-
 `p2test` reproduces the same constants at shifted addresses
 (`0x1001` at `0x26750`, poll at `0x26764`, `0xFF6006` at `0x1E3E`), so the
-bring-up is the same code in both builds.
+bring-up is the same code in both builds. The earlier edge statistics are
+historical and are not repeated here.
 
 ## 9g. CR16 decoding and CFG (OFFLINE, 2026-11-07, iteration 3)
 
@@ -1088,7 +1078,7 @@ Documents: `history/fon-dialog-cr16-addressing.md`,
 | `INTBASE` | written once: `0x24` (`0x15E6`, `0x1068`) | L2 |
 | `ISP` / `USP` | `0x3FF0` / `0x3F00` | L2 |
 | `CFG` | bit 8 only; cleared by the first-level image, set by it and by the second-level image | L2 |
-| dispatch table at `INTBASE` | contents are not plausible code; effect of the copy at `0x15F6` unresolved | **UNKNOWN** |
+| table at `INTBASE` | 31 address-like words, not code bytes; the runtime effect of the copy at `0x15F6` is unresolved | **UNKNOWN** |
 | reset entry | `0x15AA`/`0x102C` starts the system-register setup and has **no caller** in the image; not proven to be the reset vector | L3 |
 | address pairs with equal low 20 bits | **12** in `normal`, **12** in `p2test`, the same set | L2 |
 | `0x000F6006` ↔ `0x00FF6006` | same low bits, different access structure | L2 |
@@ -1108,15 +1098,15 @@ Documents: `history/fon-dialog-firstlevel-cfg.md`, `history/fon-dialog-uart-boot
 | loader writes received bytes where | `storb r2,0x0:s(r12)` at `0x1022C`, `(r12)` from the 4-byte header | L2 |
 | is the second-level relocated | **no** — the header carries the address and the loader adds no base | L2 |
 | loader code overwritten by the image | **no** — no second-level block covers `0x10080` | L1 |
-| `0x0` is a plausible entry | **no** — `loadm $1,r0` then `illegal` | L2 |
-| hand-off branch target | **UNKNOWN** (Q51, `0x18` form) | — |
+| `0x0` is a plausible entry | **no** — `loadm $1,r0` then `illegal`; the hand-off enters `0x000008`, whose `br` is decoded | L2 |
+| runtime execution of the hand-off | **not observed** on the SC14448; only the static chain is proven | **UNKNOWN** |
 | `0x28D56` semantics | walks 8-byte records `{u32le count, u32le dest}` from `(r3,r2)` to `(r5,r4)` and writes `count` **zero** bytes per record (`r4` forced to 0 at `0x28D62`) | L2 |
 | call `0x15F6` | `fn_28d56(0x1C, 0x24)` = one record `{count=0x8F2, dest=0x936C}` → clears 2290 bytes at `0x936C` | L2 |
 | `0x936C` | first byte past the block that starts at `0x9000`; not covered by any block | L1 |
 | table at `0x24` | **31** entries of 32-bit little-endian values; ×2 gives instruction boundaries (`0x28996`, `0x28A94`, `0x28CD0`, `0x28DCA`) | L2 |
 | `0xA0` is not a vector | its bytes `01 05 …` are TLV tag 1 (RFPI, length 5) from `piglet_protocol.h` | L1 |
 | `.bss` in p2test | clears `[0x94A4, 0x9B43)`, one byte short of the next block at `0x9B44` (all blocks start even) | L2 |
-| table is an exception dispatch table | 32 entries, entry = handler address ÷ 2 (confirmed by TobleMiner `device/vectors.s`) | L2 + external |
+| table is an exception dispatch table | 31 entries, entry = handler address ÷ 2 (confirmed by TobleMiner `device/vectors.s`) | L2 + external |
 | real handlers | vectors 24, 26, 29; all other indices share the `nop`/`retx` stub | L2 |
 | vectors 20–22 (UART RX/TX, SPI per SC14441) | **stubs** in both images — the SC14441 numbering does not transfer | L2 |
 | handler acknowledgements | vector 24 writes `0x0100`, 26 writes `0x0400`, 29 writes `0x2000` to `0x000F5402` | L2 |
@@ -1142,9 +1132,9 @@ Documents: `history/fon-dialog-firstlevel-cfg.md`, `history/fon-dialog-uart-boot
 
 | Fact | Value | Evidence |
 |---|---|---|
-| Probe-only diagnostics | `stage=0x23`, `mode=probe-only`, `resource_mask=0x3f`, `diag_valid=0`, `dma_prepared=0`, `dma_started=0`, `irq_spi=156/159`, `irq_intid=188/191`, `irq=-1` | CODE, OFFLINE, **RUNTIME (9d)** |
-| **Loadable module** (build tree) | 74 796 bytes, sha256 `cd5c05fb...6aff6` | RUNTIME |
-| SDK-built module | 73 980 bytes, sha256 `b867b8c5...ad870` — rejected by the kernel (`struct module` size) | RUNTIME |
+| Probe-only diagnostics | `stage=0x23`, `mode=probe-only`, `resource_mask=0x3f`, `diag_valid=0`, `dma_prepared=0`, `dma_started=0`, `irq_spi=156/159`, `irq_intid=188/191`, `irq=-1` | CODE, OFFLINE, **HW-TEST (§9d)** |
+| **Loadable module** (build tree) | 74 796 bytes, sha256 `cd5c05fb...6aff6` | HW-TEST |
+| SDK-built module | 73 980 bytes, sha256 `b867b8c5...ad870` — rejected by the kernel (`struct module` size) | HW-TEST |
 | Offline test suites | mock 40, TDM/DMA, dialog (incl. real firmware), bench 32, prepare-tree 13, prepare-image 10 | OFFLINE |
 | checkpatch | 0 errors, 4 intentional warnings | OFFLINE |
 | sparse | no diagnostics | OFFLINE |
