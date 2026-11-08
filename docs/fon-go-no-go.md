@@ -118,3 +118,22 @@ separate "no firmware" from "no clocks".
 **Stage C3 is NO-GO** until the clock-disable warning is understood well
 enough to know whether the gate closes.  Running C3 with an unclosed gate
 would leave the ADSS clocked while software believes it is off.
+
+### Stage C3 gates (2026-11-08)
+
+| Gate | Evidence | Status |
+|---|---|---|
+| FON audio node identified | `tdm@0` vs `pcm@7704000`; DTB + OEM log | **PASS** — `fon-adss-tdm-channel-map.md` |
+| MBOX/stereo mapping matches AVM | stereo-tx 0 / stereo-rx 3, MBOX0/MBOX3 | **PASS** — our DTS already matches |
+| `dma-tx-channel` is not a hardware selector | `ipq-adss-avm.c:2208,2216` | **PASS** |
+| Control-only frame builder | `fon_tdm_buffer_*`, host tests | **PASS** |
+| Driver builds against 6.12 | `fon_tdm_drv.ko` built from the target tree | **PASS** |
+| Modules default to no transmission | `allow_dma`, `allow_hw_writes`, `probe_only` defaults | **PASS** |
+| `dma_start` still refuses | returns `-EOPNOTSUPP` | **PASS (intentional)** |
+| `fs_per_dma` confirmed | Q58 | **pending** |
+| SC14448 clocks present (Q4/Q27) | passive scope | **pending — blocks C4** |
+| Clock-disable gate understood | `fon-audio-ahb-clock-warning.md` | **pending** |
+
+**C4 (active TDM) is NO-GO** until Q4/Q27 show the SC14448 supplies
+BCLK/FSC **and** the clock gate is understood.  Dry-run frame building is
+offline only and changes no hardware state.

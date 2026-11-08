@@ -628,6 +628,50 @@ if D0.is_file():
     check("runbook states console and loader share the port",
           "share one UART controller" in t, True)
 
+# ---------------------------------------------------------------------------
+# 16. C3 / D0.4: ADSS channel map and control-only plan
+# ---------------------------------------------------------------------------
+C3 = ROOT / "docs" / "fon-adss-tdm-channel-map.md"
+D04 = ROOT / "docs" / "fon-tdm-control-only-plan.md"
+check("adss channel map exists", C3.is_file(), True)
+check("control-only plan exists", D04.is_file(), True)
+
+if C3.is_file():
+    t = C3.read_text()
+    check("c3 distinguishes tdm@0 from pcm@7704000",
+          "tdm@0" in t and "pcm@7704000" in t, True)
+    check("c3 records stereo-tx 0 / stereo-rx 3 for the FON",
+          "stereo-tx-port = <0x00>" in t and "stereo-rx-port = <0x03>" in t,
+          True)
+    check("c3 says dma-*-channel does not select hardware",
+          "never selects hardware" in t, True)
+    check("c3 records the wrong-node correction",
+          "That was wrong" in t, True)
+    check("c3 keeps the SC14448 side UNKNOWN",
+          "SC14448 interprets slot 5 as claimed" in t and "UNKNOWN" in t,
+          True)
+    check("c3 keeps measured vs formula BCLK distinct",
+          "1 024 000" in t and "1 025 720" in t, True)
+
+if D04.is_file():
+    t = D04.read_text()
+    check("d04 states SC14448 is master",
+          "SC14448 is master" in t, True)
+    check("d04 forbids QFP probing unless a safer pad exists",
+          "NO-GO" in t and "QFP" in t, True)
+    check("d04 requires a 1.8 V-capable front end",
+          "1.8 V-capable" in t, True)
+    check("d04 says a flat line does not prove a fault",
+          "must not be read as" in t, True)
+
+KF = ROOT / "docs" / "fon-known-facts.md"
+if KF.is_file():
+    t = KF.read_text()
+    check("known facts separate proprietary disassembly from GPL",
+          "proprietary disassembly" in t, True)
+    check("known facts record the tdm@0 role",
+          "FON / pcmlink" in t, True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)
