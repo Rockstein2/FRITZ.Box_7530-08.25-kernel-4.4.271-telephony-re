@@ -40,14 +40,16 @@ endian interpretations and absolute/relative address forms.  It records:
 
 | Image | Indirect sites | `CANDIDATE` | `UNRESOLVED` | `PROVEN` |
 |---|---:|---:|---:|---:|
-| normal | 382 | 87 | 295 | 0 |
-| p2test | 396 | 78 | 318 | 0 |
+| normal | 382 | 6 | 376 | 0 |
+| p2test | 396 | 17 | 379 | 0 |
 
 Most candidates only have a nearby load whose effective address is data-like.
 They do not establish a table base, a stride, a bounded index or a valid code
 target.  The remaining sites have no preceding table-like consumer at all.
 
-The 78–87 candidates are therefore **CANDIDATE**, not function-pointer proof.
+E3 corrected this from the earlier 87/78 count: a candidate now requires a
+def-use link to the register consumed by the indirect instruction.  The
+6/17 linked candidates are still **CANDIDATE**, not function-pointer proof.
 No candidate was promoted by a normal/p2test address coincidence.
 
 ## 4. RAM-initialised tables

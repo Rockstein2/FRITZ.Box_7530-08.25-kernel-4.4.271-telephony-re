@@ -528,9 +528,14 @@ probe-only test must not assume an unprogrammed chip.
 | E1 cross-block dataflow | conservative merge; normal 115 / p2test 165 newly resolved accesses; 10/3 out-of-range candidates flagged | OFFLINE |
 | E1 indirect candidates | 382 normal / 396 p2test indirect edges; 5 639/5 668 table-like hits are candidates, not proof | OFFLINE |
 | E2 call-return CFG | direct calls add callee + continuation; fixed point converged in 4 iterations; forced cap reports `NON_CONVERGED` and no new `PROVEN` rows | OFFLINE |
-| E2 interprocedural summaries | 432/403 functions; 146/116 direct argument records; 25/10 proven; indirect calls clobber all registers | OFFLINE |
-| E2 table dispatch | 382/396 indirect sites; 87/78 candidates, 295/318 unresolved, **0 proven** | OFFLINE |
+| E2 interprocedural summaries (initial) | 432/403 functions; 146/116 direct argument records; 25/10 proven before E3 audit; indirect calls clobber all registers | OFFLINE |
+| E2 table dispatch (initial) | 382/396 indirect sites; 87/78 candidates, 295/318 unresolved before E3 def-use correction | OFFLINE |
 | E2 IRQ callgraph | 31 vectors in both images; only `tim1_int`, `dip_int`, `dsp_int` have memory operations; no PCM-named handler, no proven 8 kHz period | OFFLINE |
+| E3 soundness audit | E2 25/10 PROVEN rechecked: 21/8 retained, 4/2 downgraded; corrected analyzer reports 91/42 PROVEN, 82/92 CANDIDATE; NON_CONVERGED CLI exits 1 | OFFLINE |
+| E3 table correction | no table entry width/endian decoded; 6/17 linked CANDIDATE, 376/379 UNRESOLVED, 0 PROVEN | OFFLINE |
+| E3 `dsp_int` | pointer `0xD6 = 0x01027F80`, `+0x58 = 0x01027FD8`; counters at `0x2C4+0xE/+0x10` normal and `0x224+0xE/+0x10` p2test; event/queue candidate, not PCM | OFFLINE |
+| E3 `dip_int` | `0xF6006` low byte passed to callee; `0xF5402 = 0x0400` ack candidate; no alias with `0x00FF6006`; no slot-5 proof | OFFLINE |
+| E3 `0x01000000` | one static store executed 511 times; base is outside 24-bit range; address space/bank **UNRESOLVED**; fill and pointer ranges separated | OFFLINE |
 | TX DMA `EOR #2` | swaps adjacent 16-bit slots inside each 32-bit DMA word; raw order proven, physical wire order **UNKNOWN** | DISASM + GPL source |
 | E2 audio `EOR #2` | `generic_slotinterleave` also applies `EOR #2`; audio pair swap is a raw-memory model, sample order/endianness **INFERRED** | DISASM |
 | `0x01000000` SC14448 region | 511 indexed writes, no resolved reader; loader/RAM-init candidate; runtime PCM role **UNKNOWN** | OFFLINE |
@@ -1039,7 +1044,7 @@ withdrawn; see `history/fon-dialog-cr16-cfg.md` and
 | `0x24F8` is reachable from the top-level CFG | **proven statically** |
 | `0x257E` is the only caller of `0x24F8` | **proven statically** |
 | `0x24F8` contains no self-call | **proven statically** |
-| `0x25F90` writes **511** 16-bit words with `0x1001` at `0x01000002`–`0x010003FE` | **proven** (indices 1–511; `0x01000000` itself is not written) |
+| `0x25F90` fills **511** iterations via one static store (`0x25D0`) at `0x01000002`–`0x010003FE` | **proven** (E3: one `storw`, indices 1–511; `0x01000000` itself is not written) |
 | it then pulses `0x00FF6006` and polls `0x000F6002` for `1` | **proven** |
 | the buffer is the PCM buffer | **not proven** — `0x01000000` is in no loaded run |
 | `0x1001` has a known field layout | **not proven** |

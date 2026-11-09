@@ -1,6 +1,10 @@
 # FON-E2 — interprocedural dataflow and call/return CFG
 
 > **Status: offline research.**  No firmware execution and no hardware.
+>
+> **E3 audit:** this is the E2 reasoning trail.  E3 re-audited the 25/10
+> PROVEN arguments (21/8 retained, 4/2 downgraded) and corrected the analyzer;
+> see `fon-e3-dataflow-correctness.md` and `fon-e3-summary.md`.
 
 This document records the reasoning behind the E2 changes to
 `tools/cr16_dataflow.py` and the new `tools/cr16_interproc.py`.

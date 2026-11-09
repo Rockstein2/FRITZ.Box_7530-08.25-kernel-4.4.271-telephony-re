@@ -291,17 +291,32 @@ def apply_instruction(state, insn):
 
     # `addd src,dst` computes dst := dst + src.  A numeric value survives
     # only when both sides are proven constants; otherwise the destination
-    # stops being known.  The source is never modified.
+    # stops being known.  The source is never modified.  The immediate form
+    # `addd $imm,(rp)` is used for a pointer plus a field offset.
     m = re.match(r"^\((r\d+),(r\d+)\),\((r\d+),(r\d+)\)$", ops)
-    if m and mn == "addd":
+    if m and mn in ("addd", "subd"):
         shi, slo, dhi, dlo = m.groups()
         src = pair_state(state, shi, slo)
         dst = pair_state(state, dhi, dlo)
         if src[0] == "KNOWN32" and dst[0] == "KNOWN32":
-            set_pair(state, dhi, dlo, (dst[1] + src[1]) & 0xFFFFFFFF)
+            val = dst[1] + src[1] if mn == "addd" else dst[1] - src[1]
+            set_pair(state, dhi, dlo, val & 0xFFFFFFFF)
         else:
             invalidate(state, dhi)
             invalidate(state, dlo)
+        return
+    m = re.match(r"^\$(-?0x[0-9a-f]+|-?\d+)(?::[a-z])?,\((r\d+),(r\d+)\)$", ops)
+    if m and mn in ("addd", "subd"):
+        val = int(m.group(1), 0)
+        if mn == "subd":
+            val = -val
+        hi, lo = m.group(2), m.group(3)
+        dst = pair_state(state, hi, lo)
+        if dst[0] == "KNOWN32":
+            set_pair(state, hi, lo, (dst[1] + val) & 0xFFFFFFFF)
+        else:
+            invalidate(state, hi)
+            invalidate(state, lo)
         return
 
     # any other write of a 16-bit constant: `movw $imm,rn`

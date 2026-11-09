@@ -1,0 +1,1586 @@
+{
+  "tool": "cr16-e3-dip-paths/1",
+  "images": {
+    "normal": {
+      "image": "normal",
+      "entry": "0x028cd0",
+      "confidence_semantics": "memory-operation confidence is address resolution only, not handler proof",
+      "memory_operations": [
+        {
+          "image": "normal",
+          "instruction": "0x028cd2",
+          "bytes": "70000000c993",
+          "mnemonic": "movd",
+          "operation": "ADDRESS_LOAD",
+          "width_bits": 32,
+          "address_kind": "RESOLVED",
+          "effective_address": "0x000093c9",
+          "expression": null,
+          "provenance": [
+            "0x028cd2"
+          ],
+          "reachable_mode_a": false,
+          "reachable_mode_b": false,
+          "note": "",
+          "plausibility_note": "",
+          "confidence": "PROVEN"
+        },
+        {
+          "image": "normal",
+          "instruction": "0x028cd8",
+          "bytes": "20b0",
+          "mnemonic": "loadb",
+          "operation": "READ",
+          "width_bits": 8,
+          "address_kind": "RESOLVED",
+          "effective_address": "0x000093c9",
+          "expression": null,
+          "provenance": [
+            "0x028cd2"
+          ],
+          "reachable_mode_a": false,
+          "reachable_mode_b": false,
+          "note": "",
+          "plausibility_note": "",
+          "confidence": "PROVEN"
+        },
+        {
+          "image": "normal",
+          "instruction": "0x028cdc",
+          "bytes": "20f0",
+          "mnemonic": "storb",
+          "operation": "WRITE",
+          "width_bits": 8,
+          "address_kind": "RESOLVED",
+          "effective_address": "0x000093c9",
+          "expression": null,
+          "provenance": [
+            "0x028cd2"
+          ],
+          "reachable_mode_a": false,
+          "reachable_mode_b": false,
+          "note": "",
+          "plausibility_note": "",
+          "confidence": "PROVEN"
+        },
+        {
+          "image": "normal",
+          "instruction": "0x028cde",
+          "bytes": "0f890660",
+          "mnemonic": "loadw",
+          "operation": "READ",
+          "width_bits": 16,
+          "address_kind": "RESOLVED",
+          "effective_address": "0x000f6006",
+          "expression": null,
+          "provenance": [
+            "0x028cde"
+          ],
+          "reachable_mode_a": false,
+          "reachable_mode_b": false,
+          "note": "",
+          "plausibility_note": "",
+          "confidence": "PROVEN"
+        },
+        {
+          "image": "normal",
+          "instruction": "0x028ce8",
+          "bytes": "0fc90254",
+          "mnemonic": "storw",
+          "operation": "WRITE",
+          "width_bits": 16,
+          "address_kind": "RESOLVED",
+          "effective_address": "0x000f5402",
+          "expression": null,
+          "provenance": [
+            "0x028ce8"
+          ],
+          "reachable_mode_a": false,
+          "reachable_mode_b": false,
+          "note": "",
+          "plausibility_note": "",
+          "confidence": "PROVEN"
+        }
+      ],
+      "value_flow": [
+        {
+          "instruction": "0x028cde",
+          "note": "loadw 0xF6006 -> r0"
+        },
+        {
+          "note": "movb r0,r2 passes only the low byte to the callee"
+        },
+        {
+          "note": "movw 0x400,r0 overwrites r0 before the store"
+        },
+        {
+          "note": "storw r0,0xF5402 writes 0x0400"
+        },
+        {
+          "note": "bal callee receives r2 as an input"
+        }
+      ],
+      "f6006": {
+        "read_address_space": "0x000F6006",
+        "pulse_address_space": "0x00FF6006",
+        "alias_claim": "UNKNOWN",
+        "low_byte_consumer": "callee r2 input"
+      },
+      "f5402": {
+        "write_value": "0x0400",
+        "role": "acknowledgement candidate"
+      },
+      "poll_link": {
+        "polled_0xF6002": "0x25FAE normal / 0x26764 p2test",
+        "status": "SEPARATE_PATH_CANDIDATE",
+        "sequence_proven": false
+      },
+      "callees": [
+        {
+          "site": "0x028cec",
+          "target": "0x028732",
+          "summary": {
+            "entry": "0x028732",
+            "blocks": 15,
+            "entry_confidence": "CONFIRMED_BLOCK_START",
+            "reachable_under_current_cfg": true,
+            "cfg_completeness": {
+              "may_analysis_converged": true,
+              "iterations": 4,
+              "entry_mid_block": false,
+              "external_predecessors": false,
+              "complete": true
+            },
+            "reads_before_write": [
+              "r0",
+              "r2",
+              "r7",
+              "r9"
+            ],
+            "reads_before_write_semantics": "must-not-write-on-any-modelled-path",
+            "written": [
+              "r0",
+              "r1",
+              "r10",
+              "r11",
+              "r12",
+              "r13",
+              "r2",
+              "r3",
+              "r4",
+              "r5",
+              "r6",
+              "r7",
+              "r8",
+              "r9"
+            ],
+            "preserved": [],
+            "calls": [
+              "0x028754",
+              "0x028798",
+              "0x0287a0"
+            ],
+            "possible_call_targets": {
+              "direct": [
+                "0x028754",
+                "0x028798",
+                "0x0287a0"
+              ],
+              "direct_edges": [
+                {
+                  "site": "0x028754",
+                  "target": "0x02858e",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x028754"
+                  ]
+                },
+                {
+                  "site": "0x028798",
+                  "target": "0x02862e",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x028798"
+                  ]
+                },
+                {
+                  "site": "0x0287a0",
+                  "target": "0x0287a6",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x0287a0"
+                  ]
+                }
+              ],
+              "indirect_sites": 0
+            },
+            "return_values": "UNKNOWN",
+            "returns": 2,
+            "memory_operations": [
+              {
+                "instruction": "0x028736",
+                "operation": "ADDRESS_LOAD",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009b85",
+                "expression": null
+              },
+              {
+                "instruction": "0x02874a",
+                "operation": "WRITE",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r8,r7)+0"
+              },
+              {
+                "instruction": "0x028758",
+                "operation": "ADDRESS_LOAD",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x000093d0",
+                "expression": null
+              },
+              {
+                "instruction": "0x02875e",
+                "operation": "READ",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r8,r7)+0"
+              },
+              {
+                "instruction": "0x028774",
+                "operation": "READ",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": null
+              },
+              {
+                "instruction": "0x02877a",
+                "operation": "RMW",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r1,r0)+5"
+              },
+              {
+                "instruction": "0x028780",
+                "operation": "READ",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": null
+              },
+              {
+                "instruction": "0x028786",
+                "operation": "RMW",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r1,r0)+5"
+              },
+              {
+                "instruction": "0x028792",
+                "operation": "READ",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r8,r7)+0"
+              },
+              {
+                "instruction": "0x02879c",
+                "operation": "WRITE",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r8,r7)+0"
+              }
+            ],
+            "memory_operation_count": 10,
+            "memory_side_effects": {
+              "observed": 10,
+              "unsupported": 0
+            },
+            "unsupported_memory_instructions": 0,
+            "has_indirect": false
+          }
+        }
+      ],
+      "classification": "EVENT_STATUS_ACK_CANDIDATE",
+      "slot5_evidence": false,
+      "pcm_evidence": false,
+      "unresolved": [
+        "bit-level meaning of 0xF6006",
+        "whether the read has read-to-clear semantics",
+        "callee event-code semantics",
+        "whether the callee touches 0x01000000 or a FIFO"
+      ],
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31"
+    },
+    "p2test": {
+      "image": "p2test",
+      "entry": "0x027c88",
+      "confidence_semantics": "memory-operation confidence is address resolution only, not handler proof",
+      "memory_operations": [
+        {
+          "image": "p2test",
+          "instruction": "0x027c8a",
+          "bytes": "700000001095",
+          "mnemonic": "movd",
+          "operation": "ADDRESS_LOAD",
+          "width_bits": 32,
+          "address_kind": "RESOLVED",
+          "effective_address": "0x00009510",
+          "expression": null,
+          "provenance": [
+            "0x027c8a"
+          ],
+          "reachable_mode_a": false,
+          "reachable_mode_b": false,
+          "note": "",
+          "plausibility_note": "",
+          "confidence": "PROVEN"
+        },
+        {
+          "image": "p2test",
+          "instruction": "0x027c90",
+          "bytes": "20b0",
+          "mnemonic": "loadb",
+          "operation": "READ",
+          "width_bits": 8,
+          "address_kind": "RESOLVED",
+          "effective_address": "0x00009510",
+          "expression": null,
+          "provenance": [
+            "0x027c8a"
+          ],
+          "reachable_mode_a": false,
+          "reachable_mode_b": false,
+          "note": "",
+          "plausibility_note": "",
+          "confidence": "PROVEN"
+        },
+        {
+          "image": "p2test",
+          "instruction": "0x027c94",
+          "bytes": "20f0",
+          "mnemonic": "storb",
+          "operation": "WRITE",
+          "width_bits": 8,
+          "address_kind": "RESOLVED",
+          "effective_address": "0x00009510",
+          "expression": null,
+          "provenance": [
+            "0x027c8a"
+          ],
+          "reachable_mode_a": false,
+          "reachable_mode_b": false,
+          "note": "",
+          "plausibility_note": "",
+          "confidence": "PROVEN"
+        },
+        {
+          "image": "p2test",
+          "instruction": "0x027c96",
+          "bytes": "0f890660",
+          "mnemonic": "loadw",
+          "operation": "READ",
+          "width_bits": 16,
+          "address_kind": "RESOLVED",
+          "effective_address": "0x000f6006",
+          "expression": null,
+          "provenance": [
+            "0x027c96"
+          ],
+          "reachable_mode_a": false,
+          "reachable_mode_b": false,
+          "note": "",
+          "plausibility_note": "",
+          "confidence": "PROVEN"
+        },
+        {
+          "image": "p2test",
+          "instruction": "0x027ca0",
+          "bytes": "0fc90254",
+          "mnemonic": "storw",
+          "operation": "WRITE",
+          "width_bits": 16,
+          "address_kind": "RESOLVED",
+          "effective_address": "0x000f5402",
+          "expression": null,
+          "provenance": [
+            "0x027ca0"
+          ],
+          "reachable_mode_a": false,
+          "reachable_mode_b": false,
+          "note": "",
+          "plausibility_note": "",
+          "confidence": "PROVEN"
+        }
+      ],
+      "value_flow": [
+        {
+          "instruction": "0x027c96",
+          "note": "loadw 0xF6006 -> r0"
+        },
+        {
+          "note": "movb r0,r2 passes only the low byte to the callee"
+        },
+        {
+          "note": "movw 0x400,r0 overwrites r0 before the store"
+        },
+        {
+          "note": "storw r0,0xF5402 writes 0x0400"
+        },
+        {
+          "note": "bal callee receives r2 as an input"
+        }
+      ],
+      "f6006": {
+        "read_address_space": "0x000F6006",
+        "pulse_address_space": "0x00FF6006",
+        "alias_claim": "UNKNOWN",
+        "low_byte_consumer": "callee r2 input"
+      },
+      "f5402": {
+        "write_value": "0x0400",
+        "role": "acknowledgement candidate"
+      },
+      "poll_link": {
+        "polled_0xF6002": "0x25FAE normal / 0x26764 p2test",
+        "status": "SEPARATE_PATH_CANDIDATE",
+        "sequence_proven": false
+      },
+      "callees": [
+        {
+          "site": "0x027ca4",
+          "target": "0x025d74",
+          "summary": {
+            "entry": "0x025d74",
+            "blocks": 220,
+            "entry_confidence": "CONFIRMED_BLOCK_START",
+            "reachable_under_current_cfg": true,
+            "cfg_completeness": {
+              "may_analysis_converged": true,
+              "iterations": 4,
+              "entry_mid_block": false,
+              "external_predecessors": false,
+              "complete": true
+            },
+            "reads_before_write": [
+              "r1",
+              "r13",
+              "r2",
+              "r4",
+              "r5",
+              "r7",
+              "r9"
+            ],
+            "reads_before_write_semantics": "must-not-write-on-any-modelled-path",
+            "written": [
+              "r0",
+              "r1",
+              "r10",
+              "r11",
+              "r12",
+              "r13",
+              "r2",
+              "r3",
+              "r4",
+              "r5",
+              "r6",
+              "r7",
+              "r8",
+              "r9"
+            ],
+            "preserved": [],
+            "calls": [
+              "0x025dc0",
+              "0x025dd4",
+              "0x025dda",
+              "0x025de0",
+              "0x025df0",
+              "0x025dfa",
+              "0x025e22",
+              "0x025e34",
+              "0x025e3c",
+              "0x025e64",
+              "0x025e8a",
+              "0x025e9a",
+              "0x025eb2",
+              "0x025ed4",
+              "0x025ee6",
+              "0x025eee",
+              "0x025ef4",
+              "0x025efa",
+              "0x025efe",
+              "0x025f02",
+              "0x025f12",
+              "0x025f1e",
+              "0x025f28",
+              "0x025f38",
+              "0x025f4c",
+              "0x025f58",
+              "0x025f66",
+              "0x025f7c",
+              "0x025f90",
+              "0x025fee",
+              "0x025ff4",
+              "0x0260ee",
+              "0x0263c4",
+              "0x0263fc",
+              "0x026420",
+              "0x026436",
+              "0x026442",
+              "0x026448",
+              "0x02644e",
+              "0x026452",
+              "0x026458",
+              "0x026462",
+              "0x026466",
+              "0x026484",
+              "0x0264a6",
+              "0x0264f2",
+              "0x02650e",
+              "0x02653a",
+              "0x02657e",
+              "0x026586"
+            ],
+            "possible_call_targets": {
+              "direct": [
+                "0x025dc0",
+                "0x025dd4",
+                "0x025dda",
+                "0x025de0",
+                "0x025df0",
+                "0x025dfa",
+                "0x025e22",
+                "0x025e34",
+                "0x025e3c",
+                "0x025e64",
+                "0x025e8a",
+                "0x025e9a",
+                "0x025eb2",
+                "0x025ed4",
+                "0x025ee6",
+                "0x025eee",
+                "0x025ef4",
+                "0x025efa",
+                "0x025efe",
+                "0x025f02",
+                "0x025f12",
+                "0x025f1e",
+                "0x025f28",
+                "0x025f38",
+                "0x025f4c",
+                "0x025f58",
+                "0x025f66",
+                "0x025f7c",
+                "0x025f90",
+                "0x025fee",
+                "0x025ff4",
+                "0x0260ee",
+                "0x0263c4",
+                "0x0263fc",
+                "0x026420",
+                "0x026436",
+                "0x026442",
+                "0x026448",
+                "0x02644e",
+                "0x026452",
+                "0x026458",
+                "0x026462",
+                "0x026466",
+                "0x026484",
+                "0x0264a6",
+                "0x0264f2",
+                "0x02650e",
+                "0x02653a",
+                "0x02657e",
+                "0x026586"
+              ],
+              "direct_edges": [
+                {
+                  "site": "0x025dc0",
+                  "target": "0x003346",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025dc0"
+                  ]
+                },
+                {
+                  "site": "0x025dd4",
+                  "target": "0x0025fc",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025dd4"
+                  ]
+                },
+                {
+                  "site": "0x025dda",
+                  "target": "0x002612",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025dda"
+                  ]
+                },
+                {
+                  "site": "0x025de0",
+                  "target": "0x0024f8",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025de0"
+                  ]
+                },
+                {
+                  "site": "0x025df0",
+                  "target": "0x02771a",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025df0"
+                  ]
+                },
+                {
+                  "site": "0x025dfa",
+                  "target": "0x0276e0",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025dfa"
+                  ]
+                },
+                {
+                  "site": "0x025e22",
+                  "target": "0x027cac",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025e22"
+                  ]
+                },
+                {
+                  "site": "0x025e34",
+                  "target": "0x027d3e",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025e34"
+                  ]
+                },
+                {
+                  "site": "0x025e3c",
+                  "target": "0x026592",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025e3c"
+                  ]
+                },
+                {
+                  "site": "0x025e64",
+                  "target": "0x003346",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025e64"
+                  ]
+                },
+                {
+                  "site": "0x025e8a",
+                  "target": "0x027bc6",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025e8a"
+                  ]
+                },
+                {
+                  "site": "0x025e9a",
+                  "target": "0x025d20",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025e9a"
+                  ]
+                },
+                {
+                  "site": "0x025eb2",
+                  "target": "0x0276fe",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025eb2"
+                  ]
+                },
+                {
+                  "site": "0x025ed4",
+                  "target": "0x026592",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025ed4"
+                  ]
+                },
+                {
+                  "site": "0x025ee6",
+                  "target": "0x009ef0",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025ee6"
+                  ]
+                },
+                {
+                  "site": "0x025eee",
+                  "target": "0x0025fc",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025eee"
+                  ]
+                },
+                {
+                  "site": "0x025ef4",
+                  "target": "0x002612",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025ef4"
+                  ]
+                },
+                {
+                  "site": "0x025efa",
+                  "target": "0x0024f8",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025efa"
+                  ]
+                },
+                {
+                  "site": "0x025efe",
+                  "target": "0x02659a",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025efe"
+                  ]
+                },
+                {
+                  "site": "0x025f02",
+                  "target": "0x0265ac",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025f02"
+                  ]
+                },
+                {
+                  "site": "0x025f12",
+                  "target": "0x027cac",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025f12"
+                  ]
+                },
+                {
+                  "site": "0x025f1e",
+                  "target": "0x002554",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025f1e"
+                  ]
+                },
+                {
+                  "site": "0x025f28",
+                  "target": "0x0276fe",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025f28"
+                  ]
+                },
+                {
+                  "site": "0x025f38",
+                  "target": "0x027cac",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025f38"
+                  ]
+                },
+                {
+                  "site": "0x025f4c",
+                  "target": "0x0276e6",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025f4c"
+                  ]
+                },
+                {
+                  "site": "0x025f58",
+                  "target": "0x0276fe",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025f58"
+                  ]
+                },
+                {
+                  "site": "0x025f66",
+                  "target": "0x0276fe",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025f66"
+                  ]
+                },
+                {
+                  "site": "0x025f7c",
+                  "target": "0x027c1a",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025f7c"
+                  ]
+                },
+                {
+                  "site": "0x025f90",
+                  "target": "0x026592",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025f90"
+                  ]
+                },
+                {
+                  "site": "0x025fee",
+                  "target": "0x001ed8",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025fee"
+                  ]
+                },
+                {
+                  "site": "0x025ff4",
+                  "target": "0x0024f8",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x025ff4"
+                  ]
+                },
+                {
+                  "site": "0x0260ee",
+                  "target": "0x026592",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x0260ee"
+                  ]
+                },
+                {
+                  "site": "0x0263c4",
+                  "target": "0x020000",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x0263c4"
+                  ]
+                },
+                {
+                  "site": "0x0263fc",
+                  "target": "0x027b9a",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x0263fc"
+                  ]
+                },
+                {
+                  "site": "0x026420",
+                  "target": "0x027c1a",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x026420"
+                  ]
+                },
+                {
+                  "site": "0x026436",
+                  "target": "0x027c1a",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x026436"
+                  ]
+                },
+                {
+                  "site": "0x026442",
+                  "target": "0x0025fc",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x026442"
+                  ]
+                },
+                {
+                  "site": "0x026448",
+                  "target": "0x002612",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x026448"
+                  ]
+                },
+                {
+                  "site": "0x02644e",
+                  "target": "0x0024f8",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x02644e"
+                  ]
+                },
+                {
+                  "site": "0x026452",
+                  "target": "0x02659a",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x026452"
+                  ]
+                },
+                {
+                  "site": "0x026458",
+                  "target": "0x0265ac",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x026458"
+                  ]
+                },
+                {
+                  "site": "0x026462",
+                  "target": "0x0024f8",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x026462"
+                  ]
+                },
+                {
+                  "site": "0x026466",
+                  "target": "0x026592",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x026466"
+                  ]
+                },
+                {
+                  "site": "0x026484",
+                  "target": "0x0276fe",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x026484"
+                  ]
+                },
+                {
+                  "site": "0x0264a6",
+                  "target": "0x009ef0",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x0264a6"
+                  ]
+                },
+                {
+                  "site": "0x0264f2",
+                  "target": "0x002f4c",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x0264f2"
+                  ]
+                },
+                {
+                  "site": "0x02650e",
+                  "target": "0x002a98",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x02650e"
+                  ]
+                },
+                {
+                  "site": "0x02653a",
+                  "target": "0x025b82",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x02653a"
+                  ]
+                },
+                {
+                  "site": "0x02657e",
+                  "target": "0x025c1c",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x02657e"
+                  ]
+                },
+                {
+                  "site": "0x026586",
+                  "target": "0x0265c2",
+                  "confidence": "DIRECT_RESOLVED",
+                  "provenance": [
+                    "0x026586"
+                  ]
+                }
+              ],
+              "indirect_sites": 0
+            },
+            "return_values": "UNKNOWN",
+            "returns": 1,
+            "memory_operations": [
+              {
+                "instruction": "0x025d7e",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000953e",
+                "expression": null
+              },
+              {
+                "instruction": "0x025d8c",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00001ac2",
+                "expression": null
+              },
+              {
+                "instruction": "0x025d92",
+                "operation": "WRITE",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025d9a",
+                "operation": "ADDRESS_LOAD",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00010000",
+                "expression": null
+              },
+              {
+                "instruction": "0x025da6",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x000094b8",
+                "expression": null
+              },
+              {
+                "instruction": "0x025dc6",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009abc",
+                "expression": null
+              },
+              {
+                "instruction": "0x025dcc",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x000000ec",
+                "expression": null
+              },
+              {
+                "instruction": "0x025de4",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000953f",
+                "expression": null
+              },
+              {
+                "instruction": "0x025df4",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009506",
+                "expression": null
+              },
+              {
+                "instruction": "0x025dfe",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009508",
+                "expression": null
+              },
+              {
+                "instruction": "0x025e04",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009502",
+                "expression": null
+              },
+              {
+                "instruction": "0x025e0c",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009506",
+                "expression": null
+              },
+              {
+                "instruction": "0x025e12",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000950a",
+                "expression": null
+              },
+              {
+                "instruction": "0x025e2a",
+                "operation": "ADDRESS_LOAD",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000159a",
+                "expression": null
+              },
+              {
+                "instruction": "0x025e3a",
+                "operation": "WRITE",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025e48",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009502",
+                "expression": null
+              },
+              {
+                "instruction": "0x025e6a",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000953f",
+                "expression": null
+              },
+              {
+                "instruction": "0x025e80",
+                "operation": "WRITE",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025e82",
+                "operation": "ADDRESS_LOAD",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009430",
+                "expression": null
+              },
+              {
+                "instruction": "0x025ea2",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000953f",
+                "expression": null
+              },
+              {
+                "instruction": "0x025eac",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000950a",
+                "expression": null
+              },
+              {
+                "instruction": "0x025eba",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000950c",
+                "expression": null
+              },
+              {
+                "instruction": "0x025ec0",
+                "operation": "WRITE",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025ec2",
+                "operation": "WRITE",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025ec4",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025ec6",
+                "operation": "READ",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r1,r0)+0"
+              },
+              {
+                "instruction": "0x025eca",
+                "operation": "WRITE",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025ecc",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009502",
+                "expression": null
+              },
+              {
+                "instruction": "0x025ed2",
+                "operation": "WRITE",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025eda",
+                "operation": "WRITE",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025edc",
+                "operation": "WRITE",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025ede",
+                "operation": "WRITE",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025ee0",
+                "operation": "ADDRESS_LOAD",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009408",
+                "expression": null
+              },
+              {
+                "instruction": "0x025f16",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009abc",
+                "expression": null
+              },
+              {
+                "instruction": "0x025f22",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000950a",
+                "expression": null
+              },
+              {
+                "instruction": "0x025f2c",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000950c",
+                "expression": null
+              },
+              {
+                "instruction": "0x025f3c",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000953f",
+                "expression": null
+              },
+              {
+                "instruction": "0x025f46",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009508",
+                "expression": null
+              },
+              {
+                "instruction": "0x025f52",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009506",
+                "expression": null
+              },
+              {
+                "instruction": "0x025f60",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009506",
+                "expression": null
+              },
+              {
+                "instruction": "0x025f8a",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009abc",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fa0",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009502",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fb0",
+                "operation": "ADDRESS_LOAD",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009504",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fb6",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009504",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fba",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009504",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fbe",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x0000953f",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fc8",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fca",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fcc",
+                "operation": "READ",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r5,r4)+0"
+              },
+              {
+                "instruction": "0x025fd0",
+                "operation": "WRITE",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r3,r2)+0"
+              },
+              {
+                "instruction": "0x025fd2",
+                "operation": "WRITE",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r1,r0)+0"
+              },
+              {
+                "instruction": "0x025fd4",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fd6",
+                "operation": "READ",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r1,r0)+0"
+              },
+              {
+                "instruction": "0x025fdc",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fde",
+                "operation": "WRITE",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r1,r0)+0"
+              },
+              {
+                "instruction": "0x025fe0",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fe2",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fe4",
+                "operation": "READ",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r3,r2)+0"
+              },
+              {
+                "instruction": "0x025fe6",
+                "operation": "WRITE",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r1,r0)+7"
+              },
+              {
+                "instruction": "0x025fea",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x025fec",
+                "operation": "READ",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r1,r0)+0"
+              },
+              {
+                "instruction": "0x025ff8",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009502",
+                "expression": null
+              },
+              {
+                "instruction": "0x026000",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009502",
+                "expression": null
+              },
+              {
+                "instruction": "0x026030",
+                "operation": "READ",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r1,r0)+0"
+              },
+              {
+                "instruction": "0x02604e",
+                "operation": "READ",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r3,r2)+0"
+              },
+              {
+                "instruction": "0x026068",
+                "operation": "WRITE",
+                "address_kind": "UNKNOWN",
+                "effective_address": null,
+                "expression": "(r1,r0)+18"
+              },
+              {
+                "instruction": "0x026072",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x02607c",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x026086",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x026094",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x026098",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00001ad1",
+                "expression": null
+              },
+              {
+                "instruction": "0x0260a2",
+                "operation": "READ",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              },
+              {
+                "instruction": "0x0260aa",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00001ad5",
+                "expression": null
+              },
+              {
+                "instruction": "0x0260b8",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x000001f4",
+                "expression": null
+              },
+              {
+                "instruction": "0x0260ca",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009abc",
+                "expression": null
+              },
+              {
+                "instruction": "0x0260d0",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x000000ec",
+                "expression": null
+              },
+              {
+                "instruction": "0x0260d8",
+                "operation": "WRITE",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x000000ec",
+                "expression": null
+              },
+              {
+                "instruction": "0x0260e8",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x000000ec",
+                "expression": null
+              },
+              {
+                "instruction": "0x0260fa",
+                "operation": "READ",
+                "address_kind": "RESOLVED",
+                "effective_address": "0x00009437",
+                "expression": null
+              },
+              {
+                "instruction": "0x026100",
+                "operation": "WRITE",
+                "address_kind": "STACK",
+                "effective_address": "sp",
+                "expression": null
+              }
+            ],
+            "memory_operation_count": 253,
+            "memory_side_effects": {
+              "observed": 253,
+              "unsupported": 0
+            },
+            "unsupported_memory_instructions": 0,
+            "has_indirect": false
+          }
+        }
+      ],
+      "classification": "EVENT_STATUS_ACK_CANDIDATE",
+      "slot5_evidence": false,
+      "pcm_evidence": false,
+      "unresolved": [
+        "bit-level meaning of 0xF6006",
+        "whether the read has read-to-clear semantics",
+        "callee event-code semantics",
+        "whether the callee touches 0x01000000 or a FIFO"
+      ],
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860"
+    }
+  }
+}

@@ -1,0 +1,3181 @@
+{
+  "tool": "cr16-e3-soundness-audit/1",
+  "baseline_commit": "89599db81e2816cf323a554bb4054175d06dad25",
+  "criterion": "PROVEN requires a caller constant to reach the call on all modelled paths and the callee to preserve the pair until the memory use",
+  "source_images": {
+    "normal": {
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31"
+    },
+    "p2test": {
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860"
+    }
+  },
+  "images": {
+    "normal": {
+      "old_proven": 25,
+      "new_proven": 91,
+      "new_candidate": 82,
+      "reclassified": {
+        "PROVEN": 21,
+        "CANDIDATE": 4,
+        "INVALID": 0
+      },
+      "audited_old_proven": [
+        {
+          "image": "normal",
+          "old_call_site": "0x000714",
+          "callee": "0x028d3c",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00010842",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x028d3e",
+              "operation": "WRITE",
+              "effective_address": "0x00010842",
+              "provenance": [
+                "0x000714",
+                "0x028d3e"
+              ]
+            },
+            {
+              "instruction": "0x028d52",
+              "operation": "WRITE",
+              "effective_address": "0x00010842",
+              "provenance": [
+                "0x000714",
+                "0x028d52"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x000688",
+            "definition_provenance": [
+              "0x0006ee"
+            ],
+            "uses": [
+              {
+                "instruction": "0x028d3e",
+                "operation": "READ",
+                "effective_address": "0x00010842",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x028d52",
+                "operation": "READ",
+                "effective_address": "0x00010842",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x000812",
+          "callee": "0x001196",
+          "argument_pair": [
+            "r8",
+            "r7"
+          ],
+          "constant": "0x00010a78",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x001196",
+              "operation": "WRITE",
+              "effective_address": "0x00010a78",
+              "provenance": [
+                "0x000812",
+                "0x001196"
+              ]
+            },
+            {
+              "instruction": "0x00119c",
+              "operation": "WRITE",
+              "effective_address": "0x00010a7a",
+              "provenance": [
+                "0x000812",
+                "0x00119c"
+              ]
+            },
+            {
+              "instruction": "0x00119e",
+              "operation": "WRITE",
+              "effective_address": "0x00010a7c",
+              "provenance": [
+                "0x000812",
+                "0x00119e"
+              ]
+            },
+            {
+              "instruction": "0x0011a6",
+              "operation": "WRITE",
+              "effective_address": "0x00010a7e",
+              "provenance": [
+                "0x000812",
+                "0x0011a6"
+              ]
+            },
+            {
+              "instruction": "0x0011a8",
+              "operation": "WRITE",
+              "effective_address": "0x00010a78",
+              "provenance": [
+                "0x000812",
+                "0x0011a8"
+              ]
+            },
+            {
+              "instruction": "0x0011b4",
+              "operation": "WRITE",
+              "effective_address": "0x00010a80",
+              "provenance": [
+                "0x000812",
+                "0x0011b4"
+              ]
+            },
+            {
+              "instruction": "0x0011b6",
+              "operation": "WRITE",
+              "effective_address": "0x00010a82",
+              "provenance": [
+                "0x000812",
+                "0x0011b6"
+              ]
+            },
+            {
+              "instruction": "0x0011ba",
+              "operation": "WRITE",
+              "effective_address": "0x00010a84",
+              "provenance": [
+                "0x000812",
+                "0x0011ba"
+              ]
+            },
+            {
+              "instruction": "0x0011c2",
+              "operation": "WRITE",
+              "effective_address": "0x00010a86",
+              "provenance": [
+                "0x000812",
+                "0x0011c2"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x000688",
+            "definition_provenance": [
+              "0x00080c"
+            ],
+            "uses": [
+              {
+                "instruction": "0x001196",
+                "operation": "WRITE",
+                "effective_address": "0x00010a78",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x00119c",
+                "operation": "WRITE",
+                "effective_address": "0x00010a7a",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x00119e",
+                "operation": "WRITE",
+                "effective_address": "0x00010a7c",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011a6",
+                "operation": "WRITE",
+                "effective_address": "0x00010a7e",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011a8",
+                "operation": "READ",
+                "effective_address": "0x00010a78",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011b4",
+                "operation": "WRITE",
+                "effective_address": "0x00010a80",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011b6",
+                "operation": "WRITE",
+                "effective_address": "0x00010a82",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011ba",
+                "operation": "WRITE",
+                "effective_address": "0x00010a84",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011c2",
+                "operation": "WRITE",
+                "effective_address": "0x00010a86",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x0008a6",
+          "callee": "0x001196",
+          "argument_pair": [
+            "r8",
+            "r7"
+          ],
+          "constant": "0x00010ba8",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x001196",
+              "operation": "WRITE",
+              "effective_address": "0x00010ba8",
+              "provenance": [
+                "0x0008a6",
+                "0x001196"
+              ]
+            },
+            {
+              "instruction": "0x00119c",
+              "operation": "WRITE",
+              "effective_address": "0x00010baa",
+              "provenance": [
+                "0x0008a6",
+                "0x00119c"
+              ]
+            },
+            {
+              "instruction": "0x00119e",
+              "operation": "WRITE",
+              "effective_address": "0x00010bac",
+              "provenance": [
+                "0x0008a6",
+                "0x00119e"
+              ]
+            },
+            {
+              "instruction": "0x0011a6",
+              "operation": "WRITE",
+              "effective_address": "0x00010bae",
+              "provenance": [
+                "0x0008a6",
+                "0x0011a6"
+              ]
+            },
+            {
+              "instruction": "0x0011a8",
+              "operation": "WRITE",
+              "effective_address": "0x00010ba8",
+              "provenance": [
+                "0x0008a6",
+                "0x0011a8"
+              ]
+            },
+            {
+              "instruction": "0x0011b4",
+              "operation": "WRITE",
+              "effective_address": "0x00010bb0",
+              "provenance": [
+                "0x0008a6",
+                "0x0011b4"
+              ]
+            },
+            {
+              "instruction": "0x0011b6",
+              "operation": "WRITE",
+              "effective_address": "0x00010bb2",
+              "provenance": [
+                "0x0008a6",
+                "0x0011b6"
+              ]
+            },
+            {
+              "instruction": "0x0011ba",
+              "operation": "WRITE",
+              "effective_address": "0x00010bb4",
+              "provenance": [
+                "0x0008a6",
+                "0x0011ba"
+              ]
+            },
+            {
+              "instruction": "0x0011c2",
+              "operation": "WRITE",
+              "effective_address": "0x00010bb6",
+              "provenance": [
+                "0x0008a6",
+                "0x0011c2"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x000688",
+            "definition_provenance": [
+              "0x0008a0"
+            ],
+            "uses": [
+              {
+                "instruction": "0x001196",
+                "operation": "WRITE",
+                "effective_address": "0x00010ba8",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x00119c",
+                "operation": "WRITE",
+                "effective_address": "0x00010baa",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x00119e",
+                "operation": "WRITE",
+                "effective_address": "0x00010bac",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011a6",
+                "operation": "WRITE",
+                "effective_address": "0x00010bae",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011a8",
+                "operation": "READ",
+                "effective_address": "0x00010ba8",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011b4",
+                "operation": "WRITE",
+                "effective_address": "0x00010bb0",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011b6",
+                "operation": "WRITE",
+                "effective_address": "0x00010bb2",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011ba",
+                "operation": "WRITE",
+                "effective_address": "0x00010bb4",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011c2",
+                "operation": "WRITE",
+                "effective_address": "0x00010bb6",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x00093a",
+          "callee": "0x001196",
+          "argument_pair": [
+            "r8",
+            "r7"
+          ],
+          "constant": "0x00010cd8",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x001196",
+              "operation": "WRITE",
+              "effective_address": "0x00010cd8",
+              "provenance": [
+                "0x00093a",
+                "0x001196"
+              ]
+            },
+            {
+              "instruction": "0x00119c",
+              "operation": "WRITE",
+              "effective_address": "0x00010cda",
+              "provenance": [
+                "0x00093a",
+                "0x00119c"
+              ]
+            },
+            {
+              "instruction": "0x00119e",
+              "operation": "WRITE",
+              "effective_address": "0x00010cdc",
+              "provenance": [
+                "0x00093a",
+                "0x00119e"
+              ]
+            },
+            {
+              "instruction": "0x0011a6",
+              "operation": "WRITE",
+              "effective_address": "0x00010cde",
+              "provenance": [
+                "0x00093a",
+                "0x0011a6"
+              ]
+            },
+            {
+              "instruction": "0x0011a8",
+              "operation": "WRITE",
+              "effective_address": "0x00010cd8",
+              "provenance": [
+                "0x00093a",
+                "0x0011a8"
+              ]
+            },
+            {
+              "instruction": "0x0011b4",
+              "operation": "WRITE",
+              "effective_address": "0x00010ce0",
+              "provenance": [
+                "0x00093a",
+                "0x0011b4"
+              ]
+            },
+            {
+              "instruction": "0x0011b6",
+              "operation": "WRITE",
+              "effective_address": "0x00010ce2",
+              "provenance": [
+                "0x00093a",
+                "0x0011b6"
+              ]
+            },
+            {
+              "instruction": "0x0011ba",
+              "operation": "WRITE",
+              "effective_address": "0x00010ce4",
+              "provenance": [
+                "0x00093a",
+                "0x0011ba"
+              ]
+            },
+            {
+              "instruction": "0x0011c2",
+              "operation": "WRITE",
+              "effective_address": "0x00010ce6",
+              "provenance": [
+                "0x00093a",
+                "0x0011c2"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x000688",
+            "definition_provenance": [
+              "0x000934"
+            ],
+            "uses": [
+              {
+                "instruction": "0x001196",
+                "operation": "WRITE",
+                "effective_address": "0x00010cd8",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x00119c",
+                "operation": "WRITE",
+                "effective_address": "0x00010cda",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x00119e",
+                "operation": "WRITE",
+                "effective_address": "0x00010cdc",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011a6",
+                "operation": "WRITE",
+                "effective_address": "0x00010cde",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011a8",
+                "operation": "READ",
+                "effective_address": "0x00010cd8",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011b4",
+                "operation": "WRITE",
+                "effective_address": "0x00010ce0",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011b6",
+                "operation": "WRITE",
+                "effective_address": "0x00010ce2",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011ba",
+                "operation": "WRITE",
+                "effective_address": "0x00010ce4",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011c2",
+                "operation": "WRITE",
+                "effective_address": "0x00010ce6",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x0009ce",
+          "callee": "0x001196",
+          "argument_pair": [
+            "r8",
+            "r7"
+          ],
+          "constant": "0x00011802",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x001196",
+              "operation": "WRITE",
+              "effective_address": "0x00011802",
+              "provenance": [
+                "0x0009ce",
+                "0x001196"
+              ]
+            },
+            {
+              "instruction": "0x00119c",
+              "operation": "WRITE",
+              "effective_address": "0x00011804",
+              "provenance": [
+                "0x0009ce",
+                "0x00119c"
+              ]
+            },
+            {
+              "instruction": "0x00119e",
+              "operation": "WRITE",
+              "effective_address": "0x00011806",
+              "provenance": [
+                "0x0009ce",
+                "0x00119e"
+              ]
+            },
+            {
+              "instruction": "0x0011a6",
+              "operation": "WRITE",
+              "effective_address": "0x00011808",
+              "provenance": [
+                "0x0009ce",
+                "0x0011a6"
+              ]
+            },
+            {
+              "instruction": "0x0011a8",
+              "operation": "WRITE",
+              "effective_address": "0x00011802",
+              "provenance": [
+                "0x0009ce",
+                "0x0011a8"
+              ]
+            },
+            {
+              "instruction": "0x0011b4",
+              "operation": "WRITE",
+              "effective_address": "0x0001180a",
+              "provenance": [
+                "0x0009ce",
+                "0x0011b4"
+              ]
+            },
+            {
+              "instruction": "0x0011b6",
+              "operation": "WRITE",
+              "effective_address": "0x0001180c",
+              "provenance": [
+                "0x0009ce",
+                "0x0011b6"
+              ]
+            },
+            {
+              "instruction": "0x0011ba",
+              "operation": "WRITE",
+              "effective_address": "0x0001180e",
+              "provenance": [
+                "0x0009ce",
+                "0x0011ba"
+              ]
+            },
+            {
+              "instruction": "0x0011c2",
+              "operation": "WRITE",
+              "effective_address": "0x00011810",
+              "provenance": [
+                "0x0009ce",
+                "0x0011c2"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x000688",
+            "definition_provenance": [
+              "0x0009c8"
+            ],
+            "uses": [
+              {
+                "instruction": "0x001196",
+                "operation": "WRITE",
+                "effective_address": "0x00011802",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x00119c",
+                "operation": "WRITE",
+                "effective_address": "0x00011804",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x00119e",
+                "operation": "WRITE",
+                "effective_address": "0x00011806",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011a6",
+                "operation": "WRITE",
+                "effective_address": "0x00011808",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011a8",
+                "operation": "READ",
+                "effective_address": "0x00011802",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011b4",
+                "operation": "WRITE",
+                "effective_address": "0x0001180a",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011b6",
+                "operation": "WRITE",
+                "effective_address": "0x0001180c",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011ba",
+                "operation": "WRITE",
+                "effective_address": "0x0001180e",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011c2",
+                "operation": "WRITE",
+                "effective_address": "0x00011810",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x000a62",
+          "callee": "0x001196",
+          "argument_pair": [
+            "r8",
+            "r7"
+          ],
+          "constant": "0x00011932",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x001196",
+              "operation": "WRITE",
+              "effective_address": "0x00011932",
+              "provenance": [
+                "0x000a62",
+                "0x001196"
+              ]
+            },
+            {
+              "instruction": "0x00119c",
+              "operation": "WRITE",
+              "effective_address": "0x00011934",
+              "provenance": [
+                "0x000a62",
+                "0x00119c"
+              ]
+            },
+            {
+              "instruction": "0x00119e",
+              "operation": "WRITE",
+              "effective_address": "0x00011936",
+              "provenance": [
+                "0x000a62",
+                "0x00119e"
+              ]
+            },
+            {
+              "instruction": "0x0011a6",
+              "operation": "WRITE",
+              "effective_address": "0x00011938",
+              "provenance": [
+                "0x000a62",
+                "0x0011a6"
+              ]
+            },
+            {
+              "instruction": "0x0011a8",
+              "operation": "WRITE",
+              "effective_address": "0x00011932",
+              "provenance": [
+                "0x000a62",
+                "0x0011a8"
+              ]
+            },
+            {
+              "instruction": "0x0011b4",
+              "operation": "WRITE",
+              "effective_address": "0x0001193a",
+              "provenance": [
+                "0x000a62",
+                "0x0011b4"
+              ]
+            },
+            {
+              "instruction": "0x0011b6",
+              "operation": "WRITE",
+              "effective_address": "0x0001193c",
+              "provenance": [
+                "0x000a62",
+                "0x0011b6"
+              ]
+            },
+            {
+              "instruction": "0x0011ba",
+              "operation": "WRITE",
+              "effective_address": "0x0001193e",
+              "provenance": [
+                "0x000a62",
+                "0x0011ba"
+              ]
+            },
+            {
+              "instruction": "0x0011c2",
+              "operation": "WRITE",
+              "effective_address": "0x00011940",
+              "provenance": [
+                "0x000a62",
+                "0x0011c2"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x000688",
+            "definition_provenance": [
+              "0x000a5c"
+            ],
+            "uses": [
+              {
+                "instruction": "0x001196",
+                "operation": "WRITE",
+                "effective_address": "0x00011932",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x00119c",
+                "operation": "WRITE",
+                "effective_address": "0x00011934",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x00119e",
+                "operation": "WRITE",
+                "effective_address": "0x00011936",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011a6",
+                "operation": "WRITE",
+                "effective_address": "0x00011938",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011a8",
+                "operation": "READ",
+                "effective_address": "0x00011932",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011b4",
+                "operation": "WRITE",
+                "effective_address": "0x0001193a",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011b6",
+                "operation": "WRITE",
+                "effective_address": "0x0001193c",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011ba",
+                "operation": "WRITE",
+                "effective_address": "0x0001193e",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x0011c2",
+                "operation": "WRITE",
+                "effective_address": "0x00011940",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x002f44",
+          "callee": "0x0035c6",
+          "argument_pair": [
+            "r5",
+            "r4"
+          ],
+          "constant": "0x00001bc0",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x0035d2",
+              "operation": "WRITE",
+              "effective_address": "0x00001bc0",
+              "provenance": [
+                "0x002f44",
+                "0x0035d2"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x002f02",
+            "definition_provenance": [
+              "0x002f3c"
+            ],
+            "uses": [
+              {
+                "instruction": "0x0035d2",
+                "operation": "READ",
+                "effective_address": "0x00001bc0",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x003a1e",
+          "callee": "0x028d3c",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x000002b8",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x028d3e",
+              "operation": "WRITE",
+              "effective_address": "0x000002b8",
+              "provenance": [
+                "0x003a1e",
+                "0x028d3e"
+              ]
+            },
+            {
+              "instruction": "0x028d52",
+              "operation": "WRITE",
+              "effective_address": "0x000002b8",
+              "provenance": [
+                "0x003a1e",
+                "0x028d52"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x0039f8",
+            "definition_provenance": [
+              "0x003a18"
+            ],
+            "uses": [
+              {
+                "instruction": "0x028d3e",
+                "operation": "READ",
+                "effective_address": "0x000002b8",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x028d52",
+                "operation": "READ",
+                "effective_address": "0x000002b8",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x021a30",
+          "callee": "0x021e30",
+          "argument_pair": [
+            "r10",
+            "r9"
+          ],
+          "constant": "0x0000244e",
+          "old_classification": "PROVEN",
+          "new_classification": "CANDIDATE",
+          "old_uses": [
+            {
+              "instruction": "0x021e34",
+              "operation": "READ",
+              "effective_address": "0x00002451",
+              "provenance": [
+                "0x021a30",
+                "0x021e34"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x0219fa",
+            "definition_provenance": [
+              "0x021a28"
+            ],
+            "uses": [
+              {
+                "instruction": "0x021e34",
+                "operation": "READ",
+                "effective_address": "0x00002451",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "CANDIDATE"
+              }
+            ],
+            "reasons": [
+              "caller entry/path not complete"
+            ]
+          },
+          "reasons": [
+            "caller entry/path not complete"
+          ]
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x0224a6",
+          "callee": "0x0224e2",
+          "argument_pair": [
+            "r5",
+            "r4"
+          ],
+          "constant": "0x00001ab9",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x0224f2",
+              "operation": "WRITE",
+              "effective_address": "0x00001ab9",
+              "provenance": [
+                "0x0224a6",
+                "0x0224f2"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x022390",
+            "definition_provenance": [
+              "0x0224a0"
+            ],
+            "uses": [
+              {
+                "instruction": "0x0224f2",
+                "operation": "READ",
+                "effective_address": "0x00001ab9",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x0228ba",
+          "callee": "0x022d66",
+          "argument_pair": [
+            "r5",
+            "r4"
+          ],
+          "constant": "0x0000957e",
+          "old_classification": "PROVEN",
+          "new_classification": "CANDIDATE",
+          "old_uses": [
+            {
+              "instruction": "0x022d6c",
+              "operation": "WRITE",
+              "effective_address": "0x0000957e",
+              "provenance": [
+                "0x0228ba",
+                "0x022d6c"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x022764",
+            "definition_provenance": [
+              "0x0228b0"
+            ],
+            "uses": [
+              {
+                "instruction": "0x022d6c",
+                "operation": "READ",
+                "effective_address": "0x0000957e",
+                "clobbered_before_use": [
+                  "r4",
+                  "r5"
+                ],
+                "preserved_to_use": false,
+                "confidence": "CANDIDATE"
+              }
+            ],
+            "reasons": [
+              "caller entry/path not complete",
+              "callee path analysis incomplete",
+              "callee may write the pair before use"
+            ]
+          },
+          "reasons": [
+            "caller entry/path not complete",
+            "callee path analysis incomplete",
+            "callee may write the pair before use"
+          ]
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x023ca4",
+          "callee": "0x0204ea",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00009b87",
+          "old_classification": "PROVEN",
+          "new_classification": "CANDIDATE",
+          "old_uses": [
+            {
+              "instruction": "0x0204ee",
+              "operation": "READ",
+              "effective_address": "0x00009b88",
+              "provenance": [
+                "0x023ca4",
+                "0x0204ee"
+              ]
+            },
+            {
+              "instruction": "0x0204fa",
+              "operation": "READ",
+              "effective_address": "0x00009b87",
+              "provenance": [
+                "0x023ca4",
+                "0x0204fa"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x023226",
+            "definition_provenance": [
+              "0x023c9e"
+            ],
+            "uses": [
+              {
+                "instruction": "0x0204ee",
+                "operation": "READ",
+                "effective_address": "0x00009b88",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "CANDIDATE"
+              },
+              {
+                "instruction": "0x0204fa",
+                "operation": "READ",
+                "effective_address": "0x00009b87",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "CANDIDATE"
+              }
+            ],
+            "reasons": [
+              "caller entry/path not complete"
+            ]
+          },
+          "reasons": [
+            "caller entry/path not complete"
+          ]
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x024348",
+          "callee": "0x0204ea",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00009b87",
+          "old_classification": "PROVEN",
+          "new_classification": "CANDIDATE",
+          "old_uses": [
+            {
+              "instruction": "0x0204ee",
+              "operation": "READ",
+              "effective_address": "0x00009b88",
+              "provenance": [
+                "0x024348",
+                "0x0204ee"
+              ]
+            },
+            {
+              "instruction": "0x0204fa",
+              "operation": "READ",
+              "effective_address": "0x00009b87",
+              "provenance": [
+                "0x024348",
+                "0x0204fa"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x023226",
+            "definition_provenance": [
+              "0x024342"
+            ],
+            "uses": [
+              {
+                "instruction": "0x0204ee",
+                "operation": "READ",
+                "effective_address": "0x00009b88",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "CANDIDATE"
+              },
+              {
+                "instruction": "0x0204fa",
+                "operation": "READ",
+                "effective_address": "0x00009b87",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "CANDIDATE"
+              }
+            ],
+            "reasons": [
+              "caller entry/path not complete"
+            ]
+          },
+          "reasons": [
+            "caller entry/path not complete"
+          ]
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x0261fa",
+          "callee": "0x028d3c",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00009bea",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x028d3e",
+              "operation": "WRITE",
+              "effective_address": "0x00009bea",
+              "provenance": [
+                "0x0261fa",
+                "0x028d3e"
+              ]
+            },
+            {
+              "instruction": "0x028d52",
+              "operation": "WRITE",
+              "effective_address": "0x00009bea",
+              "provenance": [
+                "0x0261fa",
+                "0x028d52"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x0261ec",
+            "definition_provenance": [
+              "0x0261f4"
+            ],
+            "uses": [
+              {
+                "instruction": "0x028d3e",
+                "operation": "READ",
+                "effective_address": "0x00009bea",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x028d52",
+                "operation": "READ",
+                "effective_address": "0x00009bea",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x027ea8",
+          "callee": "0x027f9c",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00010e8e",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x027f9c",
+              "operation": "READ",
+              "effective_address": "0x00010e90",
+              "provenance": [
+                "0x027ea8",
+                "0x027f9c"
+              ]
+            },
+            {
+              "instruction": "0x027fa0",
+              "operation": "WRITE",
+              "effective_address": "0x00010e8e",
+              "provenance": [
+                "0x027ea8",
+                "0x027fa0"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x027dc8",
+            "definition_provenance": [
+              "0x027ea2"
+            ],
+            "uses": [
+              {
+                "instruction": "0x027f9c",
+                "operation": "READ",
+                "effective_address": "0x00010e90",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x027fa0",
+                "operation": "WRITE",
+                "effective_address": "0x00010e8e",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x027eb2",
+          "callee": "0x027f74",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00010f3a",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x027f74",
+              "operation": "READ",
+              "effective_address": "0x00010f48",
+              "provenance": [
+                "0x027eb2",
+                "0x027f74"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x027dc8",
+            "definition_provenance": [
+              "0x027eac"
+            ],
+            "uses": [
+              {
+                "instruction": "0x027f74",
+                "operation": "READ",
+                "effective_address": "0x00010f48",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x027ed4",
+          "callee": "0x027f9c",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00010ee0",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x027f9c",
+              "operation": "READ",
+              "effective_address": "0x00010ee2",
+              "provenance": [
+                "0x027ed4",
+                "0x027f9c"
+              ]
+            },
+            {
+              "instruction": "0x027fa0",
+              "operation": "WRITE",
+              "effective_address": "0x00010ee0",
+              "provenance": [
+                "0x027ed4",
+                "0x027fa0"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x027dc8",
+            "definition_provenance": [
+              "0x027ece"
+            ],
+            "uses": [
+              {
+                "instruction": "0x027f9c",
+                "operation": "READ",
+                "effective_address": "0x00010ee2",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x027fa0",
+                "operation": "WRITE",
+                "effective_address": "0x00010ee0",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x027ede",
+          "callee": "0x027f74",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00010f8c",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x027f74",
+              "operation": "READ",
+              "effective_address": "0x00010f9a",
+              "provenance": [
+                "0x027ede",
+                "0x027f74"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x027dc8",
+            "definition_provenance": [
+              "0x027ed8"
+            ],
+            "uses": [
+              {
+                "instruction": "0x027f74",
+                "operation": "READ",
+                "effective_address": "0x00010f9a",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x027f00",
+          "callee": "0x027f9c",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00010f32",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x027f9c",
+              "operation": "READ",
+              "effective_address": "0x00010f34",
+              "provenance": [
+                "0x027f00",
+                "0x027f9c"
+              ]
+            },
+            {
+              "instruction": "0x027fa0",
+              "operation": "WRITE",
+              "effective_address": "0x00010f32",
+              "provenance": [
+                "0x027f00",
+                "0x027fa0"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x027dc8",
+            "definition_provenance": [
+              "0x027efa"
+            ],
+            "uses": [
+              {
+                "instruction": "0x027f9c",
+                "operation": "READ",
+                "effective_address": "0x00010f34",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x027fa0",
+                "operation": "WRITE",
+                "effective_address": "0x00010f32",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x027f0a",
+          "callee": "0x027f74",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00010fde",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x027f74",
+              "operation": "READ",
+              "effective_address": "0x00010fec",
+              "provenance": [
+                "0x027f0a",
+                "0x027f74"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x027dc8",
+            "definition_provenance": [
+              "0x027f04"
+            ],
+            "uses": [
+              {
+                "instruction": "0x027f74",
+                "operation": "READ",
+                "effective_address": "0x00010fec",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x027f2c",
+          "callee": "0x027f9c",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00011aac",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x027f9c",
+              "operation": "READ",
+              "effective_address": "0x00011aae",
+              "provenance": [
+                "0x027f2c",
+                "0x027f9c"
+              ]
+            },
+            {
+              "instruction": "0x027fa0",
+              "operation": "WRITE",
+              "effective_address": "0x00011aac",
+              "provenance": [
+                "0x027f2c",
+                "0x027fa0"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x027dc8",
+            "definition_provenance": [
+              "0x027f26"
+            ],
+            "uses": [
+              {
+                "instruction": "0x027f9c",
+                "operation": "READ",
+                "effective_address": "0x00011aae",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x027fa0",
+                "operation": "WRITE",
+                "effective_address": "0x00011aac",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x027f36",
+          "callee": "0x027f74",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00011b06",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x027f74",
+              "operation": "READ",
+              "effective_address": "0x00011b14",
+              "provenance": [
+                "0x027f36",
+                "0x027f74"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x027dc8",
+            "definition_provenance": [
+              "0x027f30"
+            ],
+            "uses": [
+              {
+                "instruction": "0x027f74",
+                "operation": "READ",
+                "effective_address": "0x00011b14",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x027f58",
+          "callee": "0x027f9c",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00011afe",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x027f9c",
+              "operation": "READ",
+              "effective_address": "0x00011b00",
+              "provenance": [
+                "0x027f58",
+                "0x027f9c"
+              ]
+            },
+            {
+              "instruction": "0x027fa0",
+              "operation": "WRITE",
+              "effective_address": "0x00011afe",
+              "provenance": [
+                "0x027f58",
+                "0x027fa0"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x027dc8",
+            "definition_provenance": [
+              "0x027f52"
+            ],
+            "uses": [
+              {
+                "instruction": "0x027f9c",
+                "operation": "READ",
+                "effective_address": "0x00011b00",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x027fa0",
+                "operation": "WRITE",
+                "effective_address": "0x00011afe",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x027f62",
+          "callee": "0x027f74",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00011b58",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x027f74",
+              "operation": "READ",
+              "effective_address": "0x00011b66",
+              "provenance": [
+                "0x027f62",
+                "0x027f74"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x027dc8",
+            "definition_provenance": [
+              "0x027f5c"
+            ],
+            "uses": [
+              {
+                "instruction": "0x027f74",
+                "operation": "READ",
+                "effective_address": "0x00011b66",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "normal",
+          "old_call_site": "0x028a62",
+          "callee": "0x0289b0",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00ff4000",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x0289b0",
+              "operation": "READ",
+              "effective_address": "0x00ff4000",
+              "provenance": [
+                "0x028a62",
+                "0x0289b0"
+              ]
+            },
+            {
+              "instruction": "0x028a48",
+              "operation": "WRITE",
+              "effective_address": "0x00ff4000",
+              "provenance": [
+                "0x028a62",
+                "0x028a48"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x028a4c",
+            "definition_provenance": [
+              "0x028a5c"
+            ],
+            "uses": [
+              {
+                "instruction": "0x0289b0",
+                "operation": "READ",
+                "effective_address": "0x00ff4000",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x028a48",
+                "operation": "WRITE",
+                "effective_address": "0x00ff4000",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        }
+      ],
+      "new_proven_not_in_e2": [
+        {
+          "call_site": "0x000b00",
+          "callee": "0x00118e",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00001608",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x000e76",
+          "callee": "0x001126",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000113f2",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x000ea4",
+          "callee": "0x001126",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000114da",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x000ed2",
+          "callee": "0x001126",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000115c2",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x000f00",
+          "callee": "0x001126",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00011c30",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x000f2e",
+          "callee": "0x001126",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00011d18",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x000f70",
+          "callee": "0x027726",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00010e24",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x001014",
+          "callee": "0x00114a",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000117c6",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x001024",
+          "callee": "0x00113e",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000117cc",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x001034",
+          "callee": "0x00114a",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000117d2",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x001044",
+          "callee": "0x00113e",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000117d8",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x001054",
+          "callee": "0x00114a",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000117de",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x001064",
+          "callee": "0x00113e",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000117e4",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x001074",
+          "callee": "0x00114a",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000117ea",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x001084",
+          "callee": "0x00113e",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000117f0",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x001094",
+          "callee": "0x00114a",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000117f6",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x0010a4",
+          "callee": "0x00113e",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000117fc",
+          "caller_entry": "0x000688"
+        },
+        {
+          "call_site": "0x0014e8",
+          "callee": "0x001580",
+          "argument_pair": [
+            "r7",
+            "r6"
+          ],
+          "constant": "0x00ff4858",
+          "caller_entry": "0x001468"
+        },
+        {
+          "call_site": "0x0014e8",
+          "callee": "0x001580",
+          "argument_pair": [
+            "r5",
+            "r4"
+          ],
+          "constant": "0x00ff4856",
+          "caller_entry": "0x001468"
+        },
+        {
+          "call_site": "0x001518",
+          "callee": "0x001580",
+          "argument_pair": [
+            "r7",
+            "r6"
+          ],
+          "constant": "0x00ff4858",
+          "caller_entry": "0x001468"
+        },
+        {
+          "call_site": "0x001518",
+          "callee": "0x001580",
+          "argument_pair": [
+            "r5",
+            "r4"
+          ],
+          "constant": "0x00ff4856",
+          "caller_entry": "0x001468"
+        },
+        {
+          "call_site": "0x021682",
+          "callee": "0x021786",
+          "argument_pair": [
+            "r8",
+            "r7"
+          ],
+          "constant": "0x00002269",
+          "caller_entry": "0x02160e"
+        }
+      ]
+    },
+    "p2test": {
+      "old_proven": 10,
+      "new_proven": 42,
+      "new_candidate": 92,
+      "reclassified": {
+        "PROVEN": 8,
+        "CANDIDATE": 2,
+        "INVALID": 0
+      },
+      "audited_old_proven": [
+        {
+          "image": "p2test",
+          "old_call_site": "0x000660",
+          "callee": "0x000c0a",
+          "argument_pair": [
+            "r8",
+            "r7"
+          ],
+          "constant": "0x00010a6c",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x000c0a",
+              "operation": "WRITE",
+              "effective_address": "0x00010a6c",
+              "provenance": [
+                "0x000660",
+                "0x000c0a"
+              ]
+            },
+            {
+              "instruction": "0x000c10",
+              "operation": "WRITE",
+              "effective_address": "0x00010a6e",
+              "provenance": [
+                "0x000660",
+                "0x000c10"
+              ]
+            },
+            {
+              "instruction": "0x000c12",
+              "operation": "WRITE",
+              "effective_address": "0x00010a70",
+              "provenance": [
+                "0x000660",
+                "0x000c12"
+              ]
+            },
+            {
+              "instruction": "0x000c1a",
+              "operation": "WRITE",
+              "effective_address": "0x00010a72",
+              "provenance": [
+                "0x000660",
+                "0x000c1a"
+              ]
+            },
+            {
+              "instruction": "0x000c1c",
+              "operation": "WRITE",
+              "effective_address": "0x00010a6c",
+              "provenance": [
+                "0x000660",
+                "0x000c1c"
+              ]
+            },
+            {
+              "instruction": "0x000c2a",
+              "operation": "WRITE",
+              "effective_address": "0x00010a74",
+              "provenance": [
+                "0x000660",
+                "0x000c2a"
+              ]
+            },
+            {
+              "instruction": "0x000c2c",
+              "operation": "WRITE",
+              "effective_address": "0x00010a76",
+              "provenance": [
+                "0x000660",
+                "0x000c2c"
+              ]
+            },
+            {
+              "instruction": "0x000c30",
+              "operation": "WRITE",
+              "effective_address": "0x00010a78",
+              "provenance": [
+                "0x000660",
+                "0x000c30"
+              ]
+            },
+            {
+              "instruction": "0x000c38",
+              "operation": "WRITE",
+              "effective_address": "0x00010a7a",
+              "provenance": [
+                "0x000660",
+                "0x000c38"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x0004e2",
+            "definition_provenance": [
+              "0x00065a"
+            ],
+            "uses": [
+              {
+                "instruction": "0x000c0a",
+                "operation": "WRITE",
+                "effective_address": "0x00010a6c",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c10",
+                "operation": "WRITE",
+                "effective_address": "0x00010a6e",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c12",
+                "operation": "WRITE",
+                "effective_address": "0x00010a70",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c1a",
+                "operation": "WRITE",
+                "effective_address": "0x00010a72",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c1c",
+                "operation": "READ",
+                "effective_address": "0x00010a6c",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c2a",
+                "operation": "WRITE",
+                "effective_address": "0x00010a74",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c2c",
+                "operation": "WRITE",
+                "effective_address": "0x00010a76",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c30",
+                "operation": "WRITE",
+                "effective_address": "0x00010a78",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c38",
+                "operation": "WRITE",
+                "effective_address": "0x00010a7a",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "p2test",
+          "old_call_site": "0x0006fe",
+          "callee": "0x000c0a",
+          "argument_pair": [
+            "r8",
+            "r7"
+          ],
+          "constant": "0x00010b9c",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x000c0a",
+              "operation": "WRITE",
+              "effective_address": "0x00010b9c",
+              "provenance": [
+                "0x0006fe",
+                "0x000c0a"
+              ]
+            },
+            {
+              "instruction": "0x000c10",
+              "operation": "WRITE",
+              "effective_address": "0x00010b9e",
+              "provenance": [
+                "0x0006fe",
+                "0x000c10"
+              ]
+            },
+            {
+              "instruction": "0x000c12",
+              "operation": "WRITE",
+              "effective_address": "0x00010ba0",
+              "provenance": [
+                "0x0006fe",
+                "0x000c12"
+              ]
+            },
+            {
+              "instruction": "0x000c1a",
+              "operation": "WRITE",
+              "effective_address": "0x00010ba2",
+              "provenance": [
+                "0x0006fe",
+                "0x000c1a"
+              ]
+            },
+            {
+              "instruction": "0x000c1c",
+              "operation": "WRITE",
+              "effective_address": "0x00010b9c",
+              "provenance": [
+                "0x0006fe",
+                "0x000c1c"
+              ]
+            },
+            {
+              "instruction": "0x000c2a",
+              "operation": "WRITE",
+              "effective_address": "0x00010ba4",
+              "provenance": [
+                "0x0006fe",
+                "0x000c2a"
+              ]
+            },
+            {
+              "instruction": "0x000c2c",
+              "operation": "WRITE",
+              "effective_address": "0x00010ba6",
+              "provenance": [
+                "0x0006fe",
+                "0x000c2c"
+              ]
+            },
+            {
+              "instruction": "0x000c30",
+              "operation": "WRITE",
+              "effective_address": "0x00010ba8",
+              "provenance": [
+                "0x0006fe",
+                "0x000c30"
+              ]
+            },
+            {
+              "instruction": "0x000c38",
+              "operation": "WRITE",
+              "effective_address": "0x00010baa",
+              "provenance": [
+                "0x0006fe",
+                "0x000c38"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x0004e2",
+            "definition_provenance": [
+              "0x0006f8"
+            ],
+            "uses": [
+              {
+                "instruction": "0x000c0a",
+                "operation": "WRITE",
+                "effective_address": "0x00010b9c",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c10",
+                "operation": "WRITE",
+                "effective_address": "0x00010b9e",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c12",
+                "operation": "WRITE",
+                "effective_address": "0x00010ba0",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c1a",
+                "operation": "WRITE",
+                "effective_address": "0x00010ba2",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c1c",
+                "operation": "READ",
+                "effective_address": "0x00010b9c",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c2a",
+                "operation": "WRITE",
+                "effective_address": "0x00010ba4",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c2c",
+                "operation": "WRITE",
+                "effective_address": "0x00010ba6",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c30",
+                "operation": "WRITE",
+                "effective_address": "0x00010ba8",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c38",
+                "operation": "WRITE",
+                "effective_address": "0x00010baa",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "p2test",
+          "old_call_site": "0x00079c",
+          "callee": "0x000c0a",
+          "argument_pair": [
+            "r8",
+            "r7"
+          ],
+          "constant": "0x00010ccc",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x000c0a",
+              "operation": "WRITE",
+              "effective_address": "0x00010ccc",
+              "provenance": [
+                "0x00079c",
+                "0x000c0a"
+              ]
+            },
+            {
+              "instruction": "0x000c10",
+              "operation": "WRITE",
+              "effective_address": "0x00010cce",
+              "provenance": [
+                "0x00079c",
+                "0x000c10"
+              ]
+            },
+            {
+              "instruction": "0x000c12",
+              "operation": "WRITE",
+              "effective_address": "0x00010cd0",
+              "provenance": [
+                "0x00079c",
+                "0x000c12"
+              ]
+            },
+            {
+              "instruction": "0x000c1a",
+              "operation": "WRITE",
+              "effective_address": "0x00010cd2",
+              "provenance": [
+                "0x00079c",
+                "0x000c1a"
+              ]
+            },
+            {
+              "instruction": "0x000c1c",
+              "operation": "WRITE",
+              "effective_address": "0x00010ccc",
+              "provenance": [
+                "0x00079c",
+                "0x000c1c"
+              ]
+            },
+            {
+              "instruction": "0x000c2a",
+              "operation": "WRITE",
+              "effective_address": "0x00010cd4",
+              "provenance": [
+                "0x00079c",
+                "0x000c2a"
+              ]
+            },
+            {
+              "instruction": "0x000c2c",
+              "operation": "WRITE",
+              "effective_address": "0x00010cd6",
+              "provenance": [
+                "0x00079c",
+                "0x000c2c"
+              ]
+            },
+            {
+              "instruction": "0x000c30",
+              "operation": "WRITE",
+              "effective_address": "0x00010cd8",
+              "provenance": [
+                "0x00079c",
+                "0x000c30"
+              ]
+            },
+            {
+              "instruction": "0x000c38",
+              "operation": "WRITE",
+              "effective_address": "0x00010cda",
+              "provenance": [
+                "0x00079c",
+                "0x000c38"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x0004e2",
+            "definition_provenance": [
+              "0x000796"
+            ],
+            "uses": [
+              {
+                "instruction": "0x000c0a",
+                "operation": "WRITE",
+                "effective_address": "0x00010ccc",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c10",
+                "operation": "WRITE",
+                "effective_address": "0x00010cce",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c12",
+                "operation": "WRITE",
+                "effective_address": "0x00010cd0",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c1a",
+                "operation": "WRITE",
+                "effective_address": "0x00010cd2",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c1c",
+                "operation": "READ",
+                "effective_address": "0x00010ccc",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c2a",
+                "operation": "WRITE",
+                "effective_address": "0x00010cd4",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c2c",
+                "operation": "WRITE",
+                "effective_address": "0x00010cd6",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c30",
+                "operation": "WRITE",
+                "effective_address": "0x00010cd8",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x000c38",
+                "operation": "WRITE",
+                "effective_address": "0x00010cda",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "p2test",
+          "old_call_site": "0x009fca",
+          "callee": "0x009f18",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00ff4000",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x009f18",
+              "operation": "READ",
+              "effective_address": "0x00ff4000",
+              "provenance": [
+                "0x009fca",
+                "0x009f18"
+              ]
+            },
+            {
+              "instruction": "0x009fb0",
+              "operation": "WRITE",
+              "effective_address": "0x00ff4000",
+              "provenance": [
+                "0x009fca",
+                "0x009fb0"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x009fb4",
+            "definition_provenance": [
+              "0x009fc4"
+            ],
+            "uses": [
+              {
+                "instruction": "0x009f18",
+                "operation": "READ",
+                "effective_address": "0x00ff4000",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x009fb0",
+                "operation": "WRITE",
+                "effective_address": "0x00ff4000",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "p2test",
+          "old_call_site": "0x020414",
+          "callee": "0x025ade",
+          "argument_pair": [
+            "r5",
+            "r4"
+          ],
+          "constant": "0x00001cd7",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x025ae8",
+              "operation": "WRITE",
+              "effective_address": "0x00001cd7",
+              "provenance": [
+                "0x020414",
+                "0x025ae8"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x02037a",
+            "definition_provenance": [
+              "0x02040c"
+            ],
+            "uses": [
+              {
+                "instruction": "0x025ae8",
+                "operation": "READ",
+                "effective_address": "0x00001cd7",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "p2test",
+          "old_call_site": "0x020d9e",
+          "callee": "0x02026c",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00001af0",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x020270",
+              "operation": "READ",
+              "effective_address": "0x00001af1",
+              "provenance": [
+                "0x020d9e",
+                "0x020270"
+              ]
+            },
+            {
+              "instruction": "0x02027c",
+              "operation": "READ",
+              "effective_address": "0x00001af0",
+              "provenance": [
+                "0x020d9e",
+                "0x02027c"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x020d36",
+            "definition_provenance": [
+              "0x020d98"
+            ],
+            "uses": [
+              {
+                "instruction": "0x020270",
+                "operation": "READ",
+                "effective_address": "0x00001af1",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x02027c",
+                "operation": "READ",
+                "effective_address": "0x00001af0",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "p2test",
+          "old_call_site": "0x02212e",
+          "callee": "0x0224f4",
+          "argument_pair": [
+            "r10",
+            "r9"
+          ],
+          "constant": "0x00001cad",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x0224f8",
+              "operation": "READ",
+              "effective_address": "0x00001cb0",
+              "provenance": [
+                "0x02212e",
+                "0x0224f8"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x0220f8",
+            "definition_provenance": [
+              "0x022126"
+            ],
+            "uses": [
+              {
+                "instruction": "0x0224f8",
+                "operation": "READ",
+                "effective_address": "0x00001cb0",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        },
+        {
+          "image": "p2test",
+          "old_call_site": "0x0243b0",
+          "callee": "0x02026c",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00009ade",
+          "old_classification": "PROVEN",
+          "new_classification": "CANDIDATE",
+          "old_uses": [
+            {
+              "instruction": "0x020270",
+              "operation": "READ",
+              "effective_address": "0x00009adf",
+              "provenance": [
+                "0x0243b0",
+                "0x020270"
+              ]
+            },
+            {
+              "instruction": "0x02027c",
+              "operation": "READ",
+              "effective_address": "0x00009ade",
+              "provenance": [
+                "0x0243b0",
+                "0x02027c"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x023750",
+            "definition_provenance": [
+              "0x0243aa"
+            ],
+            "uses": [
+              {
+                "instruction": "0x020270",
+                "operation": "READ",
+                "effective_address": "0x00009adf",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "CANDIDATE"
+              },
+              {
+                "instruction": "0x02027c",
+                "operation": "READ",
+                "effective_address": "0x00009ade",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "CANDIDATE"
+              }
+            ],
+            "reasons": [
+              "caller entry/path not complete"
+            ]
+          },
+          "reasons": [
+            "caller entry/path not complete"
+          ]
+        },
+        {
+          "image": "p2test",
+          "old_call_site": "0x024754",
+          "callee": "0x02026c",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00009ade",
+          "old_classification": "PROVEN",
+          "new_classification": "CANDIDATE",
+          "old_uses": [
+            {
+              "instruction": "0x020270",
+              "operation": "READ",
+              "effective_address": "0x00009adf",
+              "provenance": [
+                "0x024754",
+                "0x020270"
+              ]
+            },
+            {
+              "instruction": "0x02027c",
+              "operation": "READ",
+              "effective_address": "0x00009ade",
+              "provenance": [
+                "0x024754",
+                "0x02027c"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x023750",
+            "definition_provenance": [
+              "0x02474e"
+            ],
+            "uses": [
+              {
+                "instruction": "0x020270",
+                "operation": "READ",
+                "effective_address": "0x00009adf",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "CANDIDATE"
+              },
+              {
+                "instruction": "0x02027c",
+                "operation": "READ",
+                "effective_address": "0x00009ade",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "CANDIDATE"
+              }
+            ],
+            "reasons": [
+              "caller entry/path not complete"
+            ]
+          },
+          "reasons": [
+            "caller entry/path not complete"
+          ]
+        },
+        {
+          "image": "p2test",
+          "old_call_site": "0x027138",
+          "callee": "0x027cac",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00000218",
+          "old_classification": "PROVEN",
+          "new_classification": "PROVEN",
+          "old_uses": [
+            {
+              "instruction": "0x027cc2",
+              "operation": "WRITE",
+              "effective_address": "0x00000218",
+              "provenance": [
+                "0x027138",
+                "0x027cc2"
+              ]
+            },
+            {
+              "instruction": "0x027cae",
+              "operation": "WRITE",
+              "effective_address": "0x00000218",
+              "provenance": [
+                "0x027138",
+                "0x027cae"
+              ]
+            }
+          ],
+          "new_record": {
+            "caller_entry": "0x027112",
+            "definition_provenance": [
+              "0x027132"
+            ],
+            "uses": [
+              {
+                "instruction": "0x027cc2",
+                "operation": "READ",
+                "effective_address": "0x00000218",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              },
+              {
+                "instruction": "0x027cae",
+                "operation": "READ",
+                "effective_address": "0x00000218",
+                "clobbered_before_use": [],
+                "preserved_to_use": true,
+                "confidence": "PROVEN"
+              }
+            ],
+            "reasons": []
+          },
+          "reasons": []
+        }
+      ],
+      "new_proven_not_in_e2": [
+        {
+          "call_site": "0x000a6c",
+          "callee": "0x000bd6",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00011218",
+          "caller_entry": "0x0004e2"
+        },
+        {
+          "call_site": "0x000a9a",
+          "callee": "0x000bd6",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x00011300",
+          "caller_entry": "0x0004e2"
+        },
+        {
+          "call_site": "0x000ac8",
+          "callee": "0x000bd6",
+          "argument_pair": [
+            "r1",
+            "r0"
+          ],
+          "constant": "0x000113e8",
+          "caller_entry": "0x0004e2"
+        },
+        {
+          "call_site": "0x000b08",
+          "callee": "0x0035ca",
+          "argument_pair": [
+            "r3",
+            "r2"
+          ],
+          "constant": "0x00010e18",
+          "caller_entry": "0x0004e2"
+        },
+        {
+          "call_site": "0x000f64",
+          "callee": "0x000ffc",
+          "argument_pair": [
+            "r7",
+            "r6"
+          ],
+          "constant": "0x00ff4858",
+          "caller_entry": "0x000ee4"
+        },
+        {
+          "call_site": "0x000f64",
+          "callee": "0x000ffc",
+          "argument_pair": [
+            "r5",
+            "r4"
+          ],
+          "constant": "0x00ff4856",
+          "caller_entry": "0x000ee4"
+        },
+        {
+          "call_site": "0x000f94",
+          "callee": "0x000ffc",
+          "argument_pair": [
+            "r7",
+            "r6"
+          ],
+          "constant": "0x00ff4858",
+          "caller_entry": "0x000ee4"
+        },
+        {
+          "call_site": "0x000f94",
+          "callee": "0x000ffc",
+          "argument_pair": [
+            "r5",
+            "r4"
+          ],
+          "constant": "0x00ff4856",
+          "caller_entry": "0x000ee4"
+        },
+        {
+          "call_site": "0x0213ae",
+          "callee": "0x0214a0",
+          "argument_pair": [
+            "r8",
+            "r7"
+          ],
+          "constant": "0x00001abf",
+          "caller_entry": "0x021338"
+        }
+      ]
+    }
+  }
+}

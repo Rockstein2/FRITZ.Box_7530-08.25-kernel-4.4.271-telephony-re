@@ -178,6 +178,15 @@ the closest IRQ path is `dip_int`, which reads `0xF6006` and writes
 handler.  The `0x01000000 + 2*index` writer remains a loader/RAM-init
 candidate with no resolved reader.  See `fon-e2-summary.md`.
 
+E3 re-audited the interprocedural proofs and followed `dsp_int`/`dip_int`
+locally.  `dsp_int` reads a pointer at `0xD6` (`0x01027F80` in both images),
+adds `0x58`, and accesses `0x01027FD8`; its other counters are at
+`0x2C4+0xE/+0x10` normal and `0x224+0xE/+0x10` p2test.  `dip_int` passes the
+low byte of `0xF6006` to a callee and writes `0xF5402 = 0x0400`.  Neither is
+a proven PCM or slot-5 consumer.  `0x01000000` is outside the 24-bit address
+range, so its bank/address mechanism remains **UNRESOLVED**.  See
+`fon-e3-summary.md`.
+
 ## 11. Minimum standalone driver
 
 A transport-only harness can be written from the Linux-side formulas.  A

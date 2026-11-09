@@ -33,6 +33,7 @@ Verify the canonical layout and all SHA256 manifests with
 | `fon-sc14448-pcmlink-protocol.md` | Reconstructed slot-5 TX/RX protocol, confidence and caveats. |
 | `fon-e1-summary.md` | E1 cross-block dataflow, indirect search and DMA byte-order result. |
 | `fon-e2-summary.md` | E2 interprocedural analysis, table consumers, IRQ callgraphs and slot-5 boundary. |
+| `fon-e3-summary.md` | E3 proof audit, corrected table/IRQ reporting, dsp/dip traces and `0x01000000` boundary. |
 
 Evidence classes used by `fon-known-facts.md`:
 
@@ -128,6 +129,10 @@ provenance, never as status.
 | `history/fon-e2-irq-callgraph.md` | 31-vector IRQ callgraph for both images |
 | `history/fon-e2-firmware-handler-search.md` | Expanded slot-5 search and remaining paths |
 | `history/fon-e2-loader-vs-pcm-buffer.md` | `0x01000000` loader/RAM-init versus PCM ambiguity |
+| `history/fon-e3-dataflow-correctness.md` | Path-sensitive interprocedural soundness and E2 proof audit |
+| `history/fon-e3-dsp-irq-reconstruction.md` | `dsp_int`, `0xD6` pointer and helper trace |
+| `history/fon-e3-dip-pcm-reconstruction.md` | `dip_int`, `0xF6006`/`0xF5402` trace |
+| `history/fon-e3-loader-runtime-boundary.md` | 511-iteration fill range, address space and runtime pointer boundary |
 
 ### Dialog SC14448 firmware and CR16
 

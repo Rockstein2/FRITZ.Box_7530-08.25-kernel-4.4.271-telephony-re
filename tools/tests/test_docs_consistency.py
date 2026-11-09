@@ -902,7 +902,7 @@ _root_current = {
     "fon-go-no-go.md", "fon-d06-summary.md", "fon-adss-clock-reset.md",
     "fon-dialog-minimal-loader.md", "fon-tdm-control-only-plan.md",
     "fon-e0-summary.md", "fon-sc14448-pcmlink-protocol.md",
-    "fon-e1-summary.md", "fon-e2-summary.md",
+    "fon-e1-summary.md", "fon-e2-summary.md", "fon-e3-summary.md",
 }
 _root_analysis = [p.name for p in DOCS.glob("*.md")
                   if p.name not in _root_current]
@@ -1421,9 +1421,9 @@ _e2p = json.loads((ROOT / "tools" / "reports" /
 check("E2 normal function summaries", _e2n["function_entries"], 432)
 check("E2 p2test function summaries", _e2p["function_entries"], 403)
 check("E2 normal proven arguments",
-      _e2n["proven_argument_propagations"], 25)
+      _e2n["proven_argument_propagations"], 91)
 check("E2 p2test proven arguments",
-      _e2p["proven_argument_propagations"], 10)
+      _e2p["proven_argument_propagations"], 42)
 check("E2 reports keep source SHA",
       len(_e2n.get("sha256", "")) == 64
       and len(_e2p.get("sha256", "")) == 64, True)
@@ -1464,13 +1464,13 @@ check("E2 interprocedural doc records convergence failure handling",
       "NON_CONVERGED" in _e2o, True)
 _e2t = (HISTORY / "fon-e2-table-dispatch.md").read_text()
 check("E2 table doc records no proven target",
-      "| normal | 382 | 87 | 295 | 0 |" in _e2t, True)
+      "| normal | 382 | 6 | 376 | 0 |" in _e2t, True)
 _e2i = (HISTORY / "fon-e2-irq-callgraph.md").read_text()
 check("E2 IRQ doc records the 31-vector table",
       "31" in _e2i and "dip_int" in _e2i, True)
 _e2f = (HISTORY / "fon-e2-firmware-handler-search.md").read_text()
 check("E2 handler doc records remaining indirect sites",
-      "295" in _e2f and "318" in _e2f, True)
+      "376" in _e2f and "379" in _e2f, True)
 _e2l = (HISTORY / "fon-e2-loader-vs-pcm-buffer.md").read_text()
 check("E2 loader doc does not name PCM buffer",
       "not a named PCM buffer" in _e2l, True)
@@ -1480,6 +1480,73 @@ check("E2 tools index links interprocedural tool",
       True)
 check("E2 summary is in docs index",
       "fon-e2-summary.md" in _docs_index, True)
+
+# ---------------------------------------------------------------------------
+# 28. FON-E3 soundness audit and focused traces
+# ---------------------------------------------------------------------------
+for _name in ("fon-e3-summary.md",
+              "history/fon-e3-dataflow-correctness.md",
+              "history/fon-e3-dsp-irq-reconstruction.md",
+              "history/fon-e3-dip-pcm-reconstruction.md",
+              "history/fon-e3-loader-runtime-boundary.md"):
+    check(f"E3 document exists: {_name}", (DOCS / _name).is_file(), True)
+
+for _name in ("cr16-e3-soundness-audit.json", "cr16-e3-dsp-paths.json",
+              "cr16-e3-dip-paths.json", "cr16-e3-callsite-audit.json",
+              "cr16-e3-handler-candidates.json"):
+    check(f"E3 report exists: {_name}",
+          (ROOT / "tools" / "reports" / _name).is_file(), True)
+
+_e3s = json.loads((ROOT / "tools" / "reports" /
+                   "cr16-e3-soundness-audit.json").read_text())
+for _image, _old, _proven, _cand in (("normal", 25, 91, 82),
+                                    ("p2test", 10, 42, 92)):
+    _d = _e3s["images"][_image]
+    check(f"E3 {_image}: old PROVEN audited", _d["old_proven"], _old)
+    check(f"E3 {_image}: corrected PROVEN", _d["new_proven"], _proven)
+    check(f"E3 {_image}: corrected CANDIDATE", _d["new_candidate"], _cand)
+
+_e3d = json.loads((ROOT / "tools" / "reports" /
+                   "cr16-e3-dsp-paths.json").read_text())
+for _image in ("normal", "p2test"):
+    _d = _e3d["images"][_image]
+    check(f"E3 {_image}: 0xD6 pointer", _d["pointer_cell"]["image_u32"],
+          "0x01027f80")
+    check(f"E3 {_image}: pointer +0x58",
+          _d["pointer_cell"]["plus_0x58"], "0x01027fd8")
+
+_e3i = json.loads((ROOT / "tools" / "reports" /
+                   "cr16-e3-dip-paths.json").read_text())
+for _image in ("normal", "p2test"):
+    _d = _e3i["images"][_image]
+    check(f"E3 {_image}: F6006 read present",
+          any(o.get("effective_address") == "0x000f6006"
+              for o in _d["memory_operations"]), True)
+    check(f"E3 {_image}: F5402 write present",
+          any(o.get("effective_address") == "0x000f5402"
+              for o in _d["memory_operations"]), True)
+    check(f"E3 {_image}: no F6006/FF6006 alias claim",
+          _d["f6006"]["alias_claim"], "UNKNOWN")
+
+_e3h = json.loads((ROOT / "tools" / "reports" /
+                   "cr16-e3-handler-candidates.json").read_text())
+for _image in ("normal", "p2test"):
+    _d = _e3h["images"][_image]
+    check(f"E3 {_image}: no slot-5 handler",
+          _d["slot5_handler_found"], False)
+    check(f"E3 {_image}: 0x01000000 unresolved",
+          _d["0x01000000"]["classification"], "UNRESOLVED")
+    check(f"E3 {_image}: 0x01000000 not PCM",
+          _d["0x01000000"]["runtime_pcm_buffer_proven"], False)
+
+_e3sum = (DOCS / "fon-e3-summary.md").read_text()
+for _needle in ("21", "8", "91", "42", "376", "379", "0x01027F80",
+                "0x01027FD8", "UNRESOLVED", "NON_CONVERGED"):
+    check(f"E3 summary records {_needle}", _needle in _e3sum, True)
+check("E3 tools index links the audit tool",
+      "cr16_e3.py" in (ROOT / "tools" / "README.md").read_text(), True)
+check("E3 summary is in docs index",
+      "fon-e3-summary.md" in _docs_index, True)
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")

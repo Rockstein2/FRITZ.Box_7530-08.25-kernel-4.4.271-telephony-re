@@ -1,0 +1,91 @@
+{
+  "tool": "cr16-e3-handler-candidates/1",
+  "images": {
+    "normal": {
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+      "slot5_handler_found": false,
+      "slot5_status": "CANDIDATE_ONLY",
+      "dsp_int": "DSP_EVENT_OR_SOFTWARE_QUEUE_CANDIDATE",
+      "dip_int": "EVENT_STATUS_ACK_CANDIDATE",
+      "pcm_named_handlers": 0,
+      "0x01000000": {
+        "fill_range": "0x01000002\u20260x010003FE",
+        "fill_loop": {
+          "control": "0x25f90",
+          "static_store": "0x25d0",
+          "iterations": "1\u2026511",
+          "classification": "RAM_INIT_CANDIDATE"
+        },
+        "d6_pointer": {
+          "address": "0x000000d6",
+          "image_u32": "0x01027f80",
+          "pointer_source": "static image value",
+          "plus_0x58": "0x01027fd8",
+          "runtime_writers_resolved": [],
+          "address_space": "UNRESOLVED_ABOVE_24BIT",
+          "status": "STATIC_POINTER_CANDIDATE"
+        },
+        "classification": "UNRESOLVED",
+        "address_space": "UNRESOLVED",
+        "runtime_pointer_candidate": true,
+        "runtime_pcm_buffer_proven": false,
+        "note": "0x01000000 is outside the 24-bit address range; the fill loop has one static store executed over 511 iterations.  The dsp pointer target is outside the fill range.  The region is not named PCM"
+      },
+      "remaining": [
+        "0xD6 runtime writers / loader relocation",
+        "source of the DSP event word",
+        "0xF6006 bit semantics and callee event decoding",
+        "unresolved indirect/table sites",
+        "stack-passed arguments"
+      ],
+      "limitations": [
+        "no proven slot-5 consumer",
+        "no physical wire order claimed"
+      ]
+    },
+    "p2test": {
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+      "slot5_handler_found": false,
+      "slot5_status": "CANDIDATE_ONLY",
+      "dsp_int": "DSP_EVENT_OR_SOFTWARE_QUEUE_CANDIDATE",
+      "dip_int": "EVENT_STATUS_ACK_CANDIDATE",
+      "pcm_named_handlers": 0,
+      "0x01000000": {
+        "fill_range": "0x01000002\u20260x010003FE",
+        "fill_loop": {
+          "control": "0x26750",
+          "static_store": "0x1e8c",
+          "iterations": "1\u2026511",
+          "classification": "RAM_INIT_CANDIDATE"
+        },
+        "d6_pointer": {
+          "address": "0x000000d6",
+          "image_u32": "0x01027f80",
+          "pointer_source": "static image value",
+          "plus_0x58": "0x01027fd8",
+          "runtime_writers_resolved": [],
+          "address_space": "UNRESOLVED_ABOVE_24BIT",
+          "status": "STATIC_POINTER_CANDIDATE"
+        },
+        "classification": "UNRESOLVED",
+        "address_space": "UNRESOLVED",
+        "runtime_pointer_candidate": true,
+        "runtime_pcm_buffer_proven": false,
+        "note": "0x01000000 is outside the 24-bit address range; the fill loop has one static store executed over 511 iterations.  The dsp pointer target is outside the fill range.  The region is not named PCM"
+      },
+      "remaining": [
+        "0xD6 runtime writers / loader relocation",
+        "source of the DSP event word",
+        "0xF6006 bit semantics and callee event decoding",
+        "unresolved indirect/table sites",
+        "stack-passed arguments"
+      ],
+      "limitations": [
+        "no proven slot-5 consumer",
+        "no physical wire order claimed"
+      ]
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "tool": "cr16-fon-handler-candidates/1",
+  "tool": "cr16-fon-handler-candidates/3",
   "source_images": {
     "normal": {
       "source": "firmware/dectfw_secondlevel_441.hex",
@@ -1357,12 +1357,6 @@
     "data/code ambiguity"
   ],
   "normal_p2test": {
-    "normal_indirect": 382,
-    "p2test_indirect": 396,
-    "normal_table_candidates": 382,
-    "p2test_table_candidates": 396,
-    "normal_irq_vectors": 31,
-    "p2test_irq_vectors": 31,
     "structural_match": "same vector count; no PCM name"
   },
   "limitations": [

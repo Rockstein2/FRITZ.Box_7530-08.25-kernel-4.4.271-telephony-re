@@ -9,7 +9,7 @@ E2 does not repeat the E1 MMIO-only xref scan.  It adds:
 
 - the continuation after every direct call;
 - 432/403 function summaries;
-- 146/116 direct-call argument records, of which 25/10 are proven;
+- 146/116 E2 direct-call argument records, of which 25/10 were initially proven; E3 re-audited them (21/8 retained, 4/2 downgraded) and reports 173/134 records, 91/42 PROVEN;
 - consumer-side analysis of 382/396 indirect sites;
 - complete 31-vector IRQ callgraphs for both images;
 - indexed accesses in the IRQ path;
@@ -59,8 +59,8 @@ p2test examples:
 0x00033a  base 0x00010814
 ```
 
-These are `CANDIDATE` only.  The report has 87 normal / 78 p2test candidates
-and 295 normal / 318 p2test unresolved sites.  None has a proven table base,
+These are `CANDIDATE` only.  The report has 6 normal / 17 p2test candidates after E3 def-use
+correction, and 376 normal / 379 p2test unresolved sites.  None has a proven table base,
 bounded index and valid indirect target together.
 
 ### Unresolved indirect sites

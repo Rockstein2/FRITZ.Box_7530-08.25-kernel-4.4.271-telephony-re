@@ -40,7 +40,13 @@ the CR16 map.
 | Contents proven data table | no |
 | PCM relationship proven | no |
 
-Classification: **`LOADER_OR_RAM_INIT_CANDIDATE`**.
+E3 adds a concrete pointer: `dsp_int` reads `0xD6` = `0x01027F80`, adds
+`0x58`, and accesses `0x01027FD8`; this is outside the 511-word fill range.
+The region therefore has at least two subranges.  The address-space/bank
+mechanism is still unresolved, and the whole region remains **not PCM**.
+
+Classification: **`LOADER_OR_RAM_INIT_CANDIDATE`** in E2; E3 narrows the
+whole-region label to **`UNRESOLVED`** with separate fill/pointer candidates.
 
 That means the region is consistent with a loader/copy or RAM-init buffer, but
 E2 cannot distinguish those from a runtime buffer that is only reached through

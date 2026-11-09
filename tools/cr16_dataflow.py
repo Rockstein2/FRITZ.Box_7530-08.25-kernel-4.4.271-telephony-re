@@ -256,15 +256,14 @@ def _row(image, addr, insn, kind, width, akind, effective, provenance,
     }
 
 
-def run_image(name, path, objdump, max_iters=MAX_ITERS):
+def compute_states(name, path, objdump, max_iters=MAX_ITERS):
+    """Run the block-entry constant analysis and return its state tables.\n\n    This is the shared soundness primitive used by E3.  The caller must check
+    ``converged`` before treating any state as proof.
+    """
     fw = C.load(str(path))
     C.disassemble(fw, objdump)
     blocks, starts, addr_block, succ, preds = blocks_and_successors(fw)
     mode_a, mode_b = X.reachability(fw)
-    # `states`/`provs` are block *entry* maps; `out_states`/`out_provs` are
-    # the exit maps propagated along CFG edges.  Starting all exits empty is
-    # the sound no-information state; constants grow only where a block
-    # actually defines them and a successor inherits them.
     states = {s: {} for s in starts}
     provs = {s: {} for s in starts}
     out_states = {s: {} for s in starts}
@@ -287,6 +286,14 @@ def run_image(name, path, objdump, max_iters=MAX_ITERS):
         if not changed:
             converged = True
             break
+    return (fw, blocks, starts, addr_block, succ, preds, states, provs,
+            converged, iterations)
+
+
+def run_image(name, path, objdump, max_iters=MAX_ITERS):
+    (fw, blocks, starts, addr_block, succ, preds, states, provs,
+     converged, iterations) = compute_states(name, path, objdump, max_iters)
+    mode_a, mode_b = X.reachability(fw)
     rows = []
     unclassified = []
     for s in starts:
@@ -327,6 +334,7 @@ def run_image(name, path, objdump, max_iters=MAX_ITERS):
             1 for r in new_resolved if r.get("plausibility_note")),
         "analysis_status": "CONVERGED" if converged else "NON_CONVERGED",
         "converged": converged,
+        "incomplete": not converged,
         "iterations": iterations,
         "max_iterations": max_iters,
         "call_edges": sum(1 for e in C.build(fw)
@@ -403,12 +411,22 @@ def main(argv):
     out.mkdir(parents=True, exist_ok=True)
     all_ind = []
     all_pcm = []
+    status = 0
     for name, path in IMAGES:
         if not path.is_file():
             print(f"SKIP {name}: {path} missing")
             continue
         report, fw, rows = run_image(name, path, args.objdump,
                                      args.max_iterations)
+        if not report["converged"]:
+            # Never replace a previously confirmed report with an incomplete
+            # fixed-point result.  Keep the diagnostics under a distinct name.
+            (out / f"cr16-dataflow-{name}.incomplete.json").write_text(
+                json.dumps(report, indent=2) + "\n")
+            print(f"{name}: NON_CONVERGED after {report['iterations']} "
+                  f"iterations; report not promoted", file=sys.stderr)
+            status = 1
+            continue
         (out / f"cr16-dataflow-{name}.json").write_text(
             json.dumps(report, indent=2) + "\n")
         print(f"{name}: blocks={report['blocks']} "
@@ -417,6 +435,12 @@ def main(argv):
         ir = indirect_report(name, fw)
         all_ind.append(ir)
         all_pcm.append(pcm_report(name, rows))
+    if status:
+        # A mixed/partial set must not overwrite the last complete candidate
+        # reports either.
+        print("incomplete analysis; combined reports not written",
+              file=sys.stderr)
+        return 1
     (out / "cr16-indirect-candidates.json").write_text(
         json.dumps({"tool": "cr16-indirect/1", "images": all_ind},
                    indent=2) + "\n")

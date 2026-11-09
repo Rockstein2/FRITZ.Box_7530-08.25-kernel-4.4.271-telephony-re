@@ -62,11 +62,14 @@ reported as converged.  Normal execution converges in four iterations.
 | Fixed-point status | CONVERGED | CONVERGED |
 | Iterations | 4 | 4 |
 | Indirect edges | 382 | 396 |
-| Table-dispatch candidates | 87 | 78 |
-| Table-dispatch unresolved | 295 | 318 |
+| Table-dispatch candidates (E3-corrected) | 6 | 17 |
+| Table-dispatch unresolved (E3-corrected) | 376 | 379 |
 | Function entries with summaries | 432 | 403 |
-| Direct argument records | 146 | 116 |
-| Proven call arguments | 25 | 10 |
+| E2 initial direct argument records | 146 | 116 |
+| E2 initial PROVEN call arguments (audited in E3) | 25 | 10 |
+| E3 corrected direct argument records | 173 | 134 |
+| E3 corrected PROVEN call arguments | 91 | 42 |
+| E3 retained old PROVEN arguments | 21 | 8 |
 | IRQ vectors | 31 | 31 |
 
 The E1 cross-block counts changed slightly because the restored call
@@ -127,8 +130,11 @@ entry width, index bounds, consumer reason, provenance and confidence.
 
 Result:
 
-- normal: 382 indirect sites; 87 `CANDIDATE`, 295 `UNRESOLVED`, **0 PROVEN**;
-- p2test: 396 indirect sites; 78 `CANDIDATE`, 318 `UNRESOLVED`, **0 PROVEN**.
+E2 initially reported 87/78 candidates and 295/318 unresolved sites.  E3's
+stricter def-use check corrects this to:
+
+- normal: 382 indirect sites; 6 `CANDIDATE`, 376 `UNRESOLVED`, **0 PROVEN**;
+- p2test: 396 indirect sites; 17 `CANDIDATE`, 379 `UNRESOLVED`, **0 PROVEN**.
 
 The 5 639/5 668 16-bit address-like words from E1 remain a raw candidate set.
 They are not promoted by a normal/p2test address coincidence, and no
@@ -205,7 +211,7 @@ temporary variables; a golden test covers the overlap case.
 No slot-5 consumer was proven.  E2 expanded coverage compared with E1:
 
 - call continuations are now reachable;
-- 146/116 direct-call argument records were examined;
+- 146/116 E2 direct-call argument records were examined; E3 records 173/134;
 - 382/396 indirect sites were tied to their nearest table-like consumer;
 - all 31 IRQ vectors were reconstructed in both images;
 - indexed accesses in the IRQ path were inspected;
@@ -213,7 +219,7 @@ No slot-5 consumer was proven.  E2 expanded coverage compared with E1:
 
 Remaining concrete paths:
 
-1. indirect sites with `UNRESOLVED` targets: 295 normal / 318 p2test;
+1. indirect sites with `UNRESOLVED` targets: 376 normal / 379 p2test;
 2. indexed `r12/r13` accesses: 549 normal / 396 p2test, mostly symbolic;
 3. IRQ handlers that may read a hardware FIFO instead of RAM;
 4. stack-passed arguments not modelled by E2;

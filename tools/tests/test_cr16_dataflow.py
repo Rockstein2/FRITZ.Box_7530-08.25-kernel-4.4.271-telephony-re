@@ -7,7 +7,9 @@ The merge tests are pure; the firmware tests are SKIP when the CR16 oracle or
 the external firmware is unavailable.
 """
 import json
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -133,6 +135,20 @@ def test_firmware():
     check("forced cap does not claim PROVEN new rows",
           all(r.get("confidence") == "CANDIDATE"
               for r in forced["newly_resolved"]), True)
+    with tempfile.TemporaryDirectory() as td:
+        sentinel = Path(td) / "cr16-dataflow-normal.json"
+        sentinel.write_text('{"sentinel": true}\n')
+        p = subprocess.run(
+            [sys.executable, str(ROOT / "cr16_dataflow.py"),
+             "--objdump", str(OBJDUMP), "--max-iterations", "1",
+             "--out", td],
+            cwd=str(ROOT.parent), capture_output=True, text=True)
+        check("NON_CONVERGED CLI exits non-zero", p.returncode != 0, True)
+        check("NON_CONVERGED CLI writes incomplete report",
+              (Path(td) / "cr16-dataflow-normal.incomplete.json").is_file(),
+              True)
+        check("NON_CONVERGED CLI does not overwrite confirmed report",
+              sentinel.read_text(), '{"sentinel": true}\n')
 
 
 def test_reports():
