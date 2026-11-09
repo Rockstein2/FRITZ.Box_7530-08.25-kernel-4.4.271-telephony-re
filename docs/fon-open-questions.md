@@ -1,5 +1,10 @@
 # FON: open questions
 
+E3.2.1 does not close Q46/Q55/Q75 or the SC14448 physical-register aspect
+of Q57. Its DIP-fill report separates previously reconstructed values from
+instruction-level observations; no independent loop/value-flow proof is
+claimed. K1/K2 remain NO-GO.
+
 Status: **the only list of unresolved items for this project**
 
 Each item states what the question is, what would close it, and in which

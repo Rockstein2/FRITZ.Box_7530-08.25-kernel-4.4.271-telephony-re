@@ -1,5 +1,11 @@
 # FON: known facts (single source of truth)
 
+E3.2.1 offline validation: direction-aware address-operand selection and
+fail-closed report publication preserve the architectural abs20 rule
+(`0xF6006` → `0x00FF6006`, not a hardware alias). DIP fill bounds/payload
+remain previously reconstructed candidates pending a complete def-use/CFG
+proof. No SC14448 register identity or slot-5 handler is established.
+
 Status: **confirmed evidence only. Anything not listed here is either an open
 question (`fon-open-questions.md`) or historical reasoning under
 `docs/history/`.**

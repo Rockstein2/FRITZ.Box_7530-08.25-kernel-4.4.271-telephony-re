@@ -1,39 +1,39 @@
 {
-  "tool": "cr16-e32-audit/1",
-  "baseline": "89599db81e2816cf323a554bb4054175d06dad25",
-  "e31_fixes": {
-    "memory_use_key": [
-      "instruction",
-      "effective_address",
-      "operation",
-      "known displacement",
-      "register_pair when both available"
-    ],
-    "old_baseline": "fail-closed on missing/invalid E2 baseline; SHA256 checked against firmware",
-    "table_def_use_scope": "LOCAL_BASIC_BLOCK_ONLY"
+ "tool": "cr16-e32-audit/1",
+ "baseline": "89599db81e2816cf323a554bb4054175d06dad25",
+ "e31_fixes": {
+  "memory_use_key": [
+   "instruction",
+   "effective_address",
+   "operation",
+   "known displacement",
+   "known register_pair"
+  ],
+  "old_baseline": "fail-closed on missing/invalid E2 baseline; SHA256 checked against firmware",
+  "table_def_use_scope": "LOCAL_BASIC_BLOCK_ONLY"
+ },
+ "images": {
+  "normal": {
+   "old_proven": 25,
+   "reclassified": {
+    "PROVEN": 11,
+    "CANDIDATE": 3,
+    "INVALID": 11
+   },
+   "use_match_checked": true,
+   "mismatched_uses": 0,
+   "missing_uses": 14
   },
-  "images": {
-    "normal": {
-      "old_proven": 25,
-      "reclassified": {
-        "PROVEN": 11,
-        "CANDIDATE": 3,
-        "INVALID": 11
-      },
-      "use_match_checked": true,
-      "mismatched_uses": 0,
-      "missing_uses": 14
-    },
-    "p2test": {
-      "old_proven": 10,
-      "reclassified": {
-        "PROVEN": 3,
-        "CANDIDATE": 2,
-        "INVALID": 5
-      },
-      "use_match_checked": true,
-      "mismatched_uses": 0,
-      "missing_uses": 6
-    }
+  "p2test": {
+   "old_proven": 10,
+   "reclassified": {
+    "PROVEN": 3,
+    "CANDIDATE": 2,
+    "INVALID": 5
+   },
+   "use_match_checked": true,
+   "mismatched_uses": 0,
+   "missing_uses": 6
   }
+ }
 }

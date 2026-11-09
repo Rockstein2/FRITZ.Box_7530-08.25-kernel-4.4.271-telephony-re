@@ -1,5 +1,12 @@
 # E3.2 history — CR16 addressing and the `0x000Fxxxx` artifact
 
+E3.2.1: unified direction-aware memory operand selection replaces the
+first-parseable-operand heuristic in the address-form reporter. Five reports
+are staged only after both SHA256-checked images and converged analyses pass;
+failure preserves the previous reports and emits a diagnostic `.incomplete.json`.
+The `0xFxxxx` encoded fields still expand to `0x00FFxxxx` architecturally;
+SC14448 physical register identity remains a candidate.
+
 > **Status: historical analysis, offline.**
 > Current facts: `../fon-known-facts.md`.
 > Current conclusion: `../fon-e32-summary.md`.

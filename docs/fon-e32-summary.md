@@ -1,5 +1,32 @@
 # FON-E3.2 summary — CR16 address-space resolution and audit fixes
 
+## E3.2.1 hardening (offline)
+
+The three address analyzers now share `address_operand()` in
+`tools/cr16_peripheral_xrefs.py`: load source, store destination, bit-memory
+operand; pair-to-pair `movd` and register-list forms are not ordinary memory
+accesses. `cr16_address_spaces.py` requires both SHA256-matched images, an
+executable oracle and two converged, structurally valid results before staging
+and promoting its five JSON reports. Failed runs leave confirmed reports
+unchanged and emit `cr16-address-spaces.incomplete.json` with a reason.
+Replay now uses an empty temporary directory and checks exit status and all
+five JSON files. E2 matching requires every *known* old memory-use field in
+the new record; missing/changed fields invalidate the proof, while unknown old
+fields are listed explicitly. The regenerated audit remains 25 → 11/3/11
+(normal) and 10 → 3/2/5 (p2test); interproc remains 43/58 and 22/69
+PROVEN/CANDIDATE. DIP `0x1001` is a decoded nearby literal, but its
+def-use path into the store is unresolved; 1…511 and base+2×index retain
+`PREVIOUSLY_RECONSTRUCTED` provenance, not independent path-sensitive proof.
+Q57 remains closed only for architectural abs20 extension, not SC14448
+physical register identity. Q46/Q55/Q75 remain open; K1/K2 remain NO-GO.
+Address-form records remain 5735/5183. Direction-aware classification
+corrects 161/130 records (mostly pair-valued `stord` into stack/indexed
+destinations), including 3/5 `stord` ABS24 destinations previously labelled
+as register-pair forms; the represented effective addresses at these sites
+do not change. The high abs20 fields retain their canonical `0x00FFxxxx`
+addresses. The report's `address_mode` is now the actual memory destination,
+not the first parseable pair-valued operand.
+
 > **Status: offline research completed; no hardware action.**
 > K1/K2 remain **NO-GO**.  No router, UART, MMIO, DMA, GPIO, firmware
 > execution, TDM or ringing was used.

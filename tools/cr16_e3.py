@@ -123,19 +123,17 @@ def _use_key(u):
 
 def _compare_use(ou, nu):
     """Compare one old/new use; return a mismatch reason or None."""
-    if (ou.get("operation") is not None and
-            nu.get("operation") is not None and
-            ou.get("operation") != nu.get("operation")):
-        return f"operation {ou.get('operation')} -> {nu.get('operation')}"
-    if (ou.get("displacement") is not None and
-            nu.get("displacement") is not None and
-            ou.get("displacement") != nu.get("displacement")):
-        return (f"displacement {ou.get('displacement')} -> "
-                f"{nu.get('displacement')}")
-    opair = ou.get("register_pair")
-    npair = nu.get("register_pair")
-    if opair is not None and npair is not None and list(opair) != list(npair):
-        return f"register_pair {opair} -> {npair}"
+    for field in ("instruction", "effective_address", "operation",
+                  "displacement", "register_pair"):
+        old = ou.get(field)
+        if old is None:
+            continue
+        new = nu.get(field)
+        if new is None:
+            return f"FIELD_MISSING_IN_NEW: {field}"
+        if (list(old) if field == "register_pair" else old) != (
+                list(new) if field == "register_pair" else new):
+            return f"FIELD_VALUE_CHANGED: {field} {old!r} -> {new!r}"
     return None
 
 
@@ -145,8 +143,10 @@ def _match_uses(old_uses, new_uses):
     for u in new_uses:
         new_map.setdefault(_use_key(u), []).append(u)
     matched, mismatched, missing = [], [], []
+    old_counts = {}
     for ou in old_uses:
         k = _use_key(ou)
+        old_counts[k] = old_counts.get(k, 0) + 1
         candidates = new_map.get(k, [])
         chosen = None
         chosen_reason = None
@@ -157,6 +157,17 @@ def _match_uses(old_uses, new_uses):
                 break
             chosen_reason = reason
         if chosen is None:
+            # An incomplete/changed key is still a semantic mismatch when
+            # the other known half identifies a candidate. Do not silently
+            # turn a missing new instruction/address into a generic absence.
+            if not candidates:
+                related = [nu for key, values in new_map.items()
+                           if (key[0] == k[0] and k[0] is not None or
+                               key[1] == k[1] and k[1] is not None)
+                           for nu in values]
+                if related:
+                    candidates = related
+                    chosen_reason = _compare_use(ou, related[0])
             item = {
                 "instruction": ou.get("instruction"),
                 "displacement": ou.get("displacement"),
@@ -172,7 +183,8 @@ def _match_uses(old_uses, new_uses):
                 item["reason"] = chosen_reason or "semantic mismatch"
                 mismatched.append(item)
             else:
-                item["reason"] = "no matching instruction/effective address"
+                item["reason"] = ("DUPLICATE_USE_MISSING" if
+                                  old_counts[k] > 1 else "USE_NOT_FOUND")
                 missing.append(item)
         else:
             matched.append({
@@ -185,6 +197,11 @@ def _match_uses(old_uses, new_uses):
                 "new_effective_address": chosen.get("effective_address"),
                 "old_displacement_available":
                     ou.get("displacement") is not None,
+                "old_unknown_fields": [field for field in
+                                       ("instruction", "effective_address",
+                                        "operation", "displacement",
+                                        "register_pair")
+                                       if ou.get(field) is None],
                 "match": True,
             })
     extra = [u for vals in new_map.values() for u in vals]

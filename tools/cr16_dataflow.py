@@ -103,21 +103,8 @@ def merge_entry(preds, states, provs, start):
 
 def resolve_operand(insn, kind, state):
     """Return (address_kind, effective, expression, provenance_key)."""
-    operands = X.split_operands(insn.operands)
-    if kind in ("WRITE", "RMW") and insn.mnemonic in (
-            "sbitw", "cbitw", "sbitb", "cbitb"):
-        candidates = operands[1:] or operands
-    elif kind == "READ":
-        candidates = operands
-    else:
-        candidates = list(reversed(operands))
-
-    parsed = payload = None
-    for operand in candidates:
-        p = X.parse_memory_operand(operand)
-        if p:
-            parsed, payload = p
-            break
+    _, selected = X.address_operand(insn)
+    parsed, payload = selected if selected else (None, None)
     if parsed == "ABS":
         value = X.abs_address(insn)
         encoded = X.abs_encoded_address(insn)
@@ -160,14 +147,8 @@ def transfer(fw, blocks, state, prov, image, start, mode_a, mode_b):
         ops = insn.operands.replace(" ", "")
 
         if insn.mnemonic in X.BIT_TEST:
-            parsed = "READ"
-            operands = X.split_operands(insn.operands)
-            for operand in operands[1:] or operands:
-                p = X.parse_memory_operand(operand)
-                if p:
-                    parsed, payload = p
-                    break
-            if parsed is not None:
+            _, selected = X.address_operand(insn)
+            if selected is not None:
                 akind, effective, expr, key = resolve_operand(
                     insn, "READ", st)
                 pv_row = pv.get(key, []) if key else [f"0x{addr:06x}"]

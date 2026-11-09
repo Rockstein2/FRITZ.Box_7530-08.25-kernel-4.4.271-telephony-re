@@ -190,6 +190,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00010a78",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -201,6 +205,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00010a7a",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -212,6 +220,10 @@
                 "new_displacement": 4,
                 "new_effective_address": "0x00010a7c",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -223,6 +235,10 @@
                 "new_displacement": 6,
                 "new_effective_address": "0x00010a7e",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -234,6 +250,10 @@
                 "new_displacement": 8,
                 "new_effective_address": "0x00010a80",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -245,6 +265,10 @@
                 "new_displacement": 10,
                 "new_effective_address": "0x00010a82",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -256,6 +280,10 @@
                 "new_displacement": 12,
                 "new_effective_address": "0x00010a84",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -267,6 +295,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00010a86",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -280,7 +312,7 @@
                 "new_operation": null,
                 "match": false,
                 "old_displacement_available": false,
-                "reason": "no matching instruction/effective address"
+                "reason": "USE_NOT_FOUND"
               }
             ],
             "new_extra": [],
@@ -508,6 +540,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00010ba8",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -519,6 +555,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00010baa",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -530,6 +570,10 @@
                 "new_displacement": 4,
                 "new_effective_address": "0x00010bac",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -541,6 +585,10 @@
                 "new_displacement": 6,
                 "new_effective_address": "0x00010bae",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -552,6 +600,10 @@
                 "new_displacement": 8,
                 "new_effective_address": "0x00010bb0",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -563,6 +615,10 @@
                 "new_displacement": 10,
                 "new_effective_address": "0x00010bb2",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -574,6 +630,10 @@
                 "new_displacement": 12,
                 "new_effective_address": "0x00010bb4",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -585,6 +645,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00010bb6",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -598,7 +662,7 @@
                 "new_operation": null,
                 "match": false,
                 "old_displacement_available": false,
-                "reason": "no matching instruction/effective address"
+                "reason": "USE_NOT_FOUND"
               }
             ],
             "new_extra": [],
@@ -826,6 +890,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00010cd8",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -837,6 +905,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00010cda",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -848,6 +920,10 @@
                 "new_displacement": 4,
                 "new_effective_address": "0x00010cdc",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -859,6 +935,10 @@
                 "new_displacement": 6,
                 "new_effective_address": "0x00010cde",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -870,6 +950,10 @@
                 "new_displacement": 8,
                 "new_effective_address": "0x00010ce0",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -881,6 +965,10 @@
                 "new_displacement": 10,
                 "new_effective_address": "0x00010ce2",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -892,6 +980,10 @@
                 "new_displacement": 12,
                 "new_effective_address": "0x00010ce4",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -903,6 +995,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00010ce6",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -916,7 +1012,7 @@
                 "new_operation": null,
                 "match": false,
                 "old_displacement_available": false,
-                "reason": "no matching instruction/effective address"
+                "reason": "USE_NOT_FOUND"
               }
             ],
             "new_extra": [],
@@ -1144,6 +1240,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00011802",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1155,6 +1255,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00011804",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1166,6 +1270,10 @@
                 "new_displacement": 4,
                 "new_effective_address": "0x00011806",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1177,6 +1285,10 @@
                 "new_displacement": 6,
                 "new_effective_address": "0x00011808",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1188,6 +1300,10 @@
                 "new_displacement": 8,
                 "new_effective_address": "0x0001180a",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1199,6 +1315,10 @@
                 "new_displacement": 10,
                 "new_effective_address": "0x0001180c",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1210,6 +1330,10 @@
                 "new_displacement": 12,
                 "new_effective_address": "0x0001180e",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1221,6 +1345,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00011810",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -1234,7 +1362,7 @@
                 "new_operation": null,
                 "match": false,
                 "old_displacement_available": false,
-                "reason": "no matching instruction/effective address"
+                "reason": "USE_NOT_FOUND"
               }
             ],
             "new_extra": [],
@@ -1462,6 +1590,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00011932",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1473,6 +1605,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00011934",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1484,6 +1620,10 @@
                 "new_displacement": 4,
                 "new_effective_address": "0x00011936",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1495,6 +1635,10 @@
                 "new_displacement": 6,
                 "new_effective_address": "0x00011938",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1506,6 +1650,10 @@
                 "new_displacement": 8,
                 "new_effective_address": "0x0001193a",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1517,6 +1665,10 @@
                 "new_displacement": 10,
                 "new_effective_address": "0x0001193c",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1528,6 +1680,10 @@
                 "new_displacement": 12,
                 "new_effective_address": "0x0001193e",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1539,6 +1695,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00011940",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -1552,7 +1712,7 @@
                 "new_operation": null,
                 "match": false,
                 "old_displacement_available": false,
-                "reason": "no matching instruction/effective address"
+                "reason": "USE_NOT_FOUND"
               }
             ],
             "new_extra": [],
@@ -1814,6 +1974,10 @@
                 "new_displacement": 3,
                 "new_effective_address": "0x00002451",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -1980,6 +2144,10 @@
                 "new_displacement": 1,
                 "new_effective_address": "0x00009b88",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -1991,6 +2159,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00009b87",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -2082,6 +2254,10 @@
                 "new_displacement": 1,
                 "new_effective_address": "0x00009b88",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -2093,6 +2269,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00009b87",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -2246,6 +2426,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00010e90",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -2257,6 +2441,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00010e8e",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -2335,6 +2523,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00010f48",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -2409,6 +2601,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00010ee2",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -2420,6 +2616,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00010ee0",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -2498,6 +2698,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00010f9a",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -2572,6 +2776,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00010f34",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -2583,6 +2791,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00010f32",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -2661,6 +2873,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00010fec",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -2735,6 +2951,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00011aae",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -2746,6 +2966,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00011aac",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -2824,6 +3048,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00011b14",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -2898,6 +3126,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00011b00",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -2909,6 +3141,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00011afe",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -2987,6 +3223,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00011b66",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -3061,6 +3301,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00ff4000",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3072,6 +3316,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00ff4000",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -3426,6 +3674,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00010a6c",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3437,6 +3689,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00010a6e",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3448,6 +3704,10 @@
                 "new_displacement": 4,
                 "new_effective_address": "0x00010a70",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3459,6 +3719,10 @@
                 "new_displacement": 6,
                 "new_effective_address": "0x00010a72",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3470,6 +3734,10 @@
                 "new_displacement": 8,
                 "new_effective_address": "0x00010a74",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3481,6 +3749,10 @@
                 "new_displacement": 10,
                 "new_effective_address": "0x00010a76",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3492,6 +3764,10 @@
                 "new_displacement": 12,
                 "new_effective_address": "0x00010a78",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3503,6 +3779,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00010a7a",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -3516,7 +3796,7 @@
                 "new_operation": null,
                 "match": false,
                 "old_displacement_available": false,
-                "reason": "no matching instruction/effective address"
+                "reason": "USE_NOT_FOUND"
               }
             ],
             "new_extra": [],
@@ -3744,6 +4024,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00010b9c",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3755,6 +4039,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00010b9e",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3766,6 +4054,10 @@
                 "new_displacement": 4,
                 "new_effective_address": "0x00010ba0",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3777,6 +4069,10 @@
                 "new_displacement": 6,
                 "new_effective_address": "0x00010ba2",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3788,6 +4084,10 @@
                 "new_displacement": 8,
                 "new_effective_address": "0x00010ba4",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3799,6 +4099,10 @@
                 "new_displacement": 10,
                 "new_effective_address": "0x00010ba6",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3810,6 +4114,10 @@
                 "new_displacement": 12,
                 "new_effective_address": "0x00010ba8",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -3821,6 +4129,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00010baa",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -3834,7 +4146,7 @@
                 "new_operation": null,
                 "match": false,
                 "old_displacement_available": false,
-                "reason": "no matching instruction/effective address"
+                "reason": "USE_NOT_FOUND"
               }
             ],
             "new_extra": [],
@@ -4062,6 +4374,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00010ccc",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -4073,6 +4389,10 @@
                 "new_displacement": 2,
                 "new_effective_address": "0x00010cce",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -4084,6 +4404,10 @@
                 "new_displacement": 4,
                 "new_effective_address": "0x00010cd0",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -4095,6 +4419,10 @@
                 "new_displacement": 6,
                 "new_effective_address": "0x00010cd2",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -4106,6 +4434,10 @@
                 "new_displacement": 8,
                 "new_effective_address": "0x00010cd4",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -4117,6 +4449,10 @@
                 "new_displacement": 10,
                 "new_effective_address": "0x00010cd6",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -4128,6 +4464,10 @@
                 "new_displacement": 12,
                 "new_effective_address": "0x00010cd8",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -4139,6 +4479,10 @@
                 "new_displacement": 14,
                 "new_effective_address": "0x00010cda",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -4152,7 +4496,7 @@
                 "new_operation": null,
                 "match": false,
                 "old_displacement_available": false,
-                "reason": "no matching instruction/effective address"
+                "reason": "USE_NOT_FOUND"
               }
             ],
             "new_extra": [],
@@ -4317,6 +4661,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00ff4000",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -4328,6 +4676,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00ff4000",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -4459,6 +4811,10 @@
                 "new_displacement": 1,
                 "new_effective_address": "0x00001af1",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -4470,6 +4826,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00001af0",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -4548,6 +4908,10 @@
                 "new_displacement": 3,
                 "new_effective_address": "0x00001cb0",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -4622,6 +4986,10 @@
                 "new_displacement": 1,
                 "new_effective_address": "0x00009adf",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -4633,6 +5001,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00009ade",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],
@@ -4724,6 +5096,10 @@
                 "new_displacement": 1,
                 "new_effective_address": "0x00009adf",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               },
               {
@@ -4735,6 +5111,10 @@
                 "new_displacement": 0,
                 "new_effective_address": "0x00009ade",
                 "old_displacement_available": false,
+                "old_unknown_fields": [
+                  "displacement",
+                  "register_pair"
+                ],
                 "match": true
               }
             ],

@@ -1,5 +1,11 @@
 # E3.2 history — proof-audit fixes and soundness results
 
+E3.2.1 correction: a known field in an old use must be present and equal in
+the new use, including `register_pair`. Reasons are `FIELD_MISSING_IN_NEW`,
+`FIELD_VALUE_CHANGED`, `USE_NOT_FOUND` and `DUPLICATE_USE_MISSING`; absent
+old fields are recorded in `old_unknown_fields`. Re-audit retained the counts
+below (25/10 old uses; 43/22 new PROVEN and 58/69 CANDIDATE).
+
 > **Status: offline audit.  No firmware execution or hardware.**
 
 ## 1. A1 — full memory-use matching

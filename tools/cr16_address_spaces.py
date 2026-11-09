@@ -5,7 +5,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
+import shutil
+import tempfile
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -15,11 +18,10 @@ ROOT = HERE.parent
 for p in (str(HERE), str(ROOT / "src" / "mock")):
     sys.path.insert(0, p)
 
-import cr16_cfg as C  # noqa: E402
 import cr16_dataflow as D  # noqa: E402
 import cr16_peripheral_xrefs as X  # noqa: E402
 
-OBJDUMP = Path("/tmp/opencode/cr16/build/binutils/objdump")
+OBJDUMP = ROOT.parent / "work" / "cr16" / "build" / "binutils" / "objdump"
 IMAGES = [
     ("normal", ROOT / "firmware" / "dectfw_secondlevel_441.hex"),
     ("p2test", ROOT / "firmware" / "dectfw_secondlevel_441p2test.hex"),
@@ -69,10 +71,8 @@ def _extension_models(form, encoded):
 
 def _memory_form(insn):
     """Classify the memory operand of an instruction from its assembly form."""
-    for operand in X.split_operands(insn.operands):
-        parsed = X.parse_memory_operand(operand)
-        if not parsed:
-            continue
+    operand, parsed = X.address_operand(insn)
+    if parsed:
         kind, payload = parsed
         if kind == "ABS":
             if len(insn.raw) >= 6:
@@ -266,71 +266,106 @@ def _conflict_rows(forms):
 
 def _dip_fill(name, fw, forms, path):
     spec = DIP_FILL[name]
-    store = fw.insns[spec["store"]]
-    control = fw.insns[spec["control"]]
-    # The fill stores the constant held in r2; this is independently visible
-    # at the control site in both images.
-    payload = None
-    for insn in fw.insns.values():
-        if insn.addr == spec["control"]:
-            for a in range(spec["control"], spec["control"] + 0x20):
-                i = fw.insns.get(a)
-                if i and i.mnemonic == "movw" and ",r2" in i.operands:
-                    m = re.search(r"\$0x([0-9a-f]+)", i.operands)
-                    if m:
-                        payload = int(m.group(1), 16)
-                        break
+    store = fw.insns.get(spec["store"])
+    control = fw.insns.get(spec["control"])
+    if store is None or control is None:
+        raise ValueError(f"{name}: selected DIP reference instructions missing")
+    operand, parsed = X.address_operand(store)
+    if store.mnemonic != "storw" or parsed is None or parsed[0] != "DISP_RP":
+        raise ValueError(f"{name}: selected DIP store format invalid")
+    source = X.split_operands(store.operands)[0]
+    literal_sites = []
+    for addr in range(spec["control"], spec["control"] + 0x12, 2):
+        i = fw.insns.get(addr)
+        if i and i.mnemonic == "movw":
+            match = re.fullmatch(r"\$0x([0-9a-f]+)(?::[sm])?,r2",
+                                 i.operands.replace(" ", ""))
+            if match:
+                literal_sites.append((i, int(match.group(1), 16)))
+    payload = literal_sites[0][1] if len(literal_sites) == 1 else None
+    # The earlier reconstruction is retained as a reference, not silently
+    # upgraded to a path-sensitive proof of the store's value or loop bounds.
+    unresolved = ["def-use 0x1001 -> r2 -> storw across the loop",
+                  "control-flow bound 1..511 on every path",
+                  "base + 2*index address derivation",
+                  "DIP instruction word byte order/parameter encoding",
+                  "SC14448 identity of the 0x01000000 region"]
     return {
         "image": name,
         "source": str(path.relative_to(ROOT)),
         "control_instruction": f"0x{spec['control']:06x}",
         "control_bytes": control.raw.hex(),
+        "control_disassembly": f"{control.mnemonic} {control.operands}",
         "store_instruction": f"0x{spec['store']:06x}",
         "store_bytes": store.raw.hex(),
         "store_disassembly": f"{store.mnemonic} {store.operands}",
+        "base_register_pair": list(parsed[1][1:]),
+        "store_value_source": source,
+        "selected_sites_provenance": "PREVIOUSLY_RECONSTRUCTED",
         "fill_range": "0x01000002…0x010003FE",
         "iterations": "1…511",
         "payload": f"0x{payload:04x}" if payload is not None else None,
-        "payload_status": "CONSTANT_UNDECODED",
+        "payload_provenance": ({"status": "LOCAL_LITERAL_ONLY",
+                               "instruction": f"0x{literal_sites[0][0].addr:06x}",
+                               "raw_bytes": literal_sites[0][0].raw.hex(),
+                               "disassembly": (f"{literal_sites[0][0].mnemonic} "
+                                               f"{literal_sites[0][0].operands}"),
+                               "store_def_use": "UNRESOLVED"}
+                              if payload is not None else
+                              {"status": "UNRESOLVED", "store_def_use": "UNRESOLVED"}),
+        "payload_status": "CANDIDATE_NOT_PATH_PROVEN",
+        "loop_bounds": "1…511",
+        "loop_bounds_provenance": "PREVIOUSLY_RECONSTRUCTED; CFG proof absent",
+        "address_formula": "0x01000000 + 2*index",
+        "address_formula_provenance": "PREVIOUSLY_RECONSTRUCTED; pair def-use absent",
+        "unresolved_steps": unresolved,
+        "confidence": "CANDIDATE",
         "sc14480_mapping": {
             "range": "0x01000000–0x010003FF",
             "meaning": "DIP Sequencer RAM, 512 × 16 bit",
             "first_instruction": "0x01000002",
             "printed_pages": "131–132 and 33–34",
         },
+        "related_device_interpretation": "RELATED_DEVICE_HYPOTHESIS",
         "dip_opcode_hint": ("SC14480 Table 10: 0x01 = BR; 0x10 = BR_B0. "
                             "0x1001 contains both values, so either byte "
                             "order yields a branch opcode; the parameter "
                             "and target are not proved."),
-        "payload_byte_orders": {
+        "payload_byte_orders": ({
             "little_endian": {"opcode": "0x01", "opcode_name": "BR",
                               "parameter": "0x10"},
             "big_endian": {"opcode": "0x10", "opcode_name": "BR_B0",
                            "parameter": "0x01"},
-        },
+        } if payload == 0x1001 else None),
         "classification": "DIP_RAM_FILL_CANDIDATE",
         "pcm_evidence": False,
         "slot5_evidence": False,
-        "unresolved": [
-            "DIP instruction word byte order/parameter encoding",
-            "meaning of the repeated 0x1001 payload",
-            "SC14448 identity of the 0x01000000 region",
-        ],
+        "unresolved": unresolved,
     }
 
 
 def _audit_report():
     p = ROOT / "tools" / "reports" / "cr16-e3-soundness-audit.json"
     if not p.is_file():
-        return {"status": "SKIP", "reason": "E3 audit report missing"}
+        raise ValueError("E3 audit report missing")
     d = json.loads(p.read_text())
+    if not isinstance(d, dict) or set(d.get("images", {})) != set(REFERENCE_SHA):
+        raise ValueError("E3 audit report incomplete or invalid")
+    if any(d.get("source_images", {}).get(n, {}).get("sha256") != sha
+           for n, sha in REFERENCE_SHA.items()):
+        raise ValueError("E3 audit source SHA256 missing or mismatched")
+    if any(not isinstance(d["images"][n].get("audited_old_proven"), list)
+           or d["images"][n].get("old_proven") !=
+           len(d["images"][n]["audited_old_proven"])
+           for n in REFERENCE_SHA):
+        raise ValueError("E3 audit records missing or inconsistent")
     out = {
         "tool": "cr16-e32-audit/1",
         "baseline": d.get("baseline_commit"),
         "e31_fixes": {
             "memory_use_key": [
                 "instruction", "effective_address", "operation",
-                "known displacement", "register_pair when both available"
+                "known displacement", "known register_pair"
             ],
             "old_baseline": ("fail-closed on missing/invalid E2 baseline; "
                              "SHA256 checked against firmware"),
@@ -355,21 +390,93 @@ def _audit_report():
     return out
 
 
+REPORT_NAMES = ("cr16-address-forms-normal.json",
+                "cr16-address-forms-p2test.json",
+                "cr16-address-space-conflicts.json",
+                "cr16-dip-ram-fill.json", "cr16-e32-audit.json")
+
+
+def _validate_inputs(objdump):
+    for name, path in IMAGES:
+        if not path.is_file():
+            raise ValueError(f"{name}: firmware missing: {path}")
+        digest = _sha(path)
+        if digest != REFERENCE_SHA[name]:
+            raise ValueError(f"{name}: SHA256 mismatch: {digest}")
+    oracle = Path(objdump)
+    if not oracle.is_file() or not os.access(oracle, os.X_OK):
+        raise ValueError(f"CR16 objdump missing or not executable: {oracle}")
+
+
+def _publish(out, results):
+    """Stage every file; restore the previous set if promotion fails."""
+    out.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix=".cr16-e321-", dir=out) as td:
+        stage = Path(td)
+        for fn in REPORT_NAMES:
+            (stage / fn).write_text(json.dumps(results[fn], indent=1) + "\n")
+            json.loads((stage / fn).read_text())
+        backup = stage / "backup"
+        backup.mkdir()
+        originals = {}
+        for fn in REPORT_NAMES:
+            target = out / fn
+            originals[fn] = target.exists()
+            if target.exists():
+                shutil.copy2(target, backup / fn)
+        promoted = []
+        try:
+            for fn in REPORT_NAMES:
+                os.replace(stage / fn, out / fn)
+                promoted.append(fn)
+        except OSError:
+            for fn in reversed(promoted):
+                if originals[fn]:
+                    os.replace(backup / fn, out / fn)
+                else:
+                    (out / fn).unlink()
+            raise
+
+
 def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("--objdump", default=str(OBJDUMP))
     ap.add_argument("--out", default=str(ROOT / "tools" / "reports"))
     args = ap.parse_args(argv[1:])
     out = Path(args.out)
-    out.mkdir(parents=True, exist_ok=True)
+    try:
+        _validate_inputs(args.objdump)
+        results = _build_reports(args.objdump)
+        _publish(out, results)
+    except (OSError, ValueError, KeyError, TypeError, RuntimeError,
+            json.JSONDecodeError) as exc:
+        print(f"INCOMPLETE CR16 address analysis: {exc}", file=sys.stderr)
+        out.mkdir(parents=True, exist_ok=True)
+        (out / "cr16-address-spaces.incomplete.json").write_text(
+            json.dumps({"status": "INCOMPLETE", "reason": str(exc)},
+                       indent=1) + "\n")
+        return 1
+    print("wrote address reports for 2 images")
+    return 0
+
+
+def _build_reports(objdump):
     forms_all = {}
     conflicts_all = {}
     dip_all = {}
+    results = {}
     for name, path in IMAGES:
-        if not path.is_file():
-            print(f"SKIP {name}: firmware missing")
-            continue
-        report, fw, forms = _address_forms(name, path, args.objdump)
+        report, fw, forms = _address_forms(name, path, objdump)
+        if not isinstance(report, dict) or report.get("converged") is not True \
+                or report.get("analysis_status") != "CONVERGED":
+            raise ValueError(f"{name}: NON_CONVERGED or invalid dataflow report")
+        if not isinstance(fw.insns, dict) or not fw.insns or not isinstance(forms, list):
+            raise ValueError(f"{name}: invalid disassembly or address records")
+        for row in forms:
+            if not isinstance(row, dict) or not isinstance(row.get("instruction"), str) \
+                    or row.get("address_mode") == "NO_MEMORY_OPERAND" \
+                    or row.get("operation") not in ("READ", "WRITE", "RMW", "ADDRESS_LOAD"):
+                raise ValueError(f"{name}: invalid address record: {row!r}")
         forms_all[name] = {
             "source": str(path.relative_to(ROOT)),
             "sha256": _sha(path),
@@ -383,10 +490,9 @@ def main(argv):
                 m: sum(1 for r in forms if r["address_mode"] == m)
                 for m in sorted({r["address_mode"] for r in forms})},
         }
-        (out / f"cr16-address-forms-{name}.json").write_text(
-            json.dumps(forms_all[name], indent=1) + "\n")
-    (out / "cr16-address-space-conflicts.json").write_text(
-        json.dumps({"tool": "cr16-address-space-conflicts/1",
+        results[f"cr16-address-forms-{name}.json"] = forms_all[name]
+    results["cr16-address-space-conflicts.json"] = {
+                    "tool": "cr16-address-space-conflicts/1",
                     "images": conflicts_all,
                     "status": "ADDRESS_SPACE_RESOLVED_BY_ABS20_EXTENSION",
                     "hypotheses": [
@@ -421,18 +527,15 @@ def main(argv):
                                 "The remaining uncertainty is SC14448 "
                                 "physical register identity, not address "
                                 "space; it needs an SC14448 map or bus "
-                                "evidence, not SC14480 alone.")},
-                   indent=1) + "\n")
-    (out / "cr16-dip-ram-fill.json").write_text(
-        json.dumps({"tool": "cr16-dip-ram-fill/1",
+                                 "evidence, not SC14480 alone.")}
+    results["cr16-dip-ram-fill.json"] = {"tool": "cr16-dip-ram-fill/1",
                     "images": dip_all,
                     "limitations": ["payload not decoded as valid DIP program",
-                                    "SC14480 is not an SC14448 datasheet"]},
-                   indent=1) + "\n")
-    (out / "cr16-e32-audit.json").write_text(
-        json.dumps(_audit_report(), indent=2) + "\n")
-    print(f"wrote address reports for {len(forms_all)} images")
-    return 0
+                                     "SC14480 is not an SC14448 datasheet"]}
+    results["cr16-e32-audit.json"] = _audit_report()
+    if set(forms_all) != set(REFERENCE_SHA) or set(results) != set(REPORT_NAMES):
+        raise ValueError("incomplete report bundle")
+    return results
 
 
 if __name__ == "__main__":

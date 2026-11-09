@@ -7,9 +7,12 @@ The unit checks do not need the firmware.  Report checks require the two
 firmware images and the CR16 binutils oracle; they SKIP otherwise.
 """
 import json
+import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
@@ -21,7 +24,7 @@ import cr16_address_spaces as A  # noqa: E402
 import cr16_peripheral_xrefs as X  # noqa: E402
 
 REPORTS = ROOT / "tools" / "reports"
-OBJDUMP = Path("/tmp/opencode/cr16/build/binutils/objdump")
+OBJDUMP = A.OBJDUMP
 FW = {
     "normal": ROOT / "firmware" / "dectfw_secondlevel_441.hex",
     "p2test": ROOT / "firmware" / "dectfw_secondlevel_441p2test.hex",
@@ -36,7 +39,7 @@ def check(name, got, want):
     if got == want:
         print(f"PASS {name}")
     else:
-        print(f"FAIL {name}: got {got!r} want {want!r}")
+        print(f"FAIL {name}: got {repr(got)[:300]} want {repr(want)[:300]}")
         fails += 1
 
 
@@ -85,6 +88,87 @@ arch = A._arch_form(pair, {"effective_address": "0x00ff6006"})
 check("pair keeps its dataflow address",
       arch["architectural_effective_address"], "0x00ff6006")
 check("pair has no extension model", arch["extension_models"], None)
+
+print("== address direction")
+for mnemonic, operands, raw, mode, operation in (
+        ("loadw", "0xf6006:m,r0", "0f890660", "ABS20", "READ"),
+        ("storw", "r0,0xf6006:m", "0fc90660", "ABS20", "WRITE"),
+        # Oracle-verified six-byte forms: the proposed four-byte loadd/stord
+        # fixtures were not present in either image and must not be invented.
+        ("loadd", "0x11dde:l,(r3,r2)", "120020b1de1d", "ABS24", "READ"),
+        ("stord", "(r5,r4),0x936c:l", "130040b06c93", "ABS24", "WRITE"),
+        ("loadw", "0x0:s(r1,r0),r2", "2090", "REGISTER_PAIR", "READ"),
+        ("storw", "r2,0x0:s(r1,r0)", "20d0", "REGISTER_PAIR", "WRITE")):
+    i = insn(0x1348, bytes.fromhex(raw), mnemonic, operands)
+    check(f"{mnemonic} {operands} mode", A._memory_form(i)[0], mode)
+    check(f"{mnemonic} {operands} operation", X.ACCESS[mnemonic][0], operation)
+    if mode in ("ABS20", "ABS24"):
+        a = A._arch_form(i, {})
+        encoded, effective = (("0xf6006", "0x00ff6006") if mode == "ABS20"
+                              else (("0x00011dde", "0x00011dde") if
+                                    mnemonic == "loadd" else
+                                    ("0x0000936c", "0x0000936c")))
+        check(f"{mnemonic} encoded", a["encoded_address"], encoded)
+        check(f"{mnemonic} effective", a["architectural_effective_address"],
+              effective)
+check("movd pair to pair is not memory",
+      X.address_operand(insn(0, b"\0\0", "movd", "(r3,r2),(r1,r0)")),
+      (None, None))
+for m in ("loadm", "loadmp", "storm", "stormp"):
+    check(f"{m} unsupported", X.address_operand(insn(0, b"\0\0", m,
+          "(r3,r2),(r1,r0)")), (None, None))
+
+print("== fail-closed publication")
+with tempfile.TemporaryDirectory() as td:
+    dest = Path(td)
+    original = {fn: f"old {fn}\n" for fn in A.REPORT_NAMES}
+    for fn, text in original.items():
+        (dest / fn).write_text(text)
+    for reason in ("missing normal", "missing p2test", "wrong SHA256",
+                   "missing objdump", "NON_CONVERGED", "invalid structure"):
+        with tempfile.TemporaryDirectory() as inputs:
+            paths = {n: Path(inputs) / f"{n}.hex" for n in FW}
+            for p in paths.values():
+                p.write_bytes(b"synthetic image")
+            if reason == "missing normal":
+                paths["normal"].unlink()
+            if reason == "missing p2test":
+                paths["p2test"].unlink()
+            expected = {n: A._sha(p) for n, p in paths.items() if p.exists()}
+            if reason == "wrong SHA256":
+                expected["normal"] = "0" * 64
+            with patch.object(A, "IMAGES", list(paths.items())), \
+                    patch.object(A, "REFERENCE_SHA", expected), \
+                    patch.object(A, "_build_reports", side_effect=ValueError(reason)):
+                oracle = str(OBJDUMP) if reason != "missing objdump" else str(
+                    Path(inputs) / "absent-objdump")
+                rc = A.main(["cr16_address_spaces", "--out", td,
+                             "--objdump", oracle])
+        check(f"{reason} fails", rc != 0, True)
+        check(f"{reason} preserves reports",
+              {fn: (dest / fn).read_text() for fn in A.REPORT_NAMES}, original)
+        check(f"{reason} diagnostic", bool(json.loads((dest /
+              "cr16-address-spaces.incomplete.json").read_text())["reason"]), True)
+    new = {fn: {"filename": fn} for fn in A.REPORT_NAMES}
+    replace = os.replace
+    calls = [0]
+
+    def fail_second(source, target):
+        calls[0] += 1
+        if calls[0] == 2:
+            raise OSError("synthetic promotion error")
+        return replace(source, target)
+
+    try:
+        with patch.object(A.os, "replace", side_effect=fail_second):
+            A._publish(dest, new)
+        check("failed promotion raises", False, True)
+    except OSError:
+        check("failed promotion preserves complete previous bundle",
+              {fn: (dest / fn).read_text() for fn in A.REPORT_NAMES}, original)
+    A._publish(dest, new)
+    check("complete staged bundle", {fn: json.loads((dest / fn).read_text())
+          for fn in A.REPORT_NAMES}, new)
 
 # ---------------------------------------------------------------------------
 # 2. reports and instruction-level provenance
@@ -145,6 +229,13 @@ else:
               r["architectural_effective_address"], "0x00ff6006")
         check(f"{name}: pair site has no encoded absolute field",
               r["encoded_address"], None)
+        for site, address, operation in ((
+                ("0x025fae", "0x00ff6002", "READ"),
+                ("0x028cde", "0x00ff6006", "READ")) if name == "normal"
+                else (("0x026764", "0x00ff6002", "READ"),)):
+            r = by_inst[site]
+            check(f"{name}: {site} address", r["effective_address"], address)
+            check(f"{name}: {site} operation", r["operation"], operation)
 
     if len(forms) == 2:
         modes = {n: forms[n]["summary"]["by_address_mode"] for n in forms}
@@ -216,18 +307,16 @@ else:
     # Replay a small deterministic subset.  The full tool is exercised by the
     # report generation and the verification script.
     print("== replay")
-    out = Path("/tmp/opencode/cr16-e32-replay")
-    subprocess.run([sys.executable, str(ROOT / "tools" /
-                                      "cr16_address_spaces.py"),
-                    "--objdump", str(OBJDUMP), "--out", str(out)],
-                   check=False, capture_output=True, text=True)
-    if not (out / "cr16-address-space-conflicts.json").exists():
-        skip("replay", "tool did not write conflicts report")
-    else:
-        for fn in ("cr16-address-space-conflicts.json",
-                   "cr16-dip-ram-fill.json",
-                   "cr16-e32-audit.json"):
-            if (REPORTS / fn).exists():
+    with tempfile.TemporaryDirectory() as td:
+        out = Path(td)
+        result = subprocess.run([sys.executable, str(ROOT / "tools" /
+                                             "cr16_address_spaces.py"),
+                                 "--objdump", str(OBJDUMP), "--out", str(out)],
+                                check=False, capture_output=True, text=True)
+        check("replay exits zero", result.returncode, 0)
+        for fn in A.REPORT_NAMES:
+            check(f"replay created {fn}", (out / fn).is_file(), True)
+            if (out / fn).is_file():
                 check(f"replay matches {fn}",
                       json.loads((REPORTS / fn).read_text()),
                       json.loads((out / fn).read_text()))

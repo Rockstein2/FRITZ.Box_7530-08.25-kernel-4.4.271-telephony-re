@@ -1,5 +1,11 @@
 # FON documentation — current, reference, runbooks, history
 
+E3.2.1: `fon-e32-summary.md` records the unified memory-operand classifier,
+strict E2 proof matching, staged fail-closed report publication and DIP fill
+provenance. The offline CR16 binutils build resides outside Git at
+`../work/cr16/build/binutils/objdump`; address-form replay compares all five
+fresh JSON files with committed reports (no persistent replay directory).
+
 This index is current. Documentation has four strict layers plus an external
 bibliography:
 

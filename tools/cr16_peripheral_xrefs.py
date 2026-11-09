@@ -143,6 +143,32 @@ def parse_memory_operand(text):
     return None
 
 
+def address_operand(insn):
+    """Select the address, not a register-pair value, of a supported access.
+
+    Return (text, parsed) or (None, None). Register-list instructions and
+    register-to-register movd have no supported memory-address operand.
+    """
+    mnemonic = insn.mnemonic
+    if mnemonic in MEMORY_UNSUPPORTED or (mnemonic not in ACCESS and
+                                             mnemonic not in BIT_TEST):
+        return None, None
+    operands = split_operands(insn.operands)
+    if mnemonic in BIT_TEST or mnemonic.startswith(("sbit", "cbit")):
+        candidates = operands[1:2]
+    elif mnemonic.startswith("load"):
+        candidates = operands[:1]
+    elif mnemonic.startswith("stor"):
+        candidates = operands[1:2]
+    else:
+        return None, None
+    for operand in candidates:
+        parsed = parse_memory_operand(operand)
+        if parsed:
+            return operand, parsed
+    return None, None
+
+
 def abs20_encoded_address(raw):
     """The 20-bit field of the 4-byte `<abs>:m` form.
 
@@ -635,13 +661,8 @@ def scan(fw, image):
 
             if insn.mnemonic in BIT_TEST:
                 # `tbit*` reads one bit; the address operand is the second
-                parsed, payload = None, None
-                operands_list = split_operands(insn.operands)
-                for operand in operands_list[1:] or operands_list:
-                    p = parse_memory_operand(operand)
-                    if p:
-                        parsed, payload = p
-                        break
+                _, selected = address_operand(insn)
+                parsed, payload = selected if selected else (None, None)
                 if parsed is not None:
                     akind, value = _address_of(parsed, payload, insn)
                     rows.append(_row(image, addr, insn, "READ",
@@ -656,24 +677,8 @@ def scan(fw, image):
                 # stores the pair), so the address operand is chosen by
                 # direction: the first memory operand of a load is the
                 # address, the last one of a store is.
-                parsed, payload = None, None
-                operands_list = split_operands(insn.operands)
-                if kind in ("WRITE", "RMW", "READ") and \
-                        insn.mnemonic in ("sbitw", "cbitw", "sbitb", "cbitb"):
-                    # `sbitw $bit,<addr>`: the address is the second operand
-                    candidates = operands_list[1:] or operands_list
-                elif kind == "READ":
-                    candidates = operands_list
-                else:
-                    candidates = list(reversed(operands_list))
-                for operand in candidates:
-                    p = parse_memory_operand(operand)
-                    if p and not (kind == "WRITE" and p[0] == "DISP_RP"
-                                  and operand in operands_list[:1]
-                                  and insn.mnemonic in ("stord", "storw", "storb")
-                                  and parse_memory_operand(operands_list[-1])):
-                        parsed, payload = p
-                        break
+                _, selected = address_operand(insn)
+                parsed, payload = selected if selected else (None, None)
                 if parsed == "ABS":
                     value = abs_address(insn)
                     encoded = abs_encoded_address(insn)

@@ -6,19 +6,46 @@
    "source": "firmware/dectfw_secondlevel_441.hex",
    "control_instruction": "0x025f90",
    "control_bytes": "9701",
+   "control_disassembly": "push $0x2,r7,RA",
    "store_instruction": "0x0025d0",
    "store_bytes": "24d0",
    "store_disassembly": "storw r2,0x0:s(r5,r4)",
+   "base_register_pair": [
+    "r5",
+    "r4"
+   ],
+   "store_value_source": "r2",
+   "selected_sites_provenance": "PREVIOUSLY_RECONSTRUCTED",
    "fill_range": "0x01000002\u20260x010003FE",
    "iterations": "1\u2026511",
    "payload": "0x1001",
-   "payload_status": "CONSTANT_UNDECODED",
+   "payload_provenance": {
+    "status": "LOCAL_LITERAL_ONLY",
+    "instruction": "0x025f9a",
+    "raw_bytes": "b25a0110",
+    "disassembly": "movw $0x1001:m,r2",
+    "store_def_use": "UNRESOLVED"
+   },
+   "payload_status": "CANDIDATE_NOT_PATH_PROVEN",
+   "loop_bounds": "1\u2026511",
+   "loop_bounds_provenance": "PREVIOUSLY_RECONSTRUCTED; CFG proof absent",
+   "address_formula": "0x01000000 + 2*index",
+   "address_formula_provenance": "PREVIOUSLY_RECONSTRUCTED; pair def-use absent",
+   "unresolved_steps": [
+    "def-use 0x1001 -> r2 -> storw across the loop",
+    "control-flow bound 1..511 on every path",
+    "base + 2*index address derivation",
+    "DIP instruction word byte order/parameter encoding",
+    "SC14448 identity of the 0x01000000 region"
+   ],
+   "confidence": "CANDIDATE",
    "sc14480_mapping": {
     "range": "0x01000000\u20130x010003FF",
     "meaning": "DIP Sequencer RAM, 512 \u00d7 16 bit",
     "first_instruction": "0x01000002",
     "printed_pages": "131\u2013132 and 33\u201334"
    },
+   "related_device_interpretation": "RELATED_DEVICE_HYPOTHESIS",
    "dip_opcode_hint": "SC14480 Table 10: 0x01 = BR; 0x10 = BR_B0. 0x1001 contains both values, so either byte order yields a branch opcode; the parameter and target are not proved.",
    "payload_byte_orders": {
     "little_endian": {
@@ -36,8 +63,10 @@
    "pcm_evidence": false,
    "slot5_evidence": false,
    "unresolved": [
+    "def-use 0x1001 -> r2 -> storw across the loop",
+    "control-flow bound 1..511 on every path",
+    "base + 2*index address derivation",
     "DIP instruction word byte order/parameter encoding",
-    "meaning of the repeated 0x1001 payload",
     "SC14448 identity of the 0x01000000 region"
    ]
   },
@@ -46,19 +75,46 @@
    "source": "firmware/dectfw_secondlevel_441p2test.hex",
    "control_instruction": "0x026750",
    "control_bytes": "b25a0110",
+   "control_disassembly": "movw $0x1001:m,r2",
    "store_instruction": "0x001e8c",
    "store_bytes": "24d0",
    "store_disassembly": "storw r2,0x0:s(r5,r4)",
+   "base_register_pair": [
+    "r5",
+    "r4"
+   ],
+   "store_value_source": "r2",
+   "selected_sites_provenance": "PREVIOUSLY_RECONSTRUCTED",
    "fill_range": "0x01000002\u20260x010003FE",
    "iterations": "1\u2026511",
    "payload": "0x1001",
-   "payload_status": "CONSTANT_UNDECODED",
+   "payload_provenance": {
+    "status": "LOCAL_LITERAL_ONLY",
+    "instruction": "0x026750",
+    "raw_bytes": "b25a0110",
+    "disassembly": "movw $0x1001:m,r2",
+    "store_def_use": "UNRESOLVED"
+   },
+   "payload_status": "CANDIDATE_NOT_PATH_PROVEN",
+   "loop_bounds": "1\u2026511",
+   "loop_bounds_provenance": "PREVIOUSLY_RECONSTRUCTED; CFG proof absent",
+   "address_formula": "0x01000000 + 2*index",
+   "address_formula_provenance": "PREVIOUSLY_RECONSTRUCTED; pair def-use absent",
+   "unresolved_steps": [
+    "def-use 0x1001 -> r2 -> storw across the loop",
+    "control-flow bound 1..511 on every path",
+    "base + 2*index address derivation",
+    "DIP instruction word byte order/parameter encoding",
+    "SC14448 identity of the 0x01000000 region"
+   ],
+   "confidence": "CANDIDATE",
    "sc14480_mapping": {
     "range": "0x01000000\u20130x010003FF",
     "meaning": "DIP Sequencer RAM, 512 \u00d7 16 bit",
     "first_instruction": "0x01000002",
     "printed_pages": "131\u2013132 and 33\u201334"
    },
+   "related_device_interpretation": "RELATED_DEVICE_HYPOTHESIS",
    "dip_opcode_hint": "SC14480 Table 10: 0x01 = BR; 0x10 = BR_B0. 0x1001 contains both values, so either byte order yields a branch opcode; the parameter and target are not proved.",
    "payload_byte_orders": {
     "little_endian": {
@@ -76,8 +132,10 @@
    "pcm_evidence": false,
    "slot5_evidence": false,
    "unresolved": [
+    "def-use 0x1001 -> r2 -> storw across the loop",
+    "control-flow bound 1..511 on every path",
+    "base + 2*index address derivation",
     "DIP instruction word byte order/parameter encoding",
-    "meaning of the repeated 0x1001 payload",
     "SC14448 identity of the 0x01000000 region"
    ]
   }

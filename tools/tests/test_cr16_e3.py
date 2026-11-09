@@ -63,6 +63,9 @@ check("E3 audit rejects a changed memory-use address",
 check("E3 audit marks the old use missing",
       _aud["audited_old_proven"][0]["use_match"]["all_old_uses_matched"],
       False)
+check("changed instruction identified", _aud["audited_old_proven"][0]
+      ["use_match"]["mismatched"][0]["reason"].startswith(
+          "FIELD_VALUE_CHANGED: instruction"), True)
 
 def _audit_single(old_use, new_use):
     old = {"argument_propagations": [{
@@ -85,6 +88,12 @@ check("E3 audit rejects READ -> WRITE",
       _op["new_classification"], "INVALID")
 check("E3 audit reports READ/WRITE mismatch",
       len(_op["use_match"]["mismatched"]), 1)
+_addr = _audit_single({"instruction": "0x21", "effective_address": "0x100"},
+                      {"instruction": "0x21", "effective_address": "0x102"})
+check("changed effective address invalid", _addr["new_classification"],
+      "INVALID")
+check("changed effective address reason", _addr["use_match"]["mismatched"]
+      [0]["reason"].startswith("FIELD_VALUE_CHANGED: effective_address"), True)
 
 _disp = _audit_single(
     {"instruction": "0x21", "operation": "READ",
@@ -115,6 +124,19 @@ _dup_new = [{
 _dup = E.audit("fixture", _dup_old, _dup_new)["audited_old_proven"][0]
 check("E3 audit rejects a missing duplicate use",
       _dup["new_classification"], "INVALID")
+check("E3 audit identifies duplicate", _dup["use_match"]["missing"][0]
+      ["reason"], "DUPLICATE_USE_MISSING")
+for field, old_value in (("operation", "READ"), ("displacement", 0),
+                         ("register_pair", ["r3", "r2"])):
+    old_use = {"instruction": "0x21", "effective_address": "0x100",
+               field: old_value}
+    new_use = {"instruction": "0x21", "effective_address": "0x100"}
+    result = _audit_single(old_use, new_use)
+    check(f"missing {field} invalid", result["new_classification"], "INVALID")
+    check(f"missing {field} reason", result["use_match"]["mismatched"][0]
+          ["reason"], f"FIELD_MISSING_IN_NEW: {field}")
+check("old unknown displacement disclosed", "displacement" in
+      _old_nodisp["use_match"]["matched"][0]["old_unknown_fields"], True)
 
 # Baseline fail-closed fixtures.
 try:
