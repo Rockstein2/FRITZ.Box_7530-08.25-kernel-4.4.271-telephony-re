@@ -187,6 +187,23 @@ a proven PCM or slot-5 consumer.  `0x01000000` is outside the 24-bit address
 range, so its bank/address mechanism remains **UNRESOLVED**.  See
 `fon-e3-summary.md`.
 
+## 10a. External reference boundary
+
+External Dialog/CR16/DECT material is indexed under `docs/references/`:
+
+- `dialog-external-sources.md` — URLs, revisions, licenses and source limits;
+- `dialog-register-cross-reference.md` — SC14CVMDECT `0xFF48xx` family vs
+  SC14448 `0x00FF48xx` accesses;
+- `dialog-pcm-comparison.md` — FSC/BCLK/PCM comparison;
+- `fon-e3-reference-opportunities.md` — what can help future E3 work.
+
+These are **reference hypotheses**, not proof of the AVM slot-5 protocol.  In
+particular, the SC14CVMDECT PCM pinmux, 1.152/1.536/2.304/4.608 MHz BCLK list,
+and RSTn electrical limits must not be transferred to the FRITZ!Box 7530.
+The observed AVM BCLK is approximately 1.024355 MHz, which is not in that CVM
+list.  The external CVM/Phoenix/Osmocom material contains no proved AVM
+slot-5 handler.
+
 ## 11. Minimum standalone driver
 
 A transport-only harness can be written from the Linux-side formulas.  A

@@ -1,6 +1,7 @@
 # FON documentation — current, reference, runbooks, history
 
-This index is current. Documentation has four strict layers:
+This index is current. Documentation has four strict layers plus an external
+bibliography:
 
 1. `docs/` — current status and decisions;
 2. `docs/reference/` — primary captured data that stays valid over time;
@@ -35,6 +36,20 @@ Verify the canonical layout and all SHA256 manifests with
 | `fon-e2-summary.md` | E2 interprocedural analysis, table consumers, IRQ callgraphs and slot-5 boundary. |
 | `fon-e3-summary.md` | E3 proof audit, corrected table/IRQ reporting, dsp/dip traces and `0x01000000` boundary. |
 
+### External reference registry (`references/`)
+
+This is a bibliography/evidence index, not the primary OEM capture in
+`reference/`.  It records external Dialog/CR16/DECT material without adding
+third-party PDFs or source trees to Git.
+
+| File | What it is |
+|---|---|
+| [`references/README.md`](references/README.md) | Policy, status labels and navigation |
+| [`references/dialog-external-sources.md`](references/dialog-external-sources.md) | URL/revision/license registry for all external sources |
+| [`references/dialog-register-cross-reference.md`](references/dialog-register-cross-reference.md) | SC14CVMDECT PDF registers vs SC14448 firmware accesses |
+| [`references/dialog-pcm-comparison.md`](references/dialog-pcm-comparison.md) | PCM timing/mode comparison; no settings transfer |
+| [`references/fon-e3-reference-opportunities.md`](references/fon-e3-reference-opportunities.md) | Ranked use of references for the next E3 work |
+
 Evidence classes used by `fon-known-facts.md`:
 
 | Class | Meaning |
@@ -46,6 +61,7 @@ Evidence classes used by `fon-known-facts.md`:
 | **OEM-CAPTURE** | observed in `reference/oem-08.25-boot/` — OEM FRITZ!OS 08.25 on this board, captured 2026-11-08 |
 | **DISASM** | recovered from a proprietary AVM binary; file/function/address cited |
 | **OFFLINE** | computed from an image or report without touching hardware |
+| **EXT-REF** | external datasheet, tool or related-device source; the device is named on each row |
 | **RUNTIME-RO** | observation through read-only interfaces: console, `/proc`, sysfs or debugfs; no module load and no intentional GPIO/MMIO writes. A debugfs read is not proof of zero hardware side effects |
 | **HW-TEST** | controlled hardware execution: test-image boot, module load, clock/reset/MMIO writes, or a bench measurement requiring explicit authorisation |
 | **CONFIRMED / INFERRED / UNKNOWN / DISPROVED** | truth status; source class and truth status are separate, and static evidence is never promoted to hardware proof |

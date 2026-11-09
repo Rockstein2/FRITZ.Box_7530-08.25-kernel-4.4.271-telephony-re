@@ -1268,6 +1268,28 @@ Two script defects only surfaced on the device and are fixed:
 `bench/tests/run.sh` was updated to fake the real `modinfo` wording and is back
 to **32 passed, 0 failed**.
 
+## 9g. External reference facts (device-labelled)
+
+These are facts about the **source device or tool**, not SC14448 firmware.
+The full registry is in `references/dialog-external-sources.md`.
+
+| Fact | Value | Device/source | Evidence |
+|---|---|---|---|
+| SC14CVMDECT GPIO/PAD registers | `PAD_CTRL=0xFF481E`, `P2_DIR=0xFF4856`, `P2_MODE=0xFF4858`, `P3_DIR=0xFF4866`, `P3_MODE=0xFF4868`, `P3_DATA=0xFF4860`; P0/P1/P2/P3 data at `0xFF4830/40/50/60` | SC14CVMDECT SF | PDF rev 3.0 p29–34 |
+| SC14CVMDECT PCM ranges | FSC 8/16 kHz; master BCLK 1.152/1.536/2.304/4.608 MHz; FSC pulse 1/8/16/32 bits | SC14CVMDECT SF | PDF p22–23, p26 |
+| SC14CVMDECT P2 PCM pin functions | P2[2]=PCM_CLK, P2[3]=PCM_DI, P2[4]=PCM_DO, P2[5]=PCM_FSC when mode=01 | SC14CVMDECT SF | PDF p32–33 |
+| SC14CVMDECT RSTn electrical | active-low input with Schmitt trigger; other digital pins have 2.0 V absolute maximum, while P0/P2 have backdrive protection up to 3.6 V | SC14CVMDECT SF | PDF p35, p37; not SC14448 |
+| SC14CVMDECT PSTN support | standard FP API does **not** provide a PSTN line interface | SC14CVMDECT SF | PDF p11 Table 4 |
+| SC14CVMDECT PDF identity | 57 pages, revision 3.0, 28-Jul-2015, SHA256 `01be0fced7d4a0ad2c8fb72b6463d3e955072b6d1e219d96806ae6d8859ac5bf` | SC14CVMDECT SF | local file, outside Git |
+| GCC CR16 ABI | return `r0`; args `r2`–`r6`; call-clobbered `r0`–`r6`, `ra`, `sp`; `r7`–`r13` callee-saved; stack grows down; `r12` arg ptr, `r13` frame ptr, `r14` ra, `r15` sp | GCC 8 CR16 backend | Debian source `gcc-arm-none-eabi 15:8-2019-q3-1`, `gcc/config/cr16/cr16.h`/`cr16.c` |
+| Linux CR16 vector frame | 31-entry `struct cr16_interrupt_vector`; pair slots r0/r1…r10/r11 plus r12, r13, ra, psr, pc, usp; IRQ setup uses `v[n+0x10]` | Linux CR16C port, SC14450/52 | commit `9022548…`, `arch/cr16/kernel/irq.c`, `uapi/asm/ptrace.h` |
+| QEMU CR16C coverage | implements `MOVD`, `ADDD`, `LOADM`, `STORM`, `EXCP`, `JCOND`, `BRCOND` and many arithmetic/bit forms; no `JAL`/`JALR`/`RETX`/`LOADMP`/`STORMP` found; interrupts marked TODO | QEMU CR16C WIP | commit `4f9e07e…`, `target/cr16c` |
+| regrettableDectable mailbox | start byte `0x10`; SABM/RR/REJ/RNR; 3-bit sequence; header+payload byte checksum | Dialog Phoenix client | commit `9873460…`, `MailProtocol.py` |
+| regrettableDectable HAL areas | `AHA_MEMORY=0x00`, `AHA_REGISTER=0x01`, `AHA_NVS=0x02`, `AHA_DSP=0x03`, `AHA_FPGA=0x04`, `AHA_SEQUENCER=0x05` | Dialog Phoenix client | commit `9873460…`, `Api/HAL.py` |
+| OsmocomDECT OpenWrt patch | live message 000225 (2014-06-26) adds GPL-2.0 `sc1442x.c`, `sc1442x_firmware.asm`, `dip_opcodes.h`, `com_on_air.h`; old dect.osmocom.org Git tree was empty at the time | SC14421/SC14424 | mailing-list message, not SC14448 |
+
+**Device boundary:** none of these rows is a confirmed SC14448 register meaning, PCM pinmux or electrical limit.  The SC14CVMDECT uses the same low GPIO addresses; that is a family analogy, not proof.
+
 ## 10. What this document deliberately excludes
 
 Everything that is a hypothesis, a plan, or reasoning about how we got here.

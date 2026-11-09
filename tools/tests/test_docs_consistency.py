@@ -1548,6 +1548,65 @@ check("E3 tools index links the audit tool",
 check("E3 summary is in docs index",
       "fon-e3-summary.md" in _docs_index, True)
 
+# ---------------------------------------------------------------------------
+# 29. FON-REF0 external Dialog/CR16/DECT reference registry
+# ---------------------------------------------------------------------------
+REFDIR = DOCS / "references"
+for _name in ("README.md", "dialog-external-sources.md",
+              "dialog-register-cross-reference.md",
+              "dialog-pcm-comparison.md",
+              "fon-e3-reference-opportunities.md"):
+    check(f"REF0 document exists: {_name}",
+          (REFDIR / _name).is_file(), True)
+
+_ref_sources = (REFDIR / "dialog-external-sources.md").read_text()
+for _needle in ("902254883f702e9533e6591eb457a97ca6ace257",
+                "4f9e07e0ffdc4d16026e7d66f5a270b84aa12e77",
+                "98734603701c5c5bc886854a66264747029b5d8f",
+                "686fc01b7bc925d744d6efdeee73348f3ced8375",
+                "1e5ffbd8f1b2c45f256a95375aff201b5552f03a",
+                "01be0fced7d4a0ad2c8fb72b6463d3e955072b6d1e219d96806ae6d8859ac5bf",
+                "NOT VERIFIED"):
+    check(f"REF0 registry records {_needle}", _needle in _ref_sources, True)
+
+_ref_regs = (REFDIR / "dialog-register-cross-reference.md").read_text()
+for _needle in ("0xFF481E", "0xFF4856", "0xFF4858", "0xFF4868",
+                "SAME_ADDRESS_DIFFERENT_CHIP", "UNKNOWN", "CONFLICT",
+                "0x000F6006", "0x00FF6006"):
+    check(f"REF0 register table records {_needle}",
+          _needle in _ref_regs, True)
+
+_ref_pcm = (REFDIR / "dialog-pcm-comparison.md").read_text()
+for _needle in ("1.152", "1.536", "2.304", "4.608", "1.024355",
+                "physical wire order", "NOT FOUND"):
+    check(f"REF0 PCM document records {_needle}", _needle in _ref_pcm, True)
+
+_ref_opps = (REFDIR / "fon-e3-reference-opportunities.md").read_text()
+for _needle in ("r2", "r6", "JAL", "RETX", "DIP", "Phoenix",
+                "ABI_MISMATCH"):
+    check(f"REF0 E3 opportunities records {_needle}",
+          _needle in _ref_opps, True)
+
+_ref_facts = (DOCS / "fon-known-facts.md").read_text()
+for _needle in ("SC14CVMDECT", "0xFF481E", "1.152", "1.024",
+                "GCC CR16 ABI", "QEMU CR16C", "AHA_MEMORY"):
+    check(f"REF0 known facts records {_needle}", _needle in _ref_facts, True)
+
+_ref_index = (DOCS / "README.md").read_text()
+for _needle in ("references/README.md",
+                "references/dialog-external-sources.md",
+                "references/dialog-register-cross-reference.md",
+                "references/dialog-pcm-comparison.md",
+                "references/fon-e3-reference-opportunities.md"):
+    check(f"REF0 docs index links {_needle}", _needle in _ref_index, True)
+
+for _p in (REFDIR.rglob("*")):
+    if _p.is_file():
+        check(f"REF0 no PDF/source copy: {_p.name}",
+              _p.suffix.lower() not in (".pdf", ".zip", ".tar", ".gz",
+                                        ".bz2", ".xz", ".bin", ".hex"),
+              True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)
