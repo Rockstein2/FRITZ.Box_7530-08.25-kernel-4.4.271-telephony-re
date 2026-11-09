@@ -158,3 +158,12 @@ No SC14480 fact is promoted to an SC14448 fact.  The Q57 address-space artifact
 is resolved by the CR16 abs20 rule, not by this map.  Q46/Q55/Q75 remain open;
 the SC14448 physical identity behind the resulting `0x00FFxxxx` addresses
 remains CANDIDATE.
+# E3.3 offline reference boundary
+
+SC14480 Rev. 1.0 printed p. 172 describes `DIP_CTRL_REG[URST]` (bit 7):
+set to stop, cleared to start at `DIP_RAM+1`. Printed p. 171 identifies
+`DIP_PC_REG` as a program counter valid upon break/freeze; it is not a
+generic status register. Printed p. 177 describes DSP_INT_REG vector bits as
+write-one-to-clear. Printed pp. 35–38 list BR/BR_B0 but defer the detailed
+encoding to AN-D-140, absent offline. These are **SC14480** facts only;
+E3.3 makes no SC14448 physical-register identity claim.

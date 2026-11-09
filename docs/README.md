@@ -42,6 +42,7 @@ Verify the canonical layout and all SHA256 manifests with
 | `fon-e2-summary.md` | E2 interprocedural analysis, table consumers, IRQ callgraphs and slot-5 boundary. |
 | `fon-e3-summary.md` | E3 proof audit, corrected table/IRQ reporting, dsp/dip traces and `0x01000000` boundary. |
 | `fon-e32-summary.md` | E3.2 audit fixes, CR16 abs20 expansion, Q57 resolution and DIP payload evidence. |
+| `fon-e33-summary.md` | E3.3 bounded DIP fill/bring-up and DIP/DSP IRQ traces, provenance and remaining limits. |
 
 ### External reference registry (`references/`)
 

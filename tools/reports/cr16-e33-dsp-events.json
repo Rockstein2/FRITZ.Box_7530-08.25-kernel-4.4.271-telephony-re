@@ -1,0 +1,993 @@
+{
+ "tool": "cr16-e33-dsp-events/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "source": "SC14480 Rev 1.0 pp.171-172,177,196-197",
+    "0x00ff6006": "DIP_CTRL_REG candidate",
+    "0x01027fd8": "DSP_INT_REG candidate; W1C is not proved on SC14448",
+    "0x00ff5402": "RESET_INT_PENDING_REG candidate"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "instruction_provenance": [
+    {
+     "instruction": "0x028a94",
+     "raw_bytes": "f001",
+     "disassembly": "push $0x8,r0,RA"
+    },
+    {
+     "instruction": "0x028a96",
+     "raw_bytes": "1901",
+     "disassembly": "push $0x2,r9"
+    },
+    {
+     "instruction": "0x028a98",
+     "raw_bytes": "0801",
+     "disassembly": "push $0x1,r8"
+    },
+    {
+     "instruction": "0x028a9a",
+     "raw_bytes": "77000000cb93",
+     "disassembly": "movd $0x93cb:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x028aa0",
+     "raw_bytes": "97b0",
+     "disassembly": "loadb 0x0:s(r8,r7),r9"
+    },
+    {
+     "instruction": "0x028aa2",
+     "raw_bytes": "b0582800",
+     "disassembly": "movb $0x28:m,r0"
+    },
+    {
+     "instruction": "0x028aa6",
+     "raw_bytes": "07f0",
+     "disassembly": "storb r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x028aa8",
+     "raw_bytes": "120000b0d600",
+     "disassembly": "loadd 0xd6:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x028aae",
+     "raw_bytes": "b0605800",
+     "disassembly": "addd $0x58:m,(r1,r0)"
+    },
+    {
+     "instruction": "0x028ab2",
+     "raw_bytes": "a090",
+     "disassembly": "loadw 0x0:s(r1,r0),r10"
+    },
+    {
+     "instruction": "0x028ab4",
+     "raw_bytes": "a0d0",
+     "disassembly": "storw r10,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x028ab6",
+     "raw_bytes": "14009020",
+     "disassembly": "spr psr,r0"
+    },
+    {
+     "instruction": "0x028aba",
+     "raw_bytes": "b0260008",
+     "disassembly": "orw $0x800:m,r0"
+    },
+    {
+     "instruction": "0x028abe",
+     "raw_bytes": "14009000",
+     "disassembly": "lpr r0,psr"
+    },
+    {
+     "instruction": "0x028ac2",
+     "raw_bytes": "0500",
+     "disassembly": "ei"
+    },
+    {
+     "instruction": "0x028ac4",
+     "raw_bytes": "002c",
+     "disassembly": "nop"
+    },
+    {
+     "instruction": "0x028ac6",
+     "raw_bytes": "70000000c402",
+     "disassembly": "movd $0x2c4:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x028acc",
+     "raw_bytes": "a259",
+     "disassembly": "movb r10,r2"
+    },
+    {
+     "instruction": "0x028ace",
+     "raw_bytes": "e220",
+     "disassembly": "andb $0xe:s,r2"
+    },
+    {
+     "instruction": "0x028ad0",
+     "raw_bytes": "420d",
+     "disassembly": "bne0b r2,*+0x2a:s"
+    },
+    {
+     "instruction": "0x028ad2",
+     "raw_bytes": "2097",
+     "disassembly": "loadw 0xe:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x028ad4",
+     "raw_bytes": "1232",
+     "disassembly": "addw $0x1:s,r2"
+    },
+    {
+     "instruction": "0x028ad6",
+     "raw_bytes": "20d7",
+     "disassembly": "storw r2,0xe:s(r1,r0)"
+    },
+    {
+     "instruction": "0x028ad8",
+     "raw_bytes": "ca26",
+     "disassembly": "orw $0xc:s,r10"
+    },
+    {
+     "instruction": "0x028ada",
+     "raw_bytes": "fa06",
+     "disassembly": "tbit $0xf:s,r10"
+    },
+    {
+     "instruction": "0x028adc",
+     "raw_bytes": "9710",
+     "disassembly": "bfc *+0x28aea:s"
+    },
+    {
+     "instruction": "0x028ade",
+     "raw_bytes": "100060b0c893",
+     "disassembly": "sbitb $0x6,0x93c8:l"
+    },
+    {
+     "instruction": "0x028ae4",
+     "raw_bytes": "2098",
+     "disassembly": "loadw 0x10:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x028ae6",
+     "raw_bytes": "1232",
+     "disassembly": "addw $0x1:s,r2"
+    },
+    {
+     "instruction": "0x028ae8",
+     "raw_bytes": "20d8",
+     "disassembly": "storw r2,0x10:s(r1,r0)"
+    },
+    {
+     "instruction": "0x028aea",
+     "raw_bytes": "3a06",
+     "disassembly": "tbit $0x3:s,r10"
+    },
+    {
+     "instruction": "0x028aec",
+     "raw_bytes": "9310",
+     "disassembly": "bfc *+0x28af2:s"
+    },
+    {
+     "instruction": "0x028aee",
+     "raw_bytes": "fdc03bb0",
+     "disassembly": "bal (ra),*-0x3b28:m"
+    },
+    {
+     "instruction": "0x028af2",
+     "raw_bytes": "2a06",
+     "disassembly": "tbit $0x2:s,r10"
+    },
+    {
+     "instruction": "0x028af4",
+     "raw_bytes": "9310",
+     "disassembly": "bfc *+0x28afa:s"
+    },
+    {
+     "instruction": "0x028af6",
+     "raw_bytes": "fdc043b0",
+     "disassembly": "bal (ra),*-0x3b38:m"
+    },
+    {
+     "instruction": "0x028afa",
+     "raw_bytes": "97f0",
+     "disassembly": "storb r9,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x028afc",
+     "raw_bytes": "b05a0020",
+     "disassembly": "movw $0x2000:m,r0"
+    },
+    {
+     "instruction": "0x028b00",
+     "raw_bytes": "0fc90254",
+     "disassembly": "storw r0,0xf5402:m"
+    },
+    {
+     "instruction": "0x028b04",
+     "raw_bytes": "0802",
+     "disassembly": "pop $0x1,r8"
+    },
+    {
+     "instruction": "0x028b06",
+     "raw_bytes": "1902",
+     "disassembly": "pop $0x2,r9"
+    },
+    {
+     "instruction": "0x028b08",
+     "raw_bytes": "f002",
+     "disassembly": "pop $0x8,r0,RA"
+    },
+    {
+     "instruction": "0x003b28",
+     "raw_bytes": "120000b06c93",
+     "disassembly": "loadd 0x936c:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x003b2e",
+     "raw_bytes": "2093",
+     "disassembly": "loadw 0x6:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x003b30",
+     "raw_bytes": "20d5",
+     "disassembly": "storw r2,0xa:s(r1,r0)"
+    },
+    {
+     "instruction": "0x003b32",
+     "raw_bytes": "00c30c00",
+     "disassembly": "storw $0x0:s,0xc:m(r1,r0)"
+    },
+    {
+     "instruction": "0x003b36",
+     "raw_bytes": "ee0a",
+     "disassembly": "jump (ra)"
+    },
+    {
+     "instruction": "0x003b38",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x003b3a",
+     "raw_bytes": "1d01",
+     "disassembly": "push $0x2,r13"
+    },
+    {
+     "instruction": "0x003b3c",
+     "raw_bytes": "095a",
+     "disassembly": "movw $0x0:s,r9"
+    },
+    {
+     "instruction": "0x003b3e",
+     "raw_bytes": "7a000000e400",
+     "disassembly": "movd $0xe4:l,(r11,r10)"
+    },
+    {
+     "instruction": "0x003b38",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x003b3a",
+     "raw_bytes": "1d01",
+     "disassembly": "push $0x2,r13"
+    },
+    {
+     "instruction": "0x003b3c",
+     "raw_bytes": "095a",
+     "disassembly": "movw $0x0:s,r9"
+    },
+    {
+     "instruction": "0x003b3e",
+     "raw_bytes": "7a000000e400",
+     "disassembly": "movd $0xe4:l,(r11,r10)"
+    },
+    {
+     "instruction": "0x003b44",
+     "raw_bytes": "e910",
+     "disassembly": "br *+0x3b56:s"
+    },
+    {
+     "instruction": "0x003b46",
+     "raw_bytes": "2057",
+     "disassembly": "cmpd (r3,r2),(r1,r0)"
+    },
+    {
+     "instruction": "0x003b48",
+     "raw_bytes": "1210",
+     "disassembly": "bne *+0x3b4c:s"
+    },
+    {
+     "instruction": "0x003b4a",
+     "raw_bytes": "cae0",
+     "disassembly": "stord (r12),0x0:s(r11,r10)"
+    },
+    {
+     "instruction": "0x003b4c",
+     "raw_bytes": "1932",
+     "disassembly": "addw $0x1:s,r9"
+    },
+    {
+     "instruction": "0x003b4e",
+     "raw_bytes": "0795",
+     "disassembly": "loadw 0xa:s(r8,r7),r0"
+    },
+    {
+     "instruction": "0x003b50",
+     "raw_bytes": "9053",
+     "disassembly": "cmpw r9,r0"
+    }
+   ],
+   "control_flow_evidence": {
+    "irq_entry": "0x028a94",
+    "nonzero_low_bits_1_to_3_skip_helpers": [
+     "0x028ad0",
+     "0x028afa"
+    ],
+    "zero_low_bits_path_sets_bits_2_and_3": "0x028ad8",
+    "bit3_true_target": "0x003b28",
+    "bit2_true_target": "0x003b38"
+   },
+   "dataflow_evidence": {
+    "static_pointer_cell": "0x000000d6",
+    "static_pointer_value": "0x01027f80",
+    "base_plus_0x58": "0x01027fd8 (32-bit register-pair arithmetic)",
+    "read_instruction": "0x028ab2",
+    "write_same_word": "0x028ab4",
+    "bit3_test": "0x028aea",
+    "bit2_test": "0x028af2",
+    "helper_input_bits_status": "NOT_RAW_VECTOR_BITS: on the zero low-0x0e path, firmware ORs 0x0c into r10 before testing bit3 and bit2; the nonzero path skips both calls",
+    "counter_fields": [
+     "0x02d2",
+     "0x02d4"
+    ],
+    "direct_overlapping_0xd6_0xd9": [
+     {
+      "image": "normal",
+      "instruction": "0x001338",
+      "bytes": "07a0",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x001332"
+      ],
+      "reachable_mode_a": true,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "normal",
+      "instruction": "0x001560",
+      "bytes": "120000b0d600",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x001560"
+      ],
+      "reachable_mode_a": true,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "normal",
+      "instruction": "0x00156e",
+      "bytes": "120040b0d600",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x00156e"
+      ],
+      "reachable_mode_a": true,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "normal",
+      "instruction": "0x001858",
+      "bytes": "120070b0d600",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x001858"
+      ],
+      "reachable_mode_a": true,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "normal",
+      "instruction": "0x00193e",
+      "bytes": "07a0",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x001938"
+      ],
+      "reachable_mode_a": true,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "normal",
+      "instruction": "0x0287f2",
+      "bytes": "120000b0d600",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x0287f2"
+      ],
+      "reachable_mode_a": true,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "normal",
+      "instruction": "0x028aa8",
+      "bytes": "120000b0d600",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x028aa8"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     }
+    ],
+    "direct_writers": [],
+    "unknown_address_uses": 4101,
+    "runtime_writer_absence_proven": false
+   },
+   "unresolved_paths": [
+    "runtime/indirect writers or copy ranges crossing 0xD6",
+    "DSP event vector bit2/3 semantics and helper downstream effects",
+    "W1C semantics on SC14448 unproved",
+    "unknown indexed memory/call paths",
+    "slot-5 source-to-sink path"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "source": "SC14480 Rev 1.0 pp.171-172,177,196-197",
+    "0x00ff6006": "DIP_CTRL_REG candidate",
+    "0x01027fd8": "DSP_INT_REG candidate; W1C is not proved on SC14448",
+    "0x00ff5402": "RESET_INT_PENDING_REG candidate"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "instruction_provenance": [
+    {
+     "instruction": "0x027914",
+     "raw_bytes": "f001",
+     "disassembly": "push $0x8,r0,RA"
+    },
+    {
+     "instruction": "0x027916",
+     "raw_bytes": "1901",
+     "disassembly": "push $0x2,r9"
+    },
+    {
+     "instruction": "0x027918",
+     "raw_bytes": "0801",
+     "disassembly": "push $0x1,r8"
+    },
+    {
+     "instruction": "0x02791a",
+     "raw_bytes": "770000001295",
+     "disassembly": "movd $0x9512:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x027920",
+     "raw_bytes": "97b0",
+     "disassembly": "loadb 0x0:s(r8,r7),r9"
+    },
+    {
+     "instruction": "0x027922",
+     "raw_bytes": "b0582800",
+     "disassembly": "movb $0x28:m,r0"
+    },
+    {
+     "instruction": "0x027926",
+     "raw_bytes": "07f0",
+     "disassembly": "storb r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x027928",
+     "raw_bytes": "120000b0d600",
+     "disassembly": "loadd 0xd6:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x02792e",
+     "raw_bytes": "b0605800",
+     "disassembly": "addd $0x58:m,(r1,r0)"
+    },
+    {
+     "instruction": "0x027932",
+     "raw_bytes": "a090",
+     "disassembly": "loadw 0x0:s(r1,r0),r10"
+    },
+    {
+     "instruction": "0x027934",
+     "raw_bytes": "a0d0",
+     "disassembly": "storw r10,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x027936",
+     "raw_bytes": "14009020",
+     "disassembly": "spr psr,r0"
+    },
+    {
+     "instruction": "0x02793a",
+     "raw_bytes": "b0260008",
+     "disassembly": "orw $0x800:m,r0"
+    },
+    {
+     "instruction": "0x02793e",
+     "raw_bytes": "14009000",
+     "disassembly": "lpr r0,psr"
+    },
+    {
+     "instruction": "0x027942",
+     "raw_bytes": "0500",
+     "disassembly": "ei"
+    },
+    {
+     "instruction": "0x027944",
+     "raw_bytes": "002c",
+     "disassembly": "nop"
+    },
+    {
+     "instruction": "0x027946",
+     "raw_bytes": "700000002402",
+     "disassembly": "movd $0x224:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x02794c",
+     "raw_bytes": "a259",
+     "disassembly": "movb r10,r2"
+    },
+    {
+     "instruction": "0x02794e",
+     "raw_bytes": "e220",
+     "disassembly": "andb $0xe:s,r2"
+    },
+    {
+     "instruction": "0x027950",
+     "raw_bytes": "420d",
+     "disassembly": "bne0b r2,*+0x2a:s"
+    },
+    {
+     "instruction": "0x027952",
+     "raw_bytes": "2097",
+     "disassembly": "loadw 0xe:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x027954",
+     "raw_bytes": "1232",
+     "disassembly": "addw $0x1:s,r2"
+    },
+    {
+     "instruction": "0x027956",
+     "raw_bytes": "20d7",
+     "disassembly": "storw r2,0xe:s(r1,r0)"
+    },
+    {
+     "instruction": "0x027958",
+     "raw_bytes": "ca26",
+     "disassembly": "orw $0xc:s,r10"
+    },
+    {
+     "instruction": "0x02795a",
+     "raw_bytes": "fa06",
+     "disassembly": "tbit $0xf:s,r10"
+    },
+    {
+     "instruction": "0x02795c",
+     "raw_bytes": "9710",
+     "disassembly": "bfc *+0x2796a:s"
+    },
+    {
+     "instruction": "0x02795e",
+     "raw_bytes": "100060b00e95",
+     "disassembly": "sbitb $0x6,0x950e:l"
+    },
+    {
+     "instruction": "0x027964",
+     "raw_bytes": "2098",
+     "disassembly": "loadw 0x10:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x027966",
+     "raw_bytes": "1232",
+     "disassembly": "addw $0x1:s,r2"
+    },
+    {
+     "instruction": "0x027968",
+     "raw_bytes": "20d8",
+     "disassembly": "storw r2,0x10:s(r1,r0)"
+    },
+    {
+     "instruction": "0x02796a",
+     "raw_bytes": "3a06",
+     "disassembly": "tbit $0x3:s,r10"
+    },
+    {
+     "instruction": "0x02796c",
+     "raw_bytes": "9310",
+     "disassembly": "bfc *+0x27972:s"
+    },
+    {
+     "instruction": "0x02796e",
+     "raw_bytes": "ffc0d7fd",
+     "disassembly": "bal (ra),*-0x27744:m"
+    },
+    {
+     "instruction": "0x027972",
+     "raw_bytes": "2a06",
+     "disassembly": "tbit $0x2:s,r10"
+    },
+    {
+     "instruction": "0x027974",
+     "raw_bytes": "9310",
+     "disassembly": "bfc *+0x2797a:s"
+    },
+    {
+     "instruction": "0x027976",
+     "raw_bytes": "ffc0dffd",
+     "disassembly": "bal (ra),*-0x27754:m"
+    },
+    {
+     "instruction": "0x02797a",
+     "raw_bytes": "97f0",
+     "disassembly": "storb r9,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02797c",
+     "raw_bytes": "b05a0020",
+     "disassembly": "movw $0x2000:m,r0"
+    },
+    {
+     "instruction": "0x027980",
+     "raw_bytes": "0fc90254",
+     "disassembly": "storw r0,0xf5402:m"
+    },
+    {
+     "instruction": "0x027984",
+     "raw_bytes": "0802",
+     "disassembly": "pop $0x1,r8"
+    },
+    {
+     "instruction": "0x027986",
+     "raw_bytes": "1902",
+     "disassembly": "pop $0x2,r9"
+    },
+    {
+     "instruction": "0x027988",
+     "raw_bytes": "f002",
+     "disassembly": "pop $0x8,r0,RA"
+    },
+    {
+     "instruction": "0x027744",
+     "raw_bytes": "120000b0a494",
+     "disassembly": "loadd 0x94a4:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x02774a",
+     "raw_bytes": "2093",
+     "disassembly": "loadw 0x6:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x02774c",
+     "raw_bytes": "20d5",
+     "disassembly": "storw r2,0xa:s(r1,r0)"
+    },
+    {
+     "instruction": "0x02774e",
+     "raw_bytes": "00c30c00",
+     "disassembly": "storw $0x0:s,0xc:m(r1,r0)"
+    },
+    {
+     "instruction": "0x027752",
+     "raw_bytes": "ee0a",
+     "disassembly": "jump (ra)"
+    },
+    {
+     "instruction": "0x027754",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x027756",
+     "raw_bytes": "1d01",
+     "disassembly": "push $0x2,r13"
+    },
+    {
+     "instruction": "0x027758",
+     "raw_bytes": "095a",
+     "disassembly": "movw $0x0:s,r9"
+    },
+    {
+     "instruction": "0x02775a",
+     "raw_bytes": "7a000000e400",
+     "disassembly": "movd $0xe4:l,(r11,r10)"
+    },
+    {
+     "instruction": "0x027754",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x027756",
+     "raw_bytes": "1d01",
+     "disassembly": "push $0x2,r13"
+    },
+    {
+     "instruction": "0x027758",
+     "raw_bytes": "095a",
+     "disassembly": "movw $0x0:s,r9"
+    },
+    {
+     "instruction": "0x02775a",
+     "raw_bytes": "7a000000e400",
+     "disassembly": "movd $0xe4:l,(r11,r10)"
+    },
+    {
+     "instruction": "0x027760",
+     "raw_bytes": "e910",
+     "disassembly": "br *+0x27772:s"
+    },
+    {
+     "instruction": "0x027762",
+     "raw_bytes": "2057",
+     "disassembly": "cmpd (r3,r2),(r1,r0)"
+    },
+    {
+     "instruction": "0x027764",
+     "raw_bytes": "1210",
+     "disassembly": "bne *+0x27768:s"
+    },
+    {
+     "instruction": "0x027766",
+     "raw_bytes": "cae0",
+     "disassembly": "stord (r12),0x0:s(r11,r10)"
+    },
+    {
+     "instruction": "0x027768",
+     "raw_bytes": "1932",
+     "disassembly": "addw $0x1:s,r9"
+    },
+    {
+     "instruction": "0x02776a",
+     "raw_bytes": "0795",
+     "disassembly": "loadw 0xa:s(r8,r7),r0"
+    },
+    {
+     "instruction": "0x02776c",
+     "raw_bytes": "9053",
+     "disassembly": "cmpw r9,r0"
+    }
+   ],
+   "control_flow_evidence": {
+    "irq_entry": "0x027914",
+    "nonzero_low_bits_1_to_3_skip_helpers": [
+     "0x027950",
+     "0x02797a"
+    ],
+    "zero_low_bits_path_sets_bits_2_and_3": "0x027958",
+    "bit3_true_target": "0x027744",
+    "bit2_true_target": "0x027754"
+   },
+   "dataflow_evidence": {
+    "static_pointer_cell": "0x000000d6",
+    "static_pointer_value": "0x01027f80",
+    "base_plus_0x58": "0x01027fd8 (32-bit register-pair arithmetic)",
+    "read_instruction": "0x027932",
+    "write_same_word": "0x027934",
+    "bit3_test": "0x02796a",
+    "bit2_test": "0x027972",
+    "helper_input_bits_status": "NOT_RAW_VECTOR_BITS: on the zero low-0x0e path, firmware ORs 0x0c into r10 before testing bit3 and bit2; the nonzero path skips both calls",
+    "counter_fields": [
+     "0x0232",
+     "0x0234"
+    ],
+    "direct_overlapping_0xd6_0xd9": [
+     {
+      "image": "p2test",
+      "instruction": "0x000dae",
+      "bytes": "07a0",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x000da8"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "p2test",
+      "instruction": "0x000fdc",
+      "bytes": "120000b0d600",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x000fdc"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "p2test",
+      "instruction": "0x000fea",
+      "bytes": "120040b0d600",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x000fea"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "p2test",
+      "instruction": "0x0012da",
+      "bytes": "120070b0d600",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x0012da"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "p2test",
+      "instruction": "0x0013c0",
+      "bytes": "07a0",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x0013ba"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "p2test",
+      "instruction": "0x02753c",
+      "bytes": "120000b0d600",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x02753c"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": true,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     },
+     {
+      "image": "p2test",
+      "instruction": "0x027928",
+      "bytes": "120000b0d600",
+      "mnemonic": "loadd",
+      "operation": "READ",
+      "width_bits": 32,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x000000d6",
+      "expression": null,
+      "provenance": [
+       "0x027928"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+     }
+    ],
+    "direct_writers": [],
+    "unknown_address_uses": 3574,
+    "runtime_writer_absence_proven": false
+   },
+   "unresolved_paths": [
+    "runtime/indirect writers or copy ranges crossing 0xD6",
+    "DSP event vector bit2/3 semantics and helper downstream effects",
+    "W1C semantics on SC14448 unproved",
+    "unknown indexed memory/call paths",
+    "slot-5 source-to-sink path"
+   ]
+  }
+ }
+}

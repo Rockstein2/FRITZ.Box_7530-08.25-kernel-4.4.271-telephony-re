@@ -1,0 +1,323 @@
+{
+ "tool": "cr16-e33-dip-fill-proof/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x025f98",
+     "raw_bytes": "17c2",
+     "disassembly": "storw $0x1:s,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x025f9a",
+     "raw_bytes": "b25a0110",
+     "disassembly": "movw $0x1001:m,r2"
+    },
+    {
+     "instruction": "0x025f9e",
+     "raw_bytes": "fdc01dc6",
+     "disassembly": "bal (ra),*-0x25ba:m"
+    },
+    {
+     "instruction": "0x0025bc",
+     "raw_bytes": "700000007c93",
+     "disassembly": "movd $0x937c:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x0025c4",
+     "raw_bytes": "740000010000",
+     "disassembly": "movd $0x1000000:l,(r5,r4)"
+    },
+    {
+     "instruction": "0x0025ca",
+     "raw_bytes": "365f",
+     "disassembly": "movzw r3,(r7,r6)"
+    },
+    {
+     "instruction": "0x0025cc",
+     "raw_bytes": "164c",
+     "disassembly": "ashud $1:s,(r7,r6)"
+    },
+    {
+     "instruction": "0x0025ce",
+     "raw_bytes": "6461",
+     "disassembly": "addd (r7,r6),(r5,r4)"
+    },
+    {
+     "instruction": "0x0025d0",
+     "raw_bytes": "24d0",
+     "disassembly": "storw r2,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x0025d2",
+     "raw_bytes": "1332",
+     "disassembly": "addw $0x1:s,r3"
+    },
+    {
+     "instruction": "0x0025d4",
+     "raw_bytes": "30d0",
+     "disassembly": "storw r3,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x025fa4",
+     "raw_bytes": "b0520002",
+     "disassembly": "cmpw $0x200:m,r0"
+    },
+    {
+     "instruction": "0x025fa8",
+     "raw_bytes": "491f",
+     "disassembly": "bhi *-0x25f9a:s"
+    }
+   ],
+   "control_flow_evidence": {
+    "call_target": "0x0025ba",
+    "backedge": [
+     "0x025fa8",
+     "0x025f9a"
+    ],
+    "backedge_verified": true,
+    "entry_global_proven": false,
+    "direct_cfg": {
+     "entry": "0x025f90",
+     "selected_store_reachable": true,
+     "selected_branch_reachable": true,
+     "store_hops": 12,
+     "store_direct_predecessors": [
+      "0x0025ce"
+     ],
+     "branch_direct_predecessors": [
+      "0x025fa4"
+     ],
+     "unknown_indirect_edges": 382
+    }
+   },
+   "dataflow_evidence": {
+    "local_store_source": "r2",
+    "source_definition": "0x025f9a",
+    "source_to_store": "LOCAL_CALL_PATH_ONLY",
+    "address_formula": "0x01000000 + 2*zero_extend16(counter)",
+    "counter_cell": "0x00937c",
+    "counter_initialisation": 1,
+    "counter_increment": 1,
+    "compare_immediate": "0x0200",
+    "store_count": "511 CONDITIONAL ON CMP/BHI AND NO EXTERNAL WRITERS"
+   },
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "source": "SC14480 Rev 1.0, printed pp. 33-38, 131-132, 171-172"
+   },
+   "unresolved_paths": [
+    "external/indirect writers of the counter cell not excluded",
+    "full call-entry coverage and callee register preservation not proved",
+    "CR16 cmpw/bhi flag direction not independently ISA-verified",
+    "other indirect writers of the 0x01000000 bank not excluded"
+   ],
+   "confidence": "PARTIALLY_PROVEN",
+   "value_provenance": "LOCAL_LITERAL_AND_CALL_PATH",
+   "address_provenance": "LOCAL_BODY_ARITHMETIC",
+   "loop_bounds_provenance": "COUNTER_INIT_INCREMENT_BACKEDGE_VERIFIED; COMPARE_SEMANTICS_UNRESOLVED",
+   "cfg_coverage": {
+    "entry": "0x025f90",
+    "selected_store_reachable": true,
+    "selected_branch_reachable": true,
+    "store_hops": 12,
+    "store_direct_predecessors": [
+     "0x0025ce"
+    ],
+    "branch_direct_predecessors": [
+     "0x025fa4"
+    ],
+    "unknown_indirect_edges": 382
+   },
+   "additional_bank_base_sites": [
+    {
+     "instruction": "0x002e72",
+     "raw_bytes": "770000010000",
+     "disassembly": "movd $0x1000000:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x002f98",
+     "raw_bytes": "770000010000",
+     "disassembly": "movd $0x1000000:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x0036ba",
+     "raw_bytes": "780000010000",
+     "disassembly": "movd $0x1000000:l,(r9,r8)"
+    },
+    {
+     "instruction": "0x0036ec",
+     "raw_bytes": "770000010000",
+     "disassembly": "movd $0x1000000:l,(r8,r7)"
+    }
+   ],
+   "other_bank_writer": {
+    "instruction": "0x002618",
+    "raw_bytes": "30d0",
+    "disassembly": "storw r3,0x0:s(r1,r0)"
+   }
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x02674e",
+     "raw_bytes": "17c2",
+     "disassembly": "storw $0x1:s,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x026750",
+     "raw_bytes": "b25a0110",
+     "disassembly": "movw $0x1001:m,r2"
+    },
+    {
+     "instruction": "0x026754",
+     "raw_bytes": "fdc023b7",
+     "disassembly": "bal (ra),*-0x1e76:m"
+    },
+    {
+     "instruction": "0x001e78",
+     "raw_bytes": "70000000b694",
+     "disassembly": "movd $0x94b6:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x001e80",
+     "raw_bytes": "740000010000",
+     "disassembly": "movd $0x1000000:l,(r5,r4)"
+    },
+    {
+     "instruction": "0x001e86",
+     "raw_bytes": "365f",
+     "disassembly": "movzw r3,(r7,r6)"
+    },
+    {
+     "instruction": "0x001e88",
+     "raw_bytes": "164c",
+     "disassembly": "ashud $1:s,(r7,r6)"
+    },
+    {
+     "instruction": "0x001e8a",
+     "raw_bytes": "6461",
+     "disassembly": "addd (r7,r6),(r5,r4)"
+    },
+    {
+     "instruction": "0x001e8c",
+     "raw_bytes": "24d0",
+     "disassembly": "storw r2,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x001e8e",
+     "raw_bytes": "1332",
+     "disassembly": "addw $0x1:s,r3"
+    },
+    {
+     "instruction": "0x001e90",
+     "raw_bytes": "30d0",
+     "disassembly": "storw r3,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x02675a",
+     "raw_bytes": "b0520002",
+     "disassembly": "cmpw $0x200:m,r0"
+    },
+    {
+     "instruction": "0x02675e",
+     "raw_bytes": "491f",
+     "disassembly": "bhi *-0x26750:s"
+    }
+   ],
+   "control_flow_evidence": {
+    "call_target": "0x001e76",
+    "backedge": [
+     "0x02675e",
+     "0x026750"
+    ],
+    "backedge_verified": true,
+    "entry_global_proven": false,
+    "direct_cfg": {
+     "entry": "0x026746",
+     "selected_store_reachable": true,
+     "selected_branch_reachable": true,
+     "store_hops": 12,
+     "store_direct_predecessors": [
+      "0x001e8a"
+     ],
+     "branch_direct_predecessors": [
+      "0x02675a"
+     ],
+     "unknown_indirect_edges": 396
+    }
+   },
+   "dataflow_evidence": {
+    "local_store_source": "r2",
+    "source_definition": "0x026750",
+    "source_to_store": "LOCAL_CALL_PATH_ONLY",
+    "address_formula": "0x01000000 + 2*zero_extend16(counter)",
+    "counter_cell": "0x0094b6",
+    "counter_initialisation": 1,
+    "counter_increment": 1,
+    "compare_immediate": "0x0200",
+    "store_count": "511 CONDITIONAL ON CMP/BHI AND NO EXTERNAL WRITERS"
+   },
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "source": "SC14480 Rev 1.0, printed pp. 33-38, 131-132, 171-172"
+   },
+   "unresolved_paths": [
+    "external/indirect writers of the counter cell not excluded",
+    "full call-entry coverage and callee register preservation not proved",
+    "CR16 cmpw/bhi flag direction not independently ISA-verified",
+    "other indirect writers of the 0x01000000 bank not excluded"
+   ],
+   "confidence": "PARTIALLY_PROVEN",
+   "value_provenance": "LOCAL_LITERAL_AND_CALL_PATH",
+   "address_provenance": "LOCAL_BODY_ARITHMETIC",
+   "loop_bounds_provenance": "COUNTER_INIT_INCREMENT_BACKEDGE_VERIFIED; COMPARE_SEMANTICS_UNRESOLVED",
+   "cfg_coverage": {
+    "entry": "0x026746",
+    "selected_store_reachable": true,
+    "selected_branch_reachable": true,
+    "store_hops": 12,
+    "store_direct_predecessors": [
+     "0x001e8a"
+    ],
+    "branch_direct_predecessors": [
+     "0x02675a"
+    ],
+    "unknown_indirect_edges": 396
+   },
+   "additional_bank_base_sites": [
+    {
+     "instruction": "0x002a0e",
+     "raw_bytes": "770000010000",
+     "disassembly": "movd $0x1000000:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x002b32",
+     "raw_bytes": "770000010000",
+     "disassembly": "movd $0x1000000:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x00340c",
+     "raw_bytes": "780000010000",
+     "disassembly": "movd $0x1000000:l,(r9,r8)"
+    },
+    {
+     "instruction": "0x00343e",
+     "raw_bytes": "770000010000",
+     "disassembly": "movd $0x1000000:l,(r8,r7)"
+    }
+   ],
+   "other_bank_writer": {
+    "instruction": "0x001ed4",
+    "raw_bytes": "30d0",
+    "disassembly": "storw r3,0x0:s(r1,r0)"
+   }
+  }
+ }
+}

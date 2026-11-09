@@ -1,0 +1,69 @@
+{
+ "tool": "cr16-e33-dip-opcodes/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x025f9a",
+     "raw_bytes": "b25a0110",
+     "disassembly": "movw $0x1001:m,r2"
+    }
+   ],
+   "control_flow_evidence": {},
+   "dataflow_evidence": {
+    "word": "0x1001",
+    "store_link": "LOCAL_CALL_PATH_ONLY"
+   },
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "source": "SC14480 Table 10 pp.35-38",
+    "little_endian_candidate": "BR opcode 0x01, parameter 0x10",
+    "big_endian_candidate": "BR_B0 opcode 0x10, parameter 0x01",
+    "first_executable_word": "DIP_RAM+1 (SC14480 p.172)",
+    "full_encoding_source": "AN-D-140 unavailable offline",
+    "osmocomdect_sources": "unavailable offline; no SC14448 transfer"
+   },
+   "unresolved_paths": [
+    "opcode byte order and parameter/target encoding",
+    "branch behaviour, bank selection and first RAM word",
+    "program validity and SC14448 DIP RAM identity"
+   ],
+   "confidence": "CANDIDATE"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x026750",
+     "raw_bytes": "b25a0110",
+     "disassembly": "movw $0x1001:m,r2"
+    }
+   ],
+   "control_flow_evidence": {},
+   "dataflow_evidence": {
+    "word": "0x1001",
+    "store_link": "LOCAL_CALL_PATH_ONLY"
+   },
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "source": "SC14480 Table 10 pp.35-38",
+    "little_endian_candidate": "BR opcode 0x01, parameter 0x10",
+    "big_endian_candidate": "BR_B0 opcode 0x10, parameter 0x01",
+    "first_executable_word": "DIP_RAM+1 (SC14480 p.172)",
+    "full_encoding_source": "AN-D-140 unavailable offline",
+    "osmocomdect_sources": "unavailable offline; no SC14448 transfer"
+   },
+   "unresolved_paths": [
+    "opcode byte order and parameter/target encoding",
+    "branch behaviour, bank selection and first RAM word",
+    "program validity and SC14448 DIP RAM identity"
+   ],
+   "confidence": "CANDIDATE"
+  }
+ }
+}

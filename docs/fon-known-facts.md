@@ -6,6 +6,16 @@ fail-closed report publication preserve the architectural abs20 rule
 remain previously reconstructed candidates pending a complete def-use/CFG
 proof. No SC14448 register identity or slot-5 handler is established.
 
+E3.3 offline instruction-level observation (`fon-e33-summary.md`): both
+images contain a direct call from a local `movw $0x1001,r2` site to an indexed
+store helper with `0x01000000 + 2*zero_extend16(counter)` arithmetic, followed
+by a counter increment and conditional backedge. Separate indexed writes to
+the same base exist. On the checked local path the `0x00FF6006 ← 0x80`
+write occurs **after** the fill call, followed by `← 0`; their SC14448
+register meaning and global ordering are not proven. The static `0xD6`
+pointer is `0x01027F80`; the DSP IRQ forms `+0x58` with a 32-bit register
+pair. None of these facts proves a slot-5 consumer.
+
 Status: **confirmed evidence only. Anything not listed here is either an open
 question (`fon-open-questions.md`) or historical reasoning under
 `docs/history/`.**

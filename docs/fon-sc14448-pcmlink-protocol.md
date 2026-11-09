@@ -226,3 +226,10 @@ functional FON driver additionally requires:
 
 Until then, the minimum safe deliverable is an offline encoder/decoder plus a
 read-only transport test plan.  It must not drive ringing or line feed.
+# E3.3 scope note
+
+Bounded offline traces of `dip_int` and `dsp_int` in
+`fon-e33-summary.md` did **not** identify a firmware consumer of Linux TX
+logical slot 5. This is not a whole-firmware negative result: unknown
+indirect calls, bank identities and other firmware paths remain. Q75 stays
+open; no slot-5 handler is asserted.

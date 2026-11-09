@@ -1,0 +1,617 @@
+{
+ "tool": "cr16-e33-dip-events/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "source": "SC14480 Rev 1.0 pp.171-172,177,196-197",
+    "0x00ff6006": "DIP_CTRL_REG candidate",
+    "0x01027fd8": "DSP_INT_REG candidate; W1C is not proved on SC14448",
+    "0x00ff5402": "RESET_INT_PENDING_REG candidate"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "instruction_provenance": [
+    {
+     "instruction": "0x028cd0",
+     "raw_bytes": "e001",
+     "disassembly": "push $0x7,r0,RA"
+    },
+    {
+     "instruction": "0x028cd2",
+     "raw_bytes": "70000000c993",
+     "disassembly": "movd $0x93c9:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x028cd8",
+     "raw_bytes": "20b0",
+     "disassembly": "loadb 0x0:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x028cda",
+     "raw_bytes": "1230",
+     "disassembly": "addb $0x1:s,r2"
+    },
+    {
+     "instruction": "0x028cdc",
+     "raw_bytes": "20f0",
+     "disassembly": "storb r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x028cde",
+     "raw_bytes": "0f890660",
+     "disassembly": "loadw 0xf6006:m,r0"
+    },
+    {
+     "instruction": "0x028ce2",
+     "raw_bytes": "0259",
+     "disassembly": "movb r0,r2"
+    },
+    {
+     "instruction": "0x028ce4",
+     "raw_bytes": "b05a0004",
+     "disassembly": "movw $0x400:m,r0"
+    },
+    {
+     "instruction": "0x028ce8",
+     "raw_bytes": "0fc90254",
+     "disassembly": "storw r0,0xf5402:m"
+    },
+    {
+     "instruction": "0x028cec",
+     "raw_bytes": "ffc047fa",
+     "disassembly": "bal (ra),*-0x28732:m"
+    },
+    {
+     "instruction": "0x028cf0",
+     "raw_bytes": "e002",
+     "disassembly": "pop $0x7,r0,RA"
+    },
+    {
+     "instruction": "0x028cf2",
+     "raw_bytes": "0300",
+     "disassembly": "retx"
+    },
+    {
+     "instruction": "0x028732",
+     "raw_bytes": "a701",
+     "disassembly": "push $0x3,r7,RA"
+    },
+    {
+     "instruction": "0x028734",
+     "raw_bytes": "2959",
+     "disassembly": "movb r2,r9"
+    },
+    {
+     "instruction": "0x028736",
+     "raw_bytes": "77000000859b",
+     "disassembly": "movd $0x9b85:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x02873c",
+     "raw_bytes": "9059",
+     "disassembly": "movb r9,r0"
+    },
+    {
+     "instruction": "0x02873e",
+     "raw_bytes": "e020",
+     "disassembly": "andb $0xe:s,r0"
+    },
+    {
+     "instruction": "0x028740",
+     "raw_bytes": "0050",
+     "disassembly": "cmpb $0x0:s,r0"
+    },
+    {
+     "instruction": "0x028742",
+     "raw_bytes": "0612",
+     "disassembly": "beq *+0x2878e:s"
+    },
+    {
+     "instruction": "0x028744",
+     "raw_bytes": "9059",
+     "disassembly": "movb r9,r0"
+    },
+    {
+     "instruction": "0x028746",
+     "raw_bytes": "e020",
+     "disassembly": "andb $0xe:s,r0"
+    },
+    {
+     "instruction": "0x028748",
+     "raw_bytes": "f040",
+     "disassembly": "ashub $-1:s,r0"
+    },
+    {
+     "instruction": "0x02874a",
+     "raw_bytes": "07f0",
+     "disassembly": "storb r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02874c",
+     "raw_bytes": "0259",
+     "disassembly": "movb r0,r2"
+    },
+    {
+     "instruction": "0x02874e",
+     "raw_bytes": "7250",
+     "disassembly": "cmpb $0x7:s,r2"
+    },
+    {
+     "instruction": "0x028750",
+     "raw_bytes": "5410",
+     "disassembly": "bls *+0x28758:s"
+    },
+    {
+     "instruction": "0x028752",
+     "raw_bytes": "9230",
+     "disassembly": "addb $-1:s,r2"
+    },
+    {
+     "instruction": "0x028754",
+     "raw_bytes": "ffc03bfe",
+     "disassembly": "bal (ra),*-0x2858e:m"
+    },
+    {
+     "instruction": "0x028758",
+     "raw_bytes": "70000000d093",
+     "disassembly": "movd $0x93d0:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x02875e",
+     "raw_bytes": "27b0",
+     "disassembly": "loadb 0x0:s(r8,r7),r2"
+    },
+    {
+     "instruction": "0x028760",
+     "raw_bytes": "225d",
+     "disassembly": "movzb r2,r2"
+    },
+    {
+     "instruction": "0x028762",
+     "raw_bytes": "9232",
+     "disassembly": "addw $-1:s,r2"
+    },
+    {
+     "instruction": "0x028764",
+     "raw_bytes": "225e",
+     "disassembly": "movxw r2,(r3,r2)"
+    },
+    {
+     "instruction": "0x028766",
+     "raw_bytes": "124c",
+     "disassembly": "ashud $1:s,(r3,r2)"
+    },
+    {
+     "instruction": "0x028768",
+     "raw_bytes": "2455",
+     "disassembly": "movd (r3,r2),(r5,r4)"
+    },
+    {
+     "instruction": "0x02876a",
+     "raw_bytes": "124c",
+     "disassembly": "ashud $1:s,(r3,r2)"
+    },
+    {
+     "instruction": "0x02876c",
+     "raw_bytes": "4261",
+     "disassembly": "addd (r5,r4),(r3,r2)"
+    },
+    {
+     "instruction": "0x02876e",
+     "raw_bytes": "2061",
+     "disassembly": "addd (r3,r2),(r1,r0)"
+    },
+    {
+     "instruction": "0x028770",
+     "raw_bytes": "0906",
+     "disassembly": "tbit $0x0:s,r9"
+    },
+    {
+     "instruction": "0x028772",
+     "raw_bytes": "9710",
+     "disassembly": "bfc *+0x28780:s"
+    },
+    {
+     "instruction": "0x028774",
+     "raw_bytes": "007b0500",
+     "disassembly": "tbitb $0x0,0x5:m(r1,r0)"
+    },
+    {
+     "instruction": "0x028778",
+     "raw_bytes": "9910",
+     "disassembly": "bfc *+0x2878a:s"
+    },
+    {
+     "instruction": "0x02877a",
+     "raw_bytes": "006b0500",
+     "disassembly": "cbitb $0x0,0x5:m(r1,r0)"
+    },
+    {
+     "instruction": "0x02877e",
+     "raw_bytes": "e610",
+     "disassembly": "br *+0x2878a:s"
+    },
+    {
+     "instruction": "0x028780",
+     "raw_bytes": "107b0500",
+     "disassembly": "tbitb $0x1,0x5:m(r1,r0)"
+    },
+    {
+     "instruction": "0x028784",
+     "raw_bytes": "9310",
+     "disassembly": "bfc *+0x2878a:s"
+    },
+    {
+     "instruction": "0x028786",
+     "raw_bytes": "106b0500",
+     "disassembly": "cbitb $0x1,0x5:m(r1,r0)"
+    },
+    {
+     "instruction": "0x02878a",
+     "raw_bytes": "b920f000",
+     "disassembly": "andb $0xf0:m,r9"
+    },
+    {
+     "instruction": "0x02878e",
+     "raw_bytes": "f920",
+     "disassembly": "andb $0xf:s,r9"
+    },
+    {
+     "instruction": "0x028790",
+     "raw_bytes": "790c",
+     "disassembly": "beq0b r9,*+0x10:s"
+    },
+    {
+     "instruction": "0x028792",
+     "raw_bytes": "27b0",
+     "disassembly": "loadb 0x0:s(r8,r7),r2"
+    },
+    {
+     "instruction": "0x028794",
+     "raw_bytes": "520c",
+     "disassembly": "beq0b r2,*+0xc:s"
+    },
+    {
+     "instruction": "0x028796",
+     "raw_bytes": "9230",
+     "disassembly": "addb $-1:s,r2"
+    },
+    {
+     "instruction": "0x028798",
+     "raw_bytes": "ffc097fe",
+     "disassembly": "bal (ra),*-0x2862e:m"
+    },
+    {
+     "instruction": "0x02879c",
+     "raw_bytes": "0782",
+     "disassembly": "storb $0x0:s,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02879e",
+     "raw_bytes": "a703",
+     "disassembly": "popret $0x3,r7,RA"
+    }
+   ],
+   "control_flow_evidence": {
+    "irq_entry": "0x028cd0",
+    "direct_callee": "0x028732",
+    "callee_structure": "normal compact bit/index state update"
+   },
+   "dataflow_evidence": {
+    "read": "0x00ff6006 -> low byte r2",
+    "ack": "0x0400 -> 0x00ff5402 before callee",
+    "normal_visible_dispatch": "event bits 1..3 index 0x9b85 and state around 0x93d0; bit0 selects bit0/bit1 clear on indexed state",
+    "p2test_visible_dispatch": null
+   },
+   "event_table": [
+    {
+     "input": "(r2 & 0x0e) == 0",
+     "branch": "0x28742 -> 0x2878e",
+     "effect": "high-nibble processing",
+     "confidence": "LOCAL_BRANCH_ONLY"
+    },
+    {
+     "input": "(r2 & 0x0e) != 0",
+     "branch": "0x28744..0x2878a",
+     "effect": "indexed byte/bit state",
+     "confidence": "PARTIALLY_PROVEN"
+    }
+   ],
+   "unresolved_paths": [
+    "SC14448 physical register identity/bit meaning",
+    "callee downstream calls and unknown indirect targets",
+    "no source-to-sink FON/slot-5 path"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "source": "SC14480 Rev 1.0 pp.171-172,177,196-197",
+    "0x00ff6006": "DIP_CTRL_REG candidate",
+    "0x01027fd8": "DSP_INT_REG candidate; W1C is not proved on SC14448",
+    "0x00ff5402": "RESET_INT_PENDING_REG candidate"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "instruction_provenance": [
+    {
+     "instruction": "0x027c88",
+     "raw_bytes": "e001",
+     "disassembly": "push $0x7,r0,RA"
+    },
+    {
+     "instruction": "0x027c8a",
+     "raw_bytes": "700000001095",
+     "disassembly": "movd $0x9510:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x027c90",
+     "raw_bytes": "20b0",
+     "disassembly": "loadb 0x0:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x027c92",
+     "raw_bytes": "1230",
+     "disassembly": "addb $0x1:s,r2"
+    },
+    {
+     "instruction": "0x027c94",
+     "raw_bytes": "20f0",
+     "disassembly": "storb r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x027c96",
+     "raw_bytes": "0f890660",
+     "disassembly": "loadw 0xf6006:m,r0"
+    },
+    {
+     "instruction": "0x027c9a",
+     "raw_bytes": "0259",
+     "disassembly": "movb r0,r2"
+    },
+    {
+     "instruction": "0x027c9c",
+     "raw_bytes": "b05a0004",
+     "disassembly": "movw $0x400:m,r0"
+    },
+    {
+     "instruction": "0x027ca0",
+     "raw_bytes": "0fc90254",
+     "disassembly": "storw r0,0xf5402:m"
+    },
+    {
+     "instruction": "0x027ca4",
+     "raw_bytes": "ffc0d1e0",
+     "disassembly": "bal (ra),*-0x25d74:m"
+    },
+    {
+     "instruction": "0x027ca8",
+     "raw_bytes": "e002",
+     "disassembly": "pop $0x7,r0,RA"
+    },
+    {
+     "instruction": "0x027caa",
+     "raw_bytes": "0300",
+     "disassembly": "retx"
+    },
+    {
+     "instruction": "0x025d74",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x025d76",
+     "raw_bytes": "1d01",
+     "disassembly": "push $0x2,r13"
+    },
+    {
+     "instruction": "0x025d78",
+     "raw_bytes": "bf60e4ff",
+     "disassembly": "addd $0xffe4:m,(sp)"
+    },
+    {
+     "instruction": "0x025d7c",
+     "raw_bytes": "2959",
+     "disassembly": "movb r2,r9"
+    },
+    {
+     "instruction": "0x025d7e",
+     "raw_bytes": "120000703e95",
+     "disassembly": "loadb 0x953e:l,r0"
+    },
+    {
+     "instruction": "0x025d84",
+     "raw_bytes": "0050",
+     "disassembly": "cmpb $0x0:s,r0"
+    },
+    {
+     "instruction": "0x025d86",
+     "raw_bytes": "00188e07",
+     "disassembly": "beq *+0x26514:m"
+    },
+    {
+     "instruction": "0x025d8a",
+     "raw_bytes": "085a",
+     "disassembly": "movw $0x0:s,r8"
+    },
+    {
+     "instruction": "0x025d8c",
+     "raw_bytes": "12000070c21a",
+     "disassembly": "loadb 0x1ac2:l,r0"
+    },
+    {
+     "instruction": "0x025d92",
+     "raw_bytes": "0fff1000",
+     "disassembly": "storb r0,0x10:m(sp)"
+    },
+    {
+     "instruction": "0x025d96",
+     "raw_bytes": "005d",
+     "disassembly": "movzb r0,r0"
+    },
+    {
+     "instruction": "0x025d98",
+     "raw_bytes": "045f",
+     "disassembly": "movzw r0,(r5,r4)"
+    },
+    {
+     "instruction": "0x025d9a",
+     "raw_bytes": "720001000000",
+     "disassembly": "movd $0x10000:l,(r3,r2)"
+    },
+    {
+     "instruction": "0x025da0",
+     "raw_bytes": "4055",
+     "disassembly": "movd (r5,r4),(r1,r0)"
+    },
+    {
+     "instruction": "0x025da2",
+     "raw_bytes": "604c",
+     "disassembly": "ashud $6:s,(r1,r0)"
+    },
+    {
+     "instruction": "0x025da4",
+     "raw_bytes": "0261",
+     "disassembly": "addd (r1,r0),(r3,r2)"
+    },
+    {
+     "instruction": "0x025da6",
+     "raw_bytes": "130020b0b894",
+     "disassembly": "stord (r3,r2),0x94b8:l"
+    },
+    {
+     "instruction": "0x025dac",
+     "raw_bytes": "bb5aff00",
+     "disassembly": "movw $0xff:m,r11"
+    },
+    {
+     "instruction": "0x025db0",
+     "raw_bytes": "6c54",
+     "disassembly": "movd $0x6:s,(r12)"
+    },
+    {
+     "instruction": "0x025db2",
+     "raw_bytes": "e950",
+     "disassembly": "cmpb $0xe:s,r9"
+    },
+    {
+     "instruction": "0x025db4",
+     "raw_bytes": "0510",
+     "disassembly": "beq *+0x25dbe:s"
+    },
+    {
+     "instruction": "0x025db6",
+     "raw_bytes": "f950",
+     "disassembly": "cmpb $0xf:s,r9"
+    },
+    {
+     "instruction": "0x025db8",
+     "raw_bytes": "0913",
+     "disassembly": "beq *+0x25e2a:s"
+    },
+    {
+     "instruction": "0x025dba",
+     "raw_bytes": "e018d007",
+     "disassembly": "br *+0x2658a:m"
+    },
+    {
+     "instruction": "0x025dbe",
+     "raw_bytes": "4258",
+     "disassembly": "movb $0x4:s,r2"
+    },
+    {
+     "instruction": "0x025dc0",
+     "raw_bytes": "fdc087d5",
+     "disassembly": "bal (ra),*-0x3346:m"
+    },
+    {
+     "instruction": "0x025dc4",
+     "raw_bytes": "0755",
+     "disassembly": "movd (r1,r0),(r8,r7)"
+    },
+    {
+     "instruction": "0x025dc6",
+     "raw_bytes": "12000030bc9a",
+     "disassembly": "storb $0x0:s,0x9abc:l"
+    },
+    {
+     "instruction": "0x025dcc",
+     "raw_bytes": "13002030ec00",
+     "disassembly": "storw $0x2:s,0xec:l"
+    },
+    {
+     "instruction": "0x025dd2",
+     "raw_bytes": "1258",
+     "disassembly": "movb $0x1:s,r2"
+    },
+    {
+     "instruction": "0x025dd4",
+     "raw_bytes": "fdc029c8",
+     "disassembly": "bal (ra),*-0x25fc:m"
+    },
+    {
+     "instruction": "0x025dd8",
+     "raw_bytes": "125a",
+     "disassembly": "movw $0x1:s,r2"
+    },
+    {
+     "instruction": "0x025dda",
+     "raw_bytes": "fdc039c8",
+     "disassembly": "bal (ra),*-0x2612:m"
+    },
+    {
+     "instruction": "0x025dde",
+     "raw_bytes": "1258",
+     "disassembly": "movb $0x1:s,r2"
+    }
+   ],
+   "control_flow_evidence": {
+    "irq_entry": "0x027c88",
+    "direct_callee": "0x025d74",
+    "callee_structure": "p2test branches through further helpers"
+   },
+   "dataflow_evidence": {
+    "read": "0x00ff6006 -> low byte r2",
+    "ack": "0x0400 -> 0x00ff5402 before callee",
+    "normal_visible_dispatch": null,
+    "p2test_visible_dispatch": "event 0x0e -> 0x25dbe; event 0x0f -> 0x25e2a; others -> 0x2658a; full downstream not traced"
+   },
+   "event_table": [
+    {
+     "input": "[0x953e] == 0",
+     "branch": "0x26514",
+     "effect": "alternate path unknown",
+     "confidence": "LOCAL_BRANCH_ONLY"
+    },
+    {
+     "input": "[0x953e] != 0 and r9 == 0x0e",
+     "branch": "0x25dbe",
+     "effect": "further calls/unknown",
+     "confidence": "LOCAL_BRANCH_ONLY"
+    },
+    {
+     "input": "[0x953e] != 0 and r9 == 0x0f",
+     "branch": "0x25e2a",
+     "effect": "unknown",
+     "confidence": "LOCAL_BRANCH_ONLY"
+    },
+    {
+     "input": "[0x953e] != 0 and other r9",
+     "branch": "0x2658a",
+     "effect": "unknown",
+     "confidence": "LOCAL_BRANCH_ONLY"
+    }
+   ],
+   "unresolved_paths": [
+    "SC14448 physical register identity/bit meaning",
+    "callee downstream calls and unknown indirect targets",
+    "no source-to-sink FON/slot-5 path"
+   ]
+  }
+ }
+}

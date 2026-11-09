@@ -5,6 +5,13 @@ of Q57. Its DIP-fill report separates previously reconstructed values from
 instruction-level observations; no independent loop/value-flow proof is
 claimed. K1/K2 remain NO-GO.
 
+E3.3 narrows but does not close Q46/Q55: the local fill arithmetic/call and
+several distinct indexed readers/writers of the `0x01000000` region are
+documented in `fon-e33-summary.md`. Full CFG/counter-writer coverage,
+`cmpw`/`bhi` flag semantics, DIP opcode format and SC14448 physical bank
+remain open. Q57's architectural abs20 result is unchanged; SC14448 register
+identity and Q75 slot-5 source-to-sink path remain unproved.
+
 Status: **the only list of unresolved items for this project**
 
 Each item states what the question is, what would close it, and in which

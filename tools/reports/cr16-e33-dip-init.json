@@ -1,0 +1,151 @@
+{
+ "tool": "cr16-e33-dip-init/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x025f98",
+     "raw_bytes": "17c2",
+     "disassembly": "storw $0x1:s,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x025f9a",
+     "raw_bytes": "b25a0110",
+     "disassembly": "movw $0x1001:m,r2"
+    },
+    {
+     "instruction": "0x025f9e",
+     "raw_bytes": "fdc01dc6",
+     "disassembly": "bal (ra),*-0x25ba:m"
+    },
+    {
+     "instruction": "0x025faa",
+     "raw_bytes": "fdc0afc5",
+     "disassembly": "bal (ra),*-0x2558:m"
+    },
+    {
+     "instruction": "0x00255e",
+     "raw_bytes": "0fc10064",
+     "disassembly": "storw $0x0:s,0xf6400:m"
+    },
+    {
+     "instruction": "0x002566",
+     "raw_bytes": "0fc90264",
+     "disassembly": "storw r0,0xf6402:m"
+    },
+    {
+     "instruction": "0x00258c",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0025b4",
+     "raw_bytes": "00c2",
+     "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+    }
+   ],
+   "control_flow_evidence": {
+    "after_fill_call": "0x025faa",
+    "bmc_then_stop_then_zero_on_local_callee_path": true,
+    "stop_before_fill_on_this_path": false
+   },
+   "dataflow_evidence": {
+    "stop_write": "0x0080",
+    "release_write": "0x0000",
+    "bmc_writes": [
+     "0x0000",
+     "0x00f0"
+    ]
+   },
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "source": "SC14480 Rev 1.0, printed pp. 33-38, 131-132, 171-172"
+   },
+   "unresolved_paths": [
+    "external/indirect writers of the counter cell not excluded",
+    "full call-entry coverage and callee register preservation not proved",
+    "CR16 cmpw/bhi flag direction not independently ISA-verified",
+    "other indirect writers of the 0x01000000 bank not excluded",
+    "no global ordering across other callers/interrupts",
+    "DIP_PC poll meaning SC14448 not proved"
+   ],
+   "confidence": "PARTIALLY_PROVEN"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x02674e",
+     "raw_bytes": "17c2",
+     "disassembly": "storw $0x1:s,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x026750",
+     "raw_bytes": "b25a0110",
+     "disassembly": "movw $0x1001:m,r2"
+    },
+    {
+     "instruction": "0x026754",
+     "raw_bytes": "fdc023b7",
+     "disassembly": "bal (ra),*-0x1e76:m"
+    },
+    {
+     "instruction": "0x026760",
+     "raw_bytes": "fdc0adb6",
+     "disassembly": "bal (ra),*-0x1e0c:m"
+    },
+    {
+     "instruction": "0x001e12",
+     "raw_bytes": "0fc10064",
+     "disassembly": "storw $0x0:s,0xf6400:m"
+    },
+    {
+     "instruction": "0x001e1a",
+     "raw_bytes": "0fc90264",
+     "disassembly": "storw r0,0xf6402:m"
+    },
+    {
+     "instruction": "0x001e48",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x001e70",
+     "raw_bytes": "00c2",
+     "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+    }
+   ],
+   "control_flow_evidence": {
+    "after_fill_call": "0x026760",
+    "bmc_then_stop_then_zero_on_local_callee_path": true,
+    "stop_before_fill_on_this_path": false
+   },
+   "dataflow_evidence": {
+    "stop_write": "0x0080",
+    "release_write": "0x0000",
+    "bmc_writes": [
+     "0x0000",
+     "0x00f0"
+    ]
+   },
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "source": "SC14480 Rev 1.0, printed pp. 33-38, 131-132, 171-172"
+   },
+   "unresolved_paths": [
+    "external/indirect writers of the counter cell not excluded",
+    "full call-entry coverage and callee register preservation not proved",
+    "CR16 cmpw/bhi flag direction not independently ISA-verified",
+    "other indirect writers of the 0x01000000 bank not excluded",
+    "no global ordering across other callers/interrupts",
+    "DIP_PC poll meaning SC14448 not proved"
+   ],
+   "confidence": "PARTIALLY_PROVEN"
+  }
+ }
+}
