@@ -15,6 +15,7 @@ work.  It is not a substitute for the device-specific evidence in
 | `dialog-external-sources.md` | Source registry: URL, revision, license, verified facts and limitations |
 | `dialog-register-cross-reference.md` | SC14CVMDECT PDF registers vs SC14448 firmware accesses |
 | `dialog-pcm-comparison.md` | PCM timing/mode comparison; no direct settings transfer |
+| `sc14480-memory-map.md` | SC14480 DIP RAM, DSP_INT_REG, interrupt and address-space cross-check |
 | `fon-e3-reference-opportunities.md` | How the new references can help E3, ranked |
 
 ## Rules
@@ -23,8 +24,10 @@ work.  It is not a substitute for the device-specific evidence in
   **Phoenix API** is not automatically a fact about the AVM SC14448 firmware.
 - Use the confidence labels in the register cross-reference, not a shared
   address alone.
-- Do not add the SC14CVMDECT PDF, third-party source trees or firmware images
-  to Git.  Record hashes and URLs instead.
+- Do not add the SC14CVMDECT or SC14480 PDFs, third-party source trees or
+  firmware images to Git.  Record hashes, URLs and page excerpts instead.
+- Printed datasheet page numbers are used in the reference documents; the
+  SC14480 physical PDF page is normally one greater.
 - Do not merge DECT RF slot numbers (0…23) with PCM/TDM slots (0…7).
 - Do not treat a related-chip PCM pinmux, BCLK or electrical limit as the
   FRITZ!Box 7530 schematic.

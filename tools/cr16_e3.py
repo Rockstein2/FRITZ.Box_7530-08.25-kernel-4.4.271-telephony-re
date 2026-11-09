@@ -79,28 +79,79 @@ def key_of(a):
             a["constant"])
 
 
+def _use_key(u):
+    return (u.get("instruction"), u.get("effective_address"))
+
+
+def _match_uses(old_uses, new_uses):
+    """Match every old memory use by instruction and effective address."""
+    new_map = {}
+    for u in new_uses:
+        new_map.setdefault(_use_key(u), []).append(u)
+    matched, missing = [], []
+    for ou in old_uses:
+        k = _use_key(ou)
+        candidates = new_map.get(k)
+        if candidates:
+            nu = candidates.pop(0)
+            matched.append({
+                "instruction": ou.get("instruction"),
+                "displacement": ou.get("displacement"),
+                "effective_address": ou.get("effective_address"),
+                "old_operation": ou.get("operation"),
+                "new_operation": nu.get("operation"),
+                "new_displacement": nu.get("displacement"),
+                "new_effective_address": nu.get("effective_address"),
+                "match": True,
+            })
+        else:
+            missing.append({
+                "instruction": ou.get("instruction"),
+                "displacement": ou.get("displacement"),
+                "effective_address": ou.get("effective_address"),
+                "old_operation": ou.get("operation"),
+                "match": False,
+            })
+    extra = [u for vals in new_map.values() for u in vals]
+    return matched, missing, extra
+
+
 def audit(name, old, new_args):
-    old_map = {key_of(a): a for a in old.get("argument_propagations", [])}
-    new_map = {key_of(a): a for a in new_args}
-    old_proven = [a for a in old_map.values()
-                  if a.get("confidence") == "PROVEN"]
+    old_args = old.get("argument_propagations", [])
+    new_by_key = {}
+    for a in new_args:
+        new_by_key.setdefault(key_of(a), []).append(a)
+    old_proven = [a for a in old_args if a.get("confidence") == "PROVEN"]
     audited = []
     counts = {"PROVEN": 0, "CANDIDATE": 0, "INVALID": 0}
     for a in sorted(old_proven, key=lambda x: x["call_site"]):
-        b = new_map.get(key_of(a))
-        if b is None:
-            cls = "INVALID"
+        matches = new_by_key.get(key_of(a), [])
+        if not matches:
+            b = None
+            matched, missing, extra = [], list(a.get("uses", [])), []
             reasons = ["no matching caller constant/use under E3 path analysis"]
-            new_record = None
+            cls = "INVALID"
         else:
-            cls = b["confidence"]
-            reasons = b.get("reasons", [])
-            new_record = {
-                "caller_entry": b.get("caller_entry"),
-                "definition_provenance": b.get("definition_provenance", []),
-                "uses": b.get("uses", []),
-                "reasons": reasons,
-            }
+            b = None
+            matched, missing, extra = [], list(a.get("uses", [])), []
+            # Prefer a new record whose uses cover every old use.
+            for candidate in matches:
+                m, miss, ext = _match_uses(a.get("uses", []),
+                                           candidate.get("uses", []))
+                if not miss:
+                    b = candidate
+                    matched, missing, extra = m, miss, ext
+                    break
+            if b is None:
+                b = matches[0]
+                matched, missing, extra = _match_uses(
+                    a.get("uses", []), b.get("uses", []))
+            if missing:
+                cls = "INVALID"
+                reasons = ["one or more old memory uses are missing or changed"]
+            else:
+                cls = b["confidence"]
+                reasons = b.get("reasons", [])
         counts[cls] += 1
         audited.append({
             "image": name,
@@ -111,11 +162,23 @@ def audit(name, old, new_args):
             "old_classification": "PROVEN",
             "new_classification": cls,
             "old_uses": a.get("uses", []),
-            "new_record": new_record,
+            "use_match": {
+                "matched": matched,
+                "missing": missing,
+                "new_extra": extra,
+                "all_old_uses_matched": not missing,
+            },
+            "new_record": ({
+                "caller_entry": b.get("caller_entry"),
+                "definition_provenance": b.get("definition_provenance", []),
+                "uses": b.get("uses", []),
+                "reasons": b.get("reasons", []),
+            } if b is not None else None),
             "reasons": reasons,
         })
+    old_keys = {key_of(a) for a in old_args}
     new_only = [a for a in new_args
-                if key_of(a) not in old_map and a["confidence"] == "PROVEN"]
+                if key_of(a) not in old_keys and a["confidence"] == "PROVEN"]
     return {
         "old_proven": len(old_proven),
         "new_proven": sum(1 for a in new_args if a["confidence"] == "PROVEN"),
@@ -139,8 +202,9 @@ def helper_summary(entry, a):
 
 
 def focused_image(name, path, args):
-    a = I.analyze_image(name, path, args.objdump)
-    report, fw, rows = D.run_image(name, path, args.objdump)
+    a = I.analyze_image(name, path, args.objdump, args.max_iterations)
+    report, fw, rows = D.run_image(name, path, args.objdump,
+                                   max_iters=args.max_iterations)
     # D.run_image re-disassembles; reuse the same data for instruction reads.
     dsp = DSP[name]
     dip = DIP[name]
@@ -253,6 +317,7 @@ def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("--objdump", default=str(OBJDUMP))
     ap.add_argument("--out", default=str(ROOT / "tools" / "reports"))
+    ap.add_argument("--max-iterations", type=int, default=D.MAX_ITERS)
     args = ap.parse_args(argv[1:])
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -343,6 +408,16 @@ def main(argv):
               f"reclassified={aud['reclassified']}")
         if not a["converged"]:
             status = 1
+    if status:
+        for fn, data in (
+                ("cr16-e3-soundness-audit.incomplete.json", soundness),
+                ("cr16-e3-callsite-audit.incomplete.json", callsites),
+                ("cr16-e3-dsp-paths.incomplete.json", dsp_all),
+                ("cr16-e3-dip-paths.incomplete.json", dip_all),
+                ("cr16-e3-handler-candidates.incomplete.json", handlers)):
+            (out / fn).write_text(json.dumps(data, indent=2) + "\n")
+        print("incomplete E3 analysis; reports not promoted", file=sys.stderr)
+        return 1
     for fn, data in (
             ("cr16-e3-soundness-audit.json", soundness),
             ("cr16-e3-callsite-audit.json", callsites),

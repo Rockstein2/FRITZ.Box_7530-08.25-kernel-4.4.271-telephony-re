@@ -77,9 +77,27 @@ The proposed chain:
 is a **hypothesis**, not a proven execution sequence.  The `0x25FAE` poll loop
 does not branch on `0xF6006`, and the pulse path is a different function.
 
+## 4a. SC14480 interrupt-pending cross-check
+
+SC14480 printed p196–197 defines `RESET_INT_PENDING_REG` at `0x00FF5402`:
+bit 10 `DIP_INT_PEND`, bit 13 `DSP_INT_PEND`, write-one-to-clear.
+
+The firmware writes `0x0400` in `dip_int` and `0x2000` in `dsp_int`, which is
+semantically consistent.  But E3 sees those writes at `0x000F5402`, while
+SC14480 places the register at `0x00FF5402` and maps `0x000Fxxxx` to program
+FLASH/ROM.  The register meaning is a strong hypothesis; the actual SC14448
+address decode is unresolved and is now a Q57 priority.
+
+Likewise, SC14480 `0x00FF6006` is `DIP_CTRL_REG` with bit 7 `URST`
+(1 = stop, 0 = start at DIP RAM+1), matching the observed `0x00FF6006`
+`0x80 → 0` sequence.  The low-space `0x000F6006` accesses are a different
+address and cannot be merged without proof.
+
 ## 5. Classification
 
-**`EVENT_STATUS_ACK_CANDIDATE`**
+**`EVENT_STATUS_ACK_CANDIDATE`**; under the SC14480 cross-check the low-byte
+event path and `0x0400` write are **`DIP_INTERRUPT_ACK_HYPOTHESIS`**, with the
+low/high address conflict unresolved.
 
 Missing evidence:
 

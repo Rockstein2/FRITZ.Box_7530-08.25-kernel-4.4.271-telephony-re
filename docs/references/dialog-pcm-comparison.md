@@ -11,7 +11,7 @@
 | FSC | 8 or 16 kHz | approximately 8 kHz | CVM: PDF p22; AVM: OEM capture `FS: 8000 Hz` |
 | Master BCLK | 1.152, 1.536, 2.304 or 4.608 MHz | approximately `1.024355 MHz` (OEM log) | CVM: PDF p23; AVM: OEM capture |
 | PCM mode | Phoenix API controlled; master or slave | OEM firmware / PCMLINK/TDM path | CVM: API/datasheet; AVM: DISASM |
-| Logical TDM slots | specific CVM mode; not the DECT RF slot count | 8 logical slots in the reconstructed frame | AVM: project reconstruction; CVM: do not map directly |
+| Logical TDM slots | CVM-specific; SC14480 reference has 4×16-bit PCM channels | 8 logical slots in the reconstructed frame | AVM: project reconstruction; CVM/SC14480: do not map directly |
 | Control path | Phoenix API / DSP PCM control | Linux `pcmlink.ko` -> TDM slot 5 | AVM: DISASM; no CVM equivalence |
 | FSC pulse | 1, 8, 16 or 32 bits | not measured / not reconstructed | CVM only |
 | Clock edge | API `PcmClkOnRising` | not established from the static PCMLINK model | CVM only |
@@ -20,6 +20,12 @@
 | Slot-5 handler | not applicable | **NOT FOUND** | AVM E0–E3 |
 
 ## 2. The BCLK difference is real
+
+SC14480 additionally describes a **four-channel × 16-bit** PCM interface
+(printed p64) and mentions a `1.024 MHz` clock for DIP 8/9 mode (printed
+p33–34).  That 1.024 MHz is a sequencer clock, not automatically the PCM
+BCLK; it must not be used to explain the AVM `~1.024355 MHz` observation
+without a separate measurement.
 
 The CVM list is:
 
@@ -35,7 +41,8 @@ not one of those four values.  Therefore:
 
 - do not copy a CVM `PcmClk` setting into the SC14448 path;
 - do not assume the CVM PCM timing diagram is the FRITZ!Box timing;
-- the observed 8 kHz FSC does not make the two clock trees equivalent.
+- the observed 8 kHz FSC does not make the two clock trees equivalent;
+- SC14480's four 16-bit PCM channels are not the AVM eight logical slots.
 
 The OEM value is a measurement/report from the working AVM system, not a
 datasheet maximum or a static reconstruction.  The SC14448-side divider and

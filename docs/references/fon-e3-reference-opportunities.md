@@ -14,8 +14,8 @@ generation.  None of them proves an SC14448 firmware behavior by itself.
 | CR16 call/return ABI | GCC CR16 backend; `linux-cr16` | call-clobbered set, return register, stack/argument conventions, `ra`/`sp` layout | GCC ABI is not proof of AVM's custom firmware convention |
 | Register pairs / clobber | GCC; QEMU `LOADM`/`STORM`; `linux-cr16` pair layout | pair arithmetic, register-list save/restore, potential clobber checks | QEMU is incomplete for `jal`/`retx`; Linux target is SC14450/52 |
 | Exception / IRQ semantics | `linux-cr16` `irq.c`, `irq.h`, `uapi/ptrace.h`; QEMU `EXCP` | 31-entry vector model, vector numbering, saved register frame, interrupt entry shape | no SC14448 vector table or hardware proof |
-| DIP hardware | OsmocomDECT patch (`sc1442x.c`, `dip_opcodes.h`) | DIP banks, IRQ grouping, RF slot scheduling | SC14421/24, not SC14448; DIP is not CR16C |
-| `dip_int` / `dsp_int` | OsmocomDECT + CVM datasheet + `linux-cr16` | IRQ entry shape, peripheral naming analogies, register family | no proven SC14448 source-to-sink chain |
+| DIP hardware | SC14480 datasheet; OsmocomDECT patch (`sc1442x.c`, `dip_opcodes.h`) | DIP RAM map, URST, DIP_PC/status/control, DIP banks and RF slot scheduling | SC14480/SC14421/24, not SC14448; DIP is not CR16C |
+| `dip_int` / `dsp_int` | SC14480 map (`DSP_INT_REG`, reset-pending), OsmocomDECT, CVM, `linux-cr16` | DSP vector/clear-on-write semantics, DIP stop/start and interrupt acknowledgement candidates | no proven SC14448 address identity or source-to-sink chain |
 | PCM pinmux | SC14CVMDECT PDF pp7, 32–33 | P2/P3 function encodings | different module; firmware `P2_MODE` write conflicts with a naive PCM reading |
 | DSP PCM control | CVM PDF pp22–27; regrettableDectable `Api/AUDIO.py` | option names, FSC/BCLK ranges, clock edge/open-drain | Phoenix API is not the AVM PCMLINK path; BCLK values differ |
 | UART API | regrettableDectable `MailProtocol.py`, `Api/HAL.py`; openD | mailbox framing, HAL area IDs, API vocabulary | not the ROM bootloader and not PCMLINK slot 5 |
@@ -23,6 +23,20 @@ generation.  None of them proves an SC14448 firmware behavior by itself.
 | Asterisk integration | OsmocomDECT/Asterisk page | call-control/audio separation concepts | page NOT VERIFIED in this run; not FXS |
 
 ## 2. Prioritized follow-up plan
+
+### P0 — SC14480 DIP/DSP cross-check (offline, highest value)
+
+Use `sc14480-memory-map.md` first:
+
+- test the DIP-RAM fill hypothesis for `0x01000002…0x010003FE`;
+- decode the repeated `0x1001` payload, including opcode byte order;
+- reinterpret `dsp_int` around `DSP_INT_REG=0x01027FD8` and its
+  write-one-to-clear vector bits;
+- compare `0x00FF6006` `0x80→0` with DIP `URST`;
+- resolve the `0x000Fxxxx` vs `0x00FFxxxx` address-space conflict before
+  assigning `0x400`/`0x2000` to the reset-pending register.
+
+This does not close Q75; it changes the next questions.
 
 ### P1 — audit E3 PROVEN with the GCC ABI (offline)
 

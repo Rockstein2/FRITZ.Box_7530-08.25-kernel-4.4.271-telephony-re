@@ -38,9 +38,10 @@ with the per-use path criterion.
 
 Downgraded normal cases: `0x021a30`, `0x0228ba`, `0x023ca4`, `0x024348`.
 Downgraded p2test cases: `0x0243b0`, `0x024754`.  Reasons are incomplete caller
-entry/path or a possible callee write before the use.  Full instruction-level
-records are in `cr16-e3-soundness-audit.json` and
-`cr16-e3-callsite-audit.json`.
+entry/path or a possible callee write before the use.  Every old memory use is
+now matched by instruction address and effective address; a changed use makes
+the old proof `INVALID`.  Full instruction-level records are in
+`cr16-e3-soundness-audit.json` and `cr16-e3-callsite-audit.json`.
 
 The new analyzer reports **91 normal / 42 p2test** `PROVEN` records under its
 explicit criterion, plus 82/92 `CANDIDATE`.  This is not a re-labeling of the
@@ -75,7 +76,9 @@ single path.
 
 `cr16_dataflow.py --max-iterations 1` now exits **1**, creates
 `cr16-dataflow-*.incomplete.json`, and leaves the last confirmed JSON
-untouched.  This is covered by a regression test.
+untouched.  `cr16_interproc.py` and `cr16_e3.py` use the same fail-closed
+pattern: on `NON_CONVERGED` they write only `*.incomplete.json` and do not
+promote the normal reports.  This is covered by regression tests.
 
 ## 4. E3-B — table and IRQ reporting corrections
 
@@ -84,7 +87,8 @@ That was not implemented.  E3 removes the claim:
 
 - no table entry width, stride, index bound or endianness is decoded;
 - a candidate now requires a def-use link from a nearby load to the register
-  actually consumed by the indirect instruction;
+  actually consumed by the indirect instruction **and** no nearer write that
+  clobbers that register;
 - the nearby loads observed in the linked candidates are 32-bit accesses, but
   that is not a table-entry width;
 - a link alone is still only `CANDIDATE`; no full consumer chain is proven.
@@ -93,8 +97,8 @@ Results:
 
 | Image | Indirect sites | `CANDIDATE` | `UNRESOLVED` | `PROVEN` |
 |---|---:|---:|---:|---:|
-| normal | 382 | 6 | 376 | 0 |
-| p2test | 396 | 17 | 379 | 0 |
+| normal | 382 | 0 | 382 | 0 |
+| p2test | 396 | 11 | 385 | 0 |
 
 The E2 `irq_paths()` bug was fixed: the IRQ report now reads
 `possible_call_targets.indirect_sites` and the value is cross-checked against
@@ -130,9 +134,13 @@ Other observed operations:
 - p2test helpers `0x27744` and `0x27754`;
 - `0xF5402 = 0x2000` acknowledgement candidate.
 
-`dsp_int` is classified **DSP_EVENT_OR_SOFTWARE_QUEUE_CANDIDATE**.  The event
-word source, the `0xD6` runtime writers and the helper semantics remain
-unresolved.  No TDM/slot-5 source is proven; it is not named PCM.
+`dsp_int` is classified **DSP_EVENT_OR_SOFTWARE_QUEUE_CANDIDATE** in the
+standalone E3 report.  The SC14480 datasheet raises this to a stronger
+related-device hypothesis: `0x01027FD8` is **`DSP_INT_REG`**, a write-one-to-
+clear Gen2DSP vector register (printed p177).  That explains the read/test/
+write shape, but does not prove SC14448 identity.  The `dsp_int` helpers and
+the `0xD6` runtime writers remain unresolved.  No TDM/slot-5 source is proven;
+it is not named PCM.
 
 ## 6. E3-D — `dip_int`
 
@@ -158,8 +166,13 @@ handler body.
 `0xF6002` path (`0x25FAE` normal / `0x26764` p2test) is a separate candidate;
 the full pulse → poll → read → acknowledgement sequence is **not proven**.
 
-`dip_int` is classified **EVENT_STATUS_ACK_CANDIDATE**.  It is not a proven
-slot-5 or PCM consumer, and no 8 kHz period is claimed.
+`dip_int` is classified **EVENT_STATUS_ACK_CANDIDATE**.  SC14480 printed
+p196–197 gives `0x00FF5402` `RESET_INT_PENDING_REG` with bit 10 `DIP_INT_PEND`
+and bit 13 `DSP_INT_PEND`, which matches the `0x0400`/`0x2000` values
+semantically.  However, E3 sees the firmware writing them to **`0x000F5402`**,
+not `0x00FF5402`; SC14480 maps `0x000Fxxxx` to program FLASH/ROM.  The
+address-space conflict is unresolved (Q57).  `dip_int` is not a proven slot-5
+or PCM consumer, and no 8 kHz period is claimed.
 
 ## 7. E3-E — `0x01000000`
 
@@ -181,9 +194,16 @@ The `dsp_int` pointer target is `0x01027FD8`, outside the 511-word fill range
 address ranges: a fill/init range and a pointer/state candidate.  Neither is
 proven to be a PCM buffer.
 
+SC14480 printed p131–132 gives a much stronger related-device hypothesis:
+`0x01000000–0x010003FF` is 512×16 **DIP Sequencer RAM**, and execution starts
+at `0x01000002`.  The E3 fill range exactly starts at that second word.  The
+payload is constant `0x1001`; its DIP opcode/byte order is not decoded, so the
+loop is a **DIP-RAM fill candidate**, not a proven valid DIP program.
+
 Classification: **`UNRESOLVED`** for the region as a whole, with
-`RAM_INIT_CANDIDATE` for the 511-word fill and `STATIC_POINTER_CANDIDATE` for
-the `0xD6` pointer.
+`DIP_RAM_FILL_CANDIDATE` for the 511-word range and
+`STATIC_POINTER_CANDIDATE` for the `0xD6`/`DSP_INT_REG` target.  It is not a
+PCM buffer.
 
 ## 8. E3-F — slot-5 handler boundary
 
@@ -196,7 +216,7 @@ Remaining concrete unknowns:
 2. source and semantics of the 16-bit event word at pointer+0x58;
 3. bit-level meaning and read-to-clear behavior of `0xF6006`;
 4. callee event-code processing (normal and p2test differ in size);
-5. 376/379 unresolved indirect sites;
+5. 382/385 unresolved indirect sites;
 6. indexed accesses in `dsp_int`/callees;
 7. stack-passed arguments;
 8. address-space/bank mechanism for `0x01000000`.
@@ -210,11 +230,11 @@ This is a bounded negative result, not a complete-image proof of absence.
 | Q16 TX slot-5 | Linux mapping complete; SC14448 side **open** |
 | Q17 RX slot-5 | Linux mapping complete; physical bits **open** |
 | Q40 `0x2558` dispatch key | **open**; fill/init path identified, dispatch key not proven |
-| Q46 `0x01000000` | **open**: address space unresolved; fill and pointer ranges separated; not PCM |
+| Q46 `0x01000000` | **open**: SC14480 makes DIP RAM the leading hypothesis; payload `0x1001` undecoded; not PCM |
 | Q53 unreachable code | **open**; call paths improved, indirect/data ambiguity remains |
-| Q54 indirect dispatcher | **open**; 0 proven targets, 6/17 linked candidates only |
-| Q55 symbolic store/read | **open**; pointer from `0xD6` found, reader of `0x01000000` fill still not proven |
-| Q57 address aliases | **open**; `0xF6006`/`0xFF6006` remain separate |
+| Q54 indirect dispatcher | **open**; 0 proven targets, 0/11 linked candidates after kill check |
+| Q55 symbolic store/read | **open**; pointer from `0xD6` found; DIP-RAM fill candidate, reader/payload still unresolved |
+| Q57 address aliases | **open and higher priority**; SC14480 low `0x000Fxxxx` = program FLASH/ROM vs `0x00FFxxxx` peripherals; no alias proof |
 | Q74 EOR #2 | **partial**: raw/audio model; physical wire order open |
 | Q75 firmware slot-5 consumer | **open**: no proven handler |
 

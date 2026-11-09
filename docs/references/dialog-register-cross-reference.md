@@ -61,6 +61,34 @@ The family also includes `0xFF4808`, `0xFF4810`, `0xFF4812` and `0xFF481E`
 used by the firmware.  `0xFF481E` is `PAD_CTRL_REG`; the other three were not
 identified in the retrieved CVM pages and remain `UNKNOWN`.
 
+## 2b. SC14480 cross-reference (related device, highest priority)
+
+The SC14480A5M/A2M6 datasheet provides a much closer peripheral map than the
+SC14CVMDECT module.  Page numbers are printed pages; see
+`sc14480-memory-map.md` for the detailed map.
+
+| Address | SC14480 symbol | Firmware observation | Comparison |
+|---|---|---|---|
+| `0x01000000–0x010003FF` | DIP Sequencer RAM, 512×16 | fill loop writes `0x01000002…0x010003FE` | **strong structural match**: 511 words start at DIP `+1` |
+| `0x01027F80–0x01027FFF` | Gen2DSP registers | `[0xD6] = 0x01027F80`; base for `+0x58` | **strong base match**; runtime pointer is a static image candidate |
+| `0x01027FD8` | `DSP_INT_REG` | `dsp_int` reads/tests/writes the word at pointer+0x58 | **strong functional hypothesis**: DSP interrupt vector/clear-on-write |
+| `0x00FF5402` | `RESET_INT_PENDING_REG`, bit 10 DIP / bit 13 DSP | firmware writes `0x0400`/`0x2000` to **`0x000F5402`** | semantic match; **address-space conflict** |
+| `0x00FF6000` | `DIP_STACK_REG` | not seen in current scan | reference only |
+| `0x00FF6002` | `DIP_PC_REG` | firmware polls **`0x000F6002`** | **conflict**: not the same address space |
+| `0x00FF6004` | `DIP_STATUS_REG` | not seen | reference only |
+| `0x00FF6006` | `DIP_CTRL_REG`, bit 7 `URST` | `0x00FF6006` writes `0x80` then `0`, then reads | **strong same-address hypothesis**: stop/start DIP |
+| `0x00FF6400` | `BMC_CTRL_REG` | firmware writes **`0x000F6400`** | **conflict**: low/high space |
+| `0x00FF6402` | `BMC_CTRL2_REG` | firmware writes **`0x000F6402`** | **conflict**: low/high space |
+
+SC14480 printed p33/p64/p131–132/p171–172/p177/p196–197.  These rows are
+**related-device analogies**, not SC14448 proofs.  In particular:
+
+- the `0x01000000` fill structure is strong, but the repeated payload `0x1001`
+  is not decoded as a valid DIP program;
+- `DSP_INT_REG` explains the `dsp_int` shape, but not any slot-5 PCM meaning;
+- the low-address writes `0x000F5402`, `0x000F6002`, `0x000F6006` and
+  `0x000F6400/6402` remain an address-decode conflict (Q57 priority).
+
 ## 3. What the matching registers do and do not mean
 
 ### 3.1 `0x00FF48xx` family

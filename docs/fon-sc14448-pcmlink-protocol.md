@@ -195,6 +195,8 @@ External Dialog/CR16/DECT material is indexed under `docs/references/`:
 - `dialog-register-cross-reference.md` — SC14CVMDECT `0xFF48xx` family vs
   SC14448 `0x00FF48xx` accesses;
 - `dialog-pcm-comparison.md` — FSC/BCLK/PCM comparison;
+- `sc14480-memory-map.md` — SC14480 DIP RAM, DSP_INT_REG and address-space
+  cross-check;
 - `fon-e3-reference-opportunities.md` — what can help future E3 work.
 
 These are **reference hypotheses**, not proof of the AVM slot-5 protocol.  In
@@ -203,6 +205,11 @@ and RSTn electrical limits must not be transferred to the FRITZ!Box 7530.
 The observed AVM BCLK is approximately 1.024355 MHz, which is not in that CVM
 list.  The external CVM/Phoenix/Osmocom material contains no proved AVM
 slot-5 handler.
+
+The separate SC14480 memory map makes `0x01000000–0x010003FF` a DIP
+Sequencer RAM candidate and `0x01027FD8` a `DSP_INT_REG` candidate.  This is a
+strong related-device explanation for the E3 fill/pointer shapes, but it is
+not an SC14448 datasheet and does not close Q46/Q55/Q57/Q75.
 
 ## 11. Minimum standalone driver
 

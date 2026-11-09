@@ -532,9 +532,9 @@ probe-only test must not assume an unprogrammed chip.
 | E2 table dispatch (initial) | 382/396 indirect sites; 87/78 candidates, 295/318 unresolved before E3 def-use correction | OFFLINE |
 | E2 IRQ callgraph | 31 vectors in both images; only `tim1_int`, `dip_int`, `dsp_int` have memory operations; no PCM-named handler, no proven 8 kHz period | OFFLINE |
 | E3 soundness audit | E2 25/10 PROVEN rechecked: 21/8 retained, 4/2 downgraded; corrected analyzer reports 91/42 PROVEN, 82/92 CANDIDATE; NON_CONVERGED CLI exits 1 | OFFLINE |
-| E3 table correction | no table entry width/endian decoded; 6/17 linked CANDIDATE, 376/379 UNRESOLVED, 0 PROVEN | OFFLINE |
-| E3 `dsp_int` | pointer `0xD6 = 0x01027F80`, `+0x58 = 0x01027FD8`; counters at `0x2C4+0xE/+0x10` normal and `0x224+0xE/+0x10` p2test; event/queue candidate, not PCM | OFFLINE |
-| E3 `dip_int` | `0xF6006` low byte passed to callee; `0xF5402 = 0x0400` ack candidate; no alias with `0x00FF6006`; no slot-5 proof | OFFLINE |
+| E3 table correction | no table entry width/endian decoded; 0/11 linked CANDIDATE after kill check, 382/385 UNRESOLVED, 0 PROVEN | OFFLINE |
+| E3 `dsp_int` | pointer `0xD6 = 0x01027F80`, `+0x58 = 0x01027FD8`; SC14480 calls this `DSP_INT_REG`; counters at `0x2C4+0xE/+0x10` normal and `0x224+0xE/+0x10` p2test; DSP interrupt hypothesis, not PCM | OFFLINE + EXT-REF |
+| E3 `dip_int` | `0xF6006` low byte passed to callee; writes `0x0400` to low-space `0xF5402`; SC14480 suggests `0x00FF5402` reset-pending bit 10 but address-space conflict remains; no slot-5 proof | OFFLINE + EXT-REF |
 | E3 `0x01000000` | one static store executed 511 times; base is outside 24-bit range; address space/bank **UNRESOLVED**; fill and pointer ranges separated | OFFLINE |
 | TX DMA `EOR #2` | swaps adjacent 16-bit slots inside each 32-bit DMA word; raw order proven, physical wire order **UNKNOWN** | DISASM + GPL source |
 | E2 audio `EOR #2` | `generic_slotinterleave` also applies `EOR #2`; audio pair swap is a raw-memory model, sample order/endianness **INFERRED** | DISASM |
@@ -1287,6 +1287,13 @@ The full registry is in `references/dialog-external-sources.md`.
 | regrettableDectable mailbox | start byte `0x10`; SABM/RR/REJ/RNR; 3-bit sequence; header+payload byte checksum | Dialog Phoenix client | commit `9873460…`, `MailProtocol.py` |
 | regrettableDectable HAL areas | `AHA_MEMORY=0x00`, `AHA_REGISTER=0x01`, `AHA_NVS=0x02`, `AHA_DSP=0x03`, `AHA_FPGA=0x04`, `AHA_SEQUENCER=0x05` | Dialog Phoenix client | commit `9873460…`, `Api/HAL.py` |
 | OsmocomDECT OpenWrt patch | live message 000225 (2014-06-26) adds GPL-2.0 `sc1442x.c`, `sc1442x_firmware.asm`, `dip_opcodes.h`, `com_on_air.h`; old dect.osmocom.org Git tree was empty at the time | SC14421/SC14424 | mailing-list message, not SC14448 |
+| SC14480 DIP RAM | `0x01000000–0x010003FF` is 512×16 DIP sequencer RAM; first instruction after reset is `0x01000002` | SC14480A5M/A2M6 | PDF rev 1.0 p33–34, p131–132; not SC14448 |
+| SC14480 Gen2DSP/DSP_INT | Gen2DSP register block starts `0x01027F80`; `DSP_INT_REG=0x01027FD8`, write-one-clears a vector bit | SC14480A5M/A2M6 | PDF p132, p177; not SC14448 |
+| SC14480 interrupt-pending | `0x00FF5402` `RESET_INT_PENDING_REG`: bit 10 = DIP_INT_PEND, bit 13 = DSP_INT_PEND, write 1 clears | SC14480A5M/A2M6 | PDF p196–197; not SC14448 |
+| SC14480 DIP control | `0x00FF6002=DIP_PC_REG`, `0x00FF6004=DIP_STATUS_REG`, `0x00FF6006=DIP_CTRL_REG`; `URST` bit 7 stops at 1 and starts at `DIP_RAM+1` at 0 | SC14480A5M/A2M6 | PDF p171–172; not SC14448 |
+| SC14480 BMC control | `0x00FF6400/6402 = BMC_CTRL_REG/BMC_CTRL2_REG` | SC14480A5M/A2M6 | PDF memory map p131; not SC14448 |
+| SC14480 PCM | four 16-bit PCM channels; DIP 8/9-mode clock is 1.024 MHz, not automatically PCM BCLK | SC14480A5M/A2M6 | PDF p33–34, p64 |
+| SC14480 PDF identity | 259 pages, revision 1.0, 2009-01-21, SHA256 `a0b0300cc0dc50ac98bff4c9021dcbb86ba7b063554f406ac8f65c84a51782d0` | SC14480A5M/A2M6 | local file, outside Git |
 
 **Device boundary:** none of these rows is a confirmed SC14448 register meaning, PCM pinmux or electrical limit.  The SC14CVMDECT uses the same low GPIO addresses; that is a family analogy, not proof.
 

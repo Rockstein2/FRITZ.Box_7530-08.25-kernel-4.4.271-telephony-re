@@ -48,6 +48,7 @@ third-party PDFs or source trees to Git.
 | [`references/dialog-external-sources.md`](references/dialog-external-sources.md) | URL/revision/license registry for all external sources |
 | [`references/dialog-register-cross-reference.md`](references/dialog-register-cross-reference.md) | SC14CVMDECT PDF registers vs SC14448 firmware accesses |
 | [`references/dialog-pcm-comparison.md`](references/dialog-pcm-comparison.md) | PCM timing/mode comparison; no settings transfer |
+| [`references/sc14480-memory-map.md`](references/sc14480-memory-map.md) | SC14480 memory map, DIP RAM, DSP_INT_REG and address-space cross-check |
 | [`references/fon-e3-reference-opportunities.md`](references/fon-e3-reference-opportunities.md) | Ranked use of references for the next E3 work |
 
 Evidence classes used by `fon-known-facts.md`:

@@ -91,9 +91,34 @@ p2test:
 The two families are structurally similar but not proven identical.  No helper
 is named PCM.
 
+## 5a. SC14480 cross-check
+
+SC14480 printed p132 maps `0x01027F80–0x01027FFF` to the Gen2DSP register
+block.  Printed p177 defines `0x01027FD8` as `DSP_INT_REG`: the Gen2DSP
+`<IRQ>` vector is ORed into VECTOR bits, a set bit requests a DSP interrupt,
+and writing a 1 to a set bit clears it.
+
+That is a strong functional match for the E3 `dsp_int` sequence:
+
+```text
+pointer from 0xD6 -> 0x01027F80
++0x58             -> 0x01027FD8
+read/test/write   -> DSP_INT_REG vector bits
+```
+
+The classification is therefore raised to
+**`DSP_INTERRUPT_HANDLER_HYPOTHESIS`** in the related-device interpretation.
+The standalone E3 report keeps its conservative
+`DSP_EVENT_OR_SOFTWARE_QUEUE_CANDIDATE` label until the SC14448 address and
+register identity are independently proved.  This does not prove a slot-5 or
+PCM source.
+
 ## 6. Classification
 
-**`DSP_EVENT_OR_SOFTWARE_QUEUE_CANDIDATE`**
+**`DSP_EVENT_OR_SOFTWARE_QUEUE_CANDIDATE`** in the standalone E3 report;
+**`DSP_INTERRUPT_HANDLER_HYPOTHESIS`** under the SC14480 cross-check.  These
+are not two independently proven statuses: the second is a related-device
+interpretation of the first.
 
 Evidence for a DSP/event path:
 

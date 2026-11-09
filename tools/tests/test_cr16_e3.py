@@ -8,6 +8,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 REP = ROOT / "reports"
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT.parent / "src" / "mock"))
+import cr16_cfg as C  # noqa: E402
+import cr16_e3 as E  # noqa: E402
+import cr16_interproc as I  # noqa: E402
 fails = 0
 skips = 0
 
@@ -28,6 +33,119 @@ def load(name):
         return None
     return json.loads(p.read_text())
 
+
+def _insn(addr, mnemonic, operands):
+    return C.Insn(addr, 2, mnemonic, operands, b"\x00\x00")
+
+
+class _Fw:
+    def __init__(self, insns):
+        self.insns = insns
+
+
+# Independent unit fixture: an old proof with the same call/callee/pair/value
+# but a different memory-use address must not be accepted.
+_old = {"argument_propagations": [{
+    "call_site": "0x10", "callee": "0x20", "argument_pair": ["r2", "r3"],
+    "constant": "0x100", "confidence": "PROVEN",
+    "uses": [{"instruction": "0x21", "operation": "READ",
+              "effective_address": "0x100"}],
+}]}
+_new = [{
+    "call_site": "0x10", "callee": "0x20", "argument_pair": ["r2", "r3"],
+    "constant": "0x100", "confidence": "PROVEN",
+    "uses": [{"instruction": "0x22", "operation": "READ",
+              "effective_address": "0x100", "displacement": 0}],
+}]
+_aud = E.audit("fixture", _old, _new)
+check("E3 audit rejects a changed memory-use address",
+      _aud["audited_old_proven"][0]["new_classification"], "INVALID")
+check("E3 audit marks the old use missing",
+      _aud["audited_old_proven"][0]["use_match"]["all_old_uses_matched"],
+      False)
+
+# Independent table fixture: a nearer non-load write kills a preceding load.
+_ops_ok = {0x100: [{"instruction": "0x000100", "operation": "READ",
+                    "address_kind": "RESOLVED",
+                    "effective_address": "0x200", "expression": None,
+                    "width_bits": 16}]}
+_fw_ok = _Fw({0x100: _insn(0x100, "loadw", "0x0:(r1),r0")})
+_c, _s, _n = I._find_table_consumer(_fw_ok, [0x100, 0x102], 0x102,
+                                    {"r0"}, _ops_ok)
+check("E3 table fixture links a load to the target", _s,
+      "LOAD_WRITES_TARGET")
+_ops_kill = dict(_ops_ok)
+_ops_kill[0x102] = [{"instruction": "0x000102", "operation": "READ",
+                     "address_kind": "RESOLVED",
+                     "effective_address": "0x202", "expression": None,
+                     "width_bits": 16}]
+_fw_kill = _Fw({0x100: _insn(0x100, "loadw", "0x0:(r1),r0"),
+                0x102: _insn(0x102, "movw", "$0x0,r0")})
+_c, _s, _n = I._find_table_consumer(_fw_kill, [0x100, 0x102, 0x104],
+                                    0x104, {"r0"}, _ops_kill)
+check("E3 table fixture rejects a later target clobber", _s,
+      "TARGET_WRITTEN_BEFORE_LOAD")
+
+# Independent IRQ tree fixture: sibling branches must not share a recursion
+# stack, so the common leaf is not falsely marked as a cycle.
+_sum = {
+    "0x00000a": {"possible_call_targets": {"indirect_sites": 0,
+        "direct_edges": [{"site": "0xa1", "target": "0x00000b",
+                          "confidence": "DIRECT_RESOLVED"},
+                         {"site": "0xa2", "target": "0x00000c",
+                          "confidence": "DIRECT_RESOLVED"}]}},
+    "0x00000b": {"possible_call_targets": {"indirect_sites": 0,
+        "direct_edges": [{"site": "0xb1", "target": "0x00000d",
+                          "confidence": "DIRECT_RESOLVED"}]}},
+    "0x00000c": {"possible_call_targets": {"indirect_sites": 0,
+        "direct_edges": [{"site": "0xc1", "target": "0x00000d",
+                          "confidence": "DIRECT_RESOLVED"}]}},
+    "0x00000d": {"possible_call_targets": {"indirect_sites": 0,
+                                           "direct_edges": []}},
+}
+_tree = I._irq_tree(0xA, _sum)
+_b = _tree["direct_calls"][0]["callee"]
+_c = _tree["direct_calls"][1]["callee"]
+check("E3 sibling IRQ branches both reach the shared leaf",
+      (_b["direct_calls"][0]["callee"].get("cycle_or_depth_limit", False),
+       _c["direct_calls"][0]["callee"].get("cycle_or_depth_limit", False)),
+      (False, False))
+
+# Pointer arithmetic fixture independent of the committed JSON.
+_pf = _Fw({})
+_pf.runs = [(0xD6, b"\x80\x7f\x02\x01")]
+check("E3 0xD6 pointer is little-endian 0x01027F80",
+      E.read_u32(_pf, 0xD6), 0x01027F80)
+
+# Fail-closed CLI: no normal reports may be written on forced NON_CONVERGED.
+_objdump = Path("/tmp/opencode/cr16/build/binutils/objdump")
+if _objdump.is_file():
+    with tempfile.TemporaryDirectory() as td:
+        _r = subprocess.run(
+            [sys.executable, str(ROOT / "cr16_interproc.py"),
+             "--objdump", str(_objdump), "--max-iterations", "1",
+             "--out", td], cwd=str(ROOT.parent), capture_output=True,
+            text=True)
+        check("E3 interproc NON_CONVERGED exits non-zero",
+              _r.returncode != 0, True)
+        check("E3 interproc does not write normal report",
+              (Path(td) / "cr16-interproc-normal.json").exists(), False)
+        check("E3 interproc writes incomplete report",
+              (Path(td) / "cr16-interproc-normal.incomplete.json").is_file(),
+              True)
+    with tempfile.TemporaryDirectory() as td:
+        _r = subprocess.run(
+            [sys.executable, str(ROOT / "cr16_e3.py"),
+             "--objdump", str(_objdump), "--max-iterations", "1",
+             "--out", td], cwd=str(ROOT.parent), capture_output=True,
+            text=True)
+        check("E3 focused NON_CONVERGED exits non-zero",
+              _r.returncode != 0, True)
+        check("E3 focused does not write normal report",
+              (Path(td) / "cr16-e3-soundness-audit.json").exists(), False)
+        check("E3 focused writes incomplete report",
+              (Path(td) /
+               "cr16-e3-soundness-audit.incomplete.json").is_file(), True)
 
 for name in ("cr16-e3-soundness-audit.json",
              "cr16-e3-dsp-paths.json", "cr16-e3-dip-paths.json",

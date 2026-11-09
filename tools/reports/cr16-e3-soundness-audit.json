@@ -54,6 +54,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x028d3e",
+                "displacement": null,
+                "effective_address": "0x00010842",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010842",
+                "match": true
+              },
+              {
+                "instruction": "0x028d52",
+                "displacement": null,
+                "effective_address": "0x00010842",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010842",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x000688",
             "definition_provenance": [
@@ -63,6 +90,7 @@
               {
                 "instruction": "0x028d3e",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00010842",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -71,6 +99,7 @@
               {
                 "instruction": "0x028d52",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00010842",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -175,6 +204,103 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x001196",
+                "displacement": null,
+                "effective_address": "0x00010a78",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010a78",
+                "match": true
+              },
+              {
+                "instruction": "0x00119c",
+                "displacement": null,
+                "effective_address": "0x00010a7a",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 2,
+                "new_effective_address": "0x00010a7a",
+                "match": true
+              },
+              {
+                "instruction": "0x00119e",
+                "displacement": null,
+                "effective_address": "0x00010a7c",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 4,
+                "new_effective_address": "0x00010a7c",
+                "match": true
+              },
+              {
+                "instruction": "0x0011a6",
+                "displacement": null,
+                "effective_address": "0x00010a7e",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 6,
+                "new_effective_address": "0x00010a7e",
+                "match": true
+              },
+              {
+                "instruction": "0x0011a8",
+                "displacement": null,
+                "effective_address": "0x00010a78",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010a78",
+                "match": true
+              },
+              {
+                "instruction": "0x0011b4",
+                "displacement": null,
+                "effective_address": "0x00010a80",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 8,
+                "new_effective_address": "0x00010a80",
+                "match": true
+              },
+              {
+                "instruction": "0x0011b6",
+                "displacement": null,
+                "effective_address": "0x00010a82",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 10,
+                "new_effective_address": "0x00010a82",
+                "match": true
+              },
+              {
+                "instruction": "0x0011ba",
+                "displacement": null,
+                "effective_address": "0x00010a84",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 12,
+                "new_effective_address": "0x00010a84",
+                "match": true
+              },
+              {
+                "instruction": "0x0011c2",
+                "displacement": null,
+                "effective_address": "0x00010a86",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 14,
+                "new_effective_address": "0x00010a86",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x000688",
             "definition_provenance": [
@@ -184,6 +310,7 @@
               {
                 "instruction": "0x001196",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00010a78",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -192,6 +319,7 @@
               {
                 "instruction": "0x00119c",
                 "operation": "WRITE",
+                "displacement": 2,
                 "effective_address": "0x00010a7a",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -200,6 +328,7 @@
               {
                 "instruction": "0x00119e",
                 "operation": "WRITE",
+                "displacement": 4,
                 "effective_address": "0x00010a7c",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -208,6 +337,7 @@
               {
                 "instruction": "0x0011a6",
                 "operation": "WRITE",
+                "displacement": 6,
                 "effective_address": "0x00010a7e",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -216,6 +346,7 @@
               {
                 "instruction": "0x0011a8",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00010a78",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -224,6 +355,7 @@
               {
                 "instruction": "0x0011b4",
                 "operation": "WRITE",
+                "displacement": 8,
                 "effective_address": "0x00010a80",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -232,6 +364,7 @@
               {
                 "instruction": "0x0011b6",
                 "operation": "WRITE",
+                "displacement": 10,
                 "effective_address": "0x00010a82",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -240,6 +373,7 @@
               {
                 "instruction": "0x0011ba",
                 "operation": "WRITE",
+                "displacement": 12,
                 "effective_address": "0x00010a84",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -248,6 +382,7 @@
               {
                 "instruction": "0x0011c2",
                 "operation": "WRITE",
+                "displacement": 14,
                 "effective_address": "0x00010a86",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -352,6 +487,103 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x001196",
+                "displacement": null,
+                "effective_address": "0x00010ba8",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010ba8",
+                "match": true
+              },
+              {
+                "instruction": "0x00119c",
+                "displacement": null,
+                "effective_address": "0x00010baa",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 2,
+                "new_effective_address": "0x00010baa",
+                "match": true
+              },
+              {
+                "instruction": "0x00119e",
+                "displacement": null,
+                "effective_address": "0x00010bac",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 4,
+                "new_effective_address": "0x00010bac",
+                "match": true
+              },
+              {
+                "instruction": "0x0011a6",
+                "displacement": null,
+                "effective_address": "0x00010bae",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 6,
+                "new_effective_address": "0x00010bae",
+                "match": true
+              },
+              {
+                "instruction": "0x0011a8",
+                "displacement": null,
+                "effective_address": "0x00010ba8",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010ba8",
+                "match": true
+              },
+              {
+                "instruction": "0x0011b4",
+                "displacement": null,
+                "effective_address": "0x00010bb0",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 8,
+                "new_effective_address": "0x00010bb0",
+                "match": true
+              },
+              {
+                "instruction": "0x0011b6",
+                "displacement": null,
+                "effective_address": "0x00010bb2",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 10,
+                "new_effective_address": "0x00010bb2",
+                "match": true
+              },
+              {
+                "instruction": "0x0011ba",
+                "displacement": null,
+                "effective_address": "0x00010bb4",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 12,
+                "new_effective_address": "0x00010bb4",
+                "match": true
+              },
+              {
+                "instruction": "0x0011c2",
+                "displacement": null,
+                "effective_address": "0x00010bb6",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 14,
+                "new_effective_address": "0x00010bb6",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x000688",
             "definition_provenance": [
@@ -361,6 +593,7 @@
               {
                 "instruction": "0x001196",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00010ba8",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -369,6 +602,7 @@
               {
                 "instruction": "0x00119c",
                 "operation": "WRITE",
+                "displacement": 2,
                 "effective_address": "0x00010baa",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -377,6 +611,7 @@
               {
                 "instruction": "0x00119e",
                 "operation": "WRITE",
+                "displacement": 4,
                 "effective_address": "0x00010bac",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -385,6 +620,7 @@
               {
                 "instruction": "0x0011a6",
                 "operation": "WRITE",
+                "displacement": 6,
                 "effective_address": "0x00010bae",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -393,6 +629,7 @@
               {
                 "instruction": "0x0011a8",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00010ba8",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -401,6 +638,7 @@
               {
                 "instruction": "0x0011b4",
                 "operation": "WRITE",
+                "displacement": 8,
                 "effective_address": "0x00010bb0",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -409,6 +647,7 @@
               {
                 "instruction": "0x0011b6",
                 "operation": "WRITE",
+                "displacement": 10,
                 "effective_address": "0x00010bb2",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -417,6 +656,7 @@
               {
                 "instruction": "0x0011ba",
                 "operation": "WRITE",
+                "displacement": 12,
                 "effective_address": "0x00010bb4",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -425,6 +665,7 @@
               {
                 "instruction": "0x0011c2",
                 "operation": "WRITE",
+                "displacement": 14,
                 "effective_address": "0x00010bb6",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -529,6 +770,103 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x001196",
+                "displacement": null,
+                "effective_address": "0x00010cd8",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010cd8",
+                "match": true
+              },
+              {
+                "instruction": "0x00119c",
+                "displacement": null,
+                "effective_address": "0x00010cda",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 2,
+                "new_effective_address": "0x00010cda",
+                "match": true
+              },
+              {
+                "instruction": "0x00119e",
+                "displacement": null,
+                "effective_address": "0x00010cdc",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 4,
+                "new_effective_address": "0x00010cdc",
+                "match": true
+              },
+              {
+                "instruction": "0x0011a6",
+                "displacement": null,
+                "effective_address": "0x00010cde",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 6,
+                "new_effective_address": "0x00010cde",
+                "match": true
+              },
+              {
+                "instruction": "0x0011a8",
+                "displacement": null,
+                "effective_address": "0x00010cd8",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010cd8",
+                "match": true
+              },
+              {
+                "instruction": "0x0011b4",
+                "displacement": null,
+                "effective_address": "0x00010ce0",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 8,
+                "new_effective_address": "0x00010ce0",
+                "match": true
+              },
+              {
+                "instruction": "0x0011b6",
+                "displacement": null,
+                "effective_address": "0x00010ce2",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 10,
+                "new_effective_address": "0x00010ce2",
+                "match": true
+              },
+              {
+                "instruction": "0x0011ba",
+                "displacement": null,
+                "effective_address": "0x00010ce4",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 12,
+                "new_effective_address": "0x00010ce4",
+                "match": true
+              },
+              {
+                "instruction": "0x0011c2",
+                "displacement": null,
+                "effective_address": "0x00010ce6",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 14,
+                "new_effective_address": "0x00010ce6",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x000688",
             "definition_provenance": [
@@ -538,6 +876,7 @@
               {
                 "instruction": "0x001196",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00010cd8",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -546,6 +885,7 @@
               {
                 "instruction": "0x00119c",
                 "operation": "WRITE",
+                "displacement": 2,
                 "effective_address": "0x00010cda",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -554,6 +894,7 @@
               {
                 "instruction": "0x00119e",
                 "operation": "WRITE",
+                "displacement": 4,
                 "effective_address": "0x00010cdc",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -562,6 +903,7 @@
               {
                 "instruction": "0x0011a6",
                 "operation": "WRITE",
+                "displacement": 6,
                 "effective_address": "0x00010cde",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -570,6 +912,7 @@
               {
                 "instruction": "0x0011a8",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00010cd8",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -578,6 +921,7 @@
               {
                 "instruction": "0x0011b4",
                 "operation": "WRITE",
+                "displacement": 8,
                 "effective_address": "0x00010ce0",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -586,6 +930,7 @@
               {
                 "instruction": "0x0011b6",
                 "operation": "WRITE",
+                "displacement": 10,
                 "effective_address": "0x00010ce2",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -594,6 +939,7 @@
               {
                 "instruction": "0x0011ba",
                 "operation": "WRITE",
+                "displacement": 12,
                 "effective_address": "0x00010ce4",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -602,6 +948,7 @@
               {
                 "instruction": "0x0011c2",
                 "operation": "WRITE",
+                "displacement": 14,
                 "effective_address": "0x00010ce6",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -706,6 +1053,103 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x001196",
+                "displacement": null,
+                "effective_address": "0x00011802",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00011802",
+                "match": true
+              },
+              {
+                "instruction": "0x00119c",
+                "displacement": null,
+                "effective_address": "0x00011804",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 2,
+                "new_effective_address": "0x00011804",
+                "match": true
+              },
+              {
+                "instruction": "0x00119e",
+                "displacement": null,
+                "effective_address": "0x00011806",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 4,
+                "new_effective_address": "0x00011806",
+                "match": true
+              },
+              {
+                "instruction": "0x0011a6",
+                "displacement": null,
+                "effective_address": "0x00011808",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 6,
+                "new_effective_address": "0x00011808",
+                "match": true
+              },
+              {
+                "instruction": "0x0011a8",
+                "displacement": null,
+                "effective_address": "0x00011802",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00011802",
+                "match": true
+              },
+              {
+                "instruction": "0x0011b4",
+                "displacement": null,
+                "effective_address": "0x0001180a",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 8,
+                "new_effective_address": "0x0001180a",
+                "match": true
+              },
+              {
+                "instruction": "0x0011b6",
+                "displacement": null,
+                "effective_address": "0x0001180c",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 10,
+                "new_effective_address": "0x0001180c",
+                "match": true
+              },
+              {
+                "instruction": "0x0011ba",
+                "displacement": null,
+                "effective_address": "0x0001180e",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 12,
+                "new_effective_address": "0x0001180e",
+                "match": true
+              },
+              {
+                "instruction": "0x0011c2",
+                "displacement": null,
+                "effective_address": "0x00011810",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 14,
+                "new_effective_address": "0x00011810",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x000688",
             "definition_provenance": [
@@ -715,6 +1159,7 @@
               {
                 "instruction": "0x001196",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00011802",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -723,6 +1168,7 @@
               {
                 "instruction": "0x00119c",
                 "operation": "WRITE",
+                "displacement": 2,
                 "effective_address": "0x00011804",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -731,6 +1177,7 @@
               {
                 "instruction": "0x00119e",
                 "operation": "WRITE",
+                "displacement": 4,
                 "effective_address": "0x00011806",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -739,6 +1186,7 @@
               {
                 "instruction": "0x0011a6",
                 "operation": "WRITE",
+                "displacement": 6,
                 "effective_address": "0x00011808",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -747,6 +1195,7 @@
               {
                 "instruction": "0x0011a8",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00011802",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -755,6 +1204,7 @@
               {
                 "instruction": "0x0011b4",
                 "operation": "WRITE",
+                "displacement": 8,
                 "effective_address": "0x0001180a",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -763,6 +1213,7 @@
               {
                 "instruction": "0x0011b6",
                 "operation": "WRITE",
+                "displacement": 10,
                 "effective_address": "0x0001180c",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -771,6 +1222,7 @@
               {
                 "instruction": "0x0011ba",
                 "operation": "WRITE",
+                "displacement": 12,
                 "effective_address": "0x0001180e",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -779,6 +1231,7 @@
               {
                 "instruction": "0x0011c2",
                 "operation": "WRITE",
+                "displacement": 14,
                 "effective_address": "0x00011810",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -883,6 +1336,103 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x001196",
+                "displacement": null,
+                "effective_address": "0x00011932",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00011932",
+                "match": true
+              },
+              {
+                "instruction": "0x00119c",
+                "displacement": null,
+                "effective_address": "0x00011934",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 2,
+                "new_effective_address": "0x00011934",
+                "match": true
+              },
+              {
+                "instruction": "0x00119e",
+                "displacement": null,
+                "effective_address": "0x00011936",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 4,
+                "new_effective_address": "0x00011936",
+                "match": true
+              },
+              {
+                "instruction": "0x0011a6",
+                "displacement": null,
+                "effective_address": "0x00011938",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 6,
+                "new_effective_address": "0x00011938",
+                "match": true
+              },
+              {
+                "instruction": "0x0011a8",
+                "displacement": null,
+                "effective_address": "0x00011932",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00011932",
+                "match": true
+              },
+              {
+                "instruction": "0x0011b4",
+                "displacement": null,
+                "effective_address": "0x0001193a",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 8,
+                "new_effective_address": "0x0001193a",
+                "match": true
+              },
+              {
+                "instruction": "0x0011b6",
+                "displacement": null,
+                "effective_address": "0x0001193c",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 10,
+                "new_effective_address": "0x0001193c",
+                "match": true
+              },
+              {
+                "instruction": "0x0011ba",
+                "displacement": null,
+                "effective_address": "0x0001193e",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 12,
+                "new_effective_address": "0x0001193e",
+                "match": true
+              },
+              {
+                "instruction": "0x0011c2",
+                "displacement": null,
+                "effective_address": "0x00011940",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 14,
+                "new_effective_address": "0x00011940",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x000688",
             "definition_provenance": [
@@ -892,6 +1442,7 @@
               {
                 "instruction": "0x001196",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00011932",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -900,6 +1451,7 @@
               {
                 "instruction": "0x00119c",
                 "operation": "WRITE",
+                "displacement": 2,
                 "effective_address": "0x00011934",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -908,6 +1460,7 @@
               {
                 "instruction": "0x00119e",
                 "operation": "WRITE",
+                "displacement": 4,
                 "effective_address": "0x00011936",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -916,6 +1469,7 @@
               {
                 "instruction": "0x0011a6",
                 "operation": "WRITE",
+                "displacement": 6,
                 "effective_address": "0x00011938",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -924,6 +1478,7 @@
               {
                 "instruction": "0x0011a8",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00011932",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -932,6 +1487,7 @@
               {
                 "instruction": "0x0011b4",
                 "operation": "WRITE",
+                "displacement": 8,
                 "effective_address": "0x0001193a",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -940,6 +1496,7 @@
               {
                 "instruction": "0x0011b6",
                 "operation": "WRITE",
+                "displacement": 10,
                 "effective_address": "0x0001193c",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -948,6 +1505,7 @@
               {
                 "instruction": "0x0011ba",
                 "operation": "WRITE",
+                "displacement": 12,
                 "effective_address": "0x0001193e",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -956,6 +1514,7 @@
               {
                 "instruction": "0x0011c2",
                 "operation": "WRITE",
+                "displacement": 14,
                 "effective_address": "0x00011940",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -988,6 +1547,23 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x0035d2",
+                "displacement": null,
+                "effective_address": "0x00001bc0",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00001bc0",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x002f02",
             "definition_provenance": [
@@ -997,6 +1573,7 @@
               {
                 "instruction": "0x0035d2",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00001bc0",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1038,6 +1615,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x028d3e",
+                "displacement": null,
+                "effective_address": "0x000002b8",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x000002b8",
+                "match": true
+              },
+              {
+                "instruction": "0x028d52",
+                "displacement": null,
+                "effective_address": "0x000002b8",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x000002b8",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x0039f8",
             "definition_provenance": [
@@ -1047,6 +1651,7 @@
               {
                 "instruction": "0x028d3e",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x000002b8",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1055,6 +1660,7 @@
               {
                 "instruction": "0x028d52",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x000002b8",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1087,6 +1693,23 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x021e34",
+                "displacement": null,
+                "effective_address": "0x00002451",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 3,
+                "new_effective_address": "0x00002451",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x0219fa",
             "definition_provenance": [
@@ -1096,6 +1719,7 @@
               {
                 "instruction": "0x021e34",
                 "operation": "READ",
+                "displacement": 3,
                 "effective_address": "0x00002451",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1132,6 +1756,23 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x0224f2",
+                "displacement": null,
+                "effective_address": "0x00001ab9",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00001ab9",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x022390",
             "definition_provenance": [
@@ -1141,6 +1782,7 @@
               {
                 "instruction": "0x0224f2",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00001ab9",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1173,6 +1815,23 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x022d6c",
+                "displacement": null,
+                "effective_address": "0x0000957e",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x0000957e",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x022764",
             "definition_provenance": [
@@ -1182,6 +1841,7 @@
               {
                 "instruction": "0x022d6c",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x0000957e",
                 "clobbered_before_use": [
                   "r4",
@@ -1234,6 +1894,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x0204ee",
+                "displacement": null,
+                "effective_address": "0x00009b88",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 1,
+                "new_effective_address": "0x00009b88",
+                "match": true
+              },
+              {
+                "instruction": "0x0204fa",
+                "displacement": null,
+                "effective_address": "0x00009b87",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00009b87",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x023226",
             "definition_provenance": [
@@ -1243,6 +1930,7 @@
               {
                 "instruction": "0x0204ee",
                 "operation": "READ",
+                "displacement": 1,
                 "effective_address": "0x00009b88",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1251,6 +1939,7 @@
               {
                 "instruction": "0x0204fa",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00009b87",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1296,6 +1985,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x0204ee",
+                "displacement": null,
+                "effective_address": "0x00009b88",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 1,
+                "new_effective_address": "0x00009b88",
+                "match": true
+              },
+              {
+                "instruction": "0x0204fa",
+                "displacement": null,
+                "effective_address": "0x00009b87",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00009b87",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x023226",
             "definition_provenance": [
@@ -1305,6 +2021,7 @@
               {
                 "instruction": "0x0204ee",
                 "operation": "READ",
+                "displacement": 1,
                 "effective_address": "0x00009b88",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1313,6 +2030,7 @@
               {
                 "instruction": "0x0204fa",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00009b87",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1358,6 +2076,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x028d3e",
+                "displacement": null,
+                "effective_address": "0x00009bea",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00009bea",
+                "match": true
+              },
+              {
+                "instruction": "0x028d52",
+                "displacement": null,
+                "effective_address": "0x00009bea",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00009bea",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x0261ec",
             "definition_provenance": [
@@ -1367,6 +2112,7 @@
               {
                 "instruction": "0x028d3e",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00009bea",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1375,6 +2121,7 @@
               {
                 "instruction": "0x028d52",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00009bea",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1416,6 +2163,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x027f9c",
+                "displacement": null,
+                "effective_address": "0x00010e90",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 2,
+                "new_effective_address": "0x00010e90",
+                "match": true
+              },
+              {
+                "instruction": "0x027fa0",
+                "displacement": null,
+                "effective_address": "0x00010e8e",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010e8e",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x027dc8",
             "definition_provenance": [
@@ -1425,6 +2199,7 @@
               {
                 "instruction": "0x027f9c",
                 "operation": "READ",
+                "displacement": 2,
                 "effective_address": "0x00010e90",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1433,6 +2208,7 @@
               {
                 "instruction": "0x027fa0",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00010e8e",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1465,6 +2241,23 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x027f74",
+                "displacement": null,
+                "effective_address": "0x00010f48",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 14,
+                "new_effective_address": "0x00010f48",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x027dc8",
             "definition_provenance": [
@@ -1474,6 +2267,7 @@
               {
                 "instruction": "0x027f74",
                 "operation": "READ",
+                "displacement": 14,
                 "effective_address": "0x00010f48",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1515,6 +2309,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x027f9c",
+                "displacement": null,
+                "effective_address": "0x00010ee2",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 2,
+                "new_effective_address": "0x00010ee2",
+                "match": true
+              },
+              {
+                "instruction": "0x027fa0",
+                "displacement": null,
+                "effective_address": "0x00010ee0",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010ee0",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x027dc8",
             "definition_provenance": [
@@ -1524,6 +2345,7 @@
               {
                 "instruction": "0x027f9c",
                 "operation": "READ",
+                "displacement": 2,
                 "effective_address": "0x00010ee2",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1532,6 +2354,7 @@
               {
                 "instruction": "0x027fa0",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00010ee0",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1564,6 +2387,23 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x027f74",
+                "displacement": null,
+                "effective_address": "0x00010f9a",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 14,
+                "new_effective_address": "0x00010f9a",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x027dc8",
             "definition_provenance": [
@@ -1573,6 +2413,7 @@
               {
                 "instruction": "0x027f74",
                 "operation": "READ",
+                "displacement": 14,
                 "effective_address": "0x00010f9a",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1614,6 +2455,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x027f9c",
+                "displacement": null,
+                "effective_address": "0x00010f34",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 2,
+                "new_effective_address": "0x00010f34",
+                "match": true
+              },
+              {
+                "instruction": "0x027fa0",
+                "displacement": null,
+                "effective_address": "0x00010f32",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010f32",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x027dc8",
             "definition_provenance": [
@@ -1623,6 +2491,7 @@
               {
                 "instruction": "0x027f9c",
                 "operation": "READ",
+                "displacement": 2,
                 "effective_address": "0x00010f34",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1631,6 +2500,7 @@
               {
                 "instruction": "0x027fa0",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00010f32",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1663,6 +2533,23 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x027f74",
+                "displacement": null,
+                "effective_address": "0x00010fec",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 14,
+                "new_effective_address": "0x00010fec",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x027dc8",
             "definition_provenance": [
@@ -1672,6 +2559,7 @@
               {
                 "instruction": "0x027f74",
                 "operation": "READ",
+                "displacement": 14,
                 "effective_address": "0x00010fec",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1713,6 +2601,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x027f9c",
+                "displacement": null,
+                "effective_address": "0x00011aae",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 2,
+                "new_effective_address": "0x00011aae",
+                "match": true
+              },
+              {
+                "instruction": "0x027fa0",
+                "displacement": null,
+                "effective_address": "0x00011aac",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00011aac",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x027dc8",
             "definition_provenance": [
@@ -1722,6 +2637,7 @@
               {
                 "instruction": "0x027f9c",
                 "operation": "READ",
+                "displacement": 2,
                 "effective_address": "0x00011aae",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1730,6 +2646,7 @@
               {
                 "instruction": "0x027fa0",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00011aac",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1762,6 +2679,23 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x027f74",
+                "displacement": null,
+                "effective_address": "0x00011b14",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 14,
+                "new_effective_address": "0x00011b14",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x027dc8",
             "definition_provenance": [
@@ -1771,6 +2705,7 @@
               {
                 "instruction": "0x027f74",
                 "operation": "READ",
+                "displacement": 14,
                 "effective_address": "0x00011b14",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1812,6 +2747,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x027f9c",
+                "displacement": null,
+                "effective_address": "0x00011b00",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 2,
+                "new_effective_address": "0x00011b00",
+                "match": true
+              },
+              {
+                "instruction": "0x027fa0",
+                "displacement": null,
+                "effective_address": "0x00011afe",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00011afe",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x027dc8",
             "definition_provenance": [
@@ -1821,6 +2783,7 @@
               {
                 "instruction": "0x027f9c",
                 "operation": "READ",
+                "displacement": 2,
                 "effective_address": "0x00011b00",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1829,6 +2792,7 @@
               {
                 "instruction": "0x027fa0",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00011afe",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1861,6 +2825,23 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x027f74",
+                "displacement": null,
+                "effective_address": "0x00011b66",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 14,
+                "new_effective_address": "0x00011b66",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x027dc8",
             "definition_provenance": [
@@ -1870,6 +2851,7 @@
               {
                 "instruction": "0x027f74",
                 "operation": "READ",
+                "displacement": 14,
                 "effective_address": "0x00011b66",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1911,6 +2893,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x0289b0",
+                "displacement": null,
+                "effective_address": "0x00ff4000",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00ff4000",
+                "match": true
+              },
+              {
+                "instruction": "0x028a48",
+                "displacement": null,
+                "effective_address": "0x00ff4000",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00ff4000",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x028a4c",
             "definition_provenance": [
@@ -1920,6 +2929,7 @@
               {
                 "instruction": "0x0289b0",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00ff4000",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -1928,6 +2938,7 @@
               {
                 "instruction": "0x028a48",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00ff4000",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2266,6 +3277,103 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x000c0a",
+                "displacement": null,
+                "effective_address": "0x00010a6c",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010a6c",
+                "match": true
+              },
+              {
+                "instruction": "0x000c10",
+                "displacement": null,
+                "effective_address": "0x00010a6e",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 2,
+                "new_effective_address": "0x00010a6e",
+                "match": true
+              },
+              {
+                "instruction": "0x000c12",
+                "displacement": null,
+                "effective_address": "0x00010a70",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 4,
+                "new_effective_address": "0x00010a70",
+                "match": true
+              },
+              {
+                "instruction": "0x000c1a",
+                "displacement": null,
+                "effective_address": "0x00010a72",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 6,
+                "new_effective_address": "0x00010a72",
+                "match": true
+              },
+              {
+                "instruction": "0x000c1c",
+                "displacement": null,
+                "effective_address": "0x00010a6c",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010a6c",
+                "match": true
+              },
+              {
+                "instruction": "0x000c2a",
+                "displacement": null,
+                "effective_address": "0x00010a74",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 8,
+                "new_effective_address": "0x00010a74",
+                "match": true
+              },
+              {
+                "instruction": "0x000c2c",
+                "displacement": null,
+                "effective_address": "0x00010a76",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 10,
+                "new_effective_address": "0x00010a76",
+                "match": true
+              },
+              {
+                "instruction": "0x000c30",
+                "displacement": null,
+                "effective_address": "0x00010a78",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 12,
+                "new_effective_address": "0x00010a78",
+                "match": true
+              },
+              {
+                "instruction": "0x000c38",
+                "displacement": null,
+                "effective_address": "0x00010a7a",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 14,
+                "new_effective_address": "0x00010a7a",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x0004e2",
             "definition_provenance": [
@@ -2275,6 +3383,7 @@
               {
                 "instruction": "0x000c0a",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00010a6c",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2283,6 +3392,7 @@
               {
                 "instruction": "0x000c10",
                 "operation": "WRITE",
+                "displacement": 2,
                 "effective_address": "0x00010a6e",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2291,6 +3401,7 @@
               {
                 "instruction": "0x000c12",
                 "operation": "WRITE",
+                "displacement": 4,
                 "effective_address": "0x00010a70",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2299,6 +3410,7 @@
               {
                 "instruction": "0x000c1a",
                 "operation": "WRITE",
+                "displacement": 6,
                 "effective_address": "0x00010a72",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2307,6 +3419,7 @@
               {
                 "instruction": "0x000c1c",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00010a6c",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2315,6 +3428,7 @@
               {
                 "instruction": "0x000c2a",
                 "operation": "WRITE",
+                "displacement": 8,
                 "effective_address": "0x00010a74",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2323,6 +3437,7 @@
               {
                 "instruction": "0x000c2c",
                 "operation": "WRITE",
+                "displacement": 10,
                 "effective_address": "0x00010a76",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2331,6 +3446,7 @@
               {
                 "instruction": "0x000c30",
                 "operation": "WRITE",
+                "displacement": 12,
                 "effective_address": "0x00010a78",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2339,6 +3455,7 @@
               {
                 "instruction": "0x000c38",
                 "operation": "WRITE",
+                "displacement": 14,
                 "effective_address": "0x00010a7a",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2443,6 +3560,103 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x000c0a",
+                "displacement": null,
+                "effective_address": "0x00010b9c",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010b9c",
+                "match": true
+              },
+              {
+                "instruction": "0x000c10",
+                "displacement": null,
+                "effective_address": "0x00010b9e",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 2,
+                "new_effective_address": "0x00010b9e",
+                "match": true
+              },
+              {
+                "instruction": "0x000c12",
+                "displacement": null,
+                "effective_address": "0x00010ba0",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 4,
+                "new_effective_address": "0x00010ba0",
+                "match": true
+              },
+              {
+                "instruction": "0x000c1a",
+                "displacement": null,
+                "effective_address": "0x00010ba2",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 6,
+                "new_effective_address": "0x00010ba2",
+                "match": true
+              },
+              {
+                "instruction": "0x000c1c",
+                "displacement": null,
+                "effective_address": "0x00010b9c",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010b9c",
+                "match": true
+              },
+              {
+                "instruction": "0x000c2a",
+                "displacement": null,
+                "effective_address": "0x00010ba4",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 8,
+                "new_effective_address": "0x00010ba4",
+                "match": true
+              },
+              {
+                "instruction": "0x000c2c",
+                "displacement": null,
+                "effective_address": "0x00010ba6",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 10,
+                "new_effective_address": "0x00010ba6",
+                "match": true
+              },
+              {
+                "instruction": "0x000c30",
+                "displacement": null,
+                "effective_address": "0x00010ba8",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 12,
+                "new_effective_address": "0x00010ba8",
+                "match": true
+              },
+              {
+                "instruction": "0x000c38",
+                "displacement": null,
+                "effective_address": "0x00010baa",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 14,
+                "new_effective_address": "0x00010baa",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x0004e2",
             "definition_provenance": [
@@ -2452,6 +3666,7 @@
               {
                 "instruction": "0x000c0a",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00010b9c",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2460,6 +3675,7 @@
               {
                 "instruction": "0x000c10",
                 "operation": "WRITE",
+                "displacement": 2,
                 "effective_address": "0x00010b9e",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2468,6 +3684,7 @@
               {
                 "instruction": "0x000c12",
                 "operation": "WRITE",
+                "displacement": 4,
                 "effective_address": "0x00010ba0",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2476,6 +3693,7 @@
               {
                 "instruction": "0x000c1a",
                 "operation": "WRITE",
+                "displacement": 6,
                 "effective_address": "0x00010ba2",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2484,6 +3702,7 @@
               {
                 "instruction": "0x000c1c",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00010b9c",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2492,6 +3711,7 @@
               {
                 "instruction": "0x000c2a",
                 "operation": "WRITE",
+                "displacement": 8,
                 "effective_address": "0x00010ba4",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2500,6 +3720,7 @@
               {
                 "instruction": "0x000c2c",
                 "operation": "WRITE",
+                "displacement": 10,
                 "effective_address": "0x00010ba6",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2508,6 +3729,7 @@
               {
                 "instruction": "0x000c30",
                 "operation": "WRITE",
+                "displacement": 12,
                 "effective_address": "0x00010ba8",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2516,6 +3738,7 @@
               {
                 "instruction": "0x000c38",
                 "operation": "WRITE",
+                "displacement": 14,
                 "effective_address": "0x00010baa",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2620,6 +3843,103 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x000c0a",
+                "displacement": null,
+                "effective_address": "0x00010ccc",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010ccc",
+                "match": true
+              },
+              {
+                "instruction": "0x000c10",
+                "displacement": null,
+                "effective_address": "0x00010cce",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 2,
+                "new_effective_address": "0x00010cce",
+                "match": true
+              },
+              {
+                "instruction": "0x000c12",
+                "displacement": null,
+                "effective_address": "0x00010cd0",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 4,
+                "new_effective_address": "0x00010cd0",
+                "match": true
+              },
+              {
+                "instruction": "0x000c1a",
+                "displacement": null,
+                "effective_address": "0x00010cd2",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 6,
+                "new_effective_address": "0x00010cd2",
+                "match": true
+              },
+              {
+                "instruction": "0x000c1c",
+                "displacement": null,
+                "effective_address": "0x00010ccc",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00010ccc",
+                "match": true
+              },
+              {
+                "instruction": "0x000c2a",
+                "displacement": null,
+                "effective_address": "0x00010cd4",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 8,
+                "new_effective_address": "0x00010cd4",
+                "match": true
+              },
+              {
+                "instruction": "0x000c2c",
+                "displacement": null,
+                "effective_address": "0x00010cd6",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 10,
+                "new_effective_address": "0x00010cd6",
+                "match": true
+              },
+              {
+                "instruction": "0x000c30",
+                "displacement": null,
+                "effective_address": "0x00010cd8",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 12,
+                "new_effective_address": "0x00010cd8",
+                "match": true
+              },
+              {
+                "instruction": "0x000c38",
+                "displacement": null,
+                "effective_address": "0x00010cda",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 14,
+                "new_effective_address": "0x00010cda",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x0004e2",
             "definition_provenance": [
@@ -2629,6 +3949,7 @@
               {
                 "instruction": "0x000c0a",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00010ccc",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2637,6 +3958,7 @@
               {
                 "instruction": "0x000c10",
                 "operation": "WRITE",
+                "displacement": 2,
                 "effective_address": "0x00010cce",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2645,6 +3967,7 @@
               {
                 "instruction": "0x000c12",
                 "operation": "WRITE",
+                "displacement": 4,
                 "effective_address": "0x00010cd0",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2653,6 +3976,7 @@
               {
                 "instruction": "0x000c1a",
                 "operation": "WRITE",
+                "displacement": 6,
                 "effective_address": "0x00010cd2",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2661,6 +3985,7 @@
               {
                 "instruction": "0x000c1c",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00010ccc",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2669,6 +3994,7 @@
               {
                 "instruction": "0x000c2a",
                 "operation": "WRITE",
+                "displacement": 8,
                 "effective_address": "0x00010cd4",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2677,6 +4003,7 @@
               {
                 "instruction": "0x000c2c",
                 "operation": "WRITE",
+                "displacement": 10,
                 "effective_address": "0x00010cd6",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2685,6 +4012,7 @@
               {
                 "instruction": "0x000c30",
                 "operation": "WRITE",
+                "displacement": 12,
                 "effective_address": "0x00010cd8",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2693,6 +4021,7 @@
               {
                 "instruction": "0x000c38",
                 "operation": "WRITE",
+                "displacement": 14,
                 "effective_address": "0x00010cda",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2734,6 +4063,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x009f18",
+                "displacement": null,
+                "effective_address": "0x00ff4000",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00ff4000",
+                "match": true
+              },
+              {
+                "instruction": "0x009fb0",
+                "displacement": null,
+                "effective_address": "0x00ff4000",
+                "old_operation": "WRITE",
+                "new_operation": "WRITE",
+                "new_displacement": 0,
+                "new_effective_address": "0x00ff4000",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x009fb4",
             "definition_provenance": [
@@ -2743,6 +4099,7 @@
               {
                 "instruction": "0x009f18",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00ff4000",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2751,6 +4108,7 @@
               {
                 "instruction": "0x009fb0",
                 "operation": "WRITE",
+                "displacement": 0,
                 "effective_address": "0x00ff4000",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2783,6 +4141,23 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x025ae8",
+                "displacement": null,
+                "effective_address": "0x00001cd7",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00001cd7",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x02037a",
             "definition_provenance": [
@@ -2792,6 +4167,7 @@
               {
                 "instruction": "0x025ae8",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00001cd7",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2833,6 +4209,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x020270",
+                "displacement": null,
+                "effective_address": "0x00001af1",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 1,
+                "new_effective_address": "0x00001af1",
+                "match": true
+              },
+              {
+                "instruction": "0x02027c",
+                "displacement": null,
+                "effective_address": "0x00001af0",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00001af0",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x020d36",
             "definition_provenance": [
@@ -2842,6 +4245,7 @@
               {
                 "instruction": "0x020270",
                 "operation": "READ",
+                "displacement": 1,
                 "effective_address": "0x00001af1",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2850,6 +4254,7 @@
               {
                 "instruction": "0x02027c",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00001af0",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2882,6 +4287,23 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x0224f8",
+                "displacement": null,
+                "effective_address": "0x00001cb0",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 3,
+                "new_effective_address": "0x00001cb0",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x0220f8",
             "definition_provenance": [
@@ -2891,6 +4313,7 @@
               {
                 "instruction": "0x0224f8",
                 "operation": "READ",
+                "displacement": 3,
                 "effective_address": "0x00001cb0",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2932,6 +4355,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x020270",
+                "displacement": null,
+                "effective_address": "0x00009adf",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 1,
+                "new_effective_address": "0x00009adf",
+                "match": true
+              },
+              {
+                "instruction": "0x02027c",
+                "displacement": null,
+                "effective_address": "0x00009ade",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00009ade",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x023750",
             "definition_provenance": [
@@ -2941,6 +4391,7 @@
               {
                 "instruction": "0x020270",
                 "operation": "READ",
+                "displacement": 1,
                 "effective_address": "0x00009adf",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2949,6 +4400,7 @@
               {
                 "instruction": "0x02027c",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00009ade",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -2994,6 +4446,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x020270",
+                "displacement": null,
+                "effective_address": "0x00009adf",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 1,
+                "new_effective_address": "0x00009adf",
+                "match": true
+              },
+              {
+                "instruction": "0x02027c",
+                "displacement": null,
+                "effective_address": "0x00009ade",
+                "old_operation": "READ",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00009ade",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x023750",
             "definition_provenance": [
@@ -3003,6 +4482,7 @@
               {
                 "instruction": "0x020270",
                 "operation": "READ",
+                "displacement": 1,
                 "effective_address": "0x00009adf",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -3011,6 +4491,7 @@
               {
                 "instruction": "0x02027c",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00009ade",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -3056,6 +4537,33 @@
               ]
             }
           ],
+          "use_match": {
+            "matched": [
+              {
+                "instruction": "0x027cc2",
+                "displacement": null,
+                "effective_address": "0x00000218",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00000218",
+                "match": true
+              },
+              {
+                "instruction": "0x027cae",
+                "displacement": null,
+                "effective_address": "0x00000218",
+                "old_operation": "WRITE",
+                "new_operation": "READ",
+                "new_displacement": 0,
+                "new_effective_address": "0x00000218",
+                "match": true
+              }
+            ],
+            "missing": [],
+            "new_extra": [],
+            "all_old_uses_matched": true
+          },
           "new_record": {
             "caller_entry": "0x027112",
             "definition_provenance": [
@@ -3065,6 +4573,7 @@
               {
                 "instruction": "0x027cc2",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00000218",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,
@@ -3073,6 +4582,7 @@
               {
                 "instruction": "0x027cae",
                 "operation": "READ",
+                "displacement": 0,
                 "effective_address": "0x00000218",
                 "clobbered_before_use": [],
                 "preserved_to_use": true,

@@ -1464,13 +1464,13 @@ check("E2 interprocedural doc records convergence failure handling",
       "NON_CONVERGED" in _e2o, True)
 _e2t = (HISTORY / "fon-e2-table-dispatch.md").read_text()
 check("E2 table doc records no proven target",
-      "| normal | 382 | 6 | 376 | 0 |" in _e2t, True)
+      "| normal | 382 | 0 | 382 | 0 |" in _e2t, True)
 _e2i = (HISTORY / "fon-e2-irq-callgraph.md").read_text()
 check("E2 IRQ doc records the 31-vector table",
       "31" in _e2i and "dip_int" in _e2i, True)
 _e2f = (HISTORY / "fon-e2-firmware-handler-search.md").read_text()
 check("E2 handler doc records remaining indirect sites",
-      "376" in _e2f and "379" in _e2f, True)
+      "382" in _e2f and "385" in _e2f, True)
 _e2l = (HISTORY / "fon-e2-loader-vs-pcm-buffer.md").read_text()
 check("E2 loader doc does not name PCM buffer",
       "not a named PCM buffer" in _e2l, True)
@@ -1540,7 +1540,7 @@ for _image in ("normal", "p2test"):
           _d["0x01000000"]["runtime_pcm_buffer_proven"], False)
 
 _e3sum = (DOCS / "fon-e3-summary.md").read_text()
-for _needle in ("21", "8", "91", "42", "376", "379", "0x01027F80",
+for _needle in ("21", "8", "91", "42", "382", "385", "0x01027F80",
                 "0x01027FD8", "UNRESOLVED", "NON_CONVERGED"):
     check(f"E3 summary records {_needle}", _needle in _e3sum, True)
 check("E3 tools index links the audit tool",
@@ -1554,7 +1554,7 @@ check("E3 summary is in docs index",
 REFDIR = DOCS / "references"
 for _name in ("README.md", "dialog-external-sources.md",
               "dialog-register-cross-reference.md",
-              "dialog-pcm-comparison.md",
+              "dialog-pcm-comparison.md", "sc14480-memory-map.md",
               "fon-e3-reference-opportunities.md"):
     check(f"REF0 document exists: {_name}",
           (REFDIR / _name).is_file(), True)
@@ -1566,6 +1566,7 @@ for _needle in ("902254883f702e9533e6591eb457a97ca6ace257",
                 "686fc01b7bc925d744d6efdeee73348f3ced8375",
                 "1e5ffbd8f1b2c45f256a95375aff201b5552f03a",
                 "01be0fced7d4a0ad2c8fb72b6463d3e955072b6d1e219d96806ae6d8859ac5bf",
+                "a0b0300cc0dc50ac98bff4c9021dcbb86ba7b063554f406ac8f65c84a51782d0",
                 "NOT VERIFIED"):
     check(f"REF0 registry records {_needle}", _needle in _ref_sources, True)
 
@@ -1580,6 +1581,14 @@ _ref_pcm = (REFDIR / "dialog-pcm-comparison.md").read_text()
 for _needle in ("1.152", "1.536", "2.304", "4.608", "1.024355",
                 "physical wire order", "NOT FOUND"):
     check(f"REF0 PCM document records {_needle}", _needle in _ref_pcm, True)
+
+_ref_sc = (REFDIR / "sc14480-memory-map.md").read_text()
+for _needle in ("0x01000000", "0x010003FF", "0x01000002",
+                "0x01027F80", "0x01027FD8", "DSP_INT_REG",
+                "0x00FF5402", "0x00FF6002", "0x00FF6006",
+                "URST", "0x000F0000", "0x00FF0000", "0x1001"):
+    check(f"REF0 SC14480 doc records {_needle}",
+          _needle in _ref_sc, True)
 
 _ref_opps = (REFDIR / "fon-e3-reference-opportunities.md").read_text()
 for _needle in ("r2", "r6", "JAL", "RETX", "DIP", "Phoenix",
@@ -1597,6 +1606,7 @@ for _needle in ("references/README.md",
                 "references/dialog-external-sources.md",
                 "references/dialog-register-cross-reference.md",
                 "references/dialog-pcm-comparison.md",
+                "references/sc14480-memory-map.md",
                 "references/fon-e3-reference-opportunities.md"):
     check(f"REF0 docs index links {_needle}", _needle in _ref_index, True)
 

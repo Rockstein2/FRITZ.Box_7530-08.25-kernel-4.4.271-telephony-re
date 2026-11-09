@@ -53,7 +53,7 @@ subranges:
 
 | Range | Evidence | Classification |
 |---|---|---|
-| `0x01000002…0x010003FE` | indexed fill loop | `RAM_INIT_CANDIDATE` |
+| `0x01000002…0x010003FE` | indexed fill loop; SC14480 DIP RAM analogy | `DIP_RAM_FILL_CANDIDATE` |
 | `0x01027FD8` | `dsp_int` pointer + 0x58 | `STATIC_POINTER_CANDIDATE` |
 | region as a whole | no reader/lifetime proof | `UNRESOLVED` |
 
@@ -69,8 +69,31 @@ The region is **not** named a PCM buffer.  The concrete blocker is a resolved
 reader/lifetime proof for the fill range plus a proved relation to the slot-5
 control word; neither exists in the current offline image.
 
+## 4a. SC14480 DIP-RAM cross-check
+
+SC14480 printed p131–132 maps:
+
+```text
+0x01000000–0x010003FF  DIP Sequencer RAM, 512 × 16 bit
+0x01000002             first instruction after URST=0
+```
+
+The E3 fill writes `0x01000002…0x010003FE`, exactly 511 words starting at the
+second word.  This makes **DIP-RAM fill** the leading hypothesis.
+
+The payload is constant `0x1001`; it is not decoded.  In the SC14480 DIP
+opcode table (printed p36–37), `0x01` is `BR`; if the low byte is the opcode,
+`0x1001` could be `BR` with parameter `0x10`.  The byte order, parameter
+format and validity of 511 repeated words are unproven.  Do not call this a
+valid DIP program yet.
+
+`0x01027FD8` in the same map is `DSP_INT_REG`; `dsp_int` reads it through
+`[0xD6]+0x58`, so the two 0x0100xxxx ranges are distinct.
+
 ## 5. Classification
 
-`UNRESOLVED` for `0x01000000` as a whole, with the two subrange candidates
-above.  The task's `BOOT_COPY_PROVEN`, `RAM_INIT_PROVEN` and
-`RUNTIME_BUFFER_PROVEN` labels are deliberately **not** assigned.
+`UNRESOLVED` for `0x01000000` as a whole.  Subranges are separately marked
+`DIP_RAM_FILL_CANDIDATE` (`0x01000002…0x010003FE`) and
+`STATIC_POINTER_CANDIDATE` (`0x01027FD8`/`DSP_INT_REG`).  The task's
+`BOOT_COPY_PROVEN`, `RAM_INIT_PROVEN` and `RUNTIME_BUFFER_PROVEN` labels are
+deliberately **not** assigned.

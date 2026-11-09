@@ -42,11 +42,11 @@ ALL_REGS = {f"r{i}" for i in range(14)}
 MAX_FUNCTION_ITERS = 1000
 
 
-def load_fw(name, path, objdump):
+def load_fw(name, path, objdump, max_iters=D.MAX_ITERS):
     """Load one image and expose both global and intraprocedural CFG views."""
     (fw, blocks, _starts, addr_block, _succ_full, _preds_full,
      states, provs, converged, iterations) = D.compute_states(
-        name, path, objdump)
+        name, path, objdump, max_iters)
     edges = C.build(fw)
     succ = defaultdict(set)
     preds = defaultdict(set)
@@ -382,6 +382,7 @@ def arg_propagations(fw, blocks, addr_block, edges, summaries, ops_by_insn,
                 out_uses.append({
                     "instruction": u["instruction"],
                     "operation": u["operation"],
+                    "displacement": u["displacement"],
                     "effective_address":
                         f"0x{(value + u['displacement']) & 0xffffffff:08x}",
                     "clobbered_before_use": sorted(clobbered),
@@ -429,6 +430,48 @@ def _indirect_target(insn):
     return set()
 
 
+def _find_table_consumer(fw, block_addrs, site_addr, target_regs, ops_by_insn):
+    """Return (candidate_load, status, nearby_ops) for one indirect site.
+
+    Walk backwards from the site.  The first instruction that writes a target
+    register decides the value: a load can be the table consumer; any other
+    write (or a load before a nearer kill) is a clobber.  This prevents a
+    nearby load from being called a def-use link when the target is overwritten
+    later.
+    """
+    blocked = set()
+    nearby = []
+    for addr in reversed(block_addrs):
+        if addr >= site_addr:
+            continue
+        insn = fw.insns.get(addr)
+        if insn is None:
+            continue
+        ops = ops_by_insn.get(addr, [])
+        for o in ops:
+            if o["operation"] in ("READ", "ADDRESS_LOAD"):
+                nearby.append({
+                    "instruction": o["instruction"],
+                    "operation": o["operation"],
+                    "address_kind": o["address_kind"],
+                    "effective_address": o["effective_address"],
+                    "expression": o["expression"],
+                    "width_bits": o.get("width_bits"),
+                })
+        written = _writes_at(insn)
+        if not (target_regs & written):
+            continue
+        if blocked & target_regs:
+            return None, "CLOBBERED_AFTER_LOAD", nearby
+        is_load = (insn.mnemonic.startswith("load") and
+                   any(o["operation"] == "READ" for o in ops))
+        if is_load:
+            return ops[0], "LOAD_WRITES_TARGET", nearby
+        blocked |= target_regs
+        return None, "TARGET_WRITTEN_BEFORE_LOAD", nearby
+    return None, "NO_WRITE_TO_TARGET", nearby
+
+
 def table_candidates(fw, blocks, addr_block, edges, ops_by_insn):
     out = []
     for e in edges:
@@ -437,33 +480,15 @@ def table_candidates(fw, blocks, addr_block, edges, ops_by_insn):
         b = addr_block.get(e.src)
         site_insn = fw.insns.get(e.src)
         targets = _indirect_target(site_insn) if site_insn else set()
-        prior = []
-        linked = False
-        if b and site_insn:
-            for addr in reversed(blocks[b]):
-                if addr >= e.src:
-                    continue
-                for o in ops_by_insn.get(addr, []):
-                    if o["operation"] not in ("READ", "ADDRESS_LOAD"):
-                        continue
-                    insn = fw.insns.get(addr)
-                    written = _writes_at(insn) if insn else set()
-                    if targets & written:
-                        linked = True
-                    prior.append({
-                        "instruction": o["instruction"],
-                        "operation": o["operation"],
-                        "address_kind": o["address_kind"],
-                        "effective_address": o["effective_address"],
-                        "expression": o["expression"],
-                        "width_bits": o.get("width_bits"),
-                        "writes_target": bool(targets & written),
-                    })
-                if len(prior) >= 4:
-                    break
+        candidate = None
+        status = "NO_TARGET_REGISTER"
+        nearby = []
+        if b and site_insn and targets and "ra" not in targets:
+            candidate, status, nearby = _find_table_consumer(
+                fw, blocks[b], e.src, targets, ops_by_insn)
         target_is_ra = "ra" in targets
-        confidence = ("CANDIDATE" if linked and not target_is_ra
-                      else "UNRESOLVED")
+        linked = candidate is not None and not target_is_ra
+        confidence = "CANDIDATE" if linked else "UNRESOLVED"
         out.append({
             "site": f"0x{e.src:06x}",
             "category": e.category,
@@ -471,32 +496,32 @@ def table_candidates(fw, blocks, addr_block, edges, ops_by_insn):
             "target_expression": (
                 ", ".join(sorted(targets)) if targets else None),
             "candidate_table_base": (
-                prior[0]["effective_address"]
-                if linked and prior and prior[0]["address_kind"] == "RESOLVED"
+                candidate["effective_address"]
+                if linked and candidate["address_kind"] == "RESOLVED"
                 else None),
             "entry_width": None,
             "entry_width_status": "UNKNOWN",
-            "nearby_load_width_bits": (prior[0].get("width_bits")
-                                       if linked and prior else None),
+            "nearby_load_width_bits": (
+                candidate.get("width_bits") if linked else None),
             "candidate_table_base_proven": False,
             "index_bounds": "UNKNOWN",
             "consumer": e.reason,
             "def_use_link": linked,
-            "nearby_loads": prior,
+            "def_use_status": status,
+            "nearby_loads": nearby[:4],
             "provenance": [f"0x{e.src:06x}"] +
-                          [o["instruction"] for o in prior],
+                          [o["instruction"] for o in nearby[:4]],
             "possible_targets": "UNRESOLVED",
             "confidence": confidence,
         })
     return out
 
-
-def _irq_tree(entry, summaries, depth=0, seen=None):
-    seen = set() if seen is None else seen
+def _irq_tree(entry, summaries, depth=0, stack=None):
+    stack = set() if stack is None else set(stack)
     key = f"0x{entry:06x}"
-    if key in seen or depth > 3:
+    if key in stack or depth > 3:
         return {"entry": key, "cycle_or_depth_limit": True}
-    seen.add(key)
+    stack.add(key)
     s = summaries.get(key, {})
     node = {
         "entry": key,
@@ -514,7 +539,7 @@ def _irq_tree(entry, summaries, depth=0, seen=None):
         node["direct_calls"].append({
             "site": c["site"], "target": t,
             "confidence": c["confidence"],
-            "callee": _irq_tree(taddr, summaries, depth + 1, seen),
+            "callee": _irq_tree(taddr, summaries, depth + 1, stack),
         })
     return node
 
@@ -551,9 +576,9 @@ def irq_paths(fw, blocks, addr_block, summaries, ops_by_insn, name):
     return out
 
 
-def analyze_image(name, path, objdump):
+def analyze_image(name, path, objdump, max_iters=D.MAX_ITERS):
     (fw, blocks, addr_block, edges, succ, preds, states, provs,
-     converged, iterations) = load_fw(name, path, objdump)
+     converged, iterations) = load_fw(name, path, objdump, max_iters)
     ops = json.loads((ROOT / "tools" / "reports" /
                       "peripheral-xrefs.json").read_text())["images"][name]
     ops_by_insn = defaultdict(list)
@@ -604,17 +629,19 @@ def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("--objdump", default=str(OBJDUMP))
     ap.add_argument("--out", default=str(ROOT / "tools" / "reports"))
+    ap.add_argument("--max-iterations", type=int, default=D.MAX_ITERS)
     args = ap.parse_args(argv[1:])
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     all_irq = {}
     all_tables = {}
+    pending_reports = {}
     status = 0
     for name, path in IMAGES:
         if not path.is_file():
             print(f"SKIP {name}: firmware missing")
             continue
-        a = analyze_image(name, path, args.objdump)
+        a = analyze_image(name, path, args.objdump, args.max_iterations)
         summaries = a["summaries"]
         args_out = a["arguments"]
         tables = a["tables"]
@@ -702,8 +729,7 @@ def main(argv):
                 "data/code ambiguity remains",
             ],
         }
-        (out / f"cr16-interproc-{name}.json").write_text(
-            json.dumps(report, indent=2) + "\n")
+        pending_reports[name] = report
         print(f"{name}: entries={len(summaries)} "
               f"calls={len(call_edges(a['edges']))} "
               f"arg_proven={report['proven_argument_propagations']} "
@@ -712,6 +738,15 @@ def main(argv):
               f"status={report['analysis_status']}")
         if not a["converged"]:
             status = 1
+    if status:
+        for name, report in pending_reports.items():
+            (out / f"cr16-interproc-{name}.incomplete.json").write_text(
+                json.dumps(report, indent=2) + "\n")
+        print("incomplete analysis; reports not promoted", file=sys.stderr)
+        return 1
+    for name, report in pending_reports.items():
+        (out / f"cr16-interproc-{name}.json").write_text(
+            json.dumps(report, indent=2) + "\n")
     (out / "cr16-table-dispatch.json").write_text(
         json.dumps({
             "tool": "cr16-table-dispatch/3",

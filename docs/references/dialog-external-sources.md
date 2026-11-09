@@ -194,7 +194,27 @@ porting work was started.
 | Related questions | Q16, Q17, Q54, Q75 |
 | Priority | P1 — E3 soundness cross-check |
 
-### R8d — OpenWrt OsmocomDECT patch
+### R8d — SC14480A5M / SC14480A2M6 datasheet
+
+| Field | Value |
+|---|---|
+| Name | SC14480A5M / SC14480A2M6 datasheet |
+| File | `reference/hardware/SC14480.pdf` (workspace-relative, outside Git) |
+| Manufacturer / revision | SiTel Semiconductor, revision 1.0, 2009-01-21, 259 pages |
+| SHA256 | `a0b0300cc0dc50ac98bff4c9021dcbb86ba7b063554f406ac8f65c84a51782d0` |
+| License | SiTel datasheet; reference only, not public-licensed content |
+| Target | SC14480A5M/A2M6, **not SC14448** |
+| Relevant pages | printed p33–34 DIP sequencer/URST; p64 PCM; p131–132 memory map; p171–172 DIP registers; p177 DSP_INT_REG; p196–197 RESET_INT_PENDING_REG |
+| Verified facts | DIP RAM `0x01000000–0x010003FF` 512×16, first instruction `0x01000002`; Gen2DSP registers `0x01027F80–0x01027FFF`; `DSP_INT_REG=0x01027FD8`; `0x00FF5402` reset-pending bit 10 DIP / bit 13 DSP; `0x00FF6002` DIP_PC; `0x00FF6006` DIP_CTRL with URST bit 7; `0x00FF6400/6402` BMC_CTRL; PCM is 4×16-bit |
+| Transferable | strong structural/functional hypotheses for E3's DIP-RAM fill, `DSP_INT_REG`, `0x80→0` DIP stop/start and the `0x400`/`0x2000` acknowledgements |
+| Limitations | SC14480 is a different device; `0x000Fxxxx` vs `0x00FFxxxx` mapping does not transfer; the 511-word payload `0x1001` is not decoded; 4-channel PCM is not the AVM 8-slot frame; no SC14448 proof |
+| Related questions | Q16, Q17, Q46, Q54, Q55, Q57, Q74, Q75 |
+| Priority | P0 — highest-value related-device reference |
+
+The detailed cross-check is in `sc14480-memory-map.md`.  Printed page
+numbers are used there; the physical PDF page is normally one greater.
+
+### R8e — OpenWrt OsmocomDECT patch
 
 | Field | Value |
 |---|---|
@@ -224,6 +244,7 @@ porting work was started.
 | openD | archived, commit `686fc01…` |
 | devboard | live, commit `1e5ffbd…` |
 | GCC CR16 | verified via Debian GCC 8 source; not in current GCC master |
+| SC14480 datasheet | local file, SHA256 `a0b0300…51782d0`; 259 pages |
 
 When a source changes, update the revision/hash and the corresponding row in
 the register/PCM documents; do not silently rewrite the old evidence.

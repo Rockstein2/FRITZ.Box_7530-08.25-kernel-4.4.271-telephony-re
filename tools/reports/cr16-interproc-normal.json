@@ -62765,6 +62765,7 @@
         {
           "instruction": "0x028d4c",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00011684",
           "clobbered_before_use": [
             "r7",
@@ -62776,6 +62777,7 @@
         {
           "instruction": "0x028d4e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011684",
           "clobbered_before_use": [
             "r7",
@@ -62787,6 +62789,7 @@
         {
           "instruction": "0x028d3e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011684",
           "clobbered_before_use": [
             "r7"
@@ -62821,6 +62824,7 @@
         {
           "instruction": "0x028d40",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000015c0",
           "clobbered_before_use": [
             "r5",
@@ -62832,6 +62836,7 @@
         {
           "instruction": "0x028d42",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000015c0",
           "clobbered_before_use": [
             "r5",
@@ -62843,6 +62848,7 @@
         {
           "instruction": "0x028d44",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000015c0",
           "clobbered_before_use": [
             "r5",
@@ -62877,6 +62883,7 @@
         {
           "instruction": "0x028d4c",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x0001081a",
           "clobbered_before_use": [
             "r7",
@@ -62888,6 +62895,7 @@
         {
           "instruction": "0x028d4e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0001081a",
           "clobbered_before_use": [
             "r7",
@@ -62899,6 +62907,7 @@
         {
           "instruction": "0x028d3e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0001081a",
           "clobbered_before_use": [
             "r7"
@@ -62932,6 +62941,7 @@
         {
           "instruction": "0x028d3e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00010842",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -62940,6 +62950,7 @@
         {
           "instruction": "0x028d52",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00010842",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -62969,6 +62980,7 @@
         {
           "instruction": "0x02772a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0001083a",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -62998,6 +63010,7 @@
         {
           "instruction": "0x02772a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00010838",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63027,6 +63040,7 @@
         {
           "instruction": "0x028d4c",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00010948",
           "clobbered_before_use": [
             "r7",
@@ -63038,6 +63052,7 @@
         {
           "instruction": "0x028d4e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00010948",
           "clobbered_before_use": [
             "r7",
@@ -63049,6 +63064,7 @@
         {
           "instruction": "0x028d3e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00010948",
           "clobbered_before_use": [
             "r7"
@@ -63082,6 +63098,7 @@
         {
           "instruction": "0x001196",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00010a78",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63090,6 +63107,7 @@
         {
           "instruction": "0x00119c",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x00010a7a",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63098,6 +63116,7 @@
         {
           "instruction": "0x00119e",
           "operation": "WRITE",
+          "displacement": 4,
           "effective_address": "0x00010a7c",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63106,6 +63125,7 @@
         {
           "instruction": "0x0011a6",
           "operation": "WRITE",
+          "displacement": 6,
           "effective_address": "0x00010a7e",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63114,6 +63134,7 @@
         {
           "instruction": "0x0011a8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00010a78",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63122,6 +63143,7 @@
         {
           "instruction": "0x0011b4",
           "operation": "WRITE",
+          "displacement": 8,
           "effective_address": "0x00010a80",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63130,6 +63152,7 @@
         {
           "instruction": "0x0011b6",
           "operation": "WRITE",
+          "displacement": 10,
           "effective_address": "0x00010a82",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63138,6 +63161,7 @@
         {
           "instruction": "0x0011ba",
           "operation": "WRITE",
+          "displacement": 12,
           "effective_address": "0x00010a84",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63146,6 +63170,7 @@
         {
           "instruction": "0x0011c2",
           "operation": "WRITE",
+          "displacement": 14,
           "effective_address": "0x00010a86",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63175,6 +63200,7 @@
         {
           "instruction": "0x001196",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00010ba8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63183,6 +63209,7 @@
         {
           "instruction": "0x00119c",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x00010baa",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63191,6 +63218,7 @@
         {
           "instruction": "0x00119e",
           "operation": "WRITE",
+          "displacement": 4,
           "effective_address": "0x00010bac",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63199,6 +63227,7 @@
         {
           "instruction": "0x0011a6",
           "operation": "WRITE",
+          "displacement": 6,
           "effective_address": "0x00010bae",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63207,6 +63236,7 @@
         {
           "instruction": "0x0011a8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00010ba8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63215,6 +63245,7 @@
         {
           "instruction": "0x0011b4",
           "operation": "WRITE",
+          "displacement": 8,
           "effective_address": "0x00010bb0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63223,6 +63254,7 @@
         {
           "instruction": "0x0011b6",
           "operation": "WRITE",
+          "displacement": 10,
           "effective_address": "0x00010bb2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63231,6 +63263,7 @@
         {
           "instruction": "0x0011ba",
           "operation": "WRITE",
+          "displacement": 12,
           "effective_address": "0x00010bb4",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63239,6 +63272,7 @@
         {
           "instruction": "0x0011c2",
           "operation": "WRITE",
+          "displacement": 14,
           "effective_address": "0x00010bb6",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63268,6 +63302,7 @@
         {
           "instruction": "0x001196",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00010cd8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63276,6 +63311,7 @@
         {
           "instruction": "0x00119c",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x00010cda",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63284,6 +63320,7 @@
         {
           "instruction": "0x00119e",
           "operation": "WRITE",
+          "displacement": 4,
           "effective_address": "0x00010cdc",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63292,6 +63329,7 @@
         {
           "instruction": "0x0011a6",
           "operation": "WRITE",
+          "displacement": 6,
           "effective_address": "0x00010cde",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63300,6 +63338,7 @@
         {
           "instruction": "0x0011a8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00010cd8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63308,6 +63347,7 @@
         {
           "instruction": "0x0011b4",
           "operation": "WRITE",
+          "displacement": 8,
           "effective_address": "0x00010ce0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63316,6 +63356,7 @@
         {
           "instruction": "0x0011b6",
           "operation": "WRITE",
+          "displacement": 10,
           "effective_address": "0x00010ce2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63324,6 +63365,7 @@
         {
           "instruction": "0x0011ba",
           "operation": "WRITE",
+          "displacement": 12,
           "effective_address": "0x00010ce4",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63332,6 +63374,7 @@
         {
           "instruction": "0x0011c2",
           "operation": "WRITE",
+          "displacement": 14,
           "effective_address": "0x00010ce6",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63361,6 +63404,7 @@
         {
           "instruction": "0x001196",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00011802",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63369,6 +63413,7 @@
         {
           "instruction": "0x00119c",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x00011804",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63377,6 +63422,7 @@
         {
           "instruction": "0x00119e",
           "operation": "WRITE",
+          "displacement": 4,
           "effective_address": "0x00011806",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63385,6 +63431,7 @@
         {
           "instruction": "0x0011a6",
           "operation": "WRITE",
+          "displacement": 6,
           "effective_address": "0x00011808",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63393,6 +63440,7 @@
         {
           "instruction": "0x0011a8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011802",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63401,6 +63449,7 @@
         {
           "instruction": "0x0011b4",
           "operation": "WRITE",
+          "displacement": 8,
           "effective_address": "0x0001180a",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63409,6 +63458,7 @@
         {
           "instruction": "0x0011b6",
           "operation": "WRITE",
+          "displacement": 10,
           "effective_address": "0x0001180c",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63417,6 +63467,7 @@
         {
           "instruction": "0x0011ba",
           "operation": "WRITE",
+          "displacement": 12,
           "effective_address": "0x0001180e",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63425,6 +63476,7 @@
         {
           "instruction": "0x0011c2",
           "operation": "WRITE",
+          "displacement": 14,
           "effective_address": "0x00011810",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63454,6 +63506,7 @@
         {
           "instruction": "0x001196",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00011932",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63462,6 +63515,7 @@
         {
           "instruction": "0x00119c",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x00011934",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63470,6 +63524,7 @@
         {
           "instruction": "0x00119e",
           "operation": "WRITE",
+          "displacement": 4,
           "effective_address": "0x00011936",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63478,6 +63533,7 @@
         {
           "instruction": "0x0011a6",
           "operation": "WRITE",
+          "displacement": 6,
           "effective_address": "0x00011938",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63486,6 +63542,7 @@
         {
           "instruction": "0x0011a8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011932",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63494,6 +63551,7 @@
         {
           "instruction": "0x0011b4",
           "operation": "WRITE",
+          "displacement": 8,
           "effective_address": "0x0001193a",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63502,6 +63560,7 @@
         {
           "instruction": "0x0011b6",
           "operation": "WRITE",
+          "displacement": 10,
           "effective_address": "0x0001193c",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63510,6 +63569,7 @@
         {
           "instruction": "0x0011ba",
           "operation": "WRITE",
+          "displacement": 12,
           "effective_address": "0x0001193e",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63518,6 +63578,7 @@
         {
           "instruction": "0x0011c2",
           "operation": "WRITE",
+          "displacement": 14,
           "effective_address": "0x00011940",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63547,6 +63608,7 @@
         {
           "instruction": "0x00118e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001608",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63576,6 +63638,7 @@
         {
           "instruction": "0x028da0",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000016ac",
           "clobbered_before_use": [
             "r2",
@@ -63587,6 +63650,7 @@
         {
           "instruction": "0x028da4",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000016ac",
           "clobbered_before_use": [
             "r2",
@@ -63598,6 +63662,7 @@
         {
           "instruction": "0x028da8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000016ac",
           "clobbered_before_use": [
             "r2",
@@ -63609,6 +63674,7 @@
         {
           "instruction": "0x028d9e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000016ac",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63640,6 +63706,7 @@
         {
           "instruction": "0x001126",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000113e0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63669,6 +63736,7 @@
         {
           "instruction": "0x00112a",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000113f2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63698,6 +63766,7 @@
         {
           "instruction": "0x00111e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000113e2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63727,6 +63796,7 @@
         {
           "instruction": "0x001116",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000113f8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63756,6 +63826,7 @@
         {
           "instruction": "0x00110e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000113fa",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63785,6 +63856,7 @@
         {
           "instruction": "0x001126",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000114c8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63814,6 +63886,7 @@
         {
           "instruction": "0x00112a",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000114da",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63843,6 +63916,7 @@
         {
           "instruction": "0x00111e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000114ca",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63872,6 +63946,7 @@
         {
           "instruction": "0x001116",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000114e0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63901,6 +63976,7 @@
         {
           "instruction": "0x00110e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000114e2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63930,6 +64006,7 @@
         {
           "instruction": "0x001126",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000115b0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63959,6 +64036,7 @@
         {
           "instruction": "0x00112a",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000115c2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -63988,6 +64066,7 @@
         {
           "instruction": "0x00111e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000115b2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64017,6 +64096,7 @@
         {
           "instruction": "0x001116",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000115c8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64046,6 +64126,7 @@
         {
           "instruction": "0x00110e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000115ca",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64075,6 +64156,7 @@
         {
           "instruction": "0x001126",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011c1e",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64104,6 +64186,7 @@
         {
           "instruction": "0x00112a",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00011c30",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64133,6 +64216,7 @@
         {
           "instruction": "0x00111e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011c20",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64162,6 +64246,7 @@
         {
           "instruction": "0x001116",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011c36",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64191,6 +64276,7 @@
         {
           "instruction": "0x00110e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011c38",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64220,6 +64306,7 @@
         {
           "instruction": "0x001126",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011d06",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64249,6 +64336,7 @@
         {
           "instruction": "0x00112a",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00011d18",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64278,6 +64366,7 @@
         {
           "instruction": "0x00111e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011d08",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64307,6 +64396,7 @@
         {
           "instruction": "0x001116",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011d1e",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64336,6 +64426,7 @@
         {
           "instruction": "0x00110e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011d20",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64365,6 +64456,7 @@
         {
           "instruction": "0x02772a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00010e24",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64394,6 +64486,7 @@
         {
           "instruction": "0x00114a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0001178c",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64423,6 +64516,7 @@
         {
           "instruction": "0x00114e",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000117c6",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64431,6 +64525,7 @@
         {
           "instruction": "0x001150",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x000117c8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64460,6 +64555,7 @@
         {
           "instruction": "0x00113e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011790",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64489,6 +64585,7 @@
         {
           "instruction": "0x001142",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000117cc",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64497,6 +64594,7 @@
         {
           "instruction": "0x001144",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x000117ce",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64526,6 +64624,7 @@
         {
           "instruction": "0x00114a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000117a0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64555,6 +64654,7 @@
         {
           "instruction": "0x00114e",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000117d2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64563,6 +64663,7 @@
         {
           "instruction": "0x001150",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x000117d4",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64592,6 +64693,7 @@
         {
           "instruction": "0x00113e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000117a4",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64621,6 +64723,7 @@
         {
           "instruction": "0x001142",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000117d8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64629,6 +64732,7 @@
         {
           "instruction": "0x001144",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x000117da",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64658,6 +64762,7 @@
         {
           "instruction": "0x00114a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000117b4",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64687,6 +64792,7 @@
         {
           "instruction": "0x00114e",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000117de",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64695,6 +64801,7 @@
         {
           "instruction": "0x001150",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x000117e0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64724,6 +64831,7 @@
         {
           "instruction": "0x00113e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000117b8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64753,6 +64861,7 @@
         {
           "instruction": "0x001142",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000117e4",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64761,6 +64870,7 @@
         {
           "instruction": "0x001144",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x000117e6",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64790,6 +64900,7 @@
         {
           "instruction": "0x00114a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011796",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64819,6 +64930,7 @@
         {
           "instruction": "0x00114e",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000117ea",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64827,6 +64939,7 @@
         {
           "instruction": "0x001150",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x000117ec",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64856,6 +64969,7 @@
         {
           "instruction": "0x00113e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0001179a",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64885,6 +64999,7 @@
         {
           "instruction": "0x001142",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000117f0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64893,6 +65008,7 @@
         {
           "instruction": "0x001144",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x000117f2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64922,6 +65038,7 @@
         {
           "instruction": "0x00114a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000117aa",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64951,6 +65068,7 @@
         {
           "instruction": "0x00114e",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000117f6",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64959,6 +65077,7 @@
         {
           "instruction": "0x001150",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x000117f8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -64988,6 +65107,7 @@
         {
           "instruction": "0x00113e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000117ae",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65017,6 +65137,7 @@
         {
           "instruction": "0x001142",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000117fc",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65025,6 +65146,7 @@
         {
           "instruction": "0x001144",
           "operation": "WRITE",
+          "displacement": 2,
           "effective_address": "0x000117fe",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65052,6 +65174,7 @@
         {
           "instruction": "0x00149c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x01027f80",
           "clobbered_before_use": [
             "r0",
@@ -65063,6 +65186,7 @@
         {
           "instruction": "0x00150a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x01027f80",
           "clobbered_before_use": [
             "r0",
@@ -65074,6 +65198,7 @@
         {
           "instruction": "0x0014c0",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x01027f80",
           "clobbered_before_use": [
             "r0",
@@ -65085,6 +65210,7 @@
         {
           "instruction": "0x00153c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x01027f80",
           "clobbered_before_use": [
             "r0",
@@ -65096,6 +65222,7 @@
         {
           "instruction": "0x001560",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x01027f80",
           "clobbered_before_use": [
             "r0",
@@ -65107,6 +65234,7 @@
         {
           "instruction": "0x001566",
           "operation": "WRITE",
+          "displacement": 100,
           "effective_address": "0x01027fe4",
           "clobbered_before_use": [
             "r0",
@@ -65118,6 +65246,7 @@
         {
           "instruction": "0x001472",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x01027f80",
           "clobbered_before_use": [
             "r0",
@@ -65129,6 +65258,7 @@
         {
           "instruction": "0x001478",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x01027f80",
           "clobbered_before_use": [
             "r0",
@@ -65140,6 +65270,7 @@
         {
           "instruction": "0x001504",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x01027f80",
           "clobbered_before_use": [
             "r0",
@@ -65174,6 +65305,7 @@
         {
           "instruction": "0x028a52",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00ff4808",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65203,6 +65335,7 @@
         {
           "instruction": "0x001580",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00ff4858",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65211,6 +65344,7 @@
         {
           "instruction": "0x001586",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00ff4858",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65219,6 +65353,7 @@
         {
           "instruction": "0x001588",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00ff4858",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65227,6 +65362,7 @@
         {
           "instruction": "0x00158e",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00ff4858",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65256,6 +65392,7 @@
         {
           "instruction": "0x001590",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00ff4856",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65285,6 +65422,7 @@
         {
           "instruction": "0x001580",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00ff4858",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65293,6 +65431,7 @@
         {
           "instruction": "0x001586",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00ff4858",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65301,6 +65440,7 @@
         {
           "instruction": "0x001588",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00ff4858",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65309,6 +65449,7 @@
         {
           "instruction": "0x00158e",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00ff4858",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65338,6 +65479,7 @@
         {
           "instruction": "0x001590",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00ff4856",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65367,6 +65509,7 @@
         {
           "instruction": "0x028d64",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000001c",
           "clobbered_before_use": [
             "r2",
@@ -65378,6 +65521,7 @@
         {
           "instruction": "0x028d58",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000001c",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65410,6 +65554,7 @@
         {
           "instruction": "0x028d5a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00000024",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65441,6 +65586,7 @@
         {
           "instruction": "0x0018f4",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000000d6",
           "clobbered_before_use": [
             "r7",
@@ -65452,6 +65598,7 @@
         {
           "instruction": "0x001890",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000000d6",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65460,6 +65607,7 @@
         {
           "instruction": "0x001896",
           "operation": "RMW",
+          "displacement": 0,
           "effective_address": "0x000000d6",
           "clobbered_before_use": [
             "r7",
@@ -65471,6 +65619,7 @@
         {
           "instruction": "0x001908",
           "operation": "RMW",
+          "displacement": 0,
           "effective_address": "0x000000d6",
           "clobbered_before_use": [
             "r7",
@@ -65482,6 +65631,7 @@
         {
           "instruction": "0x0018b8",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000000d6",
           "clobbered_before_use": [
             "r7",
@@ -65516,6 +65666,7 @@
         {
           "instruction": "0x028d4c",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000002c4",
           "clobbered_before_use": [
             "r7",
@@ -65527,6 +65678,7 @@
         {
           "instruction": "0x028d4e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000002c4",
           "clobbered_before_use": [
             "r7",
@@ -65538,6 +65690,7 @@
         {
           "instruction": "0x028d3e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000002c4",
           "clobbered_before_use": [
             "r7"
@@ -65571,6 +65724,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009322",
           "clobbered_before_use": [
             "r4",
@@ -65582,6 +65736,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009322",
           "clobbered_before_use": [
             "r4",
@@ -65616,6 +65771,7 @@
         {
           "instruction": "0x002b88",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000090bc",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65645,6 +65801,7 @@
         {
           "instruction": "0x0025da",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009286",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65674,6 +65831,7 @@
         {
           "instruction": "0x028d4c",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000093d0",
           "clobbered_before_use": [
             "r7",
@@ -65685,6 +65843,7 @@
         {
           "instruction": "0x028d4e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093d0",
           "clobbered_before_use": [
             "r7",
@@ -65696,6 +65855,7 @@
         {
           "instruction": "0x028d3e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093d0",
           "clobbered_before_use": [
             "r7"
@@ -65729,6 +65889,7 @@
         {
           "instruction": "0x0035d2",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001bc0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65758,6 +65919,7 @@
         {
           "instruction": "0x003016",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009328",
           "clobbered_before_use": [
             "r0",
@@ -65769,6 +65931,7 @@
         {
           "instruction": "0x003018",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009328",
           "clobbered_before_use": [
             "r0",
@@ -65804,6 +65967,7 @@
         {
           "instruction": "0x003016",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009328",
           "clobbered_before_use": [
             "r0",
@@ -65815,6 +65979,7 @@
         {
           "instruction": "0x003018",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009328",
           "clobbered_before_use": [
             "r0",
@@ -65850,6 +66015,7 @@
         {
           "instruction": "0x00367a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000901a",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65858,6 +66024,7 @@
         {
           "instruction": "0x00367c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000901a",
           "clobbered_before_use": [
             "r7",
@@ -65892,6 +66059,7 @@
         {
           "instruction": "0x00367a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009000",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -65900,6 +66068,7 @@
         {
           "instruction": "0x00367c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009000",
           "clobbered_before_use": [
             "r7",
@@ -65934,6 +66103,7 @@
         {
           "instruction": "0x027002",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -65945,6 +66115,7 @@
         {
           "instruction": "0x027004",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -65956,6 +66127,7 @@
         {
           "instruction": "0x027006",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -65967,6 +66139,7 @@
         {
           "instruction": "0x02700a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -65978,6 +66151,7 @@
         {
           "instruction": "0x027010",
           "operation": "READ",
+          "displacement": 7,
           "effective_address": "0x000093d2",
           "clobbered_before_use": [
             "r0",
@@ -65989,6 +66163,7 @@
         {
           "instruction": "0x02681a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66000,6 +66175,7 @@
         {
           "instruction": "0x02682a",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66011,6 +66187,7 @@
         {
           "instruction": "0x02682e",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66022,6 +66199,7 @@
         {
           "instruction": "0x02690c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66033,6 +66211,7 @@
         {
           "instruction": "0x02695a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66044,6 +66223,7 @@
         {
           "instruction": "0x02695c",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66055,6 +66235,7 @@
         {
           "instruction": "0x026972",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66066,6 +66247,7 @@
         {
           "instruction": "0x026976",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66077,6 +66259,7 @@
         {
           "instruction": "0x0271cc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66088,6 +66271,7 @@
         {
           "instruction": "0x0271da",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66099,6 +66283,7 @@
         {
           "instruction": "0x0271dc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66110,6 +66295,7 @@
         {
           "instruction": "0x0269de",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66121,6 +66307,7 @@
         {
           "instruction": "0x0271e2",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66132,6 +66319,7 @@
         {
           "instruction": "0x0271fa",
           "operation": "WRITE",
+          "displacement": 324,
           "effective_address": "0x0000950f",
           "clobbered_before_use": [
             "r0",
@@ -66143,6 +66331,7 @@
         {
           "instruction": "0x026a04",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66178,6 +66367,7 @@
         {
           "instruction": "0x009e92",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66189,6 +66379,7 @@
         {
           "instruction": "0x009eba",
           "operation": "READ",
+          "displacement": 2,
           "effective_address": "0x000093cd",
           "clobbered_before_use": [
             "r0",
@@ -66200,6 +66391,7 @@
         {
           "instruction": "0x009ed0",
           "operation": "READ",
+          "displacement": 7,
           "effective_address": "0x000093d2",
           "clobbered_before_use": [
             "r0",
@@ -66211,6 +66403,7 @@
         {
           "instruction": "0x009ed4",
           "operation": "READ",
+          "displacement": 3,
           "effective_address": "0x000093ce",
           "clobbered_before_use": [
             "r0",
@@ -66222,6 +66415,7 @@
         {
           "instruction": "0x009ede",
           "operation": "READ",
+          "displacement": 3,
           "effective_address": "0x000093ce",
           "clobbered_before_use": [
             "r0",
@@ -66233,6 +66427,7 @@
         {
           "instruction": "0x009ee2",
           "operation": "READ",
+          "displacement": 7,
           "effective_address": "0x000093d2",
           "clobbered_before_use": [
             "r0",
@@ -66244,6 +66439,7 @@
         {
           "instruction": "0x009e6a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -66252,6 +66448,7 @@
         {
           "instruction": "0x009eea",
           "operation": "READ",
+          "displacement": 3,
           "effective_address": "0x000093ce",
           "clobbered_before_use": [
             "r0",
@@ -66263,6 +66460,7 @@
         {
           "instruction": "0x009eea",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093cb",
           "clobbered_before_use": [
             "r0",
@@ -66274,6 +66472,7 @@
         {
           "instruction": "0x009ef6",
           "operation": "READ",
+          "displacement": 4,
           "effective_address": "0x000093cf",
           "clobbered_before_use": [
             "r0",
@@ -66285,6 +66484,7 @@
         {
           "instruction": "0x009ef8",
           "operation": "READ",
+          "displacement": 3,
           "effective_address": "0x000093ce",
           "clobbered_before_use": [
             "r0",
@@ -66319,6 +66519,7 @@
         {
           "instruction": "0x028d3e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000002b8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -66327,6 +66528,7 @@
         {
           "instruction": "0x028d52",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000002b8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -66356,6 +66558,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000002c4",
           "clobbered_before_use": [
             "r4",
@@ -66367,6 +66570,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000002c4",
           "clobbered_before_use": [
             "r4",
@@ -66401,6 +66605,7 @@
         {
           "instruction": "0x028da0",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009038",
           "clobbered_before_use": [
             "r2",
@@ -66412,6 +66617,7 @@
         {
           "instruction": "0x028da4",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009038",
           "clobbered_before_use": [
             "r2",
@@ -66423,6 +66629,7 @@
         {
           "instruction": "0x028da8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009038",
           "clobbered_before_use": [
             "r2",
@@ -66434,6 +66641,7 @@
         {
           "instruction": "0x028d9e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009038",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -66465,6 +66673,7 @@
         {
           "instruction": "0x009ff2",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000906a",
           "clobbered_before_use": [
             "r4",
@@ -66476,6 +66685,7 @@
         {
           "instruction": "0x009ff4",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000906a",
           "clobbered_before_use": [
             "r4",
@@ -66510,6 +66720,7 @@
         {
           "instruction": "0x028d7a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009070",
           "clobbered_before_use": [
             "r4",
@@ -66521,6 +66732,7 @@
         {
           "instruction": "0x028d7c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009070",
           "clobbered_before_use": [
             "r4",
@@ -66555,6 +66767,7 @@
         {
           "instruction": "0x021944",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001bb4",
           "clobbered_before_use": [
             "r0",
@@ -66590,6 +66803,7 @@
         {
           "instruction": "0x003ce4",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009be5",
           "clobbered_before_use": [
             "r4",
@@ -66601,6 +66815,7 @@
         {
           "instruction": "0x003cdc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009be5",
           "clobbered_before_use": [
             "r4",
@@ -66612,6 +66827,7 @@
         {
           "instruction": "0x003cf2",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009be5",
           "clobbered_before_use": [
             "r4",
@@ -66646,6 +66862,7 @@
         {
           "instruction": "0x003ce2",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000227b",
           "clobbered_before_use": [
             "r2",
@@ -66657,6 +66874,7 @@
         {
           "instruction": "0x003cda",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000227b",
           "clobbered_before_use": [
             "r2",
@@ -66668,6 +66886,7 @@
         {
           "instruction": "0x003cee",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000227b",
           "clobbered_before_use": [
             "r2",
@@ -66702,6 +66921,7 @@
         {
           "instruction": "0x028cfc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab0",
           "clobbered_before_use": [
             "r2",
@@ -66713,6 +66933,7 @@
         {
           "instruction": "0x028cfe",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab0",
           "clobbered_before_use": [
             "r2",
@@ -66724,6 +66945,7 @@
         {
           "instruction": "0x028d00",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab0",
           "clobbered_before_use": [
             "r2",
@@ -66735,6 +66957,7 @@
         {
           "instruction": "0x028cf6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -66743,6 +66966,7 @@
         {
           "instruction": "0x028cf8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -66774,6 +66998,7 @@
         {
           "instruction": "0x028cfc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab5",
           "clobbered_before_use": [
             "r2",
@@ -66785,6 +67010,7 @@
         {
           "instruction": "0x028cfe",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab5",
           "clobbered_before_use": [
             "r2",
@@ -66796,6 +67022,7 @@
         {
           "instruction": "0x028d00",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab5",
           "clobbered_before_use": [
             "r2",
@@ -66807,6 +67034,7 @@
         {
           "instruction": "0x028cf6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab5",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -66815,6 +67043,7 @@
         {
           "instruction": "0x028cf8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab5",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -66846,6 +67075,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000229e",
           "clobbered_before_use": [
             "r4",
@@ -66857,6 +67087,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000229e",
           "clobbered_before_use": [
             "r4",
@@ -66891,6 +67122,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000229a",
           "clobbered_before_use": [
             "r4",
@@ -66902,6 +67134,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000229a",
           "clobbered_before_use": [
             "r4",
@@ -66936,6 +67169,7 @@
         {
           "instruction": "0x021e22",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab9",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -66965,6 +67199,7 @@
         {
           "instruction": "0x021452",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009b8a",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -66994,6 +67229,7 @@
         {
           "instruction": "0x021452",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009b8a",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -67023,6 +67259,7 @@
         {
           "instruction": "0x021e2c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002269",
           "clobbered_before_use": [
             "r2",
@@ -67058,6 +67295,7 @@
         {
           "instruction": "0x021792",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002269",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -67087,6 +67325,7 @@
         {
           "instruction": "0x021e34",
           "operation": "READ",
+          "displacement": 3,
           "effective_address": "0x00002451",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -67118,6 +67357,7 @@
         {
           "instruction": "0x0219d6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000024f0",
           "clobbered_before_use": [
             "r0",
@@ -67129,6 +67369,7 @@
         {
           "instruction": "0x0219da",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000024f0",
           "clobbered_before_use": [
             "r0",
@@ -67164,6 +67405,7 @@
         {
           "instruction": "0x021e4a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab9",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -67195,6 +67437,7 @@
         {
           "instruction": "0x021e2c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002269",
           "clobbered_before_use": [
             "r2",
@@ -67231,6 +67474,7 @@
         {
           "instruction": "0x028cfc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [
             "r0",
@@ -67242,6 +67486,7 @@
         {
           "instruction": "0x028cfe",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [
             "r0",
@@ -67253,6 +67498,7 @@
         {
           "instruction": "0x028d02",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [
             "r0",
@@ -67264,6 +67510,7 @@
         {
           "instruction": "0x028d14",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [
             "r0",
@@ -67275,6 +67522,7 @@
         {
           "instruction": "0x028d0a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [
             "r0",
@@ -67286,6 +67534,7 @@
         {
           "instruction": "0x028d0c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [
             "r0",
@@ -67297,6 +67546,7 @@
         {
           "instruction": "0x028d0e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [
             "r0",
@@ -67332,6 +67582,7 @@
         {
           "instruction": "0x021fe6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -67340,6 +67591,7 @@
         {
           "instruction": "0x021fe8",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [
             "r0",
@@ -67375,6 +67627,7 @@
         {
           "instruction": "0x021fe6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -67383,6 +67636,7 @@
         {
           "instruction": "0x021fe8",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [
             "r0",
@@ -67418,6 +67672,7 @@
         {
           "instruction": "0x021fe6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -67426,6 +67681,7 @@
         {
           "instruction": "0x021fe8",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00002285",
           "clobbered_before_use": [
             "r0",
@@ -67461,6 +67717,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002294",
           "clobbered_before_use": [
             "r4",
@@ -67472,6 +67729,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002294",
           "clobbered_before_use": [
             "r4",
@@ -67507,6 +67765,7 @@
         {
           "instruction": "0x021e22",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab9",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -67538,6 +67797,7 @@
         {
           "instruction": "0x0224f2",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab9",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -67567,6 +67827,7 @@
         {
           "instruction": "0x022508",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001bb6",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -67598,6 +67859,7 @@
         {
           "instruction": "0x003ce4",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009343",
           "clobbered_before_use": [
             "r4",
@@ -67609,6 +67871,7 @@
         {
           "instruction": "0x003cdc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009343",
           "clobbered_before_use": [
             "r4",
@@ -67620,6 +67883,7 @@
         {
           "instruction": "0x003cf2",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009343",
           "clobbered_before_use": [
             "r4",
@@ -67655,6 +67919,7 @@
         {
           "instruction": "0x022d6c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000957e",
           "clobbered_before_use": [
             "r4",
@@ -67691,6 +67956,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [
             "r4",
@@ -67702,6 +67968,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [
             "r4",
@@ -67737,6 +68004,7 @@
         {
           "instruction": "0x003ce4",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009362",
           "clobbered_before_use": [
             "r4",
@@ -67748,6 +68016,7 @@
         {
           "instruction": "0x003cdc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009362",
           "clobbered_before_use": [
             "r4",
@@ -67759,6 +68028,7 @@
         {
           "instruction": "0x003cf2",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009362",
           "clobbered_before_use": [
             "r4",
@@ -67794,6 +68064,7 @@
         {
           "instruction": "0x021e2c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002269",
           "clobbered_before_use": [
             "r2",
@@ -67830,6 +68101,7 @@
         {
           "instruction": "0x021616",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -67838,6 +68110,7 @@
         {
           "instruction": "0x021718",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [
             "r5",
@@ -67849,6 +68122,7 @@
         {
           "instruction": "0x0216a0",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [
             "r5",
@@ -67860,6 +68134,7 @@
         {
           "instruction": "0x021742",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [
             "r5",
@@ -67871,6 +68146,7 @@
         {
           "instruction": "0x0216e8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [
             "r5",
@@ -67906,6 +68182,7 @@
         {
           "instruction": "0x021316",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000244a",
           "clobbered_before_use": [
             "r0",
@@ -67917,6 +68194,7 @@
         {
           "instruction": "0x0212b6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000244a",
           "clobbered_before_use": [
             "r0",
@@ -67928,6 +68206,7 @@
         {
           "instruction": "0x0212b8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000244a",
           "clobbered_before_use": [
             "r0",
@@ -67939,6 +68218,7 @@
         {
           "instruction": "0x0212c0",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000244a",
           "clobbered_before_use": [
             "r0",
@@ -67974,6 +68254,7 @@
         {
           "instruction": "0x021276",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000028c",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68005,6 +68286,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000935d",
           "clobbered_before_use": [
             "r4",
@@ -68016,6 +68298,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000935d",
           "clobbered_before_use": [
             "r4",
@@ -68051,6 +68334,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000227d",
           "clobbered_before_use": [
             "r4",
@@ -68062,6 +68346,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000227d",
           "clobbered_before_use": [
             "r4",
@@ -68097,6 +68382,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000227b",
           "clobbered_before_use": [
             "r4",
@@ -68108,6 +68394,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000227b",
           "clobbered_before_use": [
             "r4",
@@ -68141,6 +68428,7 @@
         {
           "instruction": "0x002cc4",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0fffffff",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68172,6 +68460,7 @@
         {
           "instruction": "0x0204ee",
           "operation": "READ",
+          "displacement": 1,
           "effective_address": "0x00009b88",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68180,6 +68469,7 @@
         {
           "instruction": "0x0204fa",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009b87",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68211,6 +68501,7 @@
         {
           "instruction": "0x025884",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095ef",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68219,6 +68510,7 @@
         {
           "instruction": "0x025886",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095ef",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68227,6 +68519,7 @@
         {
           "instruction": "0x025888",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095ef",
           "clobbered_before_use": [
             "r1",
@@ -68262,6 +68555,7 @@
         {
           "instruction": "0x025884",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009626",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68270,6 +68564,7 @@
         {
           "instruction": "0x025886",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009626",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68278,6 +68573,7 @@
         {
           "instruction": "0x025888",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009626",
           "clobbered_before_use": [
             "r1",
@@ -68313,6 +68609,7 @@
         {
           "instruction": "0x0204ee",
           "operation": "READ",
+          "displacement": 1,
           "effective_address": "0x00009b88",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68321,6 +68618,7 @@
         {
           "instruction": "0x0204fa",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009b87",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68352,6 +68650,7 @@
         {
           "instruction": "0x022f64",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093f9",
           "clobbered_before_use": [
             "r0"
@@ -68362,6 +68661,7 @@
         {
           "instruction": "0x022f66",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093f9",
           "clobbered_before_use": [
             "r0",
@@ -68373,6 +68673,7 @@
         {
           "instruction": "0x022f68",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093f9",
           "clobbered_before_use": [
             "r0",
@@ -68384,6 +68685,7 @@
         {
           "instruction": "0x022f6a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093f9",
           "clobbered_before_use": [
             "r0",
@@ -68395,6 +68697,7 @@
         {
           "instruction": "0x022f6c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093f9",
           "clobbered_before_use": [
             "r0",
@@ -68406,6 +68709,7 @@
         {
           "instruction": "0x022f6e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093f9",
           "clobbered_before_use": [
             "r0",
@@ -68417,6 +68721,7 @@
         {
           "instruction": "0x022f70",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000093f9",
           "clobbered_before_use": [
             "r0",
@@ -68450,6 +68755,7 @@
         {
           "instruction": "0x021986",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x20000000",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68458,6 +68764,7 @@
         {
           "instruction": "0x021988",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x20000000",
           "clobbered_before_use": [
             "r0",
@@ -68493,6 +68800,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002288",
           "clobbered_before_use": [
             "r4",
@@ -68504,6 +68812,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002288",
           "clobbered_before_use": [
             "r4",
@@ -68538,6 +68847,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000228a",
           "clobbered_before_use": [
             "r4",
@@ -68549,6 +68859,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000228a",
           "clobbered_before_use": [
             "r4",
@@ -68583,6 +68894,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000228f",
           "clobbered_before_use": [
             "r4",
@@ -68594,6 +68906,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000228f",
           "clobbered_before_use": [
             "r4",
@@ -68628,6 +68941,7 @@
         {
           "instruction": "0x028cfc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [
             "r2",
@@ -68639,6 +68953,7 @@
         {
           "instruction": "0x028cfe",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [
             "r2",
@@ -68650,6 +68965,7 @@
         {
           "instruction": "0x028d00",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [
             "r2",
@@ -68661,6 +68977,7 @@
         {
           "instruction": "0x028cf6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68669,6 +68986,7 @@
         {
           "instruction": "0x028cf8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68700,6 +69018,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000932e",
           "clobbered_before_use": [
             "r4",
@@ -68711,6 +69030,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000932e",
           "clobbered_before_use": [
             "r4",
@@ -68745,6 +69065,7 @@
         {
           "instruction": "0x0029de",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000244e",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68753,6 +69074,7 @@
         {
           "instruction": "0x0029f0",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000244e",
           "clobbered_before_use": [
             "r0",
@@ -68764,6 +69086,7 @@
         {
           "instruction": "0x0029f2",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000244e",
           "clobbered_before_use": [
             "r0",
@@ -68799,6 +69122,7 @@
         {
           "instruction": "0x028d3e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009bea",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68807,6 +69131,7 @@
         {
           "instruction": "0x028d52",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009bea",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68836,6 +69161,7 @@
         {
           "instruction": "0x028d06",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009be5",
           "clobbered_before_use": [
             "r4",
@@ -68847,6 +69173,7 @@
         {
           "instruction": "0x028d10",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009be5",
           "clobbered_before_use": [
             "r4",
@@ -68882,6 +69209,7 @@
         {
           "instruction": "0x028cfc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000243e",
           "clobbered_before_use": [
             "r2",
@@ -68893,6 +69221,7 @@
         {
           "instruction": "0x028cfe",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000243e",
           "clobbered_before_use": [
             "r2",
@@ -68904,6 +69233,7 @@
         {
           "instruction": "0x028d00",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000243e",
           "clobbered_before_use": [
             "r2",
@@ -68915,6 +69245,7 @@
         {
           "instruction": "0x028cf6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000243e",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68923,6 +69254,7 @@
         {
           "instruction": "0x028cf8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000243e",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68955,6 +69287,7 @@
         {
           "instruction": "0x028cfc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002446",
           "clobbered_before_use": [
             "r2",
@@ -68966,6 +69299,7 @@
         {
           "instruction": "0x028cfe",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002446",
           "clobbered_before_use": [
             "r2",
@@ -68977,6 +69311,7 @@
         {
           "instruction": "0x028d00",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002446",
           "clobbered_before_use": [
             "r2",
@@ -68988,6 +69323,7 @@
         {
           "instruction": "0x028cf6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002446",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -68996,6 +69332,7 @@
         {
           "instruction": "0x028cf8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002446",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69028,6 +69365,7 @@
         {
           "instruction": "0x028cfc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [
             "r2",
@@ -69039,6 +69377,7 @@
         {
           "instruction": "0x028cfe",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [
             "r2",
@@ -69050,6 +69389,7 @@
         {
           "instruction": "0x028d00",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [
             "r2",
@@ -69061,6 +69401,7 @@
         {
           "instruction": "0x028cf6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69069,6 +69410,7 @@
         {
           "instruction": "0x028cf8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095e6",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69101,6 +69443,7 @@
         {
           "instruction": "0x022744",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000228c",
           "clobbered_before_use": [
             "r4",
@@ -69112,6 +69455,7 @@
         {
           "instruction": "0x02274a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000228c",
           "clobbered_before_use": [
             "r4",
@@ -69123,6 +69467,7 @@
         {
           "instruction": "0x02272c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000228c",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69131,6 +69476,7 @@
         {
           "instruction": "0x022732",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000228c",
           "clobbered_before_use": [
             "r4",
@@ -69142,6 +69488,7 @@
         {
           "instruction": "0x02274e",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000228c",
           "clobbered_before_use": [
             "r4",
@@ -69153,6 +69500,7 @@
         {
           "instruction": "0x022736",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000228c",
           "clobbered_before_use": [
             "r4",
@@ -69188,6 +69536,7 @@
         {
           "instruction": "0x028cfc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [
             "r2",
@@ -69199,6 +69548,7 @@
         {
           "instruction": "0x028cfe",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [
             "r2",
@@ -69210,6 +69560,7 @@
         {
           "instruction": "0x028d00",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [
             "r2",
@@ -69221,6 +69572,7 @@
         {
           "instruction": "0x028cf6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69229,6 +69581,7 @@
         {
           "instruction": "0x028cf8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69261,6 +69614,7 @@
         {
           "instruction": "0x028cfc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [
             "r2",
@@ -69272,6 +69626,7 @@
         {
           "instruction": "0x028cfe",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [
             "r2",
@@ -69283,6 +69638,7 @@
         {
           "instruction": "0x028d00",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [
             "r2",
@@ -69294,6 +69650,7 @@
         {
           "instruction": "0x028cf6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69302,6 +69659,7 @@
         {
           "instruction": "0x028cf8",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00002459",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69334,6 +69692,7 @@
         {
           "instruction": "0x0272a6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab9",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69365,6 +69724,7 @@
         {
           "instruction": "0x0272a6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab9",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69396,6 +69756,7 @@
         {
           "instruction": "0x02772a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0001081c",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69425,6 +69786,7 @@
         {
           "instruction": "0x027fb0",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011dda",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69454,6 +69816,7 @@
         {
           "instruction": "0x027dc0",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000116ce",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69462,6 +69825,7 @@
         {
           "instruction": "0x027dc2",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000116ce",
           "clobbered_before_use": [
             "r0",
@@ -69496,6 +69860,7 @@
         {
           "instruction": "0x027dc0",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000116ce",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69504,6 +69869,7 @@
         {
           "instruction": "0x027dc2",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000116ce",
           "clobbered_before_use": [
             "r0",
@@ -69538,6 +69904,7 @@
         {
           "instruction": "0x027db4",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00010802",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69546,6 +69913,7 @@
         {
           "instruction": "0x027db6",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00010802",
           "clobbered_before_use": [
             "r2",
@@ -69580,6 +69948,7 @@
         {
           "instruction": "0x027fb0",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00011dda",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69609,6 +69978,7 @@
         {
           "instruction": "0x027f8e",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x000113da",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69617,6 +69987,7 @@
         {
           "instruction": "0x027f92",
           "operation": "WRITE",
+          "displacement": 12,
           "effective_address": "0x000113d8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69625,6 +69996,7 @@
         {
           "instruction": "0x027f94",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x000113da",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69654,6 +70026,7 @@
         {
           "instruction": "0x027f8e",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x000114c2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69662,6 +70035,7 @@
         {
           "instruction": "0x027f92",
           "operation": "WRITE",
+          "displacement": 12,
           "effective_address": "0x000114c0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69670,6 +70044,7 @@
         {
           "instruction": "0x027f94",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x000114c2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69699,6 +70074,7 @@
         {
           "instruction": "0x027f8e",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x000115aa",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69707,6 +70083,7 @@
         {
           "instruction": "0x027f92",
           "operation": "WRITE",
+          "displacement": 12,
           "effective_address": "0x000115a8",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69715,6 +70092,7 @@
         {
           "instruction": "0x027f94",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x000115aa",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69744,6 +70122,7 @@
         {
           "instruction": "0x027f8e",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x00011c18",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69752,6 +70131,7 @@
         {
           "instruction": "0x027f92",
           "operation": "WRITE",
+          "displacement": 12,
           "effective_address": "0x00011c16",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69760,6 +70140,7 @@
         {
           "instruction": "0x027f94",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x00011c18",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69789,6 +70170,7 @@
         {
           "instruction": "0x027f8e",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x00011d00",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69797,6 +70179,7 @@
         {
           "instruction": "0x027f92",
           "operation": "WRITE",
+          "displacement": 12,
           "effective_address": "0x00011cfe",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69805,6 +70188,7 @@
         {
           "instruction": "0x027f94",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x00011d00",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69834,6 +70218,7 @@
         {
           "instruction": "0x027f9c",
           "operation": "READ",
+          "displacement": 2,
           "effective_address": "0x00010e90",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69842,6 +70227,7 @@
         {
           "instruction": "0x027fa0",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00010e8e",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69871,6 +70257,7 @@
         {
           "instruction": "0x027f74",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x00010f48",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69900,6 +70287,7 @@
         {
           "instruction": "0x027f9c",
           "operation": "READ",
+          "displacement": 2,
           "effective_address": "0x00010ee2",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69908,6 +70296,7 @@
         {
           "instruction": "0x027fa0",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00010ee0",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69937,6 +70326,7 @@
         {
           "instruction": "0x027f74",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x00010f9a",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69966,6 +70356,7 @@
         {
           "instruction": "0x027f9c",
           "operation": "READ",
+          "displacement": 2,
           "effective_address": "0x00010f34",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -69974,6 +70365,7 @@
         {
           "instruction": "0x027fa0",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00010f32",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70003,6 +70395,7 @@
         {
           "instruction": "0x027f74",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x00010fec",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70032,6 +70425,7 @@
         {
           "instruction": "0x027f9c",
           "operation": "READ",
+          "displacement": 2,
           "effective_address": "0x00011aae",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70040,6 +70434,7 @@
         {
           "instruction": "0x027fa0",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00011aac",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70069,6 +70464,7 @@
         {
           "instruction": "0x027f74",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x00011b14",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70098,6 +70494,7 @@
         {
           "instruction": "0x027f9c",
           "operation": "READ",
+          "displacement": 2,
           "effective_address": "0x00011b00",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70106,6 +70503,7 @@
         {
           "instruction": "0x027fa0",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00011afe",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70135,6 +70533,7 @@
         {
           "instruction": "0x027f74",
           "operation": "READ",
+          "displacement": 14,
           "effective_address": "0x00011b66",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70164,6 +70563,7 @@
         {
           "instruction": "0x02858a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab9",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70193,6 +70593,7 @@
         {
           "instruction": "0x0284f4",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095ef",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70201,6 +70602,7 @@
         {
           "instruction": "0x0284f6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000095ef",
           "clobbered_before_use": [
             "r0",
@@ -70235,6 +70637,7 @@
         {
           "instruction": "0x0284f4",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009626",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70243,6 +70646,7 @@
         {
           "instruction": "0x0284f6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009626",
           "clobbered_before_use": [
             "r0",
@@ -70277,6 +70681,7 @@
         {
           "instruction": "0x02858a",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00001ab9",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70306,6 +70711,7 @@
         {
           "instruction": "0x028cf6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000937e",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70314,6 +70720,7 @@
         {
           "instruction": "0x028cfa",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000937e",
           "clobbered_before_use": [
             "r8",
@@ -70325,6 +70732,7 @@
         {
           "instruction": "0x028d14",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x0000937e",
           "clobbered_before_use": [
             "r8",
@@ -70360,6 +70768,7 @@
         {
           "instruction": "0x028604",
           "operation": "WRITE",
+          "displacement": 9,
           "effective_address": "0x00009b8e",
           "clobbered_before_use": [
             "r7",
@@ -70371,6 +70780,7 @@
         {
           "instruction": "0x02860e",
           "operation": "WRITE",
+          "displacement": 9,
           "effective_address": "0x00009b8e",
           "clobbered_before_use": [
             "r7",
@@ -70382,6 +70792,7 @@
         {
           "instruction": "0x028618",
           "operation": "READ",
+          "displacement": 12,
           "effective_address": "0x00009b91",
           "clobbered_before_use": [
             "r7",
@@ -70393,6 +70804,7 @@
         {
           "instruction": "0x02861c",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009b85",
           "clobbered_before_use": [
             "r7",
@@ -70404,6 +70816,7 @@
         {
           "instruction": "0x0285b4",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009b85",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70412,6 +70825,7 @@
         {
           "instruction": "0x0285b6",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009b85",
           "clobbered_before_use": [
             "r7",
@@ -70423,6 +70837,7 @@
         {
           "instruction": "0x0285cc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009b85",
           "clobbered_before_use": [
             "r7",
@@ -70434,6 +70849,7 @@
         {
           "instruction": "0x0285dc",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00009b85",
           "clobbered_before_use": [
             "r7",
@@ -70445,6 +70861,7 @@
         {
           "instruction": "0x0285fe",
           "operation": "READ",
+          "displacement": 9,
           "effective_address": "0x00009b8e",
           "clobbered_before_use": [
             "r7",
@@ -70480,6 +70897,7 @@
         {
           "instruction": "0x0289b0",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x00ff4000",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70488,6 +70906,7 @@
         {
           "instruction": "0x028a48",
           "operation": "WRITE",
+          "displacement": 0,
           "effective_address": "0x00ff4000",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70517,6 +70936,7 @@
         {
           "instruction": "0x003b28",
           "operation": "READ",
+          "displacement": 0,
           "effective_address": "0x000002c4",
           "clobbered_before_use": [],
           "preserved_to_use": true,
@@ -70525,6 +70945,7 @@
         {
           "instruction": "0x003b2e",
           "operation": "READ",
+          "displacement": 6,
           "effective_address": "0x000002ca",
           "clobbered_before_use": [
             "r0",
@@ -70536,6 +70957,7 @@
         {
           "instruction": "0x003b30",
           "operation": "WRITE",
+          "displacement": 10,
           "effective_address": "0x000002ce",
           "clobbered_before_use": [
             "r0",
@@ -70547,6 +70969,7 @@
         {
           "instruction": "0x003b32",
           "operation": "WRITE",
+          "displacement": 12,
           "effective_address": "0x000002d0",
           "clobbered_before_use": [
             "r0",

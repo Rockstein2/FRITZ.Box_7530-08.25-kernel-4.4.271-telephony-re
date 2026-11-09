@@ -59,8 +59,8 @@ p2test examples:
 0x00033a  base 0x00010814
 ```
 
-These are `CANDIDATE` only.  The report has 6 normal / 17 p2test candidates after E3 def-use
-correction, and 376 normal / 379 p2test unresolved sites.  None has a proven table base,
+These are `CANDIDATE` only.  The report has 0 normal / 11 p2test candidates after E3 def-use and kill
+correction, and 382 normal / 385 p2test unresolved sites.  None has a proven table base,
 bounded index and valid indirect target together.
 
 ### Unresolved indirect sites

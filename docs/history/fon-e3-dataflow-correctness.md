@@ -54,6 +54,11 @@ Downgraded p2test cases:
 
 - `0x0243b0`, `0x024754` — caller entry/path incomplete.
 
+The E3 audit matches each old memory use by instruction address and effective
+address, not only by `(call_site, callee, pair, constant)`.  A missing or
+changed use makes the old proof `INVALID`; the current 25/10 records all match
+their old use addresses.
+
 The priority case remains:
 
 ```text
@@ -112,6 +117,9 @@ children.
 - writes `cr16-dataflow-<image>.incomplete.json`;
 - leaves the last confirmed `cr16-dataflow-<image>.json` untouched;
 - does not overwrite the combined indirect/PCM reports with a partial set.
+
+`cr16_interproc.py` and `cr16_e3.py` apply the same fail-closed rule to their
+normal reports and write `.incomplete.json` diagnostics instead.
 
 A regression test runs with `--max-iterations 1` and checks all three
 properties.
