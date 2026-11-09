@@ -264,11 +264,16 @@ else:
     # 0x258c / 0x25b4 must be 0x00FF6006 and never 0x000F6006 (PERIPH-2)
     check("report: 0x00FF6006 has register-pair writers",
           {("WRITE", "RESOLVED")} <= ops_of("0x00ff6006"), True)
-    check("report: 0x000F6006 has only its own two writers",
+    check("report: encoded 0x000F6006 is preserved for four writes",
           sum(1 for image in xr["images"].values()
               for row in image["operations"]
-              if row["effective_address"] == "0x000f6006"
-              and row["operation"] == "WRITE") , 4)
+              if row.get("encoded_address") == "0x000f6006"
+              and row["operation"] == "WRITE"), 4)
+    check("report: encoded 0x000F6006 resolves to 0x00FF6006",
+          all(row["effective_address"] == "0x00ff6006"
+              for image in xr["images"].values()
+              for row in image["operations"]
+              if row.get("encoded_address") == "0x000f6006"), True)
     check("report: 0x25d0 is SYMBOLIC",
           any(row["instruction"] == "0x0025d0"
               and row["address_kind"] == "SYMBOLIC"
@@ -358,7 +363,10 @@ if DEPS_DOC.is_file():
 ALIAS_DOC = HISTORY / "fon-dialog-address-alias-hypotheses.md"
 if ALIAS_DOC.is_file():
     t = ALIAS_DOC.read_text()
-    check("alias doc: verdict is UNKNOWN", "**Answer: UNKNOWN.**" in t, True)
+    check("alias doc: address space is resolved",
+          "address-space part is RESOLVED" in t, True)
+    check("alias doc: physical identity remains candidate",
+          "Physical identity remains CANDIDATE." in t, True)
     check("alias doc: no DOCUMENTED_ALIAS claim",
           "DOCUMENTED_ALIAS" not in t.replace("documented for the SC14448", ""),
           True)
@@ -444,8 +452,8 @@ if VEC.is_file():
 EXTMAP = EXT["fon-dialog-external-register-map.md"]
 if EXTMAP.is_file():
     t = EXTMAP.read_text()
-    check("register-map doc keeps the alias answer UNKNOWN",
-          "still UNKNOWN" in t, True)
+    check("register-map doc reports the resolved effective address",
+          "SAME_ARCHITECTURAL_ADDRESS" in t, True)
     check("register-map doc names the UART functional match",
           "FUNCTIONAL_REGISTER_MATCH" in t, True)
 
@@ -903,6 +911,7 @@ _root_current = {
     "fon-dialog-minimal-loader.md", "fon-tdm-control-only-plan.md",
     "fon-e0-summary.md", "fon-sc14448-pcmlink-protocol.md",
     "fon-e1-summary.md", "fon-e2-summary.md", "fon-e3-summary.md",
+    "fon-e32-summary.md",
 }
 _root_analysis = [p.name for p in DOCS.glob("*.md")
                   if p.name not in _root_current]
@@ -1361,15 +1370,15 @@ _dn = json.loads((ROOT / "tools" / "reports" /
                   "cr16-dataflow-normal.json").read_text())
 _dp = json.loads((ROOT / "tools" / "reports" /
                   "cr16-dataflow-p2test.json").read_text())
-check("E1 normal new-resolved count", _dn["newly_resolved_count"], 115)
-check("E1 p2test new-resolved count", _dp["newly_resolved_count"], 165)
+check("E1 normal new-resolved count", _dn["newly_resolved_count"], 239)
+check("E1 p2test new-resolved count", _dp["newly_resolved_count"], 239)
 check("E1 normal state blocks", _dn["state_blocks"] > 0, True)
 check("E1 p2test state blocks", _dp["state_blocks"] > 0, True)
 check("E1 reports keep unknown counts", "new_stats" in _dn, True)
 
 _df = (DOCS / "history" / "fon-e1-cross-block-dataflow.md").read_text()
 check("E1 dataflow doc records new metrics",
-      "115" in _df and "165" in _df and "750" in _df and "894" in _df, True)
+      "239" in _df and "239" in _df and "750" in _df and "894" in _df, True)
 check("E1 dataflow doc records false-positive flag",
       "outside the known internal range" in _df, True)
 _de = (DOCS / "history" / "fon-e1-dma-byte-order.md").read_text()
@@ -1421,9 +1430,9 @@ _e2p = json.loads((ROOT / "tools" / "reports" /
 check("E2 normal function summaries", _e2n["function_entries"], 432)
 check("E2 p2test function summaries", _e2p["function_entries"], 403)
 check("E2 normal proven arguments",
-      _e2n["proven_argument_propagations"], 91)
+      _e2n["proven_argument_propagations"], 43)
 check("E2 p2test proven arguments",
-      _e2p["proven_argument_propagations"], 42)
+      _e2p["proven_argument_propagations"], 22)
 check("E2 reports keep source SHA",
       len(_e2n.get("sha256", "")) == 64
       and len(_e2p.get("sha256", "")) == 64, True)
@@ -1499,8 +1508,8 @@ for _name in ("cr16-e3-soundness-audit.json", "cr16-e3-dsp-paths.json",
 
 _e3s = json.loads((ROOT / "tools" / "reports" /
                    "cr16-e3-soundness-audit.json").read_text())
-for _image, _old, _proven, _cand in (("normal", 25, 91, 82),
-                                    ("p2test", 10, 42, 92)):
+for _image, _old, _proven, _cand in (("normal", 25, 43, 58),
+                                    ("p2test", 10, 22, 69)):
     _d = _e3s["images"][_image]
     check(f"E3 {_image}: old PROVEN audited", _d["old_proven"], _old)
     check(f"E3 {_image}: corrected PROVEN", _d["new_proven"], _proven)
@@ -1520,13 +1529,14 @@ _e3i = json.loads((ROOT / "tools" / "reports" /
 for _image in ("normal", "p2test"):
     _d = _e3i["images"][_image]
     check(f"E3 {_image}: F6006 read present",
-          any(o.get("effective_address") == "0x000f6006"
+          any(o.get("effective_address") == "0x00ff6006"
               for o in _d["memory_operations"]), True)
     check(f"E3 {_image}: F5402 write present",
-          any(o.get("effective_address") == "0x000f5402"
+          any(o.get("effective_address") == "0x00ff5402"
               for o in _d["memory_operations"]), True)
-    check(f"E3 {_image}: no F6006/FF6006 alias claim",
-          _d["f6006"]["alias_claim"], "UNKNOWN")
+    check(f"E3 {_image}: F6006 extension result recorded",
+          _d["f6006"]["alias_claim"],
+          "SAME_ARCHITECTURAL_ADDRESS_BY_ABS20_EXTENSION")
 
 _e3h = json.loads((ROOT / "tools" / "reports" /
                    "cr16-e3-handler-candidates.json").read_text())
@@ -1540,7 +1550,7 @@ for _image in ("normal", "p2test"):
           _d["0x01000000"]["runtime_pcm_buffer_proven"], False)
 
 _e3sum = (DOCS / "fon-e3-summary.md").read_text()
-for _needle in ("21", "8", "91", "42", "382", "385", "0x01027F80",
+for _needle in ("11", "3", "43", "22", "382", "385", "0x01027F80",
                 "0x01027FD8", "UNRESOLVED", "NON_CONVERGED"):
     check(f"E3 summary records {_needle}", _needle in _e3sum, True)
 check("E3 tools index links the audit tool",

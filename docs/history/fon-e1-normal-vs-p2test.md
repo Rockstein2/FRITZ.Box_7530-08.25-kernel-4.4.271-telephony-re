@@ -12,7 +12,7 @@
 | Decoded instructions | 19 570 | 18 058 |
 | Blocks | 5 454 | 5 170 |
 | Blocks with entry state | 750 | 894 |
-| Newly resolved | 115 | 165 |
+| Newly resolved | 239 | 239 |
 | Outside known ranges | 10 | 3 |
 | PCM candidate accesses | 34 | 34 |
 

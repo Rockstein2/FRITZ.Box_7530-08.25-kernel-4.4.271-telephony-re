@@ -57,7 +57,7 @@ reported as converged.  Normal execution converges in four iterations.
 | Direct call edges | 1 489 | 1 371 |
 | Return blocks | 243 | 250 |
 | Stateful blocks | 750 | 894 |
-| Newly resolved accesses | 115 | 165 |
+| Newly resolved accesses | 239 | 239 |
 | Outside known internal ranges | 10 | 3 |
 | Fixed-point status | CONVERGED | CONVERGED |
 | Iterations | 4 | 4 |
@@ -67,13 +67,13 @@ reported as converged.  Normal execution converges in four iterations.
 | Function entries with summaries | 432 | 403 |
 | E2 initial direct argument records | 146 | 116 |
 | E2 initial PROVEN call arguments (audited in E3) | 25 | 10 |
-| E3 corrected direct argument records | 173 | 134 |
-| E3 corrected PROVEN call arguments | 91 | 42 |
-| E3 retained old PROVEN arguments | 21 | 8 |
+| E3 corrected direct argument records | 101 | 91 |
+| E3 corrected PROVEN call arguments | 43 | 22 |
+| E3 retained old PROVEN arguments | 11 | 3 |
 | IRQ vectors | 31 | 31 |
 
 The E1 cross-block counts changed slightly because the restored call
-continuation adds blocks: **115/165** new resolved accesses and **750/894**
+continuation adds blocks: **239/239** new resolved accesses and **750/894**
 stateful blocks now replace the earlier 119/171 and 777/916.  The earlier
 values were not silently retained.
 
@@ -211,7 +211,7 @@ temporary variables; a golden test covers the overlap case.
 No slot-5 consumer was proven.  E2 expanded coverage compared with E1:
 
 - call continuations are now reachable;
-- 146/116 E2 direct-call argument records were examined; E3 records 173/134;
+- 146/116 E2 direct-call argument records were examined; E3 records 101/91;
 - 382/396 indirect sites were tied to their nearest table-like consumer;
 - all 31 IRQ vectors were reconstructed in both images;
 - indexed accesses in the IRQ path were inspected;

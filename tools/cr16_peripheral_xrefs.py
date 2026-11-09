@@ -143,9 +143,38 @@ def parse_memory_operand(text):
     return None
 
 
-def abs20_address(raw):
-    """Address of the 4-byte `<abs>:m` form: low nibble of byte 0 is bit 20."""
+def abs20_encoded_address(raw):
+    """The 20-bit field of the 4-byte `<abs>:m` form.
+
+    This is the value printed by objdump.  It is *not* always the
+    architectural effective address: values above 0xEFFFF are expanded by
+    the CR16Cplus address rule (see ``reloc_abs20``).
+    """
     return ((raw[0] & 0x0F) << 16) | raw[2] | (raw[3] << 8)
+
+
+def reloc_abs20(value):
+    """Expand a 20-bit absolute field to its CR16Cplus effective address.
+
+    Two independent implementations agree on this rule:
+
+    * QEMU ``target/cr16c/translate.c``: ``if (addr > 0xEFFFF) addr |=
+      0xF00000``;
+    * binutils GAS ``tc-cr16.c``: ``OP_ABS20`` rejects values above
+      ``0xEFFFF``, while ``adjust_if_needed`` rewrites an ``abs24`` value
+      above ``0xF00000`` to the low 20 bits and selects the ``abs20`` form.
+
+    Values 0x00000..0xEFFFF stay zero-extended; 0xF0000..0xFFFFF map to
+    0xFF0000..0xFFFFFF.  This is an ISA/effective-address rule, not a
+    statement about the SC14448 peripheral bus.
+    """
+    value &= 0xFFFFF
+    return value | 0xF00000 if value > 0xEFFFF else value
+
+
+def abs20_address(raw):
+    """Architectural effective address of the 4-byte `<abs>:m` form."""
+    return reloc_abs20(abs20_encoded_address(raw))
 
 
 def abs24_address(raw):
@@ -163,8 +192,17 @@ def abs24_address(raw):
             | (packed & 0xFFFF))
 
 
+def abs_encoded_address(insn):
+    """Raw address field, before the abs20 extension rule."""
+    if len(insn.raw) == 6:
+        return abs24_address(insn.raw)
+    if len(insn.raw) == 4:
+        return abs20_encoded_address(insn.raw)
+    return None
+
+
 def abs_address(insn):
-    """Decoded address of an absolute memory operand, or None."""
+    """Architectural effective address of an absolute memory operand."""
     if len(insn.raw) == 6:
         return abs24_address(insn.raw)
     if len(insn.raw) == 4:
@@ -442,7 +480,8 @@ def _address_of(parsed, payload, insn):
     """(kind, address) for a parsed memory operand (used by `tbit*`)."""
     if parsed == "ABS":
         value = abs_address(insn)
-        if value == payload:
+        encoded = abs_encoded_address(insn)
+        if encoded == payload:
             return "RESOLVED", f"0x{value:08x}"
         return "UNKNOWN", None
     if parsed == "IDX":
@@ -637,11 +676,17 @@ def scan(fw, image):
                         break
                 if parsed == "ABS":
                     value = abs_address(insn)
-                    if value == payload:
-                        rows.append(_row(image, addr, insn, kind, width,
-                                         "RESOLVED", f"0x{value:08x}",
-                                         [f"0x{addr:06x}"], None,
-                                         mode_a, mode_b))
+                    encoded = abs_encoded_address(insn)
+                    if encoded == payload:
+                        row = _row(image, addr, insn, kind, width,
+                                   "RESOLVED", f"0x{value:08x}",
+                                   [f"0x{addr:06x}"], None,
+                                   mode_a, mode_b)
+                        row["encoded_address"] = f"0x{encoded:08x}"
+                        row["address_extension"] = (
+                            "ABS20_RELOC" if len(insn.raw) == 4
+                            else "ABS24")
+                        rows.append(row)
                     else:
                         rows.append(_row(image, addr, insn, kind, width,
                                          "UNKNOWN", None, [], None,

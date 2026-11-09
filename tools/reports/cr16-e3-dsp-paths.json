@@ -256,7 +256,7 @@
           "operation": "WRITE",
           "width_bits": 16,
           "address_kind": "RESOLVED",
-          "effective_address": "0x000f5402",
+          "effective_address": "0x00ff5402",
           "expression": null,
           "provenance": [
             "0x028b00"
@@ -800,7 +800,7 @@
         "runtime value of the pointer after loader handoff",
         "source of the 16-bit event word at pointer+0x58",
         "semantics of the two helper functions",
-        "meaning of the 0xF5402=0x2000 acknowledgement"
+        "physical identity of the 0x00FF5402 acknowledgement register"
       ],
       "source": "firmware/dectfw_secondlevel_441.hex",
       "sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31"
@@ -1060,7 +1060,7 @@
           "operation": "WRITE",
           "width_bits": 16,
           "address_kind": "RESOLVED",
-          "effective_address": "0x000f5402",
+          "effective_address": "0x00ff5402",
           "expression": null,
           "provenance": [
             "0x027980"
@@ -1604,7 +1604,7 @@
         "runtime value of the pointer after loader handoff",
         "source of the 16-bit event word at pointer+0x58",
         "semantics of the two helper functions",
-        "meaning of the 0xF5402=0x2000 acknowledgement"
+        "physical identity of the 0x00FF5402 acknowledgement register"
       ],
       "source": "firmware/dectfw_secondlevel_441p2test.hex",
       "sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860"

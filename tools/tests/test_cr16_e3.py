@@ -64,6 +64,76 @@ check("E3 audit marks the old use missing",
       _aud["audited_old_proven"][0]["use_match"]["all_old_uses_matched"],
       False)
 
+def _audit_single(old_use, new_use):
+    old = {"argument_propagations": [{
+        "call_site": "0x10", "callee": "0x20",
+        "argument_pair": ["r2", "r3"], "constant": "0x100",
+        "confidence": "PROVEN", "uses": [old_use]}]}
+    new = [{
+        "call_site": "0x10", "callee": "0x20",
+        "argument_pair": ["r2", "r3"], "constant": "0x100",
+        "confidence": "PROVEN", "uses": [new_use]}]
+    return E.audit("fixture", old, new)["audited_old_proven"][0]
+
+
+_op = _audit_single(
+    {"instruction": "0x21", "operation": "READ",
+     "effective_address": "0x100"},
+    {"instruction": "0x21", "operation": "WRITE",
+     "effective_address": "0x100", "displacement": 0})
+check("E3 audit rejects READ -> WRITE",
+      _op["new_classification"], "INVALID")
+check("E3 audit reports READ/WRITE mismatch",
+      len(_op["use_match"]["mismatched"]), 1)
+
+_disp = _audit_single(
+    {"instruction": "0x21", "operation": "READ",
+     "effective_address": "0x100", "displacement": 0},
+    {"instruction": "0x21", "operation": "READ",
+     "effective_address": "0x100", "displacement": 2})
+check("E3 audit rejects a changed displacement",
+      _disp["new_classification"], "INVALID")
+
+_old_nodisp = _audit_single(
+    {"instruction": "0x21", "operation": "READ",
+     "effective_address": "0x100"},
+    {"instruction": "0x21", "operation": "READ",
+     "effective_address": "0x100", "displacement": 2})
+check("E3 audit accepts an unavailable old displacement",
+      _old_nodisp["use_match"]["all_old_uses_matched"], True)
+
+_dup_old = {"argument_propagations": [{
+    "call_site": "0x10", "callee": "0x20", "argument_pair": ["r2", "r3"],
+    "constant": "0x100", "confidence": "PROVEN",
+    "uses": [{"instruction": "0x21", "operation": "READ",
+              "effective_address": "0x100"}] * 2}]}
+_dup_new = [{
+    "call_site": "0x10", "callee": "0x20", "argument_pair": ["r2", "r3"],
+    "constant": "0x100", "confidence": "PROVEN",
+    "uses": [{"instruction": "0x21", "operation": "READ",
+              "effective_address": "0x100"}]}]
+_dup = E.audit("fixture", _dup_old, _dup_new)["audited_old_proven"][0]
+check("E3 audit rejects a missing duplicate use",
+      _dup["new_classification"], "INVALID")
+
+# Baseline fail-closed fixtures.
+try:
+    E.old_report("normal", baseline_commit="0" * 40, allow_fallback=False)
+    _baseline_missing = False
+except RuntimeError:
+    _baseline_missing = True
+check("E3 missing baseline fails closed", _baseline_missing, True)
+try:
+    E._validate_old({"argument_propagations": []}, "normal")
+    _baseline_corrupt = False
+except RuntimeError:
+    _baseline_corrupt = True
+check("E3 corrupt baseline fails closed", _baseline_corrupt, True)
+check("E3 empty baseline with valid identity is distinguishable",
+      E._validate_old({"argument_propagations": [],
+                       "sha256": E.EXPECTED_SHA["normal"]}, "normal")
+      ["argument_propagations"], [])
+
 # Independent table fixture: a nearer non-load write kills a preceding load.
 _ops_ok = {0x100: [{"instruction": "0x000100", "operation": "READ",
                     "address_kind": "RESOLVED",
@@ -157,8 +227,8 @@ s = load("cr16-e3-soundness-audit.json")
 if s is not None:
     check("E3 audit keeps E2 baseline", s["baseline_commit"],
           "89599db81e2816cf323a554bb4054175d06dad25")
-    for name, old, proven, cand in (("normal", 25, 91, 82),
-                                    ("p2test", 10, 42, 92)):
+    for name, old, proven, cand in (("normal", 25, 43, 58),
+                                    ("p2test", 10, 22, 69)):
         d = s["images"][name]
         check(f"E3 {name}: audited old PROVEN", d["old_proven"], old)
         check(f"E3 {name}: new PROVEN after path analysis",
@@ -167,8 +237,17 @@ if s is not None:
               d["new_candidate"], cand)
         check(f"E3 {name}: all old records reclassified",
               len(d["audited_old_proven"]), old)
+        check(f"E3 {name}: old use audit has no silent acceptance",
+              all(a["use_match"]["all_old_uses_matched"] or
+                  a["new_classification"] == "INVALID"
+                  for a in d["audited_old_proven"]), True)
         check(f"E3 {name}: every audit has instruction provenance",
               all(a["old_uses"] for a in d["audited_old_proven"]), True)
+        check(f"E3 {name}: audit classification counts",
+              d["reclassified"],
+              {"PROVEN": 11, "CANDIDATE": 3, "INVALID": 11}
+              if name == "normal" else
+              {"PROVEN": 3, "CANDIDATE": 2, "INVALID": 5})
 
 c = load("cr16-e3-callsite-audit.json")
 if c is not None:
@@ -218,10 +297,13 @@ for name in ("normal", "p2test"):
         break
     x = d["images"][name]
     addrs = {o.get("effective_address") for o in x["memory_operations"]}
-    check(f"E3 {name}: DIP reads 0xF6006", "0x000f6006" in addrs, True)
-    check(f"E3 {name}: DIP writes 0xF5402", "0x000f5402" in addrs, True)
-    check(f"E3 {name}: DIP does not claim an alias",
-          x["f6006"]["alias_claim"], "UNKNOWN")
+    check(f"E3 {name}: DIP reads canonical 0x00FF6006",
+          "0x00ff6006" in addrs, True)
+    check(f"E3 {name}: DIP writes canonical 0x00FF5402",
+          "0x00ff5402" in addrs, True)
+    check(f"E3 {name}: DIP records the abs20 extension result",
+          x["f6006"]["alias_claim"],
+          "SAME_ARCHITECTURAL_ADDRESS_BY_ABS20_EXTENSION")
     check(f"E3 {name}: DIP has a callee", len(x["callees"]) >= 1, True)
 
 h = load("cr16-e3-handler-candidates.json")

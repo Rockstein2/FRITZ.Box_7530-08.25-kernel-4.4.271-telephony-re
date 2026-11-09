@@ -8,10 +8,10 @@
     "ADDRESS_LOAD/RESOLVED": 568,
     "READ/INDEXED": 229,
     "READ/PC_RELATIVE": 9,
-    "READ/RESOLVED": 510,
+    "READ/RESOLVED": 386,
     "READ/STACK": 442,
     "READ/SYMBOLIC": 3,
-    "READ/UNKNOWN": 1403,
+    "READ/UNKNOWN": 1527,
     "RMW/INDEXED": 20,
     "RMW/RESOLVED": 66,
     "RMW/STACK": 9,
@@ -742,6 +742,1811 @@
     },
     {
       "image": "normal",
+      "instruction": "0x009fd6",
+      "bytes": "5f7f0049",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ff4900",
+      "expression": null,
+      "provenance": [
+        "0x009fd6"
+      ],
+      "reachable_mode_a": true,
+      "reachable_mode_b": true,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017312",
+      "bytes": "ff7fddbf",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffbfdd",
+      "expression": null,
+      "provenance": [
+        "0x017312"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01732c",
+      "bytes": "ff7f01ba",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffba01",
+      "expression": null,
+      "provenance": [
+        "0x01732c"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017348",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017348"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017352",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017352"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0173a8",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x0173a8"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0173bc",
+      "bytes": "ff7f00ba",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffba00",
+      "expression": null,
+      "provenance": [
+        "0x0173bc"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0173da",
+      "bytes": "ff7fb5f3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3b5",
+      "expression": null,
+      "provenance": [
+        "0x0173da"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0173e6",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0173e6"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0173fa",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0173fa"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017416",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017416"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01742a",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x01742a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01744a",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x01744a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01745e",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x01745e"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01747a",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x01747a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01748e",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x01748e"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0174aa",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0174aa"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0174be",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0174be"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0174de",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0174de"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0174f2",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0174f2"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01750e",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x01750e"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017522",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017522"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01753e",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x01753e"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017552",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017552"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017572",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017572"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017586",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017586"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0175a2",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0175a2"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0175b6",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0175b6"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0175d2",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0175d2"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0175e6",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0175e6"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017606",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017606"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01761a",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x01761a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017648",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017648"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01764e",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x01764e"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01766c",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x01766c"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017676",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x017676"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01768a",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x01768a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017690",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x017690"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0176ae",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x0176ae"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0176b8",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x0176b8"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0176cc",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x0176cc"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0176d2",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x0176d2"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0176f0",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x0176f0"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0176f8",
+      "bytes": "ff7fbdf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3bd",
+      "expression": null,
+      "provenance": [
+        "0x0176f8"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017706",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x017706"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01771e",
+      "bytes": "ff7fbdf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3bd",
+      "expression": null,
+      "provenance": [
+        "0x01771e"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01772c",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x01772c"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017744",
+      "bytes": "ff7fbdf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3bd",
+      "expression": null,
+      "provenance": [
+        "0x017744"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017752",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x017752"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01776a",
+      "bytes": "ff7fbdf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3bd",
+      "expression": null,
+      "provenance": [
+        "0x01776a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017778",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x017778"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017790",
+      "bytes": "ff7fbdf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3bd",
+      "expression": null,
+      "provenance": [
+        "0x017790"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01779e",
+      "bytes": "ff7f89ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff89",
+      "expression": null,
+      "provenance": [
+        "0x01779e"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0177c2",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0177c2"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0177e6",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0177e6"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01780a",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x01780a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01781e",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x01781e"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017828",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017828"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017834",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017834"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01783e",
+      "bytes": "ff7fa9ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffffa9",
+      "expression": null,
+      "provenance": [
+        "0x01783e"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017864",
+      "bytes": "ff7fa9ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffffa9",
+      "expression": null,
+      "provenance": [
+        "0x017864"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0178b2",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0178b2"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0178bc",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0178bc"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0178c8",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0178c8"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0178d2",
+      "bytes": "ff7fa9ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffffa9",
+      "expression": null,
+      "provenance": [
+        "0x0178d2"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0178f8",
+      "bytes": "ff7fa9ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffffa9",
+      "expression": null,
+      "provenance": [
+        "0x0178f8"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017946",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017946"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017950",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017950"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01795c",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x01795c"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017966",
+      "bytes": "ff7fa9ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffffa9",
+      "expression": null,
+      "provenance": [
+        "0x017966"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x01798c",
+      "bytes": "ff7fa9ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffffa9",
+      "expression": null,
+      "provenance": [
+        "0x01798c"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0179da",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0179da"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0179e4",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0179e4"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0179f0",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x0179f0"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x0179fa",
+      "bytes": "ff7fa9ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffffa9",
+      "expression": null,
+      "provenance": [
+        "0x0179fa"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017a20",
+      "bytes": "ff7fa9ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffffa9",
+      "expression": null,
+      "provenance": [
+        "0x017a20"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017a6e",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017a6e"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017a78",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017a78"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017a84",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017a84"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017a8e",
+      "bytes": "ff7fa9ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffffa9",
+      "expression": null,
+      "provenance": [
+        "0x017a8e"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017ab4",
+      "bytes": "ff7fa9ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffffa9",
+      "expression": null,
+      "provenance": [
+        "0x017ab4"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017b16",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017b16"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017b2a",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017b2a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017b34",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017b34"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017b4a",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017b4a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017b54",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017b54"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017b64",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017b64"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017b78",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017b78"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017b82",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017b82"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017b98",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017b98"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017ba2",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017ba2"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017bb2",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017bb2"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017bc6",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017bc6"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017bd0",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017bd0"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017be6",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017be6"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
       "instruction": "0x017c0a",
       "bytes": "747e",
       "mnemonic": "tbitw",
@@ -755,6 +2560,44 @@
       "reachable_mode_b": false,
       "note": "single bit",
       "plausibility_note": "address outside the known internal ranges; may be data decoded as code (see docs, 'unreliable RESOLVED')",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017c0c",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017c0c"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017c16",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017c16"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
       "confidence": "PROVEN"
     },
     {
@@ -776,6 +2619,25 @@
     },
     {
       "image": "normal",
+      "instruction": "0x017c26",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017c26"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
       "instruction": "0x017c38",
       "bytes": "647e",
       "mnemonic": "tbitw",
@@ -793,6 +2655,63 @@
     },
     {
       "image": "normal",
+      "instruction": "0x017c3a",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017c3a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017c44",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017c44"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017c5a",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017c5a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
       "instruction": "0x017c7e",
       "bytes": "747e",
       "mnemonic": "tbitw",
@@ -806,6 +2725,63 @@
       "reachable_mode_b": false,
       "note": "single bit",
       "plausibility_note": "address outside the known internal ranges; may be data decoded as code (see docs, 'unreliable RESOLVED')",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017c80",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017c80"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017c8a",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017c8a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017c9a",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017c9a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
       "confidence": "PROVEN"
     },
     {
@@ -844,6 +2820,63 @@
     },
     {
       "image": "normal",
+      "instruction": "0x017cae",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017cae"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017cb8",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017cb8"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017cce",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017cce"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
       "instruction": "0x017cf2",
       "bytes": "747e",
       "mnemonic": "tbitw",
@@ -861,6 +2894,139 @@
     },
     {
       "image": "normal",
+      "instruction": "0x017cf4",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017cf4"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017cfe",
+      "bytes": "ff7f8bff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff8b",
+      "expression": null,
+      "provenance": [
+        "0x017cfe"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017d1c",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017d1c"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017d46",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017d46"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017d72",
+      "bytes": "ff7f70ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff70",
+      "expression": null,
+      "provenance": [
+        "0x017d72"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017d88",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017d88"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017da4",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017da4"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
       "instruction": "0x017db6",
       "bytes": "e87e",
       "mnemonic": "tbitw",
@@ -874,6 +3040,44 @@
       "reachable_mode_b": false,
       "note": "single bit",
       "plausibility_note": "address outside the known internal ranges; may be data decoded as code (see docs, 'unreliable RESOLVED')",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017dc0",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017dc0"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017dd2",
+      "bytes": "ff7f70ff",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffff70",
+      "expression": null,
+      "provenance": [
+        "0x017dd2"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
       "confidence": "PROVEN"
     },
     {
@@ -908,6 +3112,158 @@
       "reachable_mode_b": false,
       "note": "single bit",
       "plausibility_note": "address outside the known internal ranges; may be data decoded as code (see docs, 'unreliable RESOLVED')",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017de6",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017de6"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017dfc",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017dfc"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017e0a",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017e0a"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017e18",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017e18"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017e26",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017e26"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017e34",
+      "bytes": "ff7fbaf3",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00fff3ba",
+      "expression": null,
+      "provenance": [
+        "0x017e34"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017fee",
+      "bytes": "ff7ffebf",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffbffe",
+      "expression": null,
+      "provenance": [
+        "0x017fee"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
+      "confidence": "PROVEN"
+    },
+    {
+      "image": "normal",
+      "instruction": "0x017ff2",
+      "bytes": "ff7ffebf",
+      "mnemonic": "tbitw",
+      "operation": "READ",
+      "width_bits": 16,
+      "address_kind": "RESOLVED",
+      "effective_address": "0x00ffbffe",
+      "expression": null,
+      "provenance": [
+        "0x017ff2"
+      ],
+      "reachable_mode_a": false,
+      "reachable_mode_b": false,
+      "note": "single bit",
+      "plausibility_note": "",
       "confidence": "PROVEN"
     },
     {
@@ -2201,7 +4557,7 @@
       "confidence": "PROVEN"
     }
   ],
-  "newly_resolved_count": 115,
+  "newly_resolved_count": 239,
   "newly_resolved_outside_known_ranges": 10,
   "analysis_status": "CONVERGED",
   "converged": true,

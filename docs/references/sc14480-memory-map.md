@@ -29,7 +29,13 @@ page 132.
 | `0x0103.0000–0x0103.07FF` | Gen2DSP microcode RAM | p132 |
 
 The low `0x000F.xxxx` range and the high `0x00FF.xxxx` range are different
-spaces in this map.  The map is for SC14480, not SC14448.
+**decoded** spaces in this map.  The map is for SC14480, not SC14448.
+
+> **E3.2 correction:** the SC14448 firmware's `0x000Fxxxx` operands are not
+> decoded addresses.  They are 20-bit abs20 fields; CR16Cplus expands fields
+> above `0xEFFFF` by OR `0xF00000`, so encoded `0xF6006` is effective
+> `0x00FF6006`.  This does not change the SC14480 map; it changes how the
+> firmware's encoded operand is interpreted.
 
 ## 2. DIP control window (SC14480, printed p171–172)
 
@@ -101,18 +107,18 @@ The SC14480 map says:
 0x00FF0000…  Peripheral registers
 ```
 
-The firmware observed by E3 uses both forms:
+The firmware observed by E3 uses a short encoded form and a 24-bit literal
+form.  After E3.2 both are interpreted with the CR16Cplus effective-address
+rule:
 
-| Firmware access | Bytes / form | SC14480-space implication |
-|---|---|---|
-| `0x000F6006` read/write | abs20 `0F 89 06 60` etc. | program FLASH/ROM space on SC14480 |
-| `0x00FF6006` write/read | `movd $0x00FF6006` + pair access | peripheral `DIP_CTRL_REG` space |
-| `0x000F5402` write `0x400`/`0x2000` | abs20 `0F C9 02 54` etc. | program FLASH/ROM space on SC14480 |
-| `0x00FF5402` | no matching SC14448 access found in the current xref report | peripheral `RESET_INT_PENDING_REG` space |
-| `0x000F6400/6402` write | abs20 | program FLASH/ROM space on SC14480 |
-| `0x00FF6400/6402` | no matching SC14448 access found | `BMC_CTRL`/`BMC_CTRL2` space |
-| `0x000F6002` poll | abs20 `0F 89 02 60` | program FLASH/ROM space on SC14480 |
-| `0x00FF6002` | no matching SC14448 access found | `DIP_PC_REG` space |
+| Firmware access | Bytes / form | Encoded field | Effective address |
+|---|---|---|---|
+| `0x000F6006` read/write | abs20 `0F 89 06 60` etc. | `0xF6006` | `0x00FF6006` |
+| `0x00FF6006` write/read | `movd $0x00FF6006` + pair access | `0x00FF6006` | `0x00FF6006` |
+| `0x000F5402` write `0x400`/`0x2000` | abs20 `0F C9 02 54` etc. | `0xF5402` | `0x00FF5402` |
+| `0x00FF5402` | no direct 24-bit access found | — | peripheral `RESET_INT_PENDING_REG` space |
+| `0x000F6400/6402` write | abs20 | `0xF6400`/`0xF6402` | `0x00FF6400`/`0x00FF6402` |
+| `0x000F6002` poll | abs20 `0F 89 02 60` | `0xF6002` | `0x00FF6002` |
 
 Therefore:
 
@@ -120,11 +126,11 @@ Therefore:
   `0x80 → 0` stop/start sequence;
 - `0x01027FD8` is a strong independent match for `DSP_INT_REG`;
 - `0x01000000` is a strong structural match for DIP RAM;
-- the low `0x000Fxxxx` writes remain **address-decode unresolved** on
-  SC14448.  They cannot be promoted to the SC14480 peripheral meanings just
-  because the trailing `F5402`/`F6006` digits match.
-
-This is now a priority-Q57 issue, not a solved alias.
+- the old `0x000Fxxxx` / `0x00FFxxxx` “conflict” was an analyzer artifact:
+  the short form expands to the high effective address.  Q57 is resolved at
+  the CR16 effective-address level;
+- the remaining uncertainty is SC14448 **physical register identity**, which
+  still cannot be proved from an SC14480 map alone.
 
 ## 6. PCM warning
 
@@ -146,6 +152,9 @@ not necessarily the PCM BCLK.  Do not use it to explain the AVM
 | `dip_int` writes `0x400` | SC14480 `RESET_INT_PENDING` bit 10 `DIP_INT_PEND` | semantic match; low-address decode unresolved |
 | `dsp_int` writes `0x2000` | SC14480 bit 13 `DSP_INT_PEND` | semantic match; low-address decode unresolved |
 | `0x00FF6006` `0x80 → 0` | DIP `URST` stop/start | strong same-address hypothesis |
-| `0x000F6002` poll | SC14480 `0x00FF6002` is DIP_PC, not status | **conflict**: do not call it DIP_PC or a status register yet |
+| `0x000F6002` poll | encoded `0xF6002` expands to `0x00FF6002` | semantic candidate; SC14448 identity not proved |
 
-No SC14480 fact is promoted to an SC14448 fact.  Q46/Q55/Q57/Q75 remain open.
+No SC14480 fact is promoted to an SC14448 fact.  The Q57 address-space artifact
+is resolved by the CR16 abs20 rule, not by this map.  Q46/Q55/Q75 remain open;
+the SC14448 physical identity behind the resulting `0x00FFxxxx` addresses
+remains CANDIDATE.

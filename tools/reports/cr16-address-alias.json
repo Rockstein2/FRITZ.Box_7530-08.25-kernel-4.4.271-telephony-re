@@ -6,15 +6,37 @@
  "cross_image": {
   "pairs_in_both": [
    "0x000f4000/0x00ff4000",
+   "0x000f4002/0x00ff4002",
    "0x000f4004/0x00ff4004",
+   "0x000f4006/0x00ff4006",
+   "0x000f400c/0x00ff400c",
+   "0x000f400e/0x00ff400e",
+   "0x000f4012/0x00ff4012",
+   "0x000f401a/0x00ff401a",
    "0x000f4858/0x00ff4858",
+   "0x000f4902/0x00ff4902",
+   "0x000f4904/0x00ff4904",
+   "0x000f4966/0x00ff4966",
+   "0x000f4970/0x00ff4970",
+   "0x000f4974/0x00ff4974",
+   "0x000f4976/0x00ff4976",
+   "0x000f4978/0x00ff4978",
+   "0x000f497a/0x00ff497a",
    "0x000f4c00/0x00ff4c00",
    "0x000f5000/0x00ff5000",
+   "0x000f5402/0x00ff5402",
    "0x000f5404/0x00ff5404",
    "0x000f5406/0x00ff5406",
+   "0x000f5408/0x00ff5408",
+   "0x000f540a/0x00ff540a",
    "0x000f5804/0x00ff5804",
    "0x000f5806/0x00ff5806",
+   "0x000f580a/0x00ff580a",
+   "0x000f580e/0x00ff580e",
+   "0x000f6002/0x00ff6002",
    "0x000f6006/0x00ff6006",
+   "0x000f6400/0x00ff6400",
+   "0x000f6402/0x00ff6402",
    "0x000f7052/0x00ff7052",
    "0x000f7056/0x00ff7056"
   ],
@@ -65,12 +87,15 @@
      "b": {
       "operations": [
        "READ",
+       "RMW",
        "WRITE"
       ],
       "reachable_mode_a": [
        true
       ],
       "sites": [
+       "0x00141e",
+       "0x00187c",
        "0x028a7e",
        "0x028a88"
       ],
@@ -79,6 +104,16 @@
       ]
      },
      "b_sequence": [
+      [
+       "0x00141e",
+       "RMW",
+       16
+      ],
+      [
+       "0x00187c",
+       "RMW",
+       16
+      ],
       [
        "0x028a7e",
        "READ",
@@ -99,6 +134,63 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf4000",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0018be"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x0018be",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4002",
+     "address_b": "0x00ff4002",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0018be"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0018be",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4002",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -142,14 +234,21 @@
        true
       ],
       "sites": [
+       "0x001362",
        "0x0014b8",
-       "0x0014be"
+       "0x0014be",
+       "0x001994"
       ],
       "widths": [
        16
       ]
      },
      "b_sequence": [
+      [
+       "0x001362",
+       "WRITE",
+       16
+      ],
       [
        "0x0014b8",
        "READ",
@@ -158,6 +257,11 @@
       [
        "0x0014be",
        "WRITE",
+       16
+      ],
+      [
+       "0x001994",
+       "READ",
        16
       ]
      ],
@@ -170,6 +274,303 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf4004",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0018ce",
+       "0x00194e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x0018ce",
+       "WRITE",
+       16
+      ],
+      [
+       "0x00194e",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4006",
+     "address_b": "0x00ff4006",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0018ce",
+       "0x00194e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0018ce",
+       "WRITE",
+       16
+      ],
+      [
+       "0x00194e",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4006",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0018c2"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x0018c2",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f400c",
+     "address_b": "0x00ff400c",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0018c2"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0018c2",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf400c",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0018ca"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x0018ca",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f400e",
+     "address_b": "0x00ff400e",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0018ca"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0018ca",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf400e",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0018ec"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x0018ec",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4012",
+     "address_b": "0x00ff4012",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0018ec"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0018ec",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4012",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001454"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001454",
+       "RMW",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f401a",
+     "address_b": "0x00ff401a",
+     "b": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001454"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001454",
+       "RMW",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set RMW",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf401a",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -200,6 +601,7 @@
      "b": {
       "operations": [
        "READ",
+       "RMW",
        "WRITE"
       ],
       "reachable_mode_a": [
@@ -209,7 +611,8 @@
        "0x0011da",
        "0x0011e0",
        "0x0011e2",
-       "0x0011e6"
+       "0x0011e6",
+       "0x001442"
       ],
       "widths": [
        16
@@ -235,6 +638,11 @@
        "0x0011e6",
        "WRITE",
        16
+      ],
+      [
+       "0x001442",
+       "RMW",
+       16
       ]
      ],
      "correlation_notes": [
@@ -246,6 +654,474 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf4858",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x009fb8"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x009fb8",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4902",
+     "address_b": "0x00ff4902",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x009fb8"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x009fb8",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4902",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x009fc0"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x009fc0",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4904",
+     "address_b": "0x00ff4904",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x009fc0"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x009fc0",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4904",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x026080"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x026080",
+       "READ",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4966",
+     "address_b": "0x00ff4966",
+     "b": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x026080"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x026080",
+       "READ",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set READ",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4966",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001316",
+       "0x00143e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001316",
+       "RMW",
+       16
+      ],
+      [
+       "0x00143e",
+       "RMW",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4970",
+     "address_b": "0x00ff4970",
+     "b": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001316",
+       "0x00143e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001316",
+       "RMW",
+       16
+      ],
+      [
+       "0x00143e",
+       "RMW",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set RMW",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4970",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00130e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00130e",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4974",
+     "address_b": "0x00ff4974",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00130e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x00130e",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4974",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001312"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001312",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4976",
+     "address_b": "0x00ff4976",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001312"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001312",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4976",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001436"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001436",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4978",
+     "address_b": "0x00ff4978",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x001436"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001436",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4978",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00143a"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00143a",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f497a",
+     "address_b": "0x00ff497a",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00143a"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x00143a",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf497a",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -278,13 +1154,16 @@
        "WRITE"
       ],
       "reachable_mode_a": [
-       false
+       false,
+       true
       ],
       "sites": [
-       "0x0015ae"
+       "0x0015ae",
+       "0x028820"
       ],
       "widths": [
-       8
+       8,
+       16
       ]
      },
      "b_sequence": [
@@ -292,6 +1171,11 @@
        "0x0015ae",
        "WRITE",
        8
+      ],
+      [
+       "0x028820",
+       "WRITE",
+       16
       ]
      ],
      "correlation_notes": [
@@ -334,13 +1218,16 @@
        "WRITE"
       ],
       "reachable_mode_a": [
-       false
+       false,
+       true
       ],
       "sites": [
-       "0x0015b6"
+       "0x0015b6",
+       "0x001a2a"
       ],
       "widths": [
-       8
+       8,
+       16
       ]
      },
      "b_sequence": [
@@ -348,6 +1235,11 @@
        "0x0015b6",
        "WRITE",
        8
+      ],
+      [
+       "0x001a2a",
+       "WRITE",
+       16
       ]
      ],
      "correlation_notes": [
@@ -358,6 +1250,137 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf5000",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false,
+       true
+      ],
+      "sites": [
+       "0x001934",
+       "0x0025b0",
+       "0x003a28",
+       "0x026034",
+       "0x0289a8",
+       "0x028b00",
+       "0x028ce8"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001934",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0025b0",
+       "WRITE",
+       16
+      ],
+      [
+       "0x003a28",
+       "WRITE",
+       16
+      ],
+      [
+       "0x026034",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0289a8",
+       "WRITE",
+       16
+      ],
+      [
+       "0x028b00",
+       "WRITE",
+       16
+      ],
+      [
+       "0x028ce8",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f5402",
+     "address_b": "0x00ff5402",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false,
+       true
+      ],
+      "sites": [
+       "0x001934",
+       "0x0025b0",
+       "0x003a28",
+       "0x026034",
+       "0x0289a8",
+       "0x028b00",
+       "0x028ce8"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001934",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0025b0",
+       "WRITE",
+       16
+      ],
+      [
+       "0x003a28",
+       "WRITE",
+       16
+      ],
+      [
+       "0x026034",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0289a8",
+       "WRITE",
+       16
+      ],
+      [
+       "0x028b00",
+       "WRITE",
+       16
+      ],
+      [
+       "0x028ce8",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf5402",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -394,6 +1417,7 @@
        true
       ],
       "sites": [
+       "0x001392",
        "0x00191e",
        "0x001928"
       ],
@@ -402,6 +1426,11 @@
       ]
      },
      "b_sequence": [
+      [
+       "0x001392",
+       "WRITE",
+       16
+      ],
       [
        "0x00191e",
        "READ",
@@ -458,6 +1487,7 @@
        true
       ],
       "sites": [
+       "0x001396",
        "0x001a1a",
        "0x001a22",
        "0x00259c",
@@ -470,6 +1500,11 @@
       ]
      },
      "b_sequence": [
+      [
+       "0x001396",
+       "WRITE",
+       16
+      ],
       [
        "0x001a1a",
        "READ",
@@ -510,6 +1545,120 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf5406",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00139a"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00139a",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f5408",
+     "address_b": "0x00ff5408",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00139a"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x00139a",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf5408",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00139e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00139e",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f540a",
+     "address_b": "0x00ff540a",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00139e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x00139e",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf540a",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -556,7 +1705,8 @@
        "0x00126a",
        "0x00126c",
        "0x00126e",
-       "0x001270"
+       "0x001270",
+       "0x001964"
       ],
       "widths": [
        16
@@ -612,6 +1762,11 @@
        "0x001270",
        "RMW",
        16
+      ],
+      [
+       "0x001964",
+       "RMW",
+       16
       ]
      ],
      "correlation_notes": [
@@ -664,7 +1819,9 @@
        true
       ],
       "sites": [
-       "0x0013b6"
+       "0x001224",
+       "0x0013b6",
+       "0x0014e4"
       ],
       "widths": [
        16
@@ -672,7 +1829,17 @@
      },
      "b_sequence": [
       [
+       "0x001224",
+       "RMW",
+       16
+      ],
+      [
        "0x0013b6",
+       "RMW",
+       16
+      ],
+      [
+       "0x0014e4",
        "RMW",
        16
       ]
@@ -686,6 +1853,177 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf5806",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0019ac"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x0019ac",
+       "READ",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f580a",
+     "address_b": "0x00ff580a",
+     "b": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0019ac"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0019ac",
+       "READ",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set READ",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf580a",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0019b0"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x0019b0",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f580e",
+     "address_b": "0x00ff580e",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x0019b0"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0019b0",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf580e",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x025fae"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x025fae",
+       "READ",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f6002",
+     "address_b": "0x00ff6002",
+     "b": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x025fae"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x025fae",
+       "READ",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set READ",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf6002",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -739,18 +2077,33 @@
        "WRITE"
       ],
       "reachable_mode_a": [
+       false,
        true
       ],
       "sites": [
+       "0x001348",
+       "0x00145c",
        "0x00258c",
        "0x0025aa",
-       "0x0025b4"
+       "0x0025b4",
+       "0x02602c",
+       "0x028cde"
       ],
       "widths": [
        16
       ]
      },
      "b_sequence": [
+      [
+       "0x001348",
+       "WRITE",
+       16
+      ],
+      [
+       "0x00145c",
+       "WRITE",
+       16
+      ],
       [
        "0x00258c",
        "WRITE",
@@ -765,6 +2118,16 @@
        "0x0025b4",
        "WRITE",
        16
+      ],
+      [
+       "0x02602c",
+       "READ",
+       16
+      ],
+      [
+       "0x028cde",
+       "READ",
+       16
       ]
      ],
      "correlation_notes": [
@@ -776,6 +2139,120 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf6006",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00255e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00255e",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f6400",
+     "address_b": "0x00ff6400",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x00255e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x00255e",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf6400",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x002566"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x002566",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f6402",
+     "address_b": "0x00ff6402",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       true
+      ],
+      "sites": [
+       "0x002566"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x002566",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf6402",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -813,19 +2290,23 @@
        16
       ]
      ],
-     "access_pattern_match": false,
+     "access_pattern_match": true,
      "address_a": "0x000f7052",
      "address_b": "0x00ff7052",
      "b": {
       "operations": [
-       "READ"
+       "READ",
+       "WRITE"
       ],
       "reachable_mode_a": [
        false
       ],
       "sites": [
        "0x002720",
-       "0x002722"
+       "0x002722",
+       "0x00285e",
+       "0x00296a",
+       "0x00296e"
       ],
       "widths": [
        16
@@ -841,11 +2322,26 @@
        "0x002722",
        "READ",
        16
+      ],
+      [
+       "0x00285e",
+       "READ",
+       16
+      ],
+      [
+       "0x00296a",
+       "WRITE",
+       16
+      ],
+      [
+       "0x00296e",
+       "READ",
+       16
       ]
      ],
      "correlation_notes": [
-      "same access width 16 (expected of any register pair)",
-      "the operation sets differ"
+      "ACCESS_PATTERN_MATCH: same operation set READ, WRITE",
+      "same access width 16 (expected of any register pair)"
      ],
      "dependency_found": false,
      "dependency_note": "not attempted: requires value tracking between the two addresses",
@@ -888,7 +2384,8 @@
       ],
       "sites": [
        "0x002710",
-       "0x002718"
+       "0x002718",
+       "0x002862"
       ],
       "widths": [
        16
@@ -902,6 +2399,11 @@
       ],
       [
        "0x002718",
+       "READ",
+       16
+      ],
+      [
+       "0x002862",
        "READ",
        16
       ]
@@ -918,7 +2420,7 @@
      "proof_status": "candidate; no document and no hardware evidence"
     }
    ],
-   "resolved_addresses_in_scope": 78,
+   "resolved_addresses_in_scope": 66,
    "sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31"
   },
   "p2test": {
@@ -958,12 +2460,15 @@
      "b": {
       "operations": [
        "READ",
+       "RMW",
        "WRITE"
       ],
       "reachable_mode_a": [
        false
       ],
       "sites": [
+       "0x000e94",
+       "0x0012fe",
        "0x009fe6",
        "0x009ff0"
       ],
@@ -972,6 +2477,16 @@
       ]
      },
      "b_sequence": [
+      [
+       "0x000e94",
+       "RMW",
+       16
+      ],
+      [
+       "0x0012fe",
+       "RMW",
+       16
+      ],
       [
        "0x009fe6",
        "READ",
@@ -992,6 +2507,63 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf4000",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001340"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001340",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4002",
+     "address_b": "0x00ff4002",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001340"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001340",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4002",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -1035,14 +2607,21 @@
        false
       ],
       "sites": [
+       "0x000dd8",
        "0x000f34",
-       "0x000f3a"
+       "0x000f3a",
+       "0x001416"
       ],
       "widths": [
        16
       ]
      },
      "b_sequence": [
+      [
+       "0x000dd8",
+       "WRITE",
+       16
+      ],
       [
        "0x000f34",
        "READ",
@@ -1051,6 +2630,11 @@
       [
        "0x000f3a",
        "WRITE",
+       16
+      ],
+      [
+       "0x001416",
+       "READ",
        16
       ]
      ],
@@ -1063,6 +2647,303 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf4004",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001350",
+       "0x0013d0"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001350",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0013d0",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4006",
+     "address_b": "0x00ff4006",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001350",
+       "0x0013d0"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001350",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0013d0",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4006",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001344"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001344",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f400c",
+     "address_b": "0x00ff400c",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001344"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001344",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf400c",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x00134c"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00134c",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f400e",
+     "address_b": "0x00ff400e",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x00134c"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x00134c",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf400e",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x00136e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00136e",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4012",
+     "address_b": "0x00ff4012",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x00136e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x00136e",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4012",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000eca"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000eca",
+       "RMW",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f401a",
+     "address_b": "0x00ff401a",
+     "b": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000eca"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000eca",
+       "RMW",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set RMW",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf401a",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -1093,6 +2974,7 @@
      "b": {
       "operations": [
        "READ",
+       "RMW",
        "WRITE"
       ],
       "reachable_mode_a": [
@@ -1102,7 +2984,8 @@
        "0x000c50",
        "0x000c56",
        "0x000c58",
-       "0x000c5c"
+       "0x000c5c",
+       "0x000eb8"
       ],
       "widths": [
        16
@@ -1128,6 +3011,11 @@
        "0x000c5c",
        "WRITE",
        16
+      ],
+      [
+       "0x000eb8",
+       "RMW",
+       16
       ]
      ],
      "correlation_notes": [
@@ -1139,6 +3027,500 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf4858",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x009bfc"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x009bfc",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4902",
+     "address_b": "0x00ff4902",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x009bfc"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x009bfc",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4902",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x009c04"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x009c04",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4904",
+     "address_b": "0x00ff4904",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x009c04"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x009c04",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4904",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x026836"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x026836",
+       "READ",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4966",
+     "address_b": "0x00ff4966",
+     "b": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x026836"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x026836",
+       "READ",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set READ",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4966",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000d8c",
+       "0x000eb4"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000d8c",
+       "RMW",
+       16
+      ],
+      [
+       "0x000eb4",
+       "RMW",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4970",
+     "address_b": "0x00ff4970",
+     "b": {
+      "operations": [
+       "RMW"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000d8c",
+       "0x000eb4"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000d8c",
+       "RMW",
+       16
+      ],
+      [
+       "0x000eb4",
+       "RMW",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set RMW",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4970",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000d84"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000d84",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4974",
+     "address_b": "0x00ff4974",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000d84"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000d84",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4974",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000d88"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000d88",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4976",
+     "address_b": "0x00ff4976",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000d88"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000d88",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4976",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000eac"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000eac",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f4978",
+     "address_b": "0x00ff4978",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000eac"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000eac",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf4978",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000eb0",
+       "0x0276e0",
+       "0x0276e6"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000eb0",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0276e0",
+       "READ",
+       16
+      ],
+      [
+       "0x0276e6",
+       "READ",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f497a",
+     "address_b": "0x00ff497a",
+     "b": {
+      "operations": [
+       "READ",
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000eb0",
+       "0x0276e0",
+       "0x0276e6"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000eb0",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0276e0",
+       "READ",
+       16
+      ],
+      [
+       "0x0276e6",
+       "READ",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set READ, WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf497a",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -1174,10 +3556,12 @@
        false
       ],
       "sites": [
-       "0x001030"
+       "0x001030",
+       "0x02756a"
       ],
       "widths": [
-       8
+       8,
+       16
       ]
      },
      "b_sequence": [
@@ -1185,6 +3569,11 @@
        "0x001030",
        "WRITE",
        8
+      ],
+      [
+       "0x02756a",
+       "WRITE",
+       16
       ]
      ],
      "correlation_notes": [
@@ -1230,10 +3619,12 @@
        false
       ],
       "sites": [
-       "0x001038"
+       "0x001038",
+       "0x001460"
       ],
       "widths": [
-       8
+       8,
+       16
       ]
      },
      "b_sequence": [
@@ -1241,6 +3632,11 @@
        "0x001038",
        "WRITE",
        8
+      ],
+      [
+       "0x001460",
+       "WRITE",
+       16
       ]
      ],
      "correlation_notes": [
@@ -1251,6 +3647,135 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf5000",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x0013b6",
+       "0x001e6c",
+       "0x0267ea",
+       "0x027142",
+       "0x02773c",
+       "0x027980",
+       "0x027ca0"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x0013b6",
+       "WRITE",
+       16
+      ],
+      [
+       "0x001e6c",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0267ea",
+       "WRITE",
+       16
+      ],
+      [
+       "0x027142",
+       "WRITE",
+       16
+      ],
+      [
+       "0x02773c",
+       "WRITE",
+       16
+      ],
+      [
+       "0x027980",
+       "WRITE",
+       16
+      ],
+      [
+       "0x027ca0",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f5402",
+     "address_b": "0x00ff5402",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x0013b6",
+       "0x001e6c",
+       "0x0267ea",
+       "0x027142",
+       "0x02773c",
+       "0x027980",
+       "0x027ca0"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x0013b6",
+       "WRITE",
+       16
+      ],
+      [
+       "0x001e6c",
+       "WRITE",
+       16
+      ],
+      [
+       "0x0267ea",
+       "WRITE",
+       16
+      ],
+      [
+       "0x027142",
+       "WRITE",
+       16
+      ],
+      [
+       "0x02773c",
+       "WRITE",
+       16
+      ],
+      [
+       "0x027980",
+       "WRITE",
+       16
+      ],
+      [
+       "0x027ca0",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf5402",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -1287,6 +3812,7 @@
        false
       ],
       "sites": [
+       "0x000e08",
        "0x0013a0",
        "0x0013aa"
       ],
@@ -1295,6 +3821,11 @@
       ]
      },
      "b_sequence": [
+      [
+       "0x000e08",
+       "WRITE",
+       16
+      ],
       [
        "0x0013a0",
        "READ",
@@ -1351,6 +3882,7 @@
        false
       ],
       "sites": [
+       "0x000e0c",
        "0x001450",
        "0x001458",
        "0x001e58",
@@ -1363,6 +3895,11 @@
       ]
      },
      "b_sequence": [
+      [
+       "0x000e0c",
+       "WRITE",
+       16
+      ],
       [
        "0x001450",
        "READ",
@@ -1403,6 +3940,120 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf5406",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000e10"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000e10",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f5408",
+     "address_b": "0x00ff5408",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000e10"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000e10",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf5408",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000e14"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x000e14",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f540a",
+     "address_b": "0x00ff540a",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x000e14"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x000e14",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf540a",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -1449,7 +4100,8 @@
        "0x000ce0",
        "0x000ce2",
        "0x000ce4",
-       "0x000ce6"
+       "0x000ce6",
+       "0x0013e6"
       ],
       "widths": [
        16
@@ -1505,6 +4157,11 @@
        "0x000ce6",
        "RMW",
        16
+      ],
+      [
+       "0x0013e6",
+       "RMW",
+       16
       ]
      ],
      "correlation_notes": [
@@ -1557,7 +4214,9 @@
        false
       ],
       "sites": [
-       "0x000e2c"
+       "0x000c9a",
+       "0x000e2c",
+       "0x000f60"
       ],
       "widths": [
        16
@@ -1565,7 +4224,17 @@
      },
      "b_sequence": [
       [
+       "0x000c9a",
+       "RMW",
+       16
+      ],
+      [
        "0x000e2c",
+       "RMW",
+       16
+      ],
+      [
+       "0x000f60",
        "RMW",
        16
       ]
@@ -1579,6 +4248,177 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf5806",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x00142e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x00142e",
+       "READ",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f580a",
+     "address_b": "0x00ff580a",
+     "b": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x00142e"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x00142e",
+       "READ",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set READ",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf580a",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001432"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001432",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f580e",
+     "address_b": "0x00ff580e",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001432"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001432",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf580e",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x026764"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x026764",
+       "READ",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f6002",
+     "address_b": "0x00ff6002",
+     "b": {
+      "operations": [
+       "READ"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x026764"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x026764",
+       "READ",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set READ",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf6002",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -1634,15 +4474,29 @@
        false
       ],
       "sites": [
+       "0x000dbe",
+       "0x000ed2",
        "0x001e48",
        "0x001e66",
-       "0x001e70"
+       "0x001e70",
+       "0x0267e2",
+       "0x027c96"
       ],
       "widths": [
        16
       ]
      },
      "b_sequence": [
+      [
+       "0x000dbe",
+       "WRITE",
+       16
+      ],
+      [
+       "0x000ed2",
+       "WRITE",
+       16
+      ],
       [
        "0x001e48",
        "WRITE",
@@ -1657,6 +4511,16 @@
        "0x001e70",
        "WRITE",
        16
+      ],
+      [
+       "0x0267e2",
+       "READ",
+       16
+      ],
+      [
+       "0x027c96",
+       "READ",
+       16
       ]
      ],
      "correlation_notes": [
@@ -1668,6 +4532,120 @@
      "difference": "0x00f00000",
      "evidence": "LOW_BITS_MATCH",
      "low_bits_match": "0xf6006",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001e12"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001e12",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f6400",
+     "address_b": "0x00ff6400",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001e12"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001e12",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf6400",
+     "proof_status": "candidate; no document and no hardware evidence"
+    },
+    {
+     "a": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001e1a"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "a_sequence": [
+      [
+       "0x001e1a",
+       "WRITE",
+       16
+      ]
+     ],
+     "access_pattern_match": true,
+     "address_a": "0x000f6402",
+     "address_b": "0x00ff6402",
+     "b": {
+      "operations": [
+       "WRITE"
+      ],
+      "reachable_mode_a": [
+       false
+      ],
+      "sites": [
+       "0x001e1a"
+      ],
+      "widths": [
+       16
+      ]
+     },
+     "b_sequence": [
+      [
+       "0x001e1a",
+       "WRITE",
+       16
+      ]
+     ],
+     "correlation_notes": [
+      "ACCESS_PATTERN_MATCH: same operation set WRITE",
+      "same access width 16 (expected of any register pair)"
+     ],
+     "dependency_found": false,
+     "dependency_note": "not attempted: requires value tracking between the two addresses",
+     "difference": "0x00f00000",
+     "evidence": "LOW_BITS_MATCH",
+     "low_bits_match": "0xf6402",
      "proof_status": "candidate; no document and no hardware evidence"
     },
     {
@@ -1719,6 +4697,9 @@
       "sites": [
        "0x001fdc",
        "0x001fde",
+       "0x00211a",
+       "0x002226",
+       "0x00222a",
        "0x0026ee",
        "0x0026fe"
       ],
@@ -1734,6 +4715,21 @@
       ],
       [
        "0x001fde",
+       "READ",
+       16
+      ],
+      [
+       "0x00211a",
+       "READ",
+       16
+      ],
+      [
+       "0x002226",
+       "WRITE",
+       16
+      ],
+      [
+       "0x00222a",
        "READ",
        16
       ],
@@ -1793,7 +4789,8 @@
       ],
       "sites": [
        "0x001fcc",
-       "0x001fd4"
+       "0x001fd4",
+       "0x00211e"
       ],
       "widths": [
        16
@@ -1807,6 +4804,11 @@
       ],
       [
        "0x001fd4",
+       "READ",
+       16
+      ],
+      [
+       "0x00211e",
        "READ",
        16
       ]
@@ -1823,7 +4825,7 @@
      "proof_status": "candidate; no document and no hardware evidence"
     }
    ],
-   "resolved_addresses_in_scope": 79,
+   "resolved_addresses_in_scope": 67,
    "sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860"
   }
  },

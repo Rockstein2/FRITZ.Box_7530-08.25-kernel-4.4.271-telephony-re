@@ -3,7 +3,7 @@
 > **Status: offline research.**  No firmware execution and no hardware.
 >
 > **E3 audit:** this is the E2 reasoning trail.  E3 re-audited the 25/10
-> PROVEN arguments (21/8 retained, 4/2 downgraded) and corrected the analyzer;
+> PROVEN arguments (11/3 retained, 14/7 invalid/changed) and corrected the analyzer;
 > see `fon-e3-dataflow-correctness.md` and `fon-e3-summary.md`.
 
 This document records the reasoning behind the E2 changes to
@@ -105,7 +105,7 @@ symbolic execution.
 | Function summaries | 432 | 403 |
 | Direct argument records | 146 | 116 |
 | Proven direct arguments | 25 | 10 |
-| Newly resolved accesses | 115 | 165 |
+| Newly resolved accesses | 239 | 239 |
 | Stateful blocks | 750 | 894 |
 
 Examples:

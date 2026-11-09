@@ -312,6 +312,11 @@ def _callee_uses(fw, blocks, succ, addr_block, entry, may):
     for b in fblocks:
         for addr in blocks[b]:
             insn = fw.insns[addr]
+            # Only real memory/bit accesses count.  A bare pair in `movd
+            # (r3,r2),(r8,r7)` is a register move, not a memory use.
+            if insn.mnemonic not in X.ACCESS and \
+                    insn.mnemonic not in X.BIT_TEST:
+                continue
             for operand in X.split_operands(insn.operands):
                 parsed = X.parse_memory_operand(operand)
                 if not parsed or parsed[0] != "DISP_RP":
@@ -383,6 +388,7 @@ def arg_propagations(fw, blocks, addr_block, edges, summaries, ops_by_insn,
                     "instruction": u["instruction"],
                     "operation": u["operation"],
                     "displacement": u["displacement"],
+                    "register_pair": list(pair),
                     "effective_address":
                         f"0x{(value + u['displacement']) & 0xffffffff:08x}",
                     "clobbered_before_use": sorted(clobbered),
@@ -433,13 +439,12 @@ def _indirect_target(insn):
 def _find_table_consumer(fw, block_addrs, site_addr, target_regs, ops_by_insn):
     """Return (candidate_load, status, nearby_ops) for one indirect site.
 
-    Walk backwards from the site.  The first instruction that writes a target
-    register decides the value: a load can be the table consumer; any other
-    write (or a load before a nearer kill) is a clobber.  This prevents a
-    nearby load from being called a def-use link when the target is overwritten
-    later.
+    Walk backwards inside one basic block.  The first instruction that writes
+    a target register decides the value: a load can be the local consumer; any
+    other write is a clobber.  This is a LOCAL_BLOCK_DEF_USE_CANDIDATE, not a
+    whole-function or inter-block def-use proof.  A later/older load beyond
+    the nearest write is not considered.
     """
-    blocked = set()
     nearby = []
     for addr in reversed(block_addrs):
         if addr >= site_addr:
@@ -461,13 +466,10 @@ def _find_table_consumer(fw, block_addrs, site_addr, target_regs, ops_by_insn):
         written = _writes_at(insn)
         if not (target_regs & written):
             continue
-        if blocked & target_regs:
-            return None, "CLOBBERED_AFTER_LOAD", nearby
         is_load = (insn.mnemonic.startswith("load") and
                    any(o["operation"] == "READ" for o in ops))
         if is_load:
             return ops[0], "LOAD_WRITES_TARGET", nearby
-        blocked |= target_regs
         return None, "TARGET_WRITTEN_BEFORE_LOAD", nearby
     return None, "NO_WRITE_TO_TARGET", nearby
 
@@ -507,6 +509,7 @@ def table_candidates(fw, blocks, addr_block, edges, ops_by_insn):
             "index_bounds": "UNKNOWN",
             "consumer": e.reason,
             "def_use_link": linked,
+            "def_use_scope": "LOCAL_BASIC_BLOCK_ONLY",
             "def_use_status": status,
             "nearby_loads": nearby[:4],
             "provenance": [f"0x{e.src:06x}"] +

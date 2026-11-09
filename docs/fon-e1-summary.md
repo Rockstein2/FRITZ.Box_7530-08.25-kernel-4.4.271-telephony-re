@@ -22,8 +22,8 @@
 
 | Image | Blocks | Stateful blocks | New resolved | Outside known ranges |
 |---|---:|---:|---:|---:|
-| normal | 5 454 | 750 | **115** | 10 |
-| p2test | 5 170 | 894 | **165** | 3 |
+| normal | 5 454 | 750 | **239** | 10 |
+| p2test | 5 170 | 894 | **239** | 3 |
 
 Unknown reduction:
 

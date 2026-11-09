@@ -71,7 +71,7 @@
           "operation": "READ",
           "width_bits": 16,
           "address_kind": "RESOLVED",
-          "effective_address": "0x000f6006",
+          "effective_address": "0x00ff6006",
           "expression": null,
           "provenance": [
             "0x028cde"
@@ -90,7 +90,7 @@
           "operation": "WRITE",
           "width_bits": 16,
           "address_kind": "RESOLVED",
-          "effective_address": "0x000f5402",
+          "effective_address": "0x00ff5402",
           "expression": null,
           "provenance": [
             "0x028ce8"
@@ -121,17 +121,23 @@
         }
       ],
       "f6006": {
-        "read_address_space": "0x000F6006",
+        "encoded_operand": "0x000F6006",
+        "read_address_space": "0x00FF6006",
         "pulse_address_space": "0x00FF6006",
-        "alias_claim": "UNKNOWN",
+        "address_extension": "ABS20_RELOC_0xF6006_TO_0x00FF6006",
+        "alias_claim": "SAME_ARCHITECTURAL_ADDRESS_BY_ABS20_EXTENSION",
+        "physical_register_identity": "CANDIDATE_RELATED_DEVICE_MAP",
         "low_byte_consumer": "callee r2 input"
       },
       "f5402": {
+        "encoded_operand": "0x000F5402",
+        "address_space": "0x00FF5402",
         "write_value": "0x0400",
         "role": "acknowledgement candidate"
       },
       "poll_link": {
-        "polled_0xF6002": "0x25FAE normal / 0x26764 p2test",
+        "polled_encoded_0xF6002": "0x25FAE normal / 0x26764 p2test",
+        "polled_address_space": "0x00FF6002",
         "status": "SEPARATE_PATH_CANDIDATE",
         "sequence_proven": false
       },
@@ -302,7 +308,7 @@
       "slot5_evidence": false,
       "pcm_evidence": false,
       "unresolved": [
-        "bit-level meaning of 0xF6006",
+        "bit-level meaning of 0x00FF6006",
         "whether the read has read-to-clear semantics",
         "callee event-code semantics",
         "whether the callee touches 0x01000000 or a FIFO"
@@ -380,7 +386,7 @@
           "operation": "READ",
           "width_bits": 16,
           "address_kind": "RESOLVED",
-          "effective_address": "0x000f6006",
+          "effective_address": "0x00ff6006",
           "expression": null,
           "provenance": [
             "0x027c96"
@@ -399,7 +405,7 @@
           "operation": "WRITE",
           "width_bits": 16,
           "address_kind": "RESOLVED",
-          "effective_address": "0x000f5402",
+          "effective_address": "0x00ff5402",
           "expression": null,
           "provenance": [
             "0x027ca0"
@@ -430,17 +436,23 @@
         }
       ],
       "f6006": {
-        "read_address_space": "0x000F6006",
+        "encoded_operand": "0x000F6006",
+        "read_address_space": "0x00FF6006",
         "pulse_address_space": "0x00FF6006",
-        "alias_claim": "UNKNOWN",
+        "address_extension": "ABS20_RELOC_0xF6006_TO_0x00FF6006",
+        "alias_claim": "SAME_ARCHITECTURAL_ADDRESS_BY_ABS20_EXTENSION",
+        "physical_register_identity": "CANDIDATE_RELATED_DEVICE_MAP",
         "low_byte_consumer": "callee r2 input"
       },
       "f5402": {
+        "encoded_operand": "0x000F5402",
+        "address_space": "0x00FF5402",
         "write_value": "0x0400",
         "role": "acknowledgement candidate"
       },
       "poll_link": {
-        "polled_0xF6002": "0x25FAE normal / 0x26764 p2test",
+        "polled_encoded_0xF6002": "0x25FAE normal / 0x26764 p2test",
+        "polled_address_space": "0x00FF6002",
         "status": "SEPARATE_PATH_CANDIDATE",
         "sequence_proven": false
       },
@@ -1574,7 +1586,7 @@
       "slot5_evidence": false,
       "pcm_evidence": false,
       "unresolved": [
-        "bit-level meaning of 0xF6006",
+        "bit-level meaning of 0x00FF6006",
         "whether the read has read-to-clear semantics",
         "callee event-code semantics",
         "whether the callee touches 0x01000000 or a FIFO"

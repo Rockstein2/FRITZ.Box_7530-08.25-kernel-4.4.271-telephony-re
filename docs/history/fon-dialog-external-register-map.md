@@ -140,7 +140,9 @@ correspondence in the set.
 | `0x000F5402` ↔ `0x00FF5402` | match | 16 | one bit per source | pending clear | family | none | medium |
 | `0x000F4000` ↔ `0x00FF4000` | match | 16 | unknown | clock dividers | family | none | low |
 
-**The answer on physical aliasing is still UNKNOWN.**  What changed is the
+**E3.2 update: the address-space part is SAME_ARCHITECTURAL_ADDRESS.**
+Encoded abs20 `0xF6006` expands to effective `0x00FF6006`.  The physical
+SC14448 register identity is still CANDIDATE.  What changed earlier is the
 kind of evidence: we no longer have only "the low 20 bits match", we have
 "two independent implementations use the same bit layout at these low
 addresses".  That is `FUNCTIONAL_REGISTER_MATCH`, not a documented alias and

@@ -166,15 +166,16 @@ semantics remain unknown, and the SC14448 firmware path is unproven.
 ## 10. Firmware interpretation
 
 No slot-5 handler was found in the resolved CR16 map.  The only resolved
-PCM-adjacent accesses are the `0xF6002` poll, `0x00FF6006` pulse/clear,
-`0xF6006` reads and interrupt-controller writes.  Indirect/cross-block code
+PCM-adjacent accesses are the effective `0x00FF6002` poll, `0x00FF6006`
+pulse/clear, `0x00FF6006` reads (encoded abs20 `0xF6006`) and the
+`0x00FF5402` interrupt-controller writes.  Indirect/cross-block code
 remains the open possibility.  See
 `history/fon-e0-sc14448-firmware-search.md`.
 
 E2 expanded this to call continuations, direct-call summaries, table-consumer
 candidates and all 31 IRQ vectors.  It still found no proven slot-5 consumer:
-the closest IRQ path is `dip_int`, which reads `0xF6006` and writes
-`0xF5402 = 0x400` in both images, but that is not a proven control-word
+the closest IRQ path is `dip_int`, which reads effective `0x00FF6006` and
+writes `0x00FF5402 = 0x400` in both images, but that is not a proven control-word
 handler.  The `0x01000000 + 2*index` writer remains a loader/RAM-init
 candidate with no resolved reader.  See `fon-e2-summary.md`.
 
@@ -182,7 +183,8 @@ E3 re-audited the interprocedural proofs and followed `dsp_int`/`dip_int`
 locally.  `dsp_int` reads a pointer at `0xD6` (`0x01027F80` in both images),
 adds `0x58`, and accesses `0x01027FD8`; its other counters are at
 `0x2C4+0xE/+0x10` normal and `0x224+0xE/+0x10` p2test.  `dip_int` passes the
-low byte of `0xF6006` to a callee and writes `0xF5402 = 0x0400`.  Neither is
+low byte of effective `0x00FF6006` to a callee and writes
+`0x00FF5402 = 0x0400` (encoded abs20 `0xF5402`).  Neither is
 a proven PCM or slot-5 consumer.  `0x01000000` is outside the 24-bit address
 range, so its bank/address mechanism remains **UNRESOLVED**.  See
 `fon-e3-summary.md`.
@@ -209,7 +211,9 @@ slot-5 handler.
 The separate SC14480 memory map makes `0x01000000–0x010003FF` a DIP
 Sequencer RAM candidate and `0x01027FD8` a `DSP_INT_REG` candidate.  This is a
 strong related-device explanation for the E3 fill/pointer shapes, but it is
-not an SC14448 datasheet and does not close Q46/Q55/Q57/Q75.
+not an SC14448 datasheet and does not close Q46/Q55/Q75.  E3.2 resolves the
+Q57 address-space artifact: abs20 fields above `0xEFFFF` expand to
+`0x00FFxxxx`; physical SC14448 register identity remains CANDIDATE.
 
 ## 11. Minimum standalone driver
 

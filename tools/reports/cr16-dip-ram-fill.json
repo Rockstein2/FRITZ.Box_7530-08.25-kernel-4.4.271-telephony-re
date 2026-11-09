@@ -1,0 +1,89 @@
+{
+ "tool": "cr16-dip-ram-fill/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "source": "firmware/dectfw_secondlevel_441.hex",
+   "control_instruction": "0x025f90",
+   "control_bytes": "9701",
+   "store_instruction": "0x0025d0",
+   "store_bytes": "24d0",
+   "store_disassembly": "storw r2,0x0:s(r5,r4)",
+   "fill_range": "0x01000002\u20260x010003FE",
+   "iterations": "1\u2026511",
+   "payload": "0x1001",
+   "payload_status": "CONSTANT_UNDECODED",
+   "sc14480_mapping": {
+    "range": "0x01000000\u20130x010003FF",
+    "meaning": "DIP Sequencer RAM, 512 \u00d7 16 bit",
+    "first_instruction": "0x01000002",
+    "printed_pages": "131\u2013132 and 33\u201334"
+   },
+   "dip_opcode_hint": "SC14480 Table 10: 0x01 = BR; 0x10 = BR_B0. 0x1001 contains both values, so either byte order yields a branch opcode; the parameter and target are not proved.",
+   "payload_byte_orders": {
+    "little_endian": {
+     "opcode": "0x01",
+     "opcode_name": "BR",
+     "parameter": "0x10"
+    },
+    "big_endian": {
+     "opcode": "0x10",
+     "opcode_name": "BR_B0",
+     "parameter": "0x01"
+    }
+   },
+   "classification": "DIP_RAM_FILL_CANDIDATE",
+   "pcm_evidence": false,
+   "slot5_evidence": false,
+   "unresolved": [
+    "DIP instruction word byte order/parameter encoding",
+    "meaning of the repeated 0x1001 payload",
+    "SC14448 identity of the 0x01000000 region"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "source": "firmware/dectfw_secondlevel_441p2test.hex",
+   "control_instruction": "0x026750",
+   "control_bytes": "b25a0110",
+   "store_instruction": "0x001e8c",
+   "store_bytes": "24d0",
+   "store_disassembly": "storw r2,0x0:s(r5,r4)",
+   "fill_range": "0x01000002\u20260x010003FE",
+   "iterations": "1\u2026511",
+   "payload": "0x1001",
+   "payload_status": "CONSTANT_UNDECODED",
+   "sc14480_mapping": {
+    "range": "0x01000000\u20130x010003FF",
+    "meaning": "DIP Sequencer RAM, 512 \u00d7 16 bit",
+    "first_instruction": "0x01000002",
+    "printed_pages": "131\u2013132 and 33\u201334"
+   },
+   "dip_opcode_hint": "SC14480 Table 10: 0x01 = BR; 0x10 = BR_B0. 0x1001 contains both values, so either byte order yields a branch opcode; the parameter and target are not proved.",
+   "payload_byte_orders": {
+    "little_endian": {
+     "opcode": "0x01",
+     "opcode_name": "BR",
+     "parameter": "0x10"
+    },
+    "big_endian": {
+     "opcode": "0x10",
+     "opcode_name": "BR_B0",
+     "parameter": "0x01"
+    }
+   },
+   "classification": "DIP_RAM_FILL_CANDIDATE",
+   "pcm_evidence": false,
+   "slot5_evidence": false,
+   "unresolved": [
+    "DIP instruction word byte order/parameter encoding",
+    "meaning of the repeated 0x1001 payload",
+    "SC14448 identity of the 0x01000000 region"
+   ]
+  }
+ },
+ "limitations": [
+  "payload not decoded as valid DIP program",
+  "SC14480 is not an SC14448 datasheet"
+ ]
+}

@@ -33,8 +33,10 @@ Use `sc14480-memory-map.md` first:
 - reinterpret `dsp_int` around `DSP_INT_REG=0x01027FD8` and its
   write-one-to-clear vector bits;
 - compare `0x00FF6006` `0x80→0` with DIP `URST`;
-- resolve the `0x000Fxxxx` vs `0x00FFxxxx` address-space conflict before
-  assigning `0x400`/`0x2000` to the reset-pending register.
+- note: E3.2 resolved the `0x000Fxxxx` vs `0x00FFxxxx` address-space artifact
+  (abs20 high-field expansion); the remaining SC14448 physical-identity
+  question must be addressed before assigning `0x400`/`0x2000` to the
+  reset-pending register.
 
 This does not close Q75; it changes the next questions.
 

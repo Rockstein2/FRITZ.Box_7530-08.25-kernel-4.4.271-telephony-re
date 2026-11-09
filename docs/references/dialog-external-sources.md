@@ -51,12 +51,12 @@ and path so it can be checked independently.
 | License | `GPL-2.0` (repository `COPYING`, QEMU) |
 | Target | experimental CR16C CPU/board emulation |
 | Relevant files | `target/cr16c/translate.c`, `target/cr16c/insn.decode`, `target/cr16c/cpu.h`, `target/cr16c/helper.c`, `target/cr16c/machine.c` |
-| Verified facts | decode includes `MOV`, `MOVD_reg`, `ADDD`, `LOAD`, `STOR`, `LOADM`, `STORM`, `BRCOND`, `JCOND`, `EXCP`, bit operations and arithmetic; `cpu.h` explicitly says interrupts are still TODO; `helper_raise_illegal_instruction` and `helper_raise_unimplemented_instruction` exist; `LOADM`/`STORM` are implemented |
+| Verified facts | decode includes `MOV`, `MOVD_reg`, `ADDD`, `LOAD`, `STOR`, `LOADM`, `STORM`, `BRCOND`, `JCOND`, `EXCP`, bit operations and arithmetic; `reloc_abs20()` expands any abs20 field above `0xEFFFF` with `addr \|= 0xF00000`, which E3.2 uses for Q57; `cpu.h` explicitly says interrupts are still TODO; `LOADM`/`STORM` are implemented |
 | Not found in decode | `JAL`, `JALR`, `RETX`, `LOADMP`, `STORMP` (the exact missing status must be rechecked if the commit changes) |
 | Transferable | independent instruction/ABI oracle for a **small** implemented sequence; useful for checking pair arithmetic and `loadm`/`storm` semantics |
 | Limitations | not a complete firmware emulator; no verified interrupt/vector execution; missing control-transfer forms; not proof for SC14448 |
-| Related questions | Q16, Q54, Q75 |
-| Priority | P2 — instruction-level cross-check only |
+| Related questions | Q16, Q44, Q54, Q57, Q75 |
+| Priority | P1 — independent address/instruction cross-check |
 
 The repository is much too large to vendor.  Use the commit above and
 `target/cr16c` only.
@@ -207,7 +207,7 @@ porting work was started.
 | Relevant pages | printed p33–34 DIP sequencer/URST; p64 PCM; p131–132 memory map; p171–172 DIP registers; p177 DSP_INT_REG; p196–197 RESET_INT_PENDING_REG |
 | Verified facts | DIP RAM `0x01000000–0x010003FF` 512×16, first instruction `0x01000002`; Gen2DSP registers `0x01027F80–0x01027FFF`; `DSP_INT_REG=0x01027FD8`; `0x00FF5402` reset-pending bit 10 DIP / bit 13 DSP; `0x00FF6002` DIP_PC; `0x00FF6006` DIP_CTRL with URST bit 7; `0x00FF6400/6402` BMC_CTRL; PCM is 4×16-bit |
 | Transferable | strong structural/functional hypotheses for E3's DIP-RAM fill, `DSP_INT_REG`, `0x80→0` DIP stop/start and the `0x400`/`0x2000` acknowledgements |
-| Limitations | SC14480 is a different device; `0x000Fxxxx` vs `0x00FFxxxx` mapping does not transfer; the 511-word payload `0x1001` is not decoded; 4-channel PCM is not the AVM 8-slot frame; no SC14448 proof |
+| Limitations | SC14480 is a different device; its decoded map does not transfer; E3.2 shows the firmware's `0x000Fxxxx` is an encoded abs20 field that expands to `0x00FFxxxx`; the 511-word payload `0x1001` parameter is not decoded; 4-channel PCM is not the AVM 8-slot frame; no SC14448 physical-register proof |
 | Related questions | Q16, Q17, Q46, Q54, Q55, Q57, Q74, Q75 |
 | Priority | P0 — highest-value related-device reference |
 

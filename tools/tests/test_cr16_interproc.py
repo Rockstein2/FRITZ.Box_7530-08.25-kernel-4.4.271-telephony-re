@@ -110,7 +110,7 @@ def test_may_written_paths():
 test_may_written_paths()
 
 for name, entries, calls, proven in (
-        ("normal", 432, 1489, 91), ("p2test", 403, 1371, 42)):
+        ("normal", 432, 1489, 43), ("p2test", 403, 1371, 22)):
     d = load(f"cr16-interproc-{name}.json")
     if d is None:
         continue
@@ -146,8 +146,9 @@ if t is not None:
               t["capabilities"]["table_entry_widths_decoded"] == [], True)
         check(f"{name}: table report does not claim decoded endianness",
               t["capabilities"]["endianness_decoded"] == [], True)
-        check(f"{name}: table candidates keep linkage status",
-              all("def_use_link" in x
+        check(f"{name}: table candidates keep local linkage status",
+              all("def_use_link" in x and x.get("def_use_scope") ==
+                  "LOCAL_BASIC_BLOCK_ONLY"
                   for x in t["images"][name]["candidates"]), True)
 
 i = load("cr16-irq-paths.json")

@@ -15,7 +15,7 @@ work.  It is not a substitute for the device-specific evidence in
 | `dialog-external-sources.md` | Source registry: URL, revision, license, verified facts and limitations |
 | `dialog-register-cross-reference.md` | SC14CVMDECT PDF registers vs SC14448 firmware accesses |
 | `dialog-pcm-comparison.md` | PCM timing/mode comparison; no direct settings transfer |
-| `sc14480-memory-map.md` | SC14480 DIP RAM, DSP_INT_REG, interrupt and address-space cross-check |
+| `sc14480-memory-map.md` | SC14480 DIP RAM, DSP_INT_REG, interrupt and address-space cross-check; E3.2/Q57 resolution |
 | `fon-e3-reference-opportunities.md` | How the new references can help E3, ranked |
 
 ## Rules

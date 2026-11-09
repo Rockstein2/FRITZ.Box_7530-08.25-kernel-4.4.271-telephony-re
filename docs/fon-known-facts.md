@@ -525,16 +525,16 @@ probe-only test must not assume an unprogrammed chip.
 | RX hook | status bit 3 -> reg44 bit 7 -> `slic_get_hook_state`; physical hook meaning INFERRED | DISASM |
 | Ring cadence | `half_period = (500 / freq) << 3` frames, default 25 Hz; bits 5/6 toggled by timer | DISASM |
 | Firmware slot-5 handler | **not found** in resolved CR16 map; bounded negative result, indirect/cross-block paths remain | OFFLINE |
-| E1 cross-block dataflow | conservative merge; normal 115 / p2test 165 newly resolved accesses; 10/3 out-of-range candidates flagged | OFFLINE |
+| E1 cross-block dataflow | conservative merge; normal 239 / p2test 239 newly resolved accesses; 10/3 out-of-range candidates flagged | OFFLINE |
 | E1 indirect candidates | 382 normal / 396 p2test indirect edges; 5 639/5 668 table-like hits are candidates, not proof | OFFLINE |
 | E2 call-return CFG | direct calls add callee + continuation; fixed point converged in 4 iterations; forced cap reports `NON_CONVERGED` and no new `PROVEN` rows | OFFLINE |
 | E2 interprocedural summaries (initial) | 432/403 functions; 146/116 direct argument records; 25/10 proven before E3 audit; indirect calls clobber all registers | OFFLINE |
 | E2 table dispatch (initial) | 382/396 indirect sites; 87/78 candidates, 295/318 unresolved before E3 def-use correction | OFFLINE |
 | E2 IRQ callgraph | 31 vectors in both images; only `tim1_int`, `dip_int`, `dsp_int` have memory operations; no PCM-named handler, no proven 8 kHz period | OFFLINE |
-| E3 soundness audit | E2 25/10 PROVEN rechecked: 21/8 retained, 4/2 downgraded; corrected analyzer reports 91/42 PROVEN, 82/92 CANDIDATE; NON_CONVERGED CLI exits 1 | OFFLINE |
+| E3 soundness audit | E2 25/10 PROVEN rechecked: 11/3 retained, 14/7 invalid/changed after full use matching; corrected analyzer reports 43/22 PROVEN, 58/69 CANDIDATE; NON_CONVERGED CLI exits 1 | OFFLINE |
 | E3 table correction | no table entry width/endian decoded; 0/11 linked CANDIDATE after kill check, 382/385 UNRESOLVED, 0 PROVEN | OFFLINE |
 | E3 `dsp_int` | pointer `0xD6 = 0x01027F80`, `+0x58 = 0x01027FD8`; SC14480 calls this `DSP_INT_REG`; counters at `0x2C4+0xE/+0x10` normal and `0x224+0xE/+0x10` p2test; DSP interrupt hypothesis, not PCM | OFFLINE + EXT-REF |
-| E3 `dip_int` | `0xF6006` low byte passed to callee; writes `0x0400` to low-space `0xF5402`; SC14480 suggests `0x00FF5402` reset-pending bit 10 but address-space conflict remains; no slot-5 proof | OFFLINE + EXT-REF |
+| E3 `dip_int` | encoded abs20 `0xF6006` (effective `0x00FF6006`) low byte passed to callee; writes `0x0400` to encoded `0xF5402` (effective `0x00FF5402`); SC14480 suggests reset-pending bit 10; physical identity CANDIDATE; no slot-5 proof | OFFLINE + EXT-REF |
 | E3 `0x01000000` | one static store executed 511 times; base is outside 24-bit range; address space/bank **UNRESOLVED**; fill and pointer ranges separated | OFFLINE |
 | TX DMA `EOR #2` | swaps adjacent 16-bit slots inside each 32-bit DMA word; raw order proven, physical wire order **UNKNOWN** | DISASM + GPL source |
 | E2 audio `EOR #2` | `generic_slotinterleave` also applies `EOR #2`; audio pair swap is a raw-memory model, sample order/endianness **INFERRED** | DISASM |
@@ -1068,7 +1068,7 @@ historical and are not repeated here.
 | fill range | `0x01000002` … `0x010003FE` | L4 |
 | `bhi` condition | `PSR.L`, set when `Rdest < Rsrc` (CR16A manual) | L4 |
 | `0x2558`…`0x25B8` | one function, no caller of `0x257E` | L3 |
-| address operand `abs20` | `((b0 & 0x0F) << 16) \| word1` | L2 |
+| address operand `abs20` | `((b0 & 0x0F) << 16) \| word1`; values above `0xEFFFF` expand by OR `0xF00000` | L2 |
 
 CFG statistics (normal image, 22 669 edges after `br` was reclassified as an
 unconditional jump): `DIRECT_RESOLVED` 22 244, `DIRECT_UNSUPPORTED` 0,
@@ -1098,15 +1098,19 @@ literals).  The current version (3) parses every operand form, tracks
 register pairs inside a basic block, and classifies every memory instruction.
 The numbers below come only from version 3.
 
-`0x000F6006` and `0x00FF6006` are **different addresses** and are listed
-separately; nothing establishes that they alias the same register.
+**E3.2 correction:** `0x000Fxxxx` in this section is the printed abs20
+encoded field, not an effective address.  Values above `0xEFFFF` expand to
+`0x00FFxxxx`, so `0x000F6006` is the short encoding of effective
+`0x00FF6006`.  The table's low/high rows are therefore two encodings of one
+architectural address; physical SC14448 register identity remains a
+related-device CANDIDATE.
 
 | Fact | Value | Evidence |
 |---|---|---|
 | reader(s) of `0x000F6002` | exactly one, `0x25FAE` (normal) / `0x26764` (p2test) | L1/L2 |
 | writer(s) of `0x000F6002` | none among resolved forms; `UNKNOWN`/`SYMBOLIC` accesses remain unexamined | L2 |
-| writers of `0x000F6006` | `0x1348`, `0x145C`, both writing `0x0080` | L2 |
-| readers of `0x000F6006` | `0x2602C`, `0x28CDE` | L2 |
+| encoded `0x000F6006` writers | `0x1348`, `0x145C`, both writing `0x0080`; effective `0x00FF6006` | L2 |
+| encoded `0x000F6006` readers | `0x2602C`, `0x28CDE`; effective `0x00FF6006` | L2 |
 | writers of `0x00FF6006` | `0x258C` (`0x0080`), `0x25B4` (`0`) | L2 |
 | readers of `0x00FF6006` | `0x25AA` (value discarded) | L2 |
 | writers of `0x000F6400` / `0x000F6402` | one each (`0x255E` / `0x2566`), no readers | L2 |
@@ -1143,8 +1147,8 @@ The register-effects rules are documented in
 
 What precedes `0x25F90` on the path from `0x1602`: `0x3A08 di`,
 `0x3A0C -> 0x1388` (clears `0xF5404/6/8/A`, sets `0xFF4856` bits, sets
-`0xF401A` bit 1, writes `0x80` to `0x000F6006`), `0x3A28` writes `0xFFFF` to
-`0x000F5402`.  What follows: `0x25FB8` calls `0x25EA6`.
+`0xF401A` bit 1, writes `0x80` to encoded `0xF6006` (effective `0x00FF6006`), `0x3A28` writes
+`0xFFFF` to encoded `0xF5402` (effective `0x00FF5402`).  What follows: `0x25FB8` calls `0x25EA6`.
 
 No register in this section reaches L5; none is named after a function.
 
@@ -1189,7 +1193,7 @@ Documents: `history/fon-dialog-cr16-addressing.md`,
 |---|---|---|
 | CR16A address width | 18 bits (`0 … 0x3FFFF`) | L2, manual §2.4 |
 | is the core CR16A? | **no** — the images address above `0x3FFFF` | L1 |
-| `abs20` field | 20 bits, low nibble of byte 0 is bit 20 | L1/L2 |
+| `abs20` field | 20 bits; low nibble of byte 0 forms bits 16–19; values `>0xEFFFF` expand to `0xFFxxxx` | L1/L2 |
 | `abs24` field | 24 bits, relocation refuses above `0xFFFFFF` | L1 |
 | decoder masking | **none** — neither encoding is shifted or masked | L2 |
 | `INTBASE` | written once: `0x24` (`0x15E6`, `0x1068`) | L2 |
@@ -1198,8 +1202,8 @@ Documents: `history/fon-dialog-cr16-addressing.md`,
 | table at `INTBASE` | 31 address-like words, not code bytes; the runtime effect of the copy at `0x15F6` is unresolved | **UNKNOWN** |
 | reset entry | `0x15AA`/`0x102C` starts the system-register setup and has **no caller** in the image; not proven to be the reset vector | L3 |
 | address pairs with equal low 20 bits | **12** in `normal`, **12** in `p2test`, the same set | L2 |
-| `0x000F6006` ↔ `0x00FF6006` | same low bits, different access structure | L2 |
-| are the two one physical register? | **UNKNOWN** — no document, no hardware | — |
+| encoded `0x000F6006` ↔ `0x00FF6006` | abs20 expansion makes them one architectural address; physical identity CANDIDATE | L2/L4 |
+| are the two one architectural address? | **yes** — abs20 `0xF6006` expands to `0x00FF6006` (QEMU/GAS rule); physical register identity remains CANDIDATE | L2/L4 |
 
 ## 9k. Boot chain and memory layout (OFFLINE, 2026-11-07)
 

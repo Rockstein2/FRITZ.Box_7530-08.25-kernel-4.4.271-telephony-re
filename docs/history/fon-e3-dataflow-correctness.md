@@ -54,10 +54,12 @@ Downgraded p2test cases:
 
 - `0x0243b0`, `0x024754` — caller entry/path incomplete.
 
-The E3 audit matches each old memory use by instruction address and effective
-address, not only by `(call_site, callee, pair, constant)`.  A missing or
-changed use makes the old proof `INVALID`; the current 25/10 records all match
-their old use addresses.
+The E3 audit matches each old memory use by instruction address, effective
+address, operation and any known displacement, not only by
+`(call_site, callee, pair, constant)`.  A missing or changed use makes the old
+proof `INVALID`.  It also filters out bare pair-to-pair `movd` forms, which are
+register moves rather than memory uses; that removed false old uses and
+changed several E2 results.
 
 The priority case remains:
 
@@ -71,8 +73,8 @@ The priority case remains:
 No write to `r3`/`r2` occurs on any modelled path before either use.  The
 address is `0x00ff4000`, a peripheral address, not a slot-5 PCM word.
 
-The corrected analyzer reports 91 normal / 42 p2test PROVEN records and
-82/92 CANDIDATE records.  The increase is explained by the per-use criterion:
+The corrected analyzer reports 43 normal / 22 p2test PROVEN records and
+58/69 CANDIDATE records.  The increase is explained by the per-use criterion:
 a callee that writes the pair **after** the use no longer invalidates the
 argument, while any possible write **before** the use still does.
 

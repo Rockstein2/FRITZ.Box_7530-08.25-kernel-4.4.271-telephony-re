@@ -29,6 +29,10 @@ IMAGES = [
 ]
 BASELINE = "89599db81e2816cf323a554bb4054175d06dad25"
 OLD_REPORTS = ("cr16-interproc-normal.json", "cr16-interproc-p2test.json")
+EXPECTED_SHA = {
+    "normal": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+    "p2test": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+}
 DSP = {
     "normal": {"entry": 0x028a94, "end": 0x028b0a,
                "helpers": [0x003b28, 0x003b38],
@@ -61,17 +65,51 @@ def rows_in(rows, lo, hi):
     return [r for r in rows if lo <= int(r["instruction"], 16) <= hi]
 
 
-def old_report(name):
-    """Prefer the immutable E2 commit; fall back to the local saved copy."""
+def _validate_old(data, name):
+    """Validate an E2 baseline before using it for proof auditing."""
+    if not isinstance(data, dict):
+        raise RuntimeError(f"{name}: baseline is not a JSON object")
+    args = data.get("argument_propagations")
+    if not isinstance(args, list):
+        raise RuntimeError(f"{name}: baseline has no argument_propagations list")
+    got = data.get("sha256")
+    if got != EXPECTED_SHA[name]:
+        raise RuntimeError(
+            f"{name}: baseline SHA256 mismatch: {got!r} != "
+            f"{EXPECTED_SHA[name]!r}")
+    return data
+
+
+def old_report(name, baseline_commit=BASELINE, allow_fallback=True):
+    """Load and validate the immutable E2 baseline, or fail closed."""
     fn = f"cr16-interproc-{name}.json"
+    errors = []
+    out = None
     try:
         out = subprocess.check_output(
-            ["git", "show", f"{BASELINE}:tools/reports/{fn}"],
+            ["git", "show", f"{baseline_commit}:tools/reports/{fn}"],
             cwd=str(ROOT), text=True, stderr=subprocess.DEVNULL)
-        return json.loads(out)
-    except Exception:
+    except Exception as exc:
+        errors.append(f"git {baseline_commit}: {exc}")
+    if out is not None:
+        # A retrieved baseline that is corrupt must not silently fall back to
+        # a different source.
+        try:
+            data = json.loads(out)
+        except Exception as exc:
+            raise RuntimeError(f"{name}: baseline JSON is corrupt: {exc}")
+        return _validate_old(data, name)
+    if allow_fallback:
         p = Path("/tmp/opencode/e2-baseline") / fn
-        return json.loads(p.read_text()) if p.is_file() else {"argument_propagations": []}
+        if p.is_file():
+            try:
+                data = json.loads(p.read_text())
+            except Exception as exc:
+                raise RuntimeError(f"{name}: fallback JSON is corrupt: {exc}")
+            return _validate_old(data, name)
+        errors.append(f"fallback {p}: missing")
+    raise RuntimeError(
+        f"{name}: E2 baseline unavailable/invalid; " + "; ".join(errors))
 
 
 def key_of(a):
@@ -83,37 +121,74 @@ def _use_key(u):
     return (u.get("instruction"), u.get("effective_address"))
 
 
+def _compare_use(ou, nu):
+    """Compare one old/new use; return a mismatch reason or None."""
+    if (ou.get("operation") is not None and
+            nu.get("operation") is not None and
+            ou.get("operation") != nu.get("operation")):
+        return f"operation {ou.get('operation')} -> {nu.get('operation')}"
+    if (ou.get("displacement") is not None and
+            nu.get("displacement") is not None and
+            ou.get("displacement") != nu.get("displacement")):
+        return (f"displacement {ou.get('displacement')} -> "
+                f"{nu.get('displacement')}")
+    opair = ou.get("register_pair")
+    npair = nu.get("register_pair")
+    if opair is not None and npair is not None and list(opair) != list(npair):
+        return f"register_pair {opair} -> {npair}"
+    return None
+
+
 def _match_uses(old_uses, new_uses):
-    """Match every old memory use by instruction and effective address."""
+    """Match every old memory use by address and semantic fields."""
     new_map = {}
     for u in new_uses:
         new_map.setdefault(_use_key(u), []).append(u)
-    matched, missing = [], []
+    matched, mismatched, missing = [], [], []
     for ou in old_uses:
         k = _use_key(ou)
-        candidates = new_map.get(k)
-        if candidates:
-            nu = candidates.pop(0)
+        candidates = new_map.get(k, [])
+        chosen = None
+        chosen_reason = None
+        for idx, nu in enumerate(candidates):
+            reason = _compare_use(ou, nu)
+            if reason is None:
+                chosen = candidates.pop(idx)
+                break
+            chosen_reason = reason
+        if chosen is None:
+            item = {
+                "instruction": ou.get("instruction"),
+                "displacement": ou.get("displacement"),
+                "effective_address": ou.get("effective_address"),
+                "old_operation": ou.get("operation"),
+                "new_operation": None,
+                "match": False,
+                "old_displacement_available":
+                    ou.get("displacement") is not None,
+            }
+            if candidates:
+                item["new_operation"] = candidates[0].get("operation")
+                item["reason"] = chosen_reason or "semantic mismatch"
+                mismatched.append(item)
+            else:
+                item["reason"] = "no matching instruction/effective address"
+                missing.append(item)
+        else:
             matched.append({
                 "instruction": ou.get("instruction"),
                 "displacement": ou.get("displacement"),
                 "effective_address": ou.get("effective_address"),
                 "old_operation": ou.get("operation"),
-                "new_operation": nu.get("operation"),
-                "new_displacement": nu.get("displacement"),
-                "new_effective_address": nu.get("effective_address"),
+                "new_operation": chosen.get("operation"),
+                "new_displacement": chosen.get("displacement"),
+                "new_effective_address": chosen.get("effective_address"),
+                "old_displacement_available":
+                    ou.get("displacement") is not None,
                 "match": True,
             })
-        else:
-            missing.append({
-                "instruction": ou.get("instruction"),
-                "displacement": ou.get("displacement"),
-                "effective_address": ou.get("effective_address"),
-                "old_operation": ou.get("operation"),
-                "match": False,
-            })
     extra = [u for vals in new_map.values() for u in vals]
-    return matched, missing, extra
+    return matched, mismatched, missing, extra
 
 
 def audit(name, old, new_args):
@@ -128,25 +203,26 @@ def audit(name, old, new_args):
         matches = new_by_key.get(key_of(a), [])
         if not matches:
             b = None
-            matched, missing, extra = [], list(a.get("uses", [])), []
+            matched, mismatched, missing, extra = [], [], \
+                list(a.get("uses", [])), []
             reasons = ["no matching caller constant/use under E3 path analysis"]
             cls = "INVALID"
         else:
             b = None
-            matched, missing, extra = [], list(a.get("uses", [])), []
+            matched, mismatched, missing, extra = [], [], [], []
             # Prefer a new record whose uses cover every old use.
             for candidate in matches:
-                m, miss, ext = _match_uses(a.get("uses", []),
-                                           candidate.get("uses", []))
-                if not miss:
+                m, mm, miss, ext = _match_uses(a.get("uses", []),
+                                               candidate.get("uses", []))
+                if not miss and not mm:
                     b = candidate
-                    matched, missing, extra = m, miss, ext
+                    matched, mismatched, missing, extra = m, mm, miss, ext
                     break
             if b is None:
                 b = matches[0]
-                matched, missing, extra = _match_uses(
+                matched, mismatched, missing, extra = _match_uses(
                     a.get("uses", []), b.get("uses", []))
-            if missing:
+            if missing or mismatched:
                 cls = "INVALID"
                 reasons = ["one or more old memory uses are missing or changed"]
             else:
@@ -164,9 +240,10 @@ def audit(name, old, new_args):
             "old_uses": a.get("uses", []),
             "use_match": {
                 "matched": matched,
+                "mismatched": mismatched,
                 "missing": missing,
                 "new_extra": extra,
-                "all_old_uses_matched": not missing,
+                "all_old_uses_matched": not missing and not mismatched,
             },
             "new_record": ({
                 "caller_entry": b.get("caller_entry"),
@@ -270,7 +347,7 @@ def focused_image(name, path, args):
             "runtime value of the pointer after loader handoff",
             "source of the 16-bit event word at pointer+0x58",
             "semantics of the two helper functions",
-            "meaning of the 0xF5402=0x2000 acknowledgement",
+            "physical identity of the 0x00FF5402 acknowledgement register",
         ],
     }
     dip_out = {
@@ -288,14 +365,23 @@ def focused_image(name, path, args):
             {"note": "bal callee receives r2 as an input"},
         ],
         "f6006": {
-            "read_address_space": "0x000F6006",
+            "encoded_operand": "0x000F6006",
+            "read_address_space": "0x00FF6006",
             "pulse_address_space": "0x00FF6006",
-            "alias_claim": "UNKNOWN",
+            "address_extension": "ABS20_RELOC_0xF6006_TO_0x00FF6006",
+            "alias_claim": "SAME_ARCHITECTURAL_ADDRESS_BY_ABS20_EXTENSION",
+            "physical_register_identity": "CANDIDATE_RELATED_DEVICE_MAP",
             "low_byte_consumer": "callee r2 input",
         },
-        "f5402": {"write_value": "0x0400", "role": "acknowledgement candidate"},
+        "f5402": {
+            "encoded_operand": "0x000F5402",
+            "address_space": "0x00FF5402",
+            "write_value": "0x0400",
+            "role": "acknowledgement candidate",
+        },
         "poll_link": {
-            "polled_0xF6002": "0x25FAE normal / 0x26764 p2test",
+            "polled_encoded_0xF6002": "0x25FAE normal / 0x26764 p2test",
+            "polled_address_space": "0x00FF6002",
             "status": "SEPARATE_PATH_CANDIDATE",
             "sequence_proven": False,
         },
@@ -304,7 +390,7 @@ def focused_image(name, path, args):
         "slot5_evidence": False,
         "pcm_evidence": False,
         "unresolved": [
-            "bit-level meaning of 0xF6006",
+            "bit-level meaning of 0x00FF6006",
             "whether the read has read-to-clear semantics",
             "callee event-code semantics",
             "whether the callee touches 0x01000000 or a FIFO",
@@ -339,7 +425,11 @@ def main(argv):
             print(f"SKIP {name}: firmware missing")
             continue
         a, dsp, dip, df = focused_image(name, path, args)
-        old = old_report(name)
+        try:
+            old = old_report(name)
+        except RuntimeError as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
         aud = audit(name, old, a["arguments"])
         soundness["images"][name] = aud
         callsites["images"][name] = {

@@ -1,0 +1,2151 @@
+{
+ "tool": "cr16-address-space-conflicts/1",
+ "images": {
+  "normal": [
+   {
+    "low_encoded_form": "0x000f6002",
+    "high_canonical_address": "0x00ff6002",
+    "low_encoded_20bit": "0xf6002",
+    "zero_extended_interpretation": "0x000f6002",
+    "architectural_effective_address": "0x00ff6002",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x025fae",
+      "raw_bytes": "0f890260",
+      "instruction_size": 4,
+      "oracle_disassembly": "loadw 0xf6002:m,r0",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0xf6002:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6002",
+      "effective_address": "0x00ff6002",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f6002",
+      "architectural_effective_address": "0x00ff6002",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6002",
+       "zero_extended": "0x000f6002",
+       "architectural_effective": "0x00ff6002",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6002",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x025fae"
+      ],
+      "provenance": [
+       "0x025fae"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [],
+    "low_form_count": 1,
+    "high_canonical_count": 0,
+    "status": "SAME_ARCHITECTURAL_ADDRESS_SINGLE_FORM",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   },
+   {
+    "low_encoded_form": "0x000f6006",
+    "high_canonical_address": "0x00ff6006",
+    "low_encoded_20bit": "0xf6006",
+    "zero_extended_interpretation": "0x000f6006",
+    "architectural_effective_address": "0x00ff6006",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x001348",
+      "raw_bytes": "2fc90660",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r2,0xf6006:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf6006:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6006",
+      "effective_address": "0x00ff6006",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f6006",
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6006",
+       "zero_extended": "0x000f6006",
+       "architectural_effective": "0x00ff6006",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x001348"
+      ],
+      "provenance": [
+       "0x001348"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x00145c",
+      "raw_bytes": "0fc90660",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf6006:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf6006:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6006",
+      "effective_address": "0x00ff6006",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f6006",
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6006",
+       "zero_extended": "0x000f6006",
+       "architectural_effective": "0x00ff6006",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x00145c"
+      ],
+      "provenance": [
+       "0x00145c"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x02602c",
+      "raw_bytes": "0f890660",
+      "instruction_size": 4,
+      "oracle_disassembly": "loadw 0xf6006:m,r0",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0xf6006:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6006",
+      "effective_address": "0x00ff6006",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f6006",
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6006",
+       "zero_extended": "0x000f6006",
+       "architectural_effective": "0x00ff6006",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x02602c"
+      ],
+      "provenance": [
+       "0x02602c"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x028cde",
+      "raw_bytes": "0f890660",
+      "instruction_size": 4,
+      "oracle_disassembly": "loadw 0xf6006:m,r0",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0xf6006:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6006",
+      "effective_address": "0x00ff6006",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f6006",
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6006",
+       "zero_extended": "0x000f6006",
+       "architectural_effective": "0x00ff6006",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x028cde"
+      ],
+      "provenance": [
+       "0x028cde"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [
+     {
+      "instruction": "0x00258c",
+      "raw_bytes": "20d0",
+      "instruction_size": 2,
+      "oracle_disassembly": "storw r2,0x0:s(r1,r0)",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff6006",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x002582"
+      ],
+      "provenance": [
+       "0x002582"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x0025aa",
+      "raw_bytes": "2090",
+      "instruction_size": 2,
+      "oracle_disassembly": "loadw 0x0:s(r1,r0),r2",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff6006",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x002582"
+      ],
+      "provenance": [
+       "0x002582"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x0025b4",
+      "raw_bytes": "00c2",
+      "instruction_size": 2,
+      "oracle_disassembly": "storw $0x0:s,0x0:s(r1,r0)",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff6006",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x002582"
+      ],
+      "provenance": [
+       "0x002582"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x002582",
+      "raw_bytes": "7000ff000660",
+      "instruction_size": 6,
+      "oracle_disassembly": "movd $0xff6006:l,(r1,r0)",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "decoded_operand": "$0xff6006:l,(r1,r0)",
+      "address_mode": "IMMEDIATE_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": null,
+      "encoded_address": "0x00ff6006",
+      "effective_address": "0x00ff6006",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "LITERAL_24BIT_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "LITERAL_VALUE_NOT_PHYSICAL_MAP",
+      "related_device_hint": null,
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x002582"
+      ],
+      "provenance": [
+       "0x002582"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "low_form_count": 4,
+    "high_canonical_count": 4,
+    "status": "SAME_ARCHITECTURAL_ADDRESS",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   },
+   {
+    "low_encoded_form": "0x000f5402",
+    "high_canonical_address": "0x00ff5402",
+    "low_encoded_20bit": "0xf5402",
+    "zero_extended_interpretation": "0x000f5402",
+    "architectural_effective_address": "0x00ff5402",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x001934",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x001934"
+      ],
+      "provenance": [
+       "0x001934"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x0025b0",
+      "raw_bytes": "2fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r2,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x0025b0"
+      ],
+      "provenance": [
+       "0x0025b0"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x003a28",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x003a28"
+      ],
+      "provenance": [
+       "0x003a28"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x026034",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x026034"
+      ],
+      "provenance": [
+       "0x026034"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x0289a8",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x0289a8"
+      ],
+      "provenance": [
+       "0x0289a8"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x028b00",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x028b00"
+      ],
+      "provenance": [
+       "0x028b00"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x028ce8",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x028ce8"
+      ],
+      "provenance": [
+       "0x028ce8"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [],
+    "low_form_count": 7,
+    "high_canonical_count": 0,
+    "status": "SAME_ARCHITECTURAL_ADDRESS_SINGLE_FORM",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   },
+   {
+    "low_encoded_form": "0x000f6400",
+    "high_canonical_address": "0x00ff6400",
+    "low_encoded_20bit": "0xf6400",
+    "zero_extended_interpretation": "0x000f6400",
+    "architectural_effective_address": "0x00ff6400",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x00255e",
+      "raw_bytes": "0fc10064",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw $0x0:s,0xf6400:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf6400:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6400",
+      "effective_address": "0x00ff6400",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f6400",
+      "architectural_effective_address": "0x00ff6400",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6400",
+       "zero_extended": "0x000f6400",
+       "architectural_effective": "0x00ff6400",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6400",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x00255e"
+      ],
+      "provenance": [
+       "0x00255e"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [],
+    "low_form_count": 1,
+    "high_canonical_count": 0,
+    "status": "SAME_ARCHITECTURAL_ADDRESS_SINGLE_FORM",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   },
+   {
+    "low_encoded_form": "0x000f6402",
+    "high_canonical_address": "0x00ff6402",
+    "low_encoded_20bit": "0xf6402",
+    "zero_extended_interpretation": "0x000f6402",
+    "architectural_effective_address": "0x00ff6402",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x002566",
+      "raw_bytes": "0fc90264",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf6402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf6402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6402",
+      "effective_address": "0x00ff6402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f6402",
+      "architectural_effective_address": "0x00ff6402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6402",
+       "zero_extended": "0x000f6402",
+       "architectural_effective": "0x00ff6402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x002566"
+      ],
+      "provenance": [
+       "0x002566"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [],
+    "low_form_count": 1,
+    "high_canonical_count": 0,
+    "status": "SAME_ARCHITECTURAL_ADDRESS_SINGLE_FORM",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   },
+   {
+    "low_encoded_form": "0x000f4858",
+    "high_canonical_address": "0x00ff4858",
+    "low_encoded_20bit": "0xf4858",
+    "zero_extended_interpretation": "0x000f4858",
+    "architectural_effective_address": "0x00ff4858",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x001442",
+      "raw_bytes": "ff775848",
+      "instruction_size": 4,
+      "oracle_disassembly": "sbitw $0xf:s,0xf4858:m",
+      "operation": "RMW",
+      "width_bits": 16,
+      "decoded_operand": "0xf4858:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf4858",
+      "effective_address": "0x00ff4858",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": "0x000f4858",
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf4858",
+       "zero_extended": "0x000f4858",
+       "architectural_effective": "0x00ff4858",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x001442"
+      ],
+      "provenance": [
+       "0x001442"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [
+     {
+      "instruction": "0x0011da",
+      "raw_bytes": "2090",
+      "instruction_size": 2,
+      "oracle_disassembly": "loadw 0x0:s(r1,r0),r2",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x0011d4"
+      ],
+      "provenance": [
+       "0x0011d4"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x0011e0",
+      "raw_bytes": "20d0",
+      "instruction_size": 2,
+      "oracle_disassembly": "storw r2,0x0:s(r1,r0)",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x0011d4"
+      ],
+      "provenance": [
+       "0x0011d4"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x0011e2",
+      "raw_bytes": "2090",
+      "instruction_size": 2,
+      "oracle_disassembly": "loadw 0x0:s(r1,r0),r2",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x0011d4"
+      ],
+      "provenance": [
+       "0x0011d4"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x0011e6",
+      "raw_bytes": "20d0",
+      "instruction_size": 2,
+      "oracle_disassembly": "storw r2,0x0:s(r1,r0)",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x0011d4"
+      ],
+      "provenance": [
+       "0x0011d4"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x0011d4",
+      "raw_bytes": "7000ff005848",
+      "instruction_size": 6,
+      "oracle_disassembly": "movd $0xff4858:l,(r1,r0)",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "decoded_operand": "$0xff4858:l,(r1,r0)",
+      "address_mode": "IMMEDIATE_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": null,
+      "encoded_address": "0x00ff4858",
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "LITERAL_24BIT_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "LITERAL_VALUE_NOT_PHYSICAL_MAP",
+      "related_device_hint": null,
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x0011d4"
+      ],
+      "provenance": [
+       "0x0011d4"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x001492",
+      "raw_bytes": "7600ff005848",
+      "instruction_size": 6,
+      "oracle_disassembly": "movd $0xff4858:l,(r7,r6)",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "decoded_operand": "$0xff4858:l,(r7,r6)",
+      "address_mode": "IMMEDIATE_PAIR",
+      "base_registers": [
+       "r7",
+       "r6"
+      ],
+      "displacement": null,
+      "encoded_address": "0x00ff4858",
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r7",
+       "r6"
+      ],
+      "source": "firmware/dectfw_secondlevel_441.hex",
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "LITERAL_24BIT_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "LITERAL_VALUE_NOT_PHYSICAL_MAP",
+      "related_device_hint": null,
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x001492"
+      ],
+      "provenance": [
+       "0x001492"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "low_form_count": 1,
+    "high_canonical_count": 6,
+    "status": "SAME_ARCHITECTURAL_ADDRESS",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   }
+  ],
+  "p2test": [
+   {
+    "low_encoded_form": "0x000f6002",
+    "high_canonical_address": "0x00ff6002",
+    "low_encoded_20bit": "0xf6002",
+    "zero_extended_interpretation": "0x000f6002",
+    "architectural_effective_address": "0x00ff6002",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x026764",
+      "raw_bytes": "0f890260",
+      "instruction_size": 4,
+      "oracle_disassembly": "loadw 0xf6002:m,r0",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0xf6002:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6002",
+      "effective_address": "0x00ff6002",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f6002",
+      "architectural_effective_address": "0x00ff6002",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6002",
+       "zero_extended": "0x000f6002",
+       "architectural_effective": "0x00ff6002",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6002",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x026764"
+      ],
+      "provenance": [
+       "0x026764"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [],
+    "low_form_count": 1,
+    "high_canonical_count": 0,
+    "status": "SAME_ARCHITECTURAL_ADDRESS_SINGLE_FORM",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   },
+   {
+    "low_encoded_form": "0x000f6006",
+    "high_canonical_address": "0x00ff6006",
+    "low_encoded_20bit": "0xf6006",
+    "zero_extended_interpretation": "0x000f6006",
+    "architectural_effective_address": "0x00ff6006",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x000dbe",
+      "raw_bytes": "2fc90660",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r2,0xf6006:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf6006:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6006",
+      "effective_address": "0x00ff6006",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f6006",
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6006",
+       "zero_extended": "0x000f6006",
+       "architectural_effective": "0x00ff6006",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x000dbe"
+      ],
+      "provenance": [
+       "0x000dbe"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x000ed2",
+      "raw_bytes": "0fc90660",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf6006:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf6006:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6006",
+      "effective_address": "0x00ff6006",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f6006",
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6006",
+       "zero_extended": "0x000f6006",
+       "architectural_effective": "0x00ff6006",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x000ed2"
+      ],
+      "provenance": [
+       "0x000ed2"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x0267e2",
+      "raw_bytes": "0f890660",
+      "instruction_size": 4,
+      "oracle_disassembly": "loadw 0xf6006:m,r0",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0xf6006:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6006",
+      "effective_address": "0x00ff6006",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f6006",
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6006",
+       "zero_extended": "0x000f6006",
+       "architectural_effective": "0x00ff6006",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x0267e2"
+      ],
+      "provenance": [
+       "0x0267e2"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x027c96",
+      "raw_bytes": "0f890660",
+      "instruction_size": 4,
+      "oracle_disassembly": "loadw 0xf6006:m,r0",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0xf6006:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6006",
+      "effective_address": "0x00ff6006",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f6006",
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6006",
+       "zero_extended": "0x000f6006",
+       "architectural_effective": "0x00ff6006",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x027c96"
+      ],
+      "provenance": [
+       "0x027c96"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [
+     {
+      "instruction": "0x001e48",
+      "raw_bytes": "20d0",
+      "instruction_size": 2,
+      "oracle_disassembly": "storw r2,0x0:s(r1,r0)",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff6006",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x001e3e"
+      ],
+      "provenance": [
+       "0x001e3e"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x001e66",
+      "raw_bytes": "2090",
+      "instruction_size": 2,
+      "oracle_disassembly": "loadw 0x0:s(r1,r0),r2",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff6006",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x001e3e"
+      ],
+      "provenance": [
+       "0x001e3e"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x001e70",
+      "raw_bytes": "00c2",
+      "instruction_size": 2,
+      "oracle_disassembly": "storw $0x0:s,0x0:s(r1,r0)",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff6006",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x001e3e"
+      ],
+      "provenance": [
+       "0x001e3e"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x001e3e",
+      "raw_bytes": "7000ff000660",
+      "instruction_size": 6,
+      "oracle_disassembly": "movd $0xff6006:l,(r1,r0)",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "decoded_operand": "$0xff6006:l,(r1,r0)",
+      "address_mode": "IMMEDIATE_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": null,
+      "encoded_address": "0x00ff6006",
+      "effective_address": "0x00ff6006",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "architectural_effective_address": "0x00ff6006",
+      "effective_address_model": "LITERAL_24BIT_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "LITERAL_VALUE_NOT_PHYSICAL_MAP",
+      "related_device_hint": null,
+      "previous_effective_address": "0x00ff6006",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x001e3e"
+      ],
+      "provenance": [
+       "0x001e3e"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "low_form_count": 4,
+    "high_canonical_count": 4,
+    "status": "SAME_ARCHITECTURAL_ADDRESS",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   },
+   {
+    "low_encoded_form": "0x000f5402",
+    "high_canonical_address": "0x00ff5402",
+    "low_encoded_20bit": "0xf5402",
+    "zero_extended_interpretation": "0x000f5402",
+    "architectural_effective_address": "0x00ff5402",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x0013b6",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x0013b6"
+      ],
+      "provenance": [
+       "0x0013b6"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x001e6c",
+      "raw_bytes": "2fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r2,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x001e6c"
+      ],
+      "provenance": [
+       "0x001e6c"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x0267ea",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x0267ea"
+      ],
+      "provenance": [
+       "0x0267ea"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x027142",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x027142"
+      ],
+      "provenance": [
+       "0x027142"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x02773c",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x02773c"
+      ],
+      "provenance": [
+       "0x02773c"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x027980",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x027980"
+      ],
+      "provenance": [
+       "0x027980"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x027ca0",
+      "raw_bytes": "0fc90254",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf5402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf5402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf5402",
+      "effective_address": "0x00ff5402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f5402",
+      "architectural_effective_address": "0x00ff5402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf5402",
+       "zero_extended": "0x000f5402",
+       "architectural_effective": "0x00ff5402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff5402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x027ca0"
+      ],
+      "provenance": [
+       "0x027ca0"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [],
+    "low_form_count": 7,
+    "high_canonical_count": 0,
+    "status": "SAME_ARCHITECTURAL_ADDRESS_SINGLE_FORM",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   },
+   {
+    "low_encoded_form": "0x000f6400",
+    "high_canonical_address": "0x00ff6400",
+    "low_encoded_20bit": "0xf6400",
+    "zero_extended_interpretation": "0x000f6400",
+    "architectural_effective_address": "0x00ff6400",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x001e12",
+      "raw_bytes": "0fc10064",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw $0x0:s,0xf6400:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf6400:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6400",
+      "effective_address": "0x00ff6400",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f6400",
+      "architectural_effective_address": "0x00ff6400",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6400",
+       "zero_extended": "0x000f6400",
+       "architectural_effective": "0x00ff6400",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6400",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x001e12"
+      ],
+      "provenance": [
+       "0x001e12"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [],
+    "low_form_count": 1,
+    "high_canonical_count": 0,
+    "status": "SAME_ARCHITECTURAL_ADDRESS_SINGLE_FORM",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   },
+   {
+    "low_encoded_form": "0x000f6402",
+    "high_canonical_address": "0x00ff6402",
+    "low_encoded_20bit": "0xf6402",
+    "zero_extended_interpretation": "0x000f6402",
+    "architectural_effective_address": "0x00ff6402",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x001e1a",
+      "raw_bytes": "0fc90264",
+      "instruction_size": 4,
+      "oracle_disassembly": "storw r0,0xf6402:m",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0xf6402:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf6402",
+      "effective_address": "0x00ff6402",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f6402",
+      "architectural_effective_address": "0x00ff6402",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf6402",
+       "zero_extended": "0x000f6402",
+       "architectural_effective": "0x00ff6402",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff6402",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x001e1a"
+      ],
+      "provenance": [
+       "0x001e1a"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [],
+    "low_form_count": 1,
+    "high_canonical_count": 0,
+    "status": "SAME_ARCHITECTURAL_ADDRESS_SINGLE_FORM",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   },
+   {
+    "low_encoded_form": "0x000f4858",
+    "high_canonical_address": "0x00ff4858",
+    "low_encoded_20bit": "0xf4858",
+    "zero_extended_interpretation": "0x000f4858",
+    "architectural_effective_address": "0x00ff4858",
+    "sign_extension_matches_high": true,
+    "low_form_accesses": [
+     {
+      "instruction": "0x000eb8",
+      "raw_bytes": "ff775848",
+      "instruction_size": 4,
+      "oracle_disassembly": "sbitw $0xf:s,0xf4858:m",
+      "operation": "RMW",
+      "width_bits": 16,
+      "decoded_operand": "0xf4858:m",
+      "address_mode": "ABS20",
+      "base_registers": null,
+      "displacement": null,
+      "encoded_address": "0xf4858",
+      "effective_address": "0x00ff4858",
+      "reference_register": null,
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": "0x000f4858",
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "RELOC_ABS20_HIGH_FIELD",
+      "extension_models": {
+       "encoded_20bit": "0xf4858",
+       "zero_extended": "0x000f4858",
+       "architectural_effective": "0x00ff4858",
+       "extension_rule": "RELOC_ABS20",
+       "status": "PROVEN_BY_ISA_IMPLEMENTATIONS"
+      },
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x000eb8"
+      ],
+      "provenance": [
+       "0x000eb8"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "high_canonical_accesses": [
+     {
+      "instruction": "0x000c50",
+      "raw_bytes": "2090",
+      "instruction_size": 2,
+      "oracle_disassembly": "loadw 0x0:s(r1,r0),r2",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x000c4a"
+      ],
+      "provenance": [
+       "0x000c4a"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x000c56",
+      "raw_bytes": "20d0",
+      "instruction_size": 2,
+      "oracle_disassembly": "storw r2,0x0:s(r1,r0)",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x000c4a"
+      ],
+      "provenance": [
+       "0x000c4a"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x000c58",
+      "raw_bytes": "2090",
+      "instruction_size": 2,
+      "oracle_disassembly": "loadw 0x0:s(r1,r0),r2",
+      "operation": "READ",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x000c4a"
+      ],
+      "provenance": [
+       "0x000c4a"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x000c5c",
+      "raw_bytes": "20d0",
+      "instruction_size": 2,
+      "oracle_disassembly": "storw r2,0x0:s(r1,r0)",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "decoded_operand": "0x0:s(r1,r0)",
+      "address_mode": "REGISTER_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": 0,
+      "encoded_address": null,
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "zero_extended_alternative": null,
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "REGISTER_PAIR_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "UNKNOWN_SC14448_MAP",
+      "related_device_hint": "SC14480_PERIPHERAL_WINDOW_HINT",
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x000c4a"
+      ],
+      "provenance": [
+       "0x000c4a"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x000c4a",
+      "raw_bytes": "7000ff005848",
+      "instruction_size": 6,
+      "oracle_disassembly": "movd $0xff4858:l,(r1,r0)",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "decoded_operand": "$0xff4858:l,(r1,r0)",
+      "address_mode": "IMMEDIATE_PAIR",
+      "base_registers": [
+       "r1",
+       "r0"
+      ],
+      "displacement": null,
+      "encoded_address": "0x00ff4858",
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r1",
+       "r0"
+      ],
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "LITERAL_24BIT_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "LITERAL_VALUE_NOT_PHYSICAL_MAP",
+      "related_device_hint": null,
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x000c4a"
+      ],
+      "provenance": [
+       "0x000c4a"
+      ],
+      "confidence": "ORACLE_MATCH"
+     },
+     {
+      "instruction": "0x000f0e",
+      "raw_bytes": "7600ff005848",
+      "instruction_size": 6,
+      "oracle_disassembly": "movd $0xff4858:l,(r7,r6)",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "decoded_operand": "$0xff4858:l,(r7,r6)",
+      "address_mode": "IMMEDIATE_PAIR",
+      "base_registers": [
+       "r7",
+       "r6"
+      ],
+      "displacement": null,
+      "encoded_address": "0x00ff4858",
+      "effective_address": "0x00ff4858",
+      "reference_register": [
+       "r7",
+       "r6"
+      ],
+      "source": "firmware/dectfw_secondlevel_441p2test.hex",
+      "architectural_effective_address": "0x00ff4858",
+      "effective_address_model": "LITERAL_24BIT_VALUE",
+      "extension_models": null,
+      "address_kind": "RESOLVED",
+      "physical_address_status": "LITERAL_VALUE_NOT_PHYSICAL_MAP",
+      "related_device_hint": null,
+      "previous_effective_address": "0x00ff4858",
+      "previous_expression": null,
+      "source_provenance": [
+       "0x000f0e"
+      ],
+      "provenance": [
+       "0x000f0e"
+      ],
+      "confidence": "ORACLE_MATCH"
+     }
+    ],
+    "low_form_count": 1,
+    "high_canonical_count": 6,
+    "status": "SAME_ARCHITECTURAL_ADDRESS",
+    "alias_proof": "PROVEN_BY_ISA_EXTENSION",
+    "physical_register_identity": "CANDIDATE",
+    "blocker": "SC14448 physical register identity still relies on the related-device SC14480 map; no SC14448 bus trace or system-controller document."
+   }
+  ]
+ },
+ "status": "ADDRESS_SPACE_RESOLVED_BY_ABS20_EXTENSION",
+ "hypotheses": [
+  {
+   "name": "ZERO_EXTENSION",
+   "status": "REFUTED",
+   "support": "none beyond the old analyzer's assumption",
+   "contradiction": "binutils GAS OP_ABS20 rejects >0xEFFFF; QEMU and GAS both expand abs20 high values to 0xFFxxxx"
+  },
+  {
+   "name": "SIGN_EXTENSION_RELOC_ABS20",
+   "status": "PROVEN_BY_ISA",
+   "support": "QEMU reloc_abs20: addr > 0xEFFFF => addr | 0xF00000; binutils GAS adjust_if_needed and OP_ABS20 use the same threshold",
+   "contradiction": "no vendor CR16Cplus core manual in the offline set; still an ISA/implementation proof, not an SC14448 bus trace"
+  },
+  {
+   "name": "HARDWARE_ALIAS_OR_WINDOW",
+   "status": "UNKNOWN",
+   "support": "12 low/high pairs in both images; SC14480 peripheral window is 0x00FFxxxx",
+   "contradiction": "SC14480 map separates 0x000Fxxxx FLASH from 0x00FFxxxx peripherals; SC14448 differs"
+  },
+  {
+   "name": "DIFFERENT_SPACES",
+   "status": "SUPPORTED_BY_RELATED_DATASHEET",
+   "support": "SC14480 places low range in FLASH/ROM and high range in peripherals; numeric addresses differ",
+   "contradiction": "SC14448 may differ; low writes cannot target SC14480 FLASH"
+  },
+  {
+   "name": "ANALYZER_DECODING_ERROR",
+   "status": "REFUTED_FOR_FORM",
+   "support": "raw bytes and oracle disassembly agree on abs20 vs pair forms",
+   "contradiction": "none for address form; physical extension remains unknown"
+  },
+  {
+   "name": "CHIP_SPECIFIC_MAP",
+   "status": "UNKNOWN",
+   "support": "SC14448 has no offline memory map",
+   "contradiction": "none; cannot be tested offline"
+  }
+ ],
+ "blocker": "The address-space conflict is resolved: the low 0x000Fxxxx values are encoded abs20 fields that expand to 0x00FFxxxx. The remaining uncertainty is SC14448 physical register identity, not address space; it needs an SC14448 map or bus evidence, not SC14480 alone."
+}

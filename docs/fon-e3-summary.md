@@ -4,6 +4,11 @@
 > No router, firmware execution, MMIO, DMA, reset, UART or ringing occurred.
 > K1/K2 remain **NO-GO**.
 
+> **E3.2 correction:** abs20 fields above `0xEFFFF` expand to `0x00FFxxxx`
+> on CR16Cplus.  Thus the old `0x000F6006` / `0x000F5402` / `0x000F6002`
+> labels are encoded operands, not separate effective addresses.  See
+> `fon-e32-summary.md` and `history/fon-e32-q57-investigation.md`.
+
 ## 1. What E3 changed
 
 E3 does not run another broad immediate/table scan.  It first audits the E2
@@ -33,18 +38,19 @@ with the per-use path criterion.
 
 | Image | E2 PROVEN audited | still PROVEN | downgraded to CANDIDATE | INVALID |
 |---|---:|---:|---:|---:|
-| normal | 25 | 21 | 4 | 0 |
-| p2test | 10 | 8 | 2 | 0 |
+| normal | 25 | 11 | 3 | 11 |
+| p2test | 10 | 3 | 2 | 5 |
 
-Downgraded normal cases: `0x021a30`, `0x0228ba`, `0x023ca4`, `0x024348`.
-Downgraded p2test cases: `0x0243b0`, `0x024754`.  Reasons are incomplete caller
-entry/path or a possible callee write before the use.  Every old memory use is
-now matched by instruction address and effective address; a changed use makes
-the old proof `INVALID`.  Full instruction-level records are in
-`cr16-e3-soundness-audit.json` and `cr16-e3-callsite-audit.json`.
+Changed/removed old uses include `0x000714`, `0x000812`, `0x0008a6`, `0x00093a`, `0x0009ce`, `0x000a62`, `0x002f44`, `0x003a1e`, `0x0224a6`, `0x0228ba`, `0x0261fa` normal; `0x000660`, `0x0006fe`, `0x00079c`, `0x020414`, `0x027138` p2test.  Reasons are incomplete caller
+entry/path or a possible callee write before the use.  The stricter audit now
+matches instruction address, effective address, operation and known
+displacement.  It also removed false E2 memory uses that were actually
+`movd (pair),(pair)` register moves; those records become `INVALID`.  Full
+instruction-level records are in `cr16-e3-soundness-audit.json` and
+`cr16-e3-callsite-audit.json`.
 
-The new analyzer reports **91 normal / 42 p2test** `PROVEN` records under its
-explicit criterion, plus 82/92 `CANDIDATE`.  This is not a re-labeling of the
+The new analyzer reports **43 normal / 22 p2test** `PROVEN` records under its
+explicit criterion, plus 58/69 `CANDIDATE`.  This is not a re-labeling of the
 old set: a callee that writes a pair **after** the memory use no longer makes
 the argument unprovable, while a possible write **before** the use still does.
 
@@ -132,7 +138,8 @@ Other observed operations:
 - event bits 2 and 3 invoke helpers;
 - normal helpers `0x3B28` and `0x3B38`;
 - p2test helpers `0x27744` and `0x27754`;
-- `0xF5402 = 0x2000` acknowledgement candidate.
+- `0x00FF5402 = 0x2000` acknowledgement candidate (encoded abs20 form
+  `0x000F5402`).
 
 `dsp_int` is classified **DSP_EVENT_OR_SOFTWARE_QUEUE_CANDIDATE** in the
 standalone E3 report.  The SC14480 datasheet raises this to a stronger
@@ -149,10 +156,10 @@ it is not named PCM.
 Observed flow:
 
 ```text
-loadw 0xF6006 -> r0
+loadw encoded 0xF6006 -> r0   ; effective 0x00FF6006
 movb r0,r2          ; only the low byte is kept
 movw 0x400,r0       ; r0 is overwritten
-storw r0,0xF5402    ; write 0x0400
+storw r0,encoded 0xF5402     ; effective 0x00FF5402, write 0x0400
 bal callee          ; callee receives r2 as an input
 ```
 
@@ -161,18 +168,21 @@ small table/event routine; the p2test callee is a much larger routine.  Their
 structural equivalence is not proven, so E3 does not describe them as the same
 handler body.
 
-`0x000F6006` and `0x00FF6006` remain separate address spaces.  The pulse at
-`0x00FF6006` is not an alias of the `0x000F6006` read.  The polled
-`0xF6002` path (`0x25FAE` normal / `0x26764` p2test) is a separate candidate;
-the full pulse → poll → read → acknowledgement sequence is **not proven**.
+The E3.2 address-extension result removes the old address-space conflict:
+encoded `0xF6006` expands to effective `0x00FF6006`, so the read and the
+`0x00FF6006` pulse reach the same architectural address.  The polled encoded
+`0xF6002` path (`0x25FAE` normal / `0x26764` p2test) expands to
+`0x00FF6002`; it remains a separate candidate because the full pulse → poll →
+read → acknowledgement sequence is **not proven**.
 
 `dip_int` is classified **EVENT_STATUS_ACK_CANDIDATE**.  SC14480 printed
 p196–197 gives `0x00FF5402` `RESET_INT_PENDING_REG` with bit 10 `DIP_INT_PEND`
 and bit 13 `DSP_INT_PEND`, which matches the `0x0400`/`0x2000` values
-semantically.  However, E3 sees the firmware writing them to **`0x000F5402`**,
-not `0x00FF5402`; SC14480 maps `0x000Fxxxx` to program FLASH/ROM.  The
-address-space conflict is unresolved (Q57).  `dip_int` is not a proven slot-5
-or PCM consumer, and no 8 kHz period is claimed.
+semantically.  E3 printed the write as **`0x000F5402`**, but that is the
+encoded abs20 field; E3.2 expands it to effective **`0x00FF5402`**.  The
+address-space conflict is therefore resolved; the physical register identity
+remains `CANDIDATE_RELATED_DEVICE_MAP`.  `dip_int` is not a proven slot-5 or
+PCM consumer, and no 8 kHz period is claimed.
 
 ## 7. E3-E — `0x01000000`
 
@@ -187,7 +197,10 @@ base:    0x01000000 + 2*index
 
 `0x01000000` is outside the 24-bit range (`0xFFFFFF` maximum).  Its effective
 address-space/bank mechanism is **UNRESOLVED**; it is not automatically a
-normal 24-bit absolute address.
+normal 24-bit absolute address.  The DIP payload `0x1001` is `01 10`; in
+SC14480 Table 10, little-endian reads as `BR` and big-endian as `BR_B0`, so
+either byte order is a branch, but the parameter/target and validity are
+still unproved.
 
 The `dsp_int` pointer target is `0x01027FD8`, outside the 511-word fill range
 `0x01000002…0x010003FE`.  Thus the region contains at least two distinct
@@ -214,7 +227,7 @@ Remaining concrete unknowns:
 
 1. writers/runtime relocation of the `0xD6` pointer cell;
 2. source and semantics of the 16-bit event word at pointer+0x58;
-3. bit-level meaning and read-to-clear behavior of `0xF6006`;
+3. bit-level meaning and read-to-clear behavior of `0x00FF6006`;
 4. callee event-code processing (normal and p2test differ in size);
 5. 382/385 unresolved indirect sites;
 6. indexed accesses in `dsp_int`/callees;
@@ -234,7 +247,7 @@ This is a bounded negative result, not a complete-image proof of absence.
 | Q53 unreachable code | **open**; call paths improved, indirect/data ambiguity remains |
 | Q54 indirect dispatcher | **open**; 0 proven targets, 0/11 linked candidates after kill check |
 | Q55 symbolic store/read | **open**; pointer from `0xD6` found; DIP-RAM fill candidate, reader/payload still unresolved |
-| Q57 address aliases | **open and higher priority**; SC14480 low `0x000Fxxxx` = program FLASH/ROM vs `0x00FFxxxx` peripherals; no alias proof |
+| Q44 / Q57 address translation | **address-space part closed by E3.2**: abs20 fields above `0xEFFFF` expand to `0x00FFxxxx`; physical SC14448 register identity remains CANDIDATE |
 | Q74 EOR #2 | **partial**: raw/audio model; physical wire order open |
 | Q75 firmware slot-5 consumer | **open**: no proven handler |
 
@@ -245,11 +258,13 @@ All offline checks passed:
 - `python3 tools/tests/test_cr16_dataflow.py` — 0 failures/skips;
 - `python3 tools/tests/test_cr16_interproc.py` — 0 failures/skips;
 - `python3 tools/tests/test_cr16_e3.py` — 0 failures/skips;
+- `python3 tools/tests/test_cr16_address_spaces.py` — 0 failures/skips;
 - `python3 tools/tests/test_docs_consistency.py` — 0 failures/skips;
 - `make -C tools/fon-slot5-protocol test` — 0 failures;
 - all CR16 regression tests — 0 failures;
 - `sh tools/verify-workspace.sh` — 64 passed, 0 failed;
 - `git diff --check` — clean;
-- E3 report reproducibility — replay matches the committed JSON.
+- E3 report reproducibility — replay matches the committed JSON;
+- E3.2 address reports replay from raw firmware bytes and the CR16 oracle.
 
 No hardware action was authorized or performed.

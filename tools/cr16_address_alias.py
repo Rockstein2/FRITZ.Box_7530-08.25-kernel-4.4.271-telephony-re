@@ -58,7 +58,7 @@ def in_scope(value):
 
 
 def collect(image_entry):
-    """Return {address: [operation rows]} for resolved memory addresses."""
+    """Return {effective_address: [operation rows]}."""
     out = {}
     for row in image_entry["operations"]:
         if row["address_kind"] != "RESOLVED":
@@ -66,6 +66,30 @@ def collect(image_entry):
         if row["operation"] not in ("READ", "WRITE", "RMW"):
             continue          # ADDRESS_LOAD is not a memory access
         value = int(row["effective_address"], 16)
+        if not in_scope(value):
+            continue
+        out.setdefault(value, []).append(row)
+    return out
+
+
+def collect_low_encoded(image_entry):
+    """Return {encoded abs20 address: [rows]} for the historical low form.
+
+    After the E3.2 address-extension fix the effective address of an abs20
+    field above 0xEFFFF is 0x00FFxxxx.  The encoded field is preserved in
+    ``encoded_address`` so the candidate-pair report can still show why the
+    two numeric forms appeared.
+    """
+    out = {}
+    for row in image_entry["operations"]:
+        if row["address_kind"] != "RESOLVED":
+            continue
+        if row["operation"] not in ("READ", "WRITE", "RMW"):
+            continue
+        enc = row.get("encoded_address")
+        if not enc:
+            continue
+        value = int(enc, 16)
         if not in_scope(value):
             continue
         out.setdefault(value, []).append(row)
@@ -163,15 +187,16 @@ def build_report():
         if entry is None:
             continue
         addrs = collect(entry)
+        low_addrs = collect_low_encoded(entry)
         per_image[image] = addrs
         pairs = []
-        low = sorted(a for a in addrs if a < 0x00100000)
+        low = sorted(a for a in low_addrs if a < 0x00100000)
         high = sorted(a for a in addrs if a >= BLOCK_HI)
         for a in low:
             for b in high:
                 if (a & LOW_MASK) != (b & LOW_MASK):
                     continue
-                cmp = behaviour(addrs[a], addrs[b])
+                cmp = behaviour(low_addrs[a], addrs[b])
                 # the pattern match is NOT a dependency, so the evidence
                 # level stays at LOW_BITS_MATCH unless a dependency is found
                 level = ("BEHAVIOR_CORRELATION" if cmp["dependency_found"]
@@ -187,9 +212,9 @@ def build_report():
                     "dependency_note": cmp["dependency_note"],
                     "proof_status": "candidate; no document and no hardware "
                                     "evidence",
-                    "a": summarise(addrs[a]),
+                    "a": summarise(low_addrs[a]),
                     "b": summarise(addrs[b]),
-                    "a_sequence": sequences(addrs[a]),
+                    "a_sequence": sequences(low_addrs[a]),
                     "b_sequence": sequences(addrs[b]),
                     "correlation_notes": cmp["reasons"],
                 })
@@ -206,13 +231,14 @@ def build_report():
     if len(per_image) == 2:
         # compare actual address pairs, not just the set of low bits: two
         # images can share a low-bit value with different high halves
-        def pair_set(addrs):
-            low = sorted(a for a in addrs if a < 0x00100000)
+        def pair_set(addrs, lows):
+            low = sorted(a for a in lows if a < 0x00100000)
             high = sorted(a for a in addrs if a >= BLOCK_HI)
             return {(a, b) for a in low for b in high
                     if (a & LOW_MASK) == (b & LOW_MASK)}
 
-        sets = {name: pair_set(addrs) for name, addrs in per_image.items()}
+        sets = {name: pair_set(per_image[name], collect_low_encoded(
+            xref["images"][name])) for name in per_image}
         names = sorted(sets)
         both = sets[names[0]] & sets[names[1]]
         report["cross_image"] = {

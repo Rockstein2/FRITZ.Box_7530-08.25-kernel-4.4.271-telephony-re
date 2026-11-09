@@ -95,9 +95,17 @@ check("single register", P("0x10:m(r5)"), ("DISP_R", (0x10, "r5")))
 check("stack", P("0x0:s(sp)"), ("STACK", None))
 check("indexed r12", P("[r12]0x108:l(r1,r0)"), ("IDX", ("r12", 0x108)))
 check("plain register is not memory", P("r2"), None)
-check("abs20 from bytes", X.abs20_address(bytes.fromhex("0f890260")), 0xF6002)
-check("abs20 from bytes (store)", X.abs20_address(bytes.fromhex("0fc90264")),
-      0xF6402)
+check("abs20 encoded field", X.abs20_encoded_address(bytes.fromhex("0f890260")),
+      0xF6002)
+check("abs20 architectural address", X.abs20_address(bytes.fromhex("0f890260")),
+      0xFF6002)
+check("abs20 encoded field (store)",
+      X.abs20_encoded_address(bytes.fromhex("0fc90264")), 0xF6402)
+check("abs20 architectural address (store)",
+      X.abs20_address(bytes.fromhex("0fc90264")), 0xFF6402)
+check("abs20 reloc threshold low side", X.reloc_abs20(0xEFFFF), 0xEFFFF)
+check("abs20 reloc threshold high side", X.reloc_abs20(0xF0000), 0xFF0000)
+check("abs20 reloc 0xF6006", X.reloc_abs20(0xF6006), 0xFF6006)
 check("abs24 from bytes (0x116bc)", X.abs24_address(bytes.fromhex("130010f1bc16")),
       0x116BC)
 # the same three encodings the CR16 assembler emits for `<abs>:l` operands
@@ -330,7 +338,7 @@ else:
     check("sbitw is classified as RMW",
           hit[0]["operation"] if hit else None, "RMW")
     check("sbitw resolves its absolute address",
-          hit[0]["effective_address"] if hit else None, "0x000f5806")
+          hit[0]["effective_address"] if hit else None, "0x00ff5806")
 
     print("== synthetic: immediate tracking does not outlive a write")
     # bytes produced by the CR16 assembler for each sequence
@@ -410,17 +418,19 @@ else:
           "0x01000000" in (fill[0]["expression"] or "") if fill else None,
           True)
 
-    # the two address spaces must never be merged
-    for addr in ("0x000f6006", "0x00ff6006"):
-        hits = [r for r in rows if r["effective_address"] == addr]
-        check(f"{addr} is reported as its own address",
-              len(hits) > 0, True)
-    f6006 = {r["instruction"] for r in rows
-             if r["effective_address"] == "0x000f6006"}
+    # abs20 low fields are encoded forms, not separate effective addresses.
+    low = [r for r in rows
+           if r.get("encoded_address") == "0x000f6006"]
+    check("0x000F6006 is preserved as an encoded abs20 field",
+          len(low) > 0, True)
+    check("no row reports 0x000F6006 as an effective address",
+          any(r["effective_address"] == "0x000f6006" for r in rows), False)
+    check("encoded 0x000F6006 rows resolve to 0x00FF6006",
+          all(r["effective_address"] == "0x00ff6006" for r in low), True)
     ff6006 = {r["instruction"] for r in rows
               if r["effective_address"] == "0x00ff6006"}
-    check("the two 0xF6006 address spaces share no instruction",
-          f6006 & ff6006, set())
+    check("the encoded and pair forms share the architectural address",
+          {r["instruction"] for r in low} <= ff6006, True)
 
     # the abs24 (`data:l`) form: accesses that were invisible before PERIPH-2
     check("0x15ae writes 0x00FF4C00 (abs24)",
@@ -428,7 +438,7 @@ else:
     check("0x15b6 writes 0x00FF5000 (abs24)",
           op(0x15B6, "WRITE"), ("RESOLVED", "0x00ff5000"))
     check("0x0f6002 poll is at 0x25FAE",
-          op(0x25FAE, "READ"), ("RESOLVED", "0x000f6002"))
+          op(0x25FAE, "READ"), ("RESOLVED", "0x00ff6002"))
     check("every memory instruction is classified",
           unc, [])
 

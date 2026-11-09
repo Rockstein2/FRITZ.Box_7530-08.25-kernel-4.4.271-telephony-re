@@ -35,6 +35,7 @@ Verify the canonical layout and all SHA256 manifests with
 | `fon-e1-summary.md` | E1 cross-block dataflow, indirect search and DMA byte-order result. |
 | `fon-e2-summary.md` | E2 interprocedural analysis, table consumers, IRQ callgraphs and slot-5 boundary. |
 | `fon-e3-summary.md` | E3 proof audit, corrected table/IRQ reporting, dsp/dip traces and `0x01000000` boundary. |
+| `fon-e32-summary.md` | E3.2 audit fixes, CR16 abs20 expansion, Q57 resolution and DIP payload evidence. |
 
 ### External reference registry (`references/`)
 
@@ -150,6 +151,11 @@ provenance, never as status.
 | `history/fon-e3-dsp-irq-reconstruction.md` | `dsp_int`, `0xD6` pointer and helper trace |
 | `history/fon-e3-dip-pcm-reconstruction.md` | `dip_int`, `0xF6006`/`0xF5402` trace |
 | `history/fon-e3-loader-runtime-boundary.md` | 511-iteration fill range, address space and runtime pointer boundary |
+| `history/fon-e32-cr16-addressing.md` | abs20 encoding/expansion evidence, assembler and QEMU checks |
+| `history/fon-e32-q57-investigation.md` | Q57 hypothesis table and address-space resolution |
+| `history/fon-e32-dip-ram-fill.md` | DIP fill range and `0x1001` opcode candidates |
+| `history/fon-e32-dsp-dip-irq-comparison.md` | canonical DSP/DIP IRQ addresses vs SC14480 |
+| `history/fon-e32-proof-audit.md` | E3.1 audit fixes and fail-closed proof rules |
 
 ### Dialog SC14448 firmware and CR16
 
@@ -160,7 +166,7 @@ provenance, never as status.
 | `history/fon-dialog-boot-memory-map.md` | Firmware memory map |
 | `history/fon-dialog-boot-branch-decoding.md` | Boot branch decoding |
 | `history/fon-dialog-boot-disps25.md` | `disps25` decoding |
-| `history/fon-dialog-address-alias-hypotheses.md` | `0x000Fxxxx` vs `0x00FFxxxx` alias hypotheses |
+| `history/fon-dialog-address-alias-hypotheses.md` | `0x000Fxxxx` vs `0x00FFxxxx` alias hypotheses; E3.2 resolution banner |
 | `history/fon-dialog-board-uart-identification.md` | Board UART identification analysis |
 | `history/fon-dialog-copy-helper-28d56.md` | `0x28d56` copy helper |
 | `history/fon-dialog-cr16-addressing.md` | CR16 addressing modes |

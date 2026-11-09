@@ -9,7 +9,7 @@ E2 does not repeat the E1 MMIO-only xref scan.  It adds:
 
 - the continuation after every direct call;
 - 432/403 function summaries;
-- 146/116 E2 direct-call argument records, of which 25/10 were initially proven; E3 re-audited them (21/8 retained, 4/2 downgraded) and reports 173/134 records, 91/42 PROVEN;
+- 146/116 E2 direct-call argument records, of which 25/10 were initially proven; E3 re-audited them (11/3 retained, 14/7 invalid/changed after full use matching) and E3.2 reports 101/91 records, 43/22 PROVEN;
 - consumer-side analysis of 382/396 indirect sites;
 - complete 31-vector IRQ callgraphs for both images;
 - indexed accesses in the IRQ path;

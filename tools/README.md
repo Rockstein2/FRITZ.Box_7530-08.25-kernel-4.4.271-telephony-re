@@ -6,7 +6,9 @@
 | `cr16_dataflow.py` | Conservative cross-block CR16 register dataflow and reports |
 | `cr16_interproc.py` | Interprocedural summaries, table-consumer candidates and IRQ callgraphs |
 | `cr16_e3.py` | E3 proof audit, focused dsp/dip traces and handler boundary reports |
+| `cr16_address_spaces.py` | E3.2 address forms, abs20 expansion, Q57 conflict and DIP-fill reports |
 | `fon-tlmm-clock-probe/` | Read-only TLMM input probe (userspace + one-shot kernel module); offline-only until approved |
+| `tests/test_cr16_address_spaces.py` | abs20/abs24 forms, extension rule, Q57 and DIP-fill reports |
 | `tests/test_oem_tdm_timing.py` | Numerical proof of the Piglet 100 ms and PCMLINK 195 ms windows |
 | `fon-slot5-protocol/` | Offline slot-5 control encoder/status decoder and golden vectors |
 | `build-fon-openwrt.sh` | Clean package rebuild in the target SDK |

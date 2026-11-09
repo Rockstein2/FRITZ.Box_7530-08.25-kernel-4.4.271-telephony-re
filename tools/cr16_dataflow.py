@@ -120,7 +120,8 @@ def resolve_operand(insn, kind, state):
             break
     if parsed == "ABS":
         value = X.abs_address(insn)
-        if value == payload:
+        encoded = X.abs_encoded_address(insn)
+        if encoded == payload:
             return "RESOLVED", f"0x{value:08x}", None, None
         return "UNKNOWN", None, None, None
     if parsed == "DISP_RP":

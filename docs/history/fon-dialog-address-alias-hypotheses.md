@@ -15,8 +15,13 @@ exists for anything in this file.**
 The question: do `0x000F6006` and `0x00FF6006` name the same physical
 register on the SC14448?
 
-**Answer: UNKNOWN.**  Neither aliasing nor distinctness can be proven from
-the material available offline.
+**Answer after E3.2: the address-space part is RESOLVED; physical register
+identity is CANDIDATE.**  `0x000F6006` is a printed 20-bit abs20 field, not an
+effective address.  CR16Cplus expands fields above `0xEFFFF` by OR
+`0xF00000`, so encoded `0xF6006` is effective `0x00FF6006`.  The old
+zero-extended split was an analyzer artifact.  The remaining question needs
+an SC14448 map or a bus trace; see `fon-e32-q57-investigation.md`.
+Physical identity remains CANDIDATE.
 
 **Update (EXTREF-1).**  An external CR16C implementation
 (TobleMiner/dialog-cr16c-uart-boot, commit `3d041a68`, SC14441) uses the

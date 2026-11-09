@@ -15,8 +15,11 @@
 | `CONFLICT` | the reference and firmware evidence do not agree, or the same symbol is claimed in two address spaces |
 | `UNKNOWN` | insufficient evidence |
 
-`0x000Fxxxx` and `0x00FFxxxx` are separate address spaces unless an alias is
-proved.  No row below merges them.
+**E3.2 correction:** the `0x000Fxxxx` labels below are printed abs20 fields.
+CR16Cplus expands fields above `0xEFFFF` to `0x00FFxxxx`, so a row such as
+`0x000F6006` is the short encoding of effective `0x00FF6006`.  The table
+keeps both numeric forms for provenance; physical register identity remains
+a related-device CANDIDATE.
 
 ## 2. Register rows
 
@@ -37,12 +40,12 @@ proved.  No row below merges them.
 | `0xFF4810` | not identified in retrieved PDF pages | SC14CVMDECT | `0x00FF4810` read normal `0x19D4`; p2test `0x27A5E` | same low address; both images | `UNKNOWN` | firmware xrefs |
 | `0xFF4812` | not identified in retrieved PDF pages | SC14CVMDECT | `0x00FF4812` RMW normal `0x13A8…0x13AE`; p2test `0x0E1E…0x0E24` | same low address; both images | `UNKNOWN` | firmware xrefs |
 | `0xFF5804` | not identified in retrieved PDF pages | — | `0x00FF5804` RMW normal `0x1252…` | unknown | `UNKNOWN` | firmware xrefs |
-| `0x000F4858` | `P2_MODE_REG` candidate, different address space | SC14CVMDECT analogy | `0x000F4858` RMW normal `0x1442`; p2test `0x0EB8` | **conflicts with `0x00FF4858` if assumed identical** | `CONFLICT` / alias **UNKNOWN** | firmware xrefs; Q57 |
-| `0x000F6002` | no CVM mapping; SC14448 polled status candidate | — | `loadw 0xF6002` normal `0x25FAE`; p2test `0x26764` | both images | `EXACT_SC14448_EVIDENCE` for access; semantics `UNKNOWN` | firmware xrefs; E9 |
-| `0x000F6006` | no CVM mapping; SC14448 control/status candidate | — | `loadw` normal `0x2602C`, `0x28CDE`; p2test `0x267E2`, `0x27C96`; writers normal `0x1348`, `0x145C`; p2test `0x0DBE`, `0x0ED2` | both images, shifted | `EXACT_SC14448_EVIDENCE` for access; semantics `UNKNOWN` | firmware xrefs |
-| `0x00FF6006` | no CVM mapping; separate SC14448 pulse/read address | — | pulse/read/write normal `0x2582…0x25B4`; p2test `0x1E3E…0x1E70` | both images, shifted | `EXACT_SC14448_EVIDENCE` for access; alias with `0x000F6006` **UNKNOWN** | firmware xrefs; Q57 |
-| `0x000F5402` | no CVM mapping; SC14448 interrupt/control candidate | — | writes `0x100`, `0x400`, `0x2000` at normal `0x1934`, `0x25B0`, `0x289A8`, `0x28B00`, `0x28CE8`; p2test shifted | both images | `EXACT_SC14448_EVIDENCE` for access; semantics `UNKNOWN` | firmware xrefs |
-| `0x000F6400/6402` | no CVM mapping; reset/control candidate | — | `0xF6400=0`, `0xF6402=0xF0` normal `0x255E/0x2566`; p2test `0x1E12/0x1E1A` | both images | `EXACT_SC14448_EVIDENCE` for access; semantics `UNKNOWN` | firmware xrefs |
+| encoded `0x000F4858` | `P2_MODE_REG` candidate | SC14CVMDECT analogy | abs20 RMW normal `0x1442`; p2test `0x0EB8`; effective `0x00FF4858` | same effective address as the pair accesses | `SAME_ARCHITECTURAL_ADDRESS`; physical identity `CANDIDATE` | firmware xrefs; E3.2 |
+| encoded `0x000F6002` | no CVM mapping; `DIP_PC_REG` candidate | SC14480 analogy | `loadw 0xF6002` normal `0x25FAE`; p2test `0x26764`; effective `0x00FF6002` | both images | `EXACT_SC14448_EVIDENCE` for access; semantics `CANDIDATE` | firmware xrefs; E3.2 |
+| encoded `0x000F6006` | `DIP_CTRL_REG` candidate | SC14480 analogy | `loadw` normal `0x2602C`, `0x28CDE`; p2test `0x267E2`, `0x27C96`; writers normal `0x1348`, `0x145C`; p2test `0x0DBE`, `0x0ED2`; effective `0x00FF6006` | same effective address as the pair accesses | `SAME_ARCHITECTURAL_ADDRESS`; physical identity `CANDIDATE` | firmware xrefs; E3.2 |
+| `0x00FF6006` | `DIP_CTRL_REG` candidate | SC14480 analogy | pulse/read/write normal `0x2582…0x25B4`; p2test `0x1E3E…0x1E70` | both images, shifted; same effective address | `EXACT_SC14448_EVIDENCE` for access; physical identity `CANDIDATE` | firmware xrefs; E3.2 |
+| encoded `0x000F5402` | `RESET_INT_PENDING_REG` candidate | SC14480 analogy | writes `0x100`, `0x400`, `0x2000` at normal `0x1934`, `0x25B0`, `0x289A8`, `0x28B00`, `0x28CE8`; effective `0x00FF5402` | both images | `EXACT_SC14448_EVIDENCE` for access; physical identity `CANDIDATE` | firmware xrefs; E3.2 |
+| encoded `0x000F6400/6402` | `BMC_CTRL`/`BMC_CTRL2` candidate | SC14480 analogy | `0xF6400=0`, `0xF6402=0xF0` normal `0x255E/0x2566`; effective `0x00FF6400/6402` | both images | `EXACT_SC14448_EVIDENCE` for access; physical identity `CANDIDATE` | firmware xrefs; E3.2 |
 | `0x00FF5406` | no CVM mapping; SC14448 control candidate | — | RMW normal `0x1A14…0x1A22`, `0x2596…0x25A2`; p2test shifted | both images | `EXACT_SC14448_EVIDENCE` for access; semantics `UNKNOWN` | firmware xrefs |
 
 ## 2a. Full `0xFF48xx` family map
@@ -72,13 +75,13 @@ SC14CVMDECT module.  Page numbers are printed pages; see
 | `0x01000000–0x010003FF` | DIP Sequencer RAM, 512×16 | fill loop writes `0x01000002…0x010003FE` | **strong structural match**: 511 words start at DIP `+1` |
 | `0x01027F80–0x01027FFF` | Gen2DSP registers | `[0xD6] = 0x01027F80`; base for `+0x58` | **strong base match**; runtime pointer is a static image candidate |
 | `0x01027FD8` | `DSP_INT_REG` | `dsp_int` reads/tests/writes the word at pointer+0x58 | **strong functional hypothesis**: DSP interrupt vector/clear-on-write |
-| `0x00FF5402` | `RESET_INT_PENDING_REG`, bit 10 DIP / bit 13 DSP | firmware writes `0x0400`/`0x2000` to **`0x000F5402`** | semantic match; **address-space conflict** |
+| `0x00FF5402` | `RESET_INT_PENDING_REG`, bit 10 DIP / bit 13 DSP | abs20 `0xF5402` expands to `0x00FF5402` | semantic candidate; physical identity not proved |
 | `0x00FF6000` | `DIP_STACK_REG` | not seen in current scan | reference only |
-| `0x00FF6002` | `DIP_PC_REG` | firmware polls **`0x000F6002`** | **conflict**: not the same address space |
+| `0x00FF6002` | `DIP_PC_REG` | abs20 `0xF6002` expands to `0x00FF6002` | semantic candidate; physical identity not proved |
 | `0x00FF6004` | `DIP_STATUS_REG` | not seen | reference only |
-| `0x00FF6006` | `DIP_CTRL_REG`, bit 7 `URST` | `0x00FF6006` writes `0x80` then `0`, then reads | **strong same-address hypothesis**: stop/start DIP |
-| `0x00FF6400` | `BMC_CTRL_REG` | firmware writes **`0x000F6400`** | **conflict**: low/high space |
-| `0x00FF6402` | `BMC_CTRL2_REG` | firmware writes **`0x000F6402`** | **conflict**: low/high space |
+| `0x00FF6006` | `DIP_CTRL_REG`, bit 7 `URST` | pair accesses at `0x00FF6006` and abs20 `0xF6006` expand to the same effective address | **strong effective-address match**: stop/start DIP |
+| `0x00FF6400` | `BMC_CTRL_REG` | abs20 `0xF6400` expands to `0x00FF6400` | semantic candidate; physical identity not proved |
+| `0x00FF6402` | `BMC_CTRL2_REG` | abs20 `0xF6402` expands to `0x00FF6402` | semantic candidate; physical identity not proved |
 
 SC14480 printed p33/p64/p131–132/p171–172/p177/p196–197.  These rows are
 **related-device analogies**, not SC14448 proofs.  In particular:
@@ -86,8 +89,10 @@ SC14480 printed p33/p64/p131–132/p171–172/p177/p196–197.  These rows are
 - the `0x01000000` fill structure is strong, but the repeated payload `0x1001`
   is not decoded as a valid DIP program;
 - `DSP_INT_REG` explains the `dsp_int` shape, but not any slot-5 PCM meaning;
-- the low-address writes `0x000F5402`, `0x000F6002`, `0x000F6006` and
-  `0x000F6400/6402` remain an address-decode conflict (Q57 priority).
+- the short forms `0x000F5402`, `0x000F6002`, `0x000F6006` and
+  `0x000F6400/6402` are encoded abs20 fields that expand to `0x00FFxxxx`;
+  the address-space conflict is resolved, but the SC14448 physical register
+  identity remains a related-device candidate.
 
 ## 3. What the matching registers do and do not mean
 
@@ -121,8 +126,10 @@ not provide a mapping for them.
 - `0x000F5402` receives several different values (`0x100`, `0x400`, `0x2000`).
 - `0x000F6400/6402` are written in the bring-up path.
 
-The numeric similarity of `0x000F6006`, `0x00FF6006` and `0x000F6002` is not
-an alias proof.  E3 keeps them separate; Q57 remains open.
+The numeric relation of `0x000F6006`, `0x00FF6006` and `0x000F6002` is now
+explained by abs20 expansion: the low form is the encoded field and the high
+form is the effective address.  Q57 is resolved at the address-space level;
+the physical SC14448 register identity remains a candidate.
 
 ## 4. Unresolved cross-reference items
 
@@ -136,4 +143,5 @@ an alias proof.  E3 keeps them separate; Q57 remains open.
 5. What is the meaning of `0xF6002`, `0xF6006`, `0xFF6006`, `0xF5402` and
    `0xF6400/6402` on SC14448?  External references do not answer this.
 
-These are reference hints, not closures of Q16/Q17/Q54/Q57/Q75.
+These are reference hints, not closures of Q16/Q17/Q54/Q75.  E3.2 closes the
+Q57 address-space part; SC14448 physical identity is still open.

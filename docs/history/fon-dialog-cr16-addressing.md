@@ -12,6 +12,13 @@ Status: **offline analysis.**  Evidence levels: **L1** bytes, **L2** decode,
 **L4** semantics under the stated ISA assumptions, **L5** hardware.  No L5
 statement appears in this file.
 
+> **E3.2 update:** the statement below that bits 20–23 are “implicitly
+> zero” is only true for encoded values up to `0xEFFFF`.  CR16Cplus expands
+> values above `0xEFFFF` by OR `0xF00000`; see
+> `fon-e32-cr16-addressing.md`.  `0x000F6006` is an **encoded field**, not the
+> effective `0x00FF6006` address.  The earlier reasoning is retained as
+> historical context.
+
 The purpose is to separate three different questions that are easy to
 confuse:
 
@@ -85,9 +92,9 @@ things and no offline source ties them for this part.
 ```
 
 The operand is a **4-byte `abs20`**: bits 0–19 of the address are in the
-instruction, bits 20–23 are implicitly zero.  `0xF6006` fits in 20 bits, so
-the encoding is exact and the bus sees `0x000F6006` (assuming no
-translation, which is the open question).
+instruction.  For values up to `0xEFFFF`, bits 20–23 are zero.  Values above
+`0xEFFFF` are expanded by OR `0xF00000` (E3.2), so encoded `0xF6006` is
+effective `0x00FF6006`, not `0x000F6006`.
 
 ### `0x00FF6006` (indirect)
 
@@ -102,8 +109,9 @@ Here `0x00FF6006` is **data**, not an address field: the 24-bit constant is
 loaded into `(r1,r0)`, and the memory instruction has displacement 0.  The
 address on the bus is whatever `(r1,r0)` holds, i.e. the immediate itself.
 
-**Nothing in the decoder or in the relocation logic masks, shifts or remaps
-either value.**  The two numbers reach the core as written.
+The disassembler prints the encoded field without applying the abs20
+expansion.  The core/emulator rule, however, expands high fields; the two
+numeric forms therefore reach the same effective address after expansion.
 
 ## 4. What the assembler shows
 
