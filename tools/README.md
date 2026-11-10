@@ -57,6 +57,14 @@ See `../docs/history/fon-pcmlink-register-path.md` for the recovered call graph 
 confidence labels.
 # FON-E3.4 offline analysis
 
+SC14448-E4: `python3 tools/cr16_architecture.py` regenerates nine
+`reports/cr16-e4-*.json` from SHA-checked firmware, verified vector bytes,
+the converged cross-block dataflow and bounded CFG traversal. Function
+ends/matches are local candidates; the queue-item parser is **not** claimed
+to receive UART bytes. Run `python3 tools/tests/test_cr16_architecture.py`
+for fresh replay and fail-closed preservation, and the function-map,
+UART-runtime, and state-graph fixture scripts. No firmware execution.
+
 FON-E3.5: `python3 tools/cr16_pcm_ingress.py` regenerates the seven
 `reports/cr16-e35-*.json` candidate/proof-boundary inventories from both
 SHA-checked images. `cr16_fon_ctrl_trace.py` shares the same fail-closed

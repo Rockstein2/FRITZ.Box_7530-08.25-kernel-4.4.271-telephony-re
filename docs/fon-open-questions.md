@@ -26,6 +26,12 @@ reads at the SC14480 PCM_IN0…3 addresses are seen in the bounded map; this
 does **not** exclude indirect, DMA or shared-memory ingress. Q46/Q55 and
 the resolved architectural Q57 address rule are unchanged.
 
+SC14448-E4 (`sc14448-e4-summary.md`) narrows the runtime question: a
+RAM-item parser and main-loop dispatch chain are located in both images,
+but UART-named RX/TX vectors are stubs and the queue producer/host ingress
+is unknown. Q75 lacks physical slot mapping and instruction-level path
+to FON effects. Q46/Q55 receive no new closure; Q57 abs20 remains solved.
+
 Status: **the only list of unresolved items for this project**
 
 Each item states what the question is, what would close it, and in which

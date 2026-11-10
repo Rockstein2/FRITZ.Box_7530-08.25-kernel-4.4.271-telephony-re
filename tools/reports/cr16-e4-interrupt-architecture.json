@@ -1,0 +1,901 @@
+{
+ "tool": "cr16-architecture/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x028dca",
+     "raw_bytes": "002c",
+     "disassembly": "nop"
+    },
+    {
+     "instruction": "0x028996",
+     "raw_bytes": "2001",
+     "disassembly": "push $0x3,r0"
+    },
+    {
+     "instruction": "0x028cd0",
+     "raw_bytes": "e001",
+     "disassembly": "push $0x7,r0,RA"
+    },
+    {
+     "instruction": "0x028a94",
+     "raw_bytes": "f001",
+     "disassembly": "push $0x8,r0,RA"
+    }
+   ],
+   "cfg_evidence": {
+    "vectors_verified_against_raw_image": true,
+    "vectors": [
+     {
+      "index": 0,
+      "reference_name_candidate": "reserved00",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 1,
+      "reference_name_candidate": "nmi",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 2,
+      "reference_name_candidate": "reserved02",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 3,
+      "reference_name_candidate": "reserved03",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 4,
+      "reference_name_candidate": "reserved04",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 5,
+      "reference_name_candidate": "svc_trap",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 6,
+      "reference_name_candidate": "dvz_trap",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 7,
+      "reference_name_candidate": "flg_trap",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 8,
+      "reference_name_candidate": "bpt_trap",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 9,
+      "reference_name_candidate": "trc_trap",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 10,
+      "reference_name_candidate": "und_trap",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 11,
+      "reference_name_candidate": "reserved11",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 12,
+      "reference_name_candidate": "iad_trap",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 13,
+      "reference_name_candidate": "reserved13",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 14,
+      "reference_name_candidate": "dbg_trap",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 15,
+      "reference_name_candidate": "ise_int",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 16,
+      "reference_name_candidate": "access12_int",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 17,
+      "reference_name_candidate": "keyb_int",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 18,
+      "reference_name_candidate": "reserved_int18",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 19,
+      "reference_name_candidate": "ct_classd_int",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 20,
+      "reference_name_candidate": "uart_ri_int",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 21,
+      "reference_name_candidate": "uart_ti_int",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 22,
+      "reference_name_candidate": "spi_int",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 23,
+      "reference_name_candidate": "tim0_int",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 24,
+      "reference_name_candidate": "tim1_int",
+      "handler": "0x00028996",
+      "vector_raw": "cb440100",
+      "first_instruction": {
+       "instruction": "0x028996",
+       "raw_bytes": "2001",
+       "disassembly": "push $0x3,r0"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": false
+     },
+     {
+      "index": 25,
+      "reference_name_candidate": "clk100_int",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 26,
+      "reference_name_candidate": "dip_int",
+      "handler": "0x00028cd0",
+      "vector_raw": "68460100",
+      "first_instruction": {
+       "instruction": "0x028cd0",
+       "raw_bytes": "e001",
+       "disassembly": "push $0x7,r0,RA"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": false
+     },
+     {
+      "index": 27,
+      "reference_name_candidate": "ad_int",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 28,
+      "reference_name_candidate": "spi2",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 29,
+      "reference_name_candidate": "dsp_int",
+      "handler": "0x00028a94",
+      "vector_raw": "4a450100",
+      "first_instruction": {
+       "instruction": "0x028a94",
+       "raw_bytes": "f001",
+       "disassembly": "push $0x8,r0,RA"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": false
+     },
+     {
+      "index": 30,
+      "reference_name_candidate": "reserved30",
+      "handler": "0x00028dca",
+      "vector_raw": "e5460100",
+      "first_instruction": {
+       "instruction": "0x028dca",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     }
+    ]
+   },
+   "dataflow_evidence": {
+    "DSP_helpers": [
+     "0x003b28",
+     "0x003b38"
+    ],
+    "DIP_indexed_writer": "0x002618",
+    "UART_vectors_are_stubs": true
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "timer/dip/dsp numbering is reference analogy",
+    "interrupt interleavings and exact scheduling not reconstructed"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009ffc",
+     "raw_bytes": "002c",
+     "disassembly": "nop"
+    },
+    {
+     "instruction": "0x02772a",
+     "raw_bytes": "2001",
+     "disassembly": "push $0x3,r0"
+    },
+    {
+     "instruction": "0x027c88",
+     "raw_bytes": "e001",
+     "disassembly": "push $0x7,r0,RA"
+    },
+    {
+     "instruction": "0x027914",
+     "raw_bytes": "f001",
+     "disassembly": "push $0x8,r0,RA"
+    }
+   ],
+   "cfg_evidence": {
+    "vectors_verified_against_raw_image": true,
+    "vectors": [
+     {
+      "index": 0,
+      "reference_name_candidate": "reserved00",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 1,
+      "reference_name_candidate": "nmi",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 2,
+      "reference_name_candidate": "reserved02",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 3,
+      "reference_name_candidate": "reserved03",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 4,
+      "reference_name_candidate": "reserved04",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 5,
+      "reference_name_candidate": "svc_trap",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 6,
+      "reference_name_candidate": "dvz_trap",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 7,
+      "reference_name_candidate": "flg_trap",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 8,
+      "reference_name_candidate": "bpt_trap",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 9,
+      "reference_name_candidate": "trc_trap",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 10,
+      "reference_name_candidate": "und_trap",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 11,
+      "reference_name_candidate": "reserved11",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 12,
+      "reference_name_candidate": "iad_trap",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 13,
+      "reference_name_candidate": "reserved13",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 14,
+      "reference_name_candidate": "dbg_trap",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 15,
+      "reference_name_candidate": "ise_int",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 16,
+      "reference_name_candidate": "access12_int",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 17,
+      "reference_name_candidate": "keyb_int",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 18,
+      "reference_name_candidate": "reserved_int18",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 19,
+      "reference_name_candidate": "ct_classd_int",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 20,
+      "reference_name_candidate": "uart_ri_int",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 21,
+      "reference_name_candidate": "uart_ti_int",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 22,
+      "reference_name_candidate": "spi_int",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 23,
+      "reference_name_candidate": "tim0_int",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 24,
+      "reference_name_candidate": "tim1_int",
+      "handler": "0x0002772a",
+      "vector_raw": "953b0100",
+      "first_instruction": {
+       "instruction": "0x02772a",
+       "raw_bytes": "2001",
+       "disassembly": "push $0x3,r0"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": false
+     },
+     {
+      "index": 25,
+      "reference_name_candidate": "clk100_int",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 26,
+      "reference_name_candidate": "dip_int",
+      "handler": "0x00027c88",
+      "vector_raw": "443e0100",
+      "first_instruction": {
+       "instruction": "0x027c88",
+       "raw_bytes": "e001",
+       "disassembly": "push $0x7,r0,RA"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": false
+     },
+     {
+      "index": 27,
+      "reference_name_candidate": "ad_int",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 28,
+      "reference_name_candidate": "spi2",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     },
+     {
+      "index": 29,
+      "reference_name_candidate": "dsp_int",
+      "handler": "0x00027914",
+      "vector_raw": "8a3c0100",
+      "first_instruction": {
+       "instruction": "0x027914",
+       "raw_bytes": "f001",
+       "disassembly": "push $0x8,r0,RA"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": false
+     },
+     {
+      "index": 30,
+      "reference_name_candidate": "reserved30",
+      "handler": "0x00009ffc",
+      "vector_raw": "fe4f0000",
+      "first_instruction": {
+       "instruction": "0x009ffc",
+       "raw_bytes": "002c",
+       "disassembly": "nop"
+      },
+      "actual_hardware_source": "UNRESOLVED",
+      "known_stub": true
+     }
+    ]
+   },
+   "dataflow_evidence": {
+    "DSP_helpers": [
+     "0x027744",
+     "0x027754"
+    ],
+    "DIP_indexed_writer": "0x001ed4",
+    "UART_vectors_are_stubs": true
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "timer/dip/dsp numbering is reference analogy",
+    "interrupt interleavings and exact scheduling not reconstructed"
+   ]
+  }
+ }
+}

@@ -1,0 +1,2187 @@
+{
+ "tool": "cr16-architecture/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x00321a",
+     "raw_bytes": "bf60feff",
+     "disassembly": "addd $0xfffe:m,(sp)"
+    },
+    {
+     "instruction": "0x028d18",
+     "raw_bytes": "330c",
+     "disassembly": "beq0b r3,*+0x8:s"
+    },
+    {
+     "instruction": "0x028caa",
+     "raw_bytes": "330e",
+     "disassembly": "beq0w r3,*+0x8:s"
+    },
+    {
+     "instruction": "0x028c10",
+     "raw_bytes": "130f",
+     "disassembly": "bne0w r3,*+0x24:s"
+    },
+    {
+     "instruction": "0x0035f4",
+     "raw_bytes": "e810",
+     "disassembly": "br *+0x3604:s"
+    },
+    {
+     "instruction": "0x0024f8",
+     "raw_bytes": "0250",
+     "disassembly": "cmpb $0x0:s,r2"
+    },
+    {
+     "instruction": "0x028c82",
+     "raw_bytes": "1350",
+     "disassembly": "cmpb $0x1:s,r3"
+    },
+    {
+     "instruction": "0x020510",
+     "raw_bytes": "4450",
+     "disassembly": "cmpb $0x4:s,r4"
+    },
+    {
+     "instruction": "0x0204ea",
+     "raw_bytes": "4450",
+     "disassembly": "cmpb $0x4:s,r4"
+    },
+    {
+     "instruction": "0x028b76",
+     "raw_bytes": "0256",
+     "disassembly": "cmpd $0x0:s,(r3,r2)"
+    },
+    {
+     "instruction": "0x028b0c",
+     "raw_bytes": "0256",
+     "disassembly": "cmpd $0x0:s,(r3,r2)"
+    },
+    {
+     "instruction": "0x028c56",
+     "raw_bytes": "1352",
+     "disassembly": "cmpw $0x1:s,r3"
+    },
+    {
+     "instruction": "0x028bc8",
+     "raw_bytes": "1352",
+     "disassembly": "cmpw $0x1:s,r3"
+    },
+    {
+     "instruction": "0x021786",
+     "raw_bytes": "120000703024",
+     "disassembly": "loadb 0x2430:l,r0"
+    },
+    {
+     "instruction": "0x003b28",
+     "raw_bytes": "120000b06c93",
+     "disassembly": "loadd 0x936c:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x0289b0",
+     "raw_bytes": "0290",
+     "disassembly": "loadw 0x0:s(r3,r2),r0"
+    },
+    {
+     "instruction": "0x001580",
+     "raw_bytes": "8690",
+     "disassembly": "loadw 0x0:s(r7,r6),r8"
+    },
+    {
+     "instruction": "0x0035f6",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x002b70",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x002d10",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x002d6c",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x002d48",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x002d2c",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x002d88",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x002caa",
+     "raw_bytes": "700001001100",
+     "disassembly": "movd $0x10011:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x003662",
+     "raw_bytes": "b5545000",
+     "disassembly": "movd $0x50:m,(r6,r5)"
+    },
+    {
+     "instruction": "0x0012ea",
+     "raw_bytes": "7000ff003848",
+     "disassembly": "movd $0xff4838:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x028d70",
+     "raw_bytes": "2055",
+     "disassembly": "movd (r3,r2),(r1,r0)"
+    },
+    {
+     "instruction": "0x021e6a",
+     "raw_bytes": "005a",
+     "disassembly": "movw $0x0:s,r0"
+    },
+    {
+     "instruction": "0x003050",
+     "raw_bytes": "905d",
+     "disassembly": "movzb r9,r0"
+    },
+    {
+     "instruction": "0x003014",
+     "raw_bytes": "225f",
+     "disassembly": "movzw r2,(r3,r2)"
+    },
+    {
+     "instruction": "0x0011ce",
+     "raw_bytes": "0701",
+     "disassembly": "push $0x1,r7"
+    },
+    {
+     "instruction": "0x003cd2",
+     "raw_bytes": "0701",
+     "disassembly": "push $0x1,r7"
+    },
+    {
+     "instruction": "0x020000",
+     "raw_bytes": "0701",
+     "disassembly": "push $0x1,r7"
+    },
+    {
+     "instruction": "0x021088",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x025fb8",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x0025d8",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x02605e",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x020598",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x028a4c",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x003c56",
+     "raw_bytes": "1701",
+     "disassembly": "push $0x2,r7"
+    },
+    {
+     "instruction": "0x028d3c",
+     "raw_bytes": "1701",
+     "disassembly": "push $0x2,r7"
+    },
+    {
+     "instruction": "0x0210f8",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x00188a",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x001856",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x002a6e",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x002a4a",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x003642",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x003622",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x001330",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x003952",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x00190e",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x028cf4",
+     "raw_bytes": "2701",
+     "disassembly": "push $0x3,r7"
+    },
+    {
+     "instruction": "0x003c8c",
+     "raw_bytes": "a701",
+     "disassembly": "push $0x3,r7,RA"
+    },
+    {
+     "instruction": "0x009e10",
+     "raw_bytes": "a701",
+     "disassembly": "push $0x3,r7,RA"
+    },
+    {
+     "instruction": "0x003934",
+     "raw_bytes": "a701",
+     "disassembly": "push $0x3,r7,RA"
+    },
+    {
+     "instruction": "0x002ab6",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x002da4",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x028d56",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x002b86",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x0288d2",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x001388",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x00386a",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x003022",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x003264",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x009c5e",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x0219fa",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x0205f8",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x0030d2",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x002856",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x021268",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x00307e",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x003292",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x003b38",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x0039be",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x0039a4",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x00397c",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x003992",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002558",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002b18",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002b20",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002b68",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002b60",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002b58",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002b28",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002afe",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x00131c",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002a90",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002aa4",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x0205e6",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x00265a",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x009e68",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x009d38",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002b12",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x001a0a",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x028a70",
+     "raw_bytes": "14009030",
+     "disassembly": "sprd psr,(r1,r0)"
+    },
+    {
+     "instruction": "0x00156c",
+     "raw_bytes": "64d0",
+     "disassembly": "storw r6,0x0:s(r5,r4)"
+    }
+   ],
+   "cfg_evidence": {
+    "unique_12_instruction_prefix_matches": 97,
+    "matches": [
+     {
+      "normal": "0x00321a",
+      "p2test": "0x002dde",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028d18",
+      "p2test": "0x027c40",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028caa",
+      "p2test": "0x027c1a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028c10",
+      "p2test": "0x027adc",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0035f4",
+      "p2test": "0x003346",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0024f8",
+      "p2test": "0x001d56",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028c82",
+      "p2test": "0x027bf2",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x020510",
+      "p2test": "0x020292",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0204ea",
+      "p2test": "0x02026c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028b76",
+      "p2test": "0x0279f6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028b0c",
+      "p2test": "0x02798c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028c56",
+      "p2test": "0x027b9a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028bc8",
+      "p2test": "0x027a94",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x021786",
+      "p2test": "0x0214a0",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003b28",
+      "p2test": "0x027744",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0289b0",
+      "p2test": "0x009f18",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x001580",
+      "p2test": "0x000ffc",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0035f6",
+      "p2test": "0x003348",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b70",
+      "p2test": "0x00242c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002d10",
+      "p2test": "0x0028ac",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002d6c",
+      "p2test": "0x002908",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002d48",
+      "p2test": "0x0028e4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002d2c",
+      "p2test": "0x0028c8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002d88",
+      "p2test": "0x002924",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002caa",
+      "p2test": "0x002846",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003662",
+      "p2test": "0x0033b4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0012ea",
+      "p2test": "0x000d60",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028d70",
+      "p2test": "0x027ce0",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x021e6a",
+      "p2test": "0x022520",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003050",
+      "p2test": "0x002bec",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003014",
+      "p2test": "0x002bb0",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0011ce",
+      "p2test": "0x000c44",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003cd2",
+      "p2test": "0x027bc6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x020000",
+      "p2test": "0x020000",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x021088",
+      "p2test": "0x020f6c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x025fb8",
+      "p2test": "0x02676e",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0025d8",
+      "p2test": "0x001e94",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x02605e",
+      "p2test": "0x026814",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x020598",
+      "p2test": "0x02031a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028a4c",
+      "p2test": "0x009fb4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003c56",
+      "p2test": "0x027872",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028d3c",
+      "p2test": "0x027cac",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0210f8",
+      "p2test": "0x020fd6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00188a",
+      "p2test": "0x00130c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x001856",
+      "p2test": "0x0012d8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002a6e",
+      "p2test": "0x00232a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002a4a",
+      "p2test": "0x002306",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003642",
+      "p2test": "0x003394",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003622",
+      "p2test": "0x003374",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x001330",
+      "p2test": "0x000da6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003952",
+      "p2test": "0x027064",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00190e",
+      "p2test": "0x001390",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028cf4",
+      "p2test": "0x027c64",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003c8c",
+      "p2test": "0x0278a8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x009e10",
+      "p2test": "0x027412",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003934",
+      "p2test": "0x027046",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002ab6",
+      "p2test": "0x002372",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002da4",
+      "p2test": "0x002940",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028d56",
+      "p2test": "0x027cc6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b86",
+      "p2test": "0x002442",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0288d2",
+      "p2test": "0x02761c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x001388",
+      "p2test": "0x000dfe",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00386a",
+      "p2test": "0x026f7c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003022",
+      "p2test": "0x002bbe",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003264",
+      "p2test": "0x002e2a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x009c5e",
+      "p2test": "0x027260",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0219fa",
+      "p2test": "0x0220f8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0205f8",
+      "p2test": "0x02037a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0030d2",
+      "p2test": "0x002c78",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002856",
+      "p2test": "0x002112",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x021268",
+      "p2test": "0x021168",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00307e",
+      "p2test": "0x002c1a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003292",
+      "p2test": "0x002e58",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003b38",
+      "p2test": "0x027754",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0039be",
+      "p2test": "0x0270d0",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0039a4",
+      "p2test": "0x0270b6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00397c",
+      "p2test": "0x02708e",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003992",
+      "p2test": "0x0270a4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002558",
+      "p2test": "0x001e0c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b18",
+      "p2test": "0x0023d4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b20",
+      "p2test": "0x0023dc",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b68",
+      "p2test": "0x002424",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b60",
+      "p2test": "0x00241c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b58",
+      "p2test": "0x002414",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b28",
+      "p2test": "0x0023e4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002afe",
+      "p2test": "0x0023ba",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00131c",
+      "p2test": "0x000d92",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002a90",
+      "p2test": "0x00234c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002aa4",
+      "p2test": "0x002360",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0205e6",
+      "p2test": "0x020368",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00265a",
+      "p2test": "0x001f16",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x009e68",
+      "p2test": "0x02746a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x009d38",
+      "p2test": "0x02733a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b12",
+      "p2test": "0x0023ce",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x001a0a",
+      "p2test": "0x001440",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028a70",
+      "p2test": "0x009fd8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00156c",
+      "p2test": "0x000fe8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     }
+    ]
+   },
+   "dataflow_evidence": {
+    "selected_correspondence": {
+     "main": "0x0039f8",
+     "parser": "0x009e68",
+     "TX": "0x009f84"
+    }
+   },
+   "confidence": "CANDIDATE",
+   "unresolved_paths": [
+    "prefix similarity does not prove semantic equivalence",
+    "unique-prefix filtering excludes changed implementations"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x002dde",
+     "raw_bytes": "bf60feff",
+     "disassembly": "addd $0xfffe:m,(sp)"
+    },
+    {
+     "instruction": "0x027c40",
+     "raw_bytes": "330c",
+     "disassembly": "beq0b r3,*+0x8:s"
+    },
+    {
+     "instruction": "0x027c1a",
+     "raw_bytes": "330e",
+     "disassembly": "beq0w r3,*+0x8:s"
+    },
+    {
+     "instruction": "0x027adc",
+     "raw_bytes": "130f",
+     "disassembly": "bne0w r3,*+0x24:s"
+    },
+    {
+     "instruction": "0x003346",
+     "raw_bytes": "e810",
+     "disassembly": "br *+0x3356:s"
+    },
+    {
+     "instruction": "0x001d56",
+     "raw_bytes": "0250",
+     "disassembly": "cmpb $0x0:s,r2"
+    },
+    {
+     "instruction": "0x027bf2",
+     "raw_bytes": "1350",
+     "disassembly": "cmpb $0x1:s,r3"
+    },
+    {
+     "instruction": "0x020292",
+     "raw_bytes": "4450",
+     "disassembly": "cmpb $0x4:s,r4"
+    },
+    {
+     "instruction": "0x02026c",
+     "raw_bytes": "4450",
+     "disassembly": "cmpb $0x4:s,r4"
+    },
+    {
+     "instruction": "0x0279f6",
+     "raw_bytes": "0256",
+     "disassembly": "cmpd $0x0:s,(r3,r2)"
+    },
+    {
+     "instruction": "0x02798c",
+     "raw_bytes": "0256",
+     "disassembly": "cmpd $0x0:s,(r3,r2)"
+    },
+    {
+     "instruction": "0x027b9a",
+     "raw_bytes": "1352",
+     "disassembly": "cmpw $0x1:s,r3"
+    },
+    {
+     "instruction": "0x027a94",
+     "raw_bytes": "1352",
+     "disassembly": "cmpw $0x1:s,r3"
+    },
+    {
+     "instruction": "0x0214a0",
+     "raw_bytes": "12000070861c",
+     "disassembly": "loadb 0x1c86:l,r0"
+    },
+    {
+     "instruction": "0x027744",
+     "raw_bytes": "120000b0a494",
+     "disassembly": "loadd 0x94a4:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x009f18",
+     "raw_bytes": "0290",
+     "disassembly": "loadw 0x0:s(r3,r2),r0"
+    },
+    {
+     "instruction": "0x000ffc",
+     "raw_bytes": "8690",
+     "disassembly": "loadw 0x0:s(r7,r6),r8"
+    },
+    {
+     "instruction": "0x003348",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x00242c",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x0028ac",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x002908",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x0028e4",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x0028c8",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x002924",
+     "raw_bytes": "700001000000",
+     "disassembly": "movd $0x10000:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x002846",
+     "raw_bytes": "700001001100",
+     "disassembly": "movd $0x10011:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x0033b4",
+     "raw_bytes": "b5545000",
+     "disassembly": "movd $0x50:m,(r6,r5)"
+    },
+    {
+     "instruction": "0x000d60",
+     "raw_bytes": "7000ff003848",
+     "disassembly": "movd $0xff4838:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x027ce0",
+     "raw_bytes": "2055",
+     "disassembly": "movd (r3,r2),(r1,r0)"
+    },
+    {
+     "instruction": "0x022520",
+     "raw_bytes": "005a",
+     "disassembly": "movw $0x0:s,r0"
+    },
+    {
+     "instruction": "0x002bec",
+     "raw_bytes": "905d",
+     "disassembly": "movzb r9,r0"
+    },
+    {
+     "instruction": "0x002bb0",
+     "raw_bytes": "225f",
+     "disassembly": "movzw r2,(r3,r2)"
+    },
+    {
+     "instruction": "0x000c44",
+     "raw_bytes": "0701",
+     "disassembly": "push $0x1,r7"
+    },
+    {
+     "instruction": "0x027bc6",
+     "raw_bytes": "0701",
+     "disassembly": "push $0x1,r7"
+    },
+    {
+     "instruction": "0x020000",
+     "raw_bytes": "0701",
+     "disassembly": "push $0x1,r7"
+    },
+    {
+     "instruction": "0x020f6c",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x02676e",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x001e94",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x026814",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x02031a",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x009fb4",
+     "raw_bytes": "8701",
+     "disassembly": "push $0x1,r7,RA"
+    },
+    {
+     "instruction": "0x027872",
+     "raw_bytes": "1701",
+     "disassembly": "push $0x2,r7"
+    },
+    {
+     "instruction": "0x027cac",
+     "raw_bytes": "1701",
+     "disassembly": "push $0x2,r7"
+    },
+    {
+     "instruction": "0x020fd6",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x00130c",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x0012d8",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x00232a",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x002306",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x003394",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x003374",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x000da6",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x027064",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x001390",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x027c64",
+     "raw_bytes": "2701",
+     "disassembly": "push $0x3,r7"
+    },
+    {
+     "instruction": "0x0278a8",
+     "raw_bytes": "a701",
+     "disassembly": "push $0x3,r7,RA"
+    },
+    {
+     "instruction": "0x027412",
+     "raw_bytes": "a701",
+     "disassembly": "push $0x3,r7,RA"
+    },
+    {
+     "instruction": "0x027046",
+     "raw_bytes": "a701",
+     "disassembly": "push $0x3,r7,RA"
+    },
+    {
+     "instruction": "0x002372",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x002940",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x027cc6",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x002442",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x02761c",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x000dfe",
+     "raw_bytes": "b701",
+     "disassembly": "push $0x4,r7,RA"
+    },
+    {
+     "instruction": "0x026f7c",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x002bbe",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x002e2a",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x027260",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x0220f8",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x02037a",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x002c78",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x002112",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x021168",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x002c1a",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x002e58",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x027754",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x0270d0",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x0270b6",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x02708e",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x0270a4",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x001e0c",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x0023d4",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x0023dc",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002424",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x00241c",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002414",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x0023e4",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x0023ba",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x000d92",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x00234c",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x002360",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x020368",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x001f16",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x02746a",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x02733a",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x0023ce",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x001440",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x009fd8",
+     "raw_bytes": "14009030",
+     "disassembly": "sprd psr,(r1,r0)"
+    },
+    {
+     "instruction": "0x000fe8",
+     "raw_bytes": "64d0",
+     "disassembly": "storw r6,0x0:s(r5,r4)"
+    }
+   ],
+   "cfg_evidence": {
+    "unique_12_instruction_prefix_matches": 97,
+    "matches": [
+     {
+      "normal": "0x00321a",
+      "p2test": "0x002dde",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028d18",
+      "p2test": "0x027c40",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028caa",
+      "p2test": "0x027c1a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028c10",
+      "p2test": "0x027adc",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0035f4",
+      "p2test": "0x003346",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0024f8",
+      "p2test": "0x001d56",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028c82",
+      "p2test": "0x027bf2",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x020510",
+      "p2test": "0x020292",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0204ea",
+      "p2test": "0x02026c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028b76",
+      "p2test": "0x0279f6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028b0c",
+      "p2test": "0x02798c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028c56",
+      "p2test": "0x027b9a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028bc8",
+      "p2test": "0x027a94",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x021786",
+      "p2test": "0x0214a0",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003b28",
+      "p2test": "0x027744",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0289b0",
+      "p2test": "0x009f18",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x001580",
+      "p2test": "0x000ffc",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0035f6",
+      "p2test": "0x003348",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b70",
+      "p2test": "0x00242c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002d10",
+      "p2test": "0x0028ac",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002d6c",
+      "p2test": "0x002908",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002d48",
+      "p2test": "0x0028e4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002d2c",
+      "p2test": "0x0028c8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002d88",
+      "p2test": "0x002924",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002caa",
+      "p2test": "0x002846",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003662",
+      "p2test": "0x0033b4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0012ea",
+      "p2test": "0x000d60",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028d70",
+      "p2test": "0x027ce0",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x021e6a",
+      "p2test": "0x022520",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003050",
+      "p2test": "0x002bec",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003014",
+      "p2test": "0x002bb0",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0011ce",
+      "p2test": "0x000c44",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003cd2",
+      "p2test": "0x027bc6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x020000",
+      "p2test": "0x020000",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x021088",
+      "p2test": "0x020f6c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x025fb8",
+      "p2test": "0x02676e",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0025d8",
+      "p2test": "0x001e94",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x02605e",
+      "p2test": "0x026814",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x020598",
+      "p2test": "0x02031a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028a4c",
+      "p2test": "0x009fb4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003c56",
+      "p2test": "0x027872",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028d3c",
+      "p2test": "0x027cac",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0210f8",
+      "p2test": "0x020fd6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00188a",
+      "p2test": "0x00130c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x001856",
+      "p2test": "0x0012d8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002a6e",
+      "p2test": "0x00232a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002a4a",
+      "p2test": "0x002306",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003642",
+      "p2test": "0x003394",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003622",
+      "p2test": "0x003374",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x001330",
+      "p2test": "0x000da6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003952",
+      "p2test": "0x027064",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00190e",
+      "p2test": "0x001390",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028cf4",
+      "p2test": "0x027c64",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003c8c",
+      "p2test": "0x0278a8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x009e10",
+      "p2test": "0x027412",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003934",
+      "p2test": "0x027046",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002ab6",
+      "p2test": "0x002372",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002da4",
+      "p2test": "0x002940",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028d56",
+      "p2test": "0x027cc6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b86",
+      "p2test": "0x002442",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0288d2",
+      "p2test": "0x02761c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x001388",
+      "p2test": "0x000dfe",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00386a",
+      "p2test": "0x026f7c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003022",
+      "p2test": "0x002bbe",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003264",
+      "p2test": "0x002e2a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x009c5e",
+      "p2test": "0x027260",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0219fa",
+      "p2test": "0x0220f8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0205f8",
+      "p2test": "0x02037a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0030d2",
+      "p2test": "0x002c78",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002856",
+      "p2test": "0x002112",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x021268",
+      "p2test": "0x021168",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00307e",
+      "p2test": "0x002c1a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003292",
+      "p2test": "0x002e58",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003b38",
+      "p2test": "0x027754",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0039be",
+      "p2test": "0x0270d0",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0039a4",
+      "p2test": "0x0270b6",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00397c",
+      "p2test": "0x02708e",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x003992",
+      "p2test": "0x0270a4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002558",
+      "p2test": "0x001e0c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b18",
+      "p2test": "0x0023d4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b20",
+      "p2test": "0x0023dc",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b68",
+      "p2test": "0x002424",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b60",
+      "p2test": "0x00241c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b58",
+      "p2test": "0x002414",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b28",
+      "p2test": "0x0023e4",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002afe",
+      "p2test": "0x0023ba",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00131c",
+      "p2test": "0x000d92",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002a90",
+      "p2test": "0x00234c",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002aa4",
+      "p2test": "0x002360",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x0205e6",
+      "p2test": "0x020368",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00265a",
+      "p2test": "0x001f16",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x009e68",
+      "p2test": "0x02746a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x009d38",
+      "p2test": "0x02733a",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x002b12",
+      "p2test": "0x0023ce",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x001a0a",
+      "p2test": "0x001440",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x028a70",
+      "p2test": "0x009fd8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     },
+     {
+      "normal": "0x00156c",
+      "p2test": "0x000fe8",
+      "confidence": "CFG_PREFIX_CANDIDATE",
+      "note": "12-instruction structural prefix only; not semantic equivalence"
+     }
+    ]
+   },
+   "dataflow_evidence": {
+    "selected_correspondence": {
+     "main": "0x027112",
+     "parser": "0x02746a",
+     "TX": "0x009bc8"
+    }
+   },
+   "confidence": "CANDIDATE",
+   "unresolved_paths": [
+    "prefix similarity does not prove semantic equivalence",
+    "unique-prefix filtering excludes changed implementations"
+   ]
+  }
+ }
+}

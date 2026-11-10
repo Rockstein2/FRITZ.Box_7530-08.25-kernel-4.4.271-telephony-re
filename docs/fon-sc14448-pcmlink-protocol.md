@@ -232,6 +232,12 @@ PCM ingress and Linux normal/special/RX bit signatures. There is still no
 proved physical slot-5 receiver or source-to-sink FON control consumer.
 The normal/special markers need not be mutually exclusive: the special path
 ORs `0x8000` into an **unmasked** `special_field`.
+
+SC14448-E4 (`sc14448-e4-summary.md`) discovers a separate RAM-item command
+parser and second-level UART TX pump. The parser's input is **not** linked
+to UART RX or the PCMLINK logical slot-5 transport. Its observed numeric
+command IDs must not be interpreted as FON words without a source-to-sink
+proof. Bootloader UART framing is a separate earlier stage.
 # E3.3 scope note
 
 Bounded offline traces of `dip_int` and `dsp_int` in

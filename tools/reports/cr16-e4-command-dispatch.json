@@ -1,0 +1,385 @@
+{
+ "tool": "cr16-architecture/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009e68",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x0039f2",
+     "raw_bytes": "00c07664",
+     "disassembly": "bal (ra),*+0x9e68:m"
+    },
+    {
+     "instruction": "0x009e76",
+     "raw_bytes": "b5502300",
+     "disassembly": "cmpb $0x23:m,r5"
+    },
+    {
+     "instruction": "0x009e94",
+     "raw_bytes": "b2526701",
+     "disassembly": "cmpw $0x167:m,r2"
+    },
+    {
+     "instruction": "0x009e9a",
+     "raw_bytes": "b252f1ff",
+     "disassembly": "cmpw $0xfff1:m,r2"
+    },
+    {
+     "instruction": "0x009ebc",
+     "raw_bytes": "7250",
+     "disassembly": "cmpb $0x7:s,r2"
+    },
+    {
+     "instruction": "0x009ec0",
+     "raw_bytes": "b2500900",
+     "disassembly": "cmpb $0x9:m,r2"
+    },
+    {
+     "instruction": "0x009ec6",
+     "raw_bytes": "a250",
+     "disassembly": "cmpb $0xa:s,r2"
+    },
+    {
+     "instruction": "0x009eca",
+     "raw_bytes": "d250",
+     "disassembly": "cmpb $0xd:s,r2"
+    }
+   ],
+   "cfg_evidence": {
+    "queue_to_dispatch_call": true,
+    "dispatch_to_parser_call": true,
+    "parser_type_edges": "DIRECT_RESOLVED_SELECTED",
+    "parser_input_from_UART": "UNRESOLVED"
+   },
+   "dataflow_evidence": {
+    "parser": {
+     "entry": {
+      "instruction": "0x009e68",
+      "raw_bytes": "1e01",
+      "disassembly": "push RA"
+     },
+     "direct_caller": {
+      "instruction": "0x0039f2",
+      "raw_bytes": "00c07664",
+      "disassembly": "bal (ra),*+0x9e68:m"
+     },
+     "sync_byte_comparison": {
+      "instruction": "0x009e76",
+      "raw_bytes": "b5502300",
+      "disassembly": "cmpb $0x23:m,r5"
+     },
+     "type_comparisons": [
+      {
+       "instruction": "0x009e94",
+       "raw_bytes": "b2526701",
+       "disassembly": "cmpw $0x167:m,r2"
+      },
+      {
+       "instruction": "0x009e9a",
+       "raw_bytes": "b252f1ff",
+       "disassembly": "cmpw $0xfff1:m,r2"
+      }
+     ],
+     "subcommand_comparisons": [
+      {
+       "instruction": "0x009ebc",
+       "raw_bytes": "7250",
+       "disassembly": "cmpb $0x7:s,r2"
+      },
+      {
+       "instruction": "0x009ec0",
+       "raw_bytes": "b2500900",
+       "disassembly": "cmpb $0x9:m,r2"
+      },
+      {
+       "instruction": "0x009ec6",
+       "raw_bytes": "a250",
+       "disassembly": "cmpb $0xa:s,r2"
+      },
+      {
+       "instruction": "0x009eca",
+       "raw_bytes": "d250",
+       "disassembly": "cmpb $0xd:s,r2"
+      }
+     ],
+     "subcommand_targets": [
+      {
+       "id": 7,
+       "branch": {
+        "instruction": "0x009ebe",
+        "raw_bytes": "0910",
+        "disassembly": "beq *+0x9ed0:s"
+       },
+       "target": {
+        "instruction": "0x009ed0",
+        "raw_bytes": "409f0700",
+        "disassembly": "loadw 0x7:m(r1,r0),r4"
+       },
+       "label": "UNNAMED_COMMAND"
+      },
+      {
+       "id": 9,
+       "branch": {
+        "instruction": "0x009ec4",
+        "raw_bytes": "0311",
+        "disassembly": "beq *+0x9eea:s"
+       },
+       "target": {
+        "instruction": "0x009eea",
+        "raw_bytes": "00af0300",
+        "disassembly": "loadd 0x3:m(r1,r0),(r1,r0)"
+       },
+       "label": "UNNAMED_COMMAND"
+      },
+      {
+       "id": 10,
+       "branch": {
+        "instruction": "0x009ec8",
+        "raw_bytes": "0711",
+        "disassembly": "beq *+0x9ef6:s"
+       },
+       "target": {
+        "instruction": "0x009ef6",
+        "raw_bytes": "30b4",
+        "disassembly": "loadb 0x4:s(r1,r0),r3"
+       },
+       "label": "UNNAMED_COMMAND"
+      },
+      {
+       "id": 13,
+       "branch": {
+        "instruction": "0x009ecc",
+        "raw_bytes": "0910",
+        "disassembly": "beq *+0x9ede:s"
+       },
+       "target": {
+        "instruction": "0x009ede",
+        "raw_bytes": "20af0300",
+        "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+       },
+       "label": "UNNAMED_COMMAND"
+      }
+     ],
+     "type_values": [
+      "0x0167",
+      "0xfff1"
+     ],
+     "subcommand_values": [
+      7,
+      9,
+      10,
+      13
+     ],
+     "payload_offsets": [
+      "type @ +0; subcommand @ +2; arguments @ +3/+4/+7 on selected paths"
+     ],
+     "source": "queue item pointer from main loop; UART RX provenance UNKNOWN",
+     "command_semantics": "UNRESOLVED"
+    }
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "parser message length and validation not globally proved",
+    "source queue producer/host transport unknown",
+    "other handlers, responses and indirect effects unresolved"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x02746a",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x02710c",
+     "raw_bytes": "00c05e03",
+     "disassembly": "bal (ra),*+0x2746a:m"
+    },
+    {
+     "instruction": "0x027478",
+     "raw_bytes": "b5502300",
+     "disassembly": "cmpb $0x23:m,r5"
+    },
+    {
+     "instruction": "0x027496",
+     "raw_bytes": "b2526701",
+     "disassembly": "cmpw $0x167:m,r2"
+    },
+    {
+     "instruction": "0x02749c",
+     "raw_bytes": "b252f1ff",
+     "disassembly": "cmpw $0xfff1:m,r2"
+    },
+    {
+     "instruction": "0x0274be",
+     "raw_bytes": "7250",
+     "disassembly": "cmpb $0x7:s,r2"
+    },
+    {
+     "instruction": "0x0274c2",
+     "raw_bytes": "b2500900",
+     "disassembly": "cmpb $0x9:m,r2"
+    },
+    {
+     "instruction": "0x0274c8",
+     "raw_bytes": "a250",
+     "disassembly": "cmpb $0xa:s,r2"
+    },
+    {
+     "instruction": "0x0274cc",
+     "raw_bytes": "d250",
+     "disassembly": "cmpb $0xd:s,r2"
+    }
+   ],
+   "cfg_evidence": {
+    "queue_to_dispatch_call": true,
+    "dispatch_to_parser_call": true,
+    "parser_type_edges": "DIRECT_RESOLVED_SELECTED",
+    "parser_input_from_UART": "UNRESOLVED"
+   },
+   "dataflow_evidence": {
+    "parser": {
+     "entry": {
+      "instruction": "0x02746a",
+      "raw_bytes": "1e01",
+      "disassembly": "push RA"
+     },
+     "direct_caller": {
+      "instruction": "0x02710c",
+      "raw_bytes": "00c05e03",
+      "disassembly": "bal (ra),*+0x2746a:m"
+     },
+     "sync_byte_comparison": {
+      "instruction": "0x027478",
+      "raw_bytes": "b5502300",
+      "disassembly": "cmpb $0x23:m,r5"
+     },
+     "type_comparisons": [
+      {
+       "instruction": "0x027496",
+       "raw_bytes": "b2526701",
+       "disassembly": "cmpw $0x167:m,r2"
+      },
+      {
+       "instruction": "0x02749c",
+       "raw_bytes": "b252f1ff",
+       "disassembly": "cmpw $0xfff1:m,r2"
+      }
+     ],
+     "subcommand_comparisons": [
+      {
+       "instruction": "0x0274be",
+       "raw_bytes": "7250",
+       "disassembly": "cmpb $0x7:s,r2"
+      },
+      {
+       "instruction": "0x0274c2",
+       "raw_bytes": "b2500900",
+       "disassembly": "cmpb $0x9:m,r2"
+      },
+      {
+       "instruction": "0x0274c8",
+       "raw_bytes": "a250",
+       "disassembly": "cmpb $0xa:s,r2"
+      },
+      {
+       "instruction": "0x0274cc",
+       "raw_bytes": "d250",
+       "disassembly": "cmpb $0xd:s,r2"
+      }
+     ],
+     "subcommand_targets": [
+      {
+       "id": 7,
+       "branch": {
+        "instruction": "0x0274c0",
+        "raw_bytes": "0910",
+        "disassembly": "beq *+0x274d2:s"
+       },
+       "target": {
+        "instruction": "0x0274d2",
+        "raw_bytes": "409f0700",
+        "disassembly": "loadw 0x7:m(r1,r0),r4"
+       },
+       "label": "UNNAMED_COMMAND"
+      },
+      {
+       "id": 9,
+       "branch": {
+        "instruction": "0x0274c6",
+        "raw_bytes": "0311",
+        "disassembly": "beq *+0x274ec:s"
+       },
+       "target": {
+        "instruction": "0x0274ec",
+        "raw_bytes": "00af0300",
+        "disassembly": "loadd 0x3:m(r1,r0),(r1,r0)"
+       },
+       "label": "UNNAMED_COMMAND"
+      },
+      {
+       "id": 10,
+       "branch": {
+        "instruction": "0x0274ca",
+        "raw_bytes": "0711",
+        "disassembly": "beq *+0x274f8:s"
+       },
+       "target": {
+        "instruction": "0x0274f8",
+        "raw_bytes": "30b4",
+        "disassembly": "loadb 0x4:s(r1,r0),r3"
+       },
+       "label": "UNNAMED_COMMAND"
+      },
+      {
+       "id": 13,
+       "branch": {
+        "instruction": "0x0274ce",
+        "raw_bytes": "0910",
+        "disassembly": "beq *+0x274e0:s"
+       },
+       "target": {
+        "instruction": "0x0274e0",
+        "raw_bytes": "20af0300",
+        "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+       },
+       "label": "UNNAMED_COMMAND"
+      }
+     ],
+     "type_values": [
+      "0x0167",
+      "0xfff1"
+     ],
+     "subcommand_values": [
+      7,
+      9,
+      10,
+      13
+     ],
+     "payload_offsets": [
+      "type @ +0; subcommand @ +2; arguments @ +3/+4/+7 on selected paths"
+     ],
+     "source": "queue item pointer from main loop; UART RX provenance UNKNOWN",
+     "command_semantics": "UNRESOLVED"
+    }
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "parser message length and validation not globally proved",
+    "source queue producer/host transport unknown",
+    "other handlers, responses and indirect effects unresolved"
+   ]
+  }
+ }
+}

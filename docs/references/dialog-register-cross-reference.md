@@ -145,3 +145,9 @@ the physical SC14448 register identity remains a candidate.
 
 These are reference hints, not closures of Q16/Q17/Q54/Q75.  E3.2 closes the
 Q57 address-space part; SC14448 physical identity is still open.
+
+E4 (`../sc14448-e4-summary.md`) additionally verifies second-level writes
+to effective `0x00FF4902/04` and bit5 test at `0x00FF4900` on a bounded
+runtime TX queue path. The SC14441 UART register names are related-device
+labels, not SC14448 register identity proof. The two UART-numbered runtime
+vectors point to `nop; retx` in both images; no UART RX→parser path follows.

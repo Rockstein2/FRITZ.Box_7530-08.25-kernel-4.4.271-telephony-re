@@ -1,0 +1,209 @@
+{
+ "tool": "cr16-architecture/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x028dca",
+     "raw_bytes": "002c",
+     "disassembly": "nop"
+    },
+    {
+     "instruction": "0x028dcc",
+     "raw_bytes": "0300",
+     "disassembly": "retx"
+    },
+    {
+     "instruction": "0x009f84",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x009fb8",
+     "raw_bytes": "0fc90249",
+     "disassembly": "storw r0,0xf4902:m"
+    },
+    {
+     "instruction": "0x009fc0",
+     "raw_bytes": "0fc90449",
+     "disassembly": "storw r0,0xf4904:m"
+    },
+    {
+     "instruction": "0x009fd6",
+     "raw_bytes": "5f7f0049",
+     "disassembly": "tbitw $0x5:s,0xf4900:m"
+    }
+   ],
+   "cfg_evidence": {
+    "vector_RX": {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 20,
+     "raw": "e5460100",
+     "reference_name": "uart_ri_int",
+     "stored": "0x000146e5",
+     "table_address": "0x0074"
+    },
+    "vector_TX": {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x028dca",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00028dca",
+     "handler_even": true,
+     "index": 21,
+     "raw": "e5460100",
+     "reference_name": "uart_ti_int",
+     "stored": "0x000146e5",
+     "table_address": "0x0078"
+    },
+    "uart_rx_tx_vectors_point_to_same_nop_retx": true,
+    "main_to_tx": [
+     "0x003a62",
+     "0x009f84"
+    ],
+    "first_level_uart_boot_protocol_separate": true
+   },
+   "dataflow_evidence": {
+    "tx_queue_index_cells": [
+     "0x9376",
+     "0x9378",
+     "0x937a"
+    ],
+    "tx_byte_source": "indexed RAM buffer; byte -> zero extend -> storw 0x00ff4902",
+    "tx_registers_architectural": [
+     "0x00ff4900",
+     "0x00ff4902",
+     "0x00ff4904"
+    ],
+    "rx_peripheral_read_into_runtime_parser": "NOT_ESTABLISHED",
+    "runtime_UART_frame": "NOT_ESTABLISHED"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "UART vectors stubbed; no ISR RX byte path",
+    "queue producer is not proved to be UART",
+    "UART boot framing must not transfer to runtime"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009ffc",
+     "raw_bytes": "002c",
+     "disassembly": "nop"
+    },
+    {
+     "instruction": "0x009ffe",
+     "raw_bytes": "0300",
+     "disassembly": "retx"
+    },
+    {
+     "instruction": "0x009bc8",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x009bfc",
+     "raw_bytes": "0fc90249",
+     "disassembly": "storw r0,0xf4902:m"
+    },
+    {
+     "instruction": "0x009c04",
+     "raw_bytes": "0fc90449",
+     "disassembly": "storw r0,0xf4904:m"
+    },
+    {
+     "instruction": "0x009c1a",
+     "raw_bytes": "5f7f0049",
+     "disassembly": "tbitw $0x5:s,0xf4900:m"
+    }
+   ],
+   "cfg_evidence": {
+    "vector_RX": {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 20,
+     "raw": "fe4f0000",
+     "reference_name": "uart_ri_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x0074"
+    },
+    "vector_TX": {
+     "handler": {
+      "block_size": 2,
+      "block_start": "0x009ffc",
+      "ends_with_retx": true,
+      "first_instruction": "nop ",
+      "in_image": true,
+      "last_instruction": "retx ",
+      "memory_operations": []
+     },
+     "handler_address": "0x00009ffc",
+     "handler_even": true,
+     "index": 21,
+     "raw": "fe4f0000",
+     "reference_name": "uart_ti_int",
+     "stored": "0x00004ffe",
+     "table_address": "0x0078"
+    },
+    "uart_rx_tx_vectors_point_to_same_nop_retx": true,
+    "main_to_tx": [
+     "0x027180",
+     "0x009bc8"
+    ],
+    "first_level_uart_boot_protocol_separate": true
+   },
+   "dataflow_evidence": {
+    "tx_queue_index_cells": [
+     "0x94ae",
+     "0x94b0",
+     "0x94b2"
+    ],
+    "tx_byte_source": "indexed RAM buffer; byte -> zero extend -> storw 0x00ff4902",
+    "tx_registers_architectural": [
+     "0x00ff4900",
+     "0x00ff4902",
+     "0x00ff4904"
+    ],
+    "rx_peripheral_read_into_runtime_parser": "NOT_ESTABLISHED",
+    "runtime_UART_frame": "NOT_ESTABLISHED"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "UART vectors stubbed; no ISR RX byte path",
+    "queue producer is not proved to be UART",
+    "UART boot framing must not transfer to runtime"
+   ]
+  }
+ }
+}

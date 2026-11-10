@@ -34,6 +34,15 @@ but indexed/indirect/DMA ingress is not excluded. Local RAM-bit → effective
 SC14448 analog FON meaning is proved for them. The physical PCM mapping
 and Q75 firmware consumer remain unknown.
 
+SC14448-E4 (`sc14448-e4-summary.md`) independently validates the second-level
+vector bytes: the two reference-UART-numbered vectors in each image share
+a `nop; retx` stub. Separate runtime TX code writes effective `0x00FF4902`
+and is called from the main loop. A main-loop RAM pointer pair `[0xDA]` /
+`[0xDE]` leads via a selected direct-call chain to a parser that compares
+item byte `0x23`, type words `0x0167`/`0xFFF1`, and subcommand values
+7/9/10/13. **The queue producer is not proven to be UART RX**; these
+values are not assigned a host-facing protocol or FON semantic meaning.
+
 Status: **confirmed evidence only. Anything not listed here is either an open
 question (`fon-open-questions.md`) or historical reasoning under
 `docs/history/`.**
