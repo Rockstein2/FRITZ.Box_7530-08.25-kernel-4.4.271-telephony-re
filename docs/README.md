@@ -44,6 +44,7 @@ Verify the canonical layout and all SHA256 manifests with
 | `fon-e32-summary.md` | E3.2 audit fixes, CR16 abs20 expansion, Q57 resolution and DIP payload evidence. |
 | `fon-e33-summary.md` | E3.3 bounded DIP fill/bring-up and DIP/DSP IRQ traces, provenance and remaining limits. |
 | `fon-e34-summary.md` | E3.4 DIP writer/value formulas, possible 512-word model, local CR16 loop count and checked CFG order. |
+| `fon-e35-summary.md` | E3.5 PCM ingress register inventory, Linux control/status signatures and explicit Q75 source-to-sink boundary. |
 
 ### External reference registry (`references/`)
 

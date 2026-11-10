@@ -1,0 +1,65 @@
+{
+ "tool": "cr16-pcm-ingress/1",
+ "linux_oem_sha256": {
+  "pcmlink.ko": "6620510bc1d4b0f4d670e1e93d3f308dc3002785d3129521156eb5e1bc4a363b",
+  "Piglet_noemif.ko": "24ef5a6ac42d43d1980631b43202f40c79a025a4d96337f45333a13a0d54567b"
+ },
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [],
+   "cfg_evidence": {
+    "firmware_status_to_linux_rx": false
+   },
+   "dataflow_evidence": {
+    "linux_RX": {
+     "gate": "bit15 clear",
+     "reg44": "0x00020008 | ((rx_status<<3)&0x0f00) | ((rx_status<<4)&0x00ff)",
+     "mapped_bits": "rx[0..3]->reg44[4..7]; rx[5..8]->reg44[8..11]",
+     "hook_poll": "reg44[7] <- rx_status[3] (Linux-side only)",
+     "raw_dma_position": "logical slot != raw DMA index; physical wire order UNKNOWN"
+    },
+    "firmware_status_producer": null,
+    "source_peripheral": null
+   },
+   "related_device_evidence": {
+    "SC14480/SC14CVMDECT": "RELATED_DEVICE_HYPOTHESIS"
+   },
+   "confidence": "UNRESOLVED",
+   "unresolved_paths": [
+    "SC14448 status source and output peripheral unknown",
+    "firmware status -> physical slot -> Linux rx_status not reconstructed"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [],
+   "cfg_evidence": {
+    "firmware_status_to_linux_rx": false
+   },
+   "dataflow_evidence": {
+    "linux_RX": {
+     "gate": "bit15 clear",
+     "reg44": "0x00020008 | ((rx_status<<3)&0x0f00) | ((rx_status<<4)&0x00ff)",
+     "mapped_bits": "rx[0..3]->reg44[4..7]; rx[5..8]->reg44[8..11]",
+     "hook_poll": "reg44[7] <- rx_status[3] (Linux-side only)",
+     "raw_dma_position": "logical slot != raw DMA index; physical wire order UNKNOWN"
+    },
+    "firmware_status_producer": null,
+    "source_peripheral": null
+   },
+   "related_device_evidence": {
+    "SC14480/SC14CVMDECT": "RELATED_DEVICE_HYPOTHESIS"
+   },
+   "confidence": "UNRESOLVED",
+   "unresolved_paths": [
+    "SC14448 status source and output peripheral unknown",
+    "firmware status -> physical slot -> Linux rx_status not reconstructed"
+   ]
+  }
+ }
+}

@@ -1,0 +1,421 @@
+{
+ "tool": "cr16-pcm-ingress/1",
+ "linux_oem_sha256": {
+  "pcmlink.ko": "6620510bc1d4b0f4d670e1e93d3f308dc3002785d3129521156eb5e1bc4a363b",
+  "Piglet_noemif.ko": "24ef5a6ac42d43d1980631b43202f40c79a025a4d96337f45333a13a0d54567b"
+ },
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x002e54",
+     "raw_bytes": "ffc0b1f7",
+     "disassembly": "bal (ra),*-0x2604:m"
+    },
+    {
+     "instruction": "0x002e8a",
+     "raw_bytes": "ffc07bf7",
+     "disassembly": "bal (ra),*-0x2604:m"
+    },
+    {
+     "instruction": "0x002f2c",
+     "raw_bytes": "ffc0d9f6",
+     "disassembly": "bal (ra),*-0x2604:m"
+    },
+    {
+     "instruction": "0x002fb0",
+     "raw_bytes": "ffc055f6",
+     "disassembly": "bal (ra),*-0x2604:m"
+    },
+    {
+     "instruction": "0x003110",
+     "raw_bytes": "ffc0f5f4",
+     "disassembly": "bal (ra),*-0x2604:m"
+    },
+    {
+     "instruction": "0x003332",
+     "raw_bytes": "ffc0d3f2",
+     "disassembly": "bal (ra),*-0x2604:m"
+    },
+    {
+     "instruction": "0x0033de",
+     "raw_bytes": "ffc027f2",
+     "disassembly": "bal (ra),*-0x2604:m"
+    },
+    {
+     "instruction": "0x0036b6",
+     "raw_bytes": "ffc04fef",
+     "disassembly": "bal (ra),*-0x2604:m"
+    },
+    {
+     "instruction": "0x0036de",
+     "raw_bytes": "ffc027ef",
+     "disassembly": "bal (ra),*-0x2604:m"
+    },
+    {
+     "instruction": "0x025fd4",
+     "raw_bytes": "fdc031c6",
+     "disassembly": "bal (ra),*-0x2604:m"
+    }
+   ],
+   "cfg_evidence": {
+    "direct_caller_edges": [
+     {
+      "instruction": {
+       "instruction": "0x002e54",
+       "raw_bytes": "ffc0b1f7",
+       "disassembly": "bal (ra),*-0x2604:m"
+      },
+      "callee": "0x002604",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x002e8a",
+       "raw_bytes": "ffc07bf7",
+       "disassembly": "bal (ra),*-0x2604:m"
+      },
+      "callee": "0x002604",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x002f2c",
+       "raw_bytes": "ffc0d9f6",
+       "disassembly": "bal (ra),*-0x2604:m"
+      },
+      "callee": "0x002604",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x002fb0",
+       "raw_bytes": "ffc055f6",
+       "disassembly": "bal (ra),*-0x2604:m"
+      },
+      "callee": "0x002604",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x003110",
+       "raw_bytes": "ffc0f5f4",
+       "disassembly": "bal (ra),*-0x2604:m"
+      },
+      "callee": "0x002604",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x003332",
+       "raw_bytes": "ffc0d3f2",
+       "disassembly": "bal (ra),*-0x2604:m"
+      },
+      "callee": "0x002604",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x0033de",
+       "raw_bytes": "ffc027f2",
+       "disassembly": "bal (ra),*-0x2604:m"
+      },
+      "callee": "0x002604",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x0036b6",
+       "raw_bytes": "ffc04fef",
+       "disassembly": "bal (ra),*-0x2604:m"
+      },
+      "callee": "0x002604",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x0036de",
+       "raw_bytes": "ffc027ef",
+       "disassembly": "bal (ra),*-0x2604:m"
+      },
+      "callee": "0x002604",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x025fd4",
+       "raw_bytes": "fdc031c6",
+       "disassembly": "bal (ra),*-0x2604:m"
+      },
+      "callee": "0x002604",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     }
+    ],
+    "fill_writer": "0x0025d0",
+    "restore_writer": "0x003704"
+   },
+   "dataflow_evidence": {
+    "known_selected_word_index_2": "0x12aa",
+    "other_caller_bytes": "UNRESOLVED",
+    "reason_for_index_2": "UNRESOLVED"
+   },
+   "related_device_evidence": {
+    "SC14480/SC14CVMDECT": "RELATED_DEVICE_HYPOTHESIS"
+   },
+   "confidence": "UNRESOLVED",
+   "unresolved_paths": [
+    "most caller inputs and entry context unknown",
+    "no DECT-only or PCM-linked classification established"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x0029f0",
+     "raw_bytes": "ffc0d1f4",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x002a28",
+     "raw_bytes": "ffc099f4",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x002ac0",
+     "raw_bytes": "ffc001f4",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x002b4c",
+     "raw_bytes": "ffc075f3",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x002cbc",
+     "raw_bytes": "ffc005f2",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x002ef6",
+     "raw_bytes": "ffc0cbef",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x002fb2",
+     "raw_bytes": "ffc00fef",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x0030fa",
+     "raw_bytes": "ffc0c7ed",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x003106",
+     "raw_bytes": "ffc0bbed",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x003114",
+     "raw_bytes": "ffc0aded",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x003176",
+     "raw_bytes": "ffc04bed",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x003408",
+     "raw_bytes": "ffc0b9ea",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x003430",
+     "raw_bytes": "ffc091ea",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    },
+    {
+     "instruction": "0x02678a",
+     "raw_bytes": "fdc037b7",
+     "disassembly": "bal (ra),*-0x1ec0:m"
+    }
+   ],
+   "cfg_evidence": {
+    "direct_caller_edges": [
+     {
+      "instruction": {
+       "instruction": "0x0029f0",
+       "raw_bytes": "ffc0d1f4",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x002a28",
+       "raw_bytes": "ffc099f4",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x002ac0",
+       "raw_bytes": "ffc001f4",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x002b4c",
+       "raw_bytes": "ffc075f3",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x002cbc",
+       "raw_bytes": "ffc005f2",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x002ef6",
+       "raw_bytes": "ffc0cbef",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x002fb2",
+       "raw_bytes": "ffc00fef",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x0030fa",
+       "raw_bytes": "ffc0c7ed",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x003106",
+       "raw_bytes": "ffc0bbed",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x003114",
+       "raw_bytes": "ffc0aded",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x003176",
+       "raw_bytes": "ffc04bed",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x003408",
+       "raw_bytes": "ffc0b9ea",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x003430",
+       "raw_bytes": "ffc091ea",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     },
+     {
+      "instruction": {
+       "instruction": "0x02678a",
+       "raw_bytes": "fdc037b7",
+       "disassembly": "bal (ra),*-0x1ec0:m"
+      },
+      "callee": "0x001ec0",
+      "classification": "UNKNOWN",
+      "reason": "direct call proves only writer reachability; upstream DECT/DSP/PCM source unresolved"
+     }
+    ],
+    "fill_writer": "0x001e8c",
+    "restore_writer": "0x003456"
+   },
+   "dataflow_evidence": {
+    "known_selected_word_index_2": "0x12aa",
+    "other_caller_bytes": "UNRESOLVED",
+    "reason_for_index_2": "UNRESOLVED"
+   },
+   "related_device_evidence": {
+    "SC14480/SC14CVMDECT": "RELATED_DEVICE_HYPOTHESIS"
+   },
+   "confidence": "UNRESOLVED",
+   "unresolved_paths": [
+    "most caller inputs and entry context unknown",
+    "no DECT-only or PCM-linked classification established"
+   ]
+  }
+ }
+}

@@ -57,6 +57,15 @@ See `../docs/history/fon-pcmlink-register-path.md` for the recovered call graph 
 confidence labels.
 # FON-E3.4 offline analysis
 
+FON-E3.5: `python3 tools/cr16_pcm_ingress.py` regenerates the seven
+`reports/cr16-e35-*.json` candidate/proof-boundary inventories from both
+SHA-checked images. `cr16_fon_ctrl_trace.py` shares the same fail-closed
+bundle. The tool does not execute firmware; related-device register names
+are hypotheses. `python3 tools/tests/test_cr16_pcm_ingress.py` checks
+fresh-directory replay and preservation on missing inputs/NON_CONVERGED.
+`test_cr16_fon_ctrl_trace.py` exercises Linux bit formulas and proof gates.
+Neither tool establishes a FON slot-5 consumer.
+
 `cr16_dip_program.py` reads both SHA256-checked firmware images through the
 local CR16 objdump and produces seven staged, fail-closed reports:
 `reports/cr16-e34-*.json`. It never executes firmware or contacts hardware.

@@ -25,6 +25,15 @@ orientation yields 511 stores on the isolated local CFG path, **not** an
 all-path proof. No final DIP program or SC14448 physical register mapping
 has been confirmed.
 
+E3.5 (`fon-e35-summary.md`) inventories resolved SC14448 reads in
+candidate architectural address windows
+and retains Linux normal/special TX and RX bit signatures. There are no
+resolved reads of the related SC14480 PCM_IN0…3 addresses in either image,
+but indexed/indirect/DMA ingress is not excluded. Local RAM-bit → effective
+`0x00FF4860` RMW paths exist in both images; neither Linux slot-5 input nor
+SC14448 analog FON meaning is proved for them. The physical PCM mapping
+and Q75 firmware consumer remain unknown.
+
 Status: **confirmed evidence only. Anything not listed here is either an open
 question (`fon-open-questions.md`) or historical reasoning under
 `docs/history/`.**

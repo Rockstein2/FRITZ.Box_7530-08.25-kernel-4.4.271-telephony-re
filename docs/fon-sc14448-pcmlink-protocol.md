@@ -226,6 +226,12 @@ functional FON driver additionally requires:
 
 Until then, the minimum safe deliverable is an offline encoder/decoder plus a
 read-only transport test plan.  It must not drive ringing or line feed.
+
+E3.5 (`fon-e35-summary.md`) re-indexes both firmware images for candidate
+PCM ingress and Linux normal/special/RX bit signatures. There is still no
+proved physical slot-5 receiver or source-to-sink FON control consumer.
+The normal/special markers need not be mutually exclusive: the special path
+ORs `0x8000` into an **unmasked** `special_field`.
 # E3.3 scope note
 
 Bounded offline traces of `dip_int` and `dsp_int` in

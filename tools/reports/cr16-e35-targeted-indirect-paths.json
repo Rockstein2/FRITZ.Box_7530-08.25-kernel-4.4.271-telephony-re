@@ -1,0 +1,87 @@
+{
+ "tool": "cr16-pcm-ingress/1",
+ "linux_oem_sha256": {
+  "pcmlink.ko": "6620510bc1d4b0f4d670e1e93d3f308dc3002785d3129521156eb5e1bc4a363b",
+  "Piglet_noemif.ko": "24ef5a6ac42d43d1980631b43202f40c79a025a4d96337f45333a13a0d54567b"
+ },
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x002740",
+     "raw_bytes": "d700",
+     "disassembly": "jal (r8,r7)"
+    },
+    {
+     "instruction": "0x017982",
+     "raw_bytes": "e60a",
+     "disassembly": "jump (r7,r6)"
+    }
+   ],
+   "cfg_evidence": {
+    "proximity_only_indirect_sites": [
+     {
+      "instruction": "0x002740",
+      "raw_bytes": "d700",
+      "disassembly": "jal (r8,r7)"
+     },
+     {
+      "instruction": "0x017982",
+      "raw_bytes": "e60a",
+      "disassembly": "jump (r7,r6)"
+     }
+    ],
+    "resolved_target_chains": []
+   },
+   "dataflow_evidence": {
+    "distance_bytes": 32,
+    "proximity_is_not_source_to_target_propagation": true
+   },
+   "related_device_evidence": {
+    "SC14480/SC14CVMDECT": "RELATED_DEVICE_HYPOTHESIS"
+   },
+   "confidence": "UNRESOLVED",
+   "unresolved_paths": [
+    "target producer/table/stack/endianness unresolved",
+    "nearby read not proven to feed indirect call"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x001ffc",
+     "raw_bytes": "d700",
+     "disassembly": "jal (r8,r7)"
+    }
+   ],
+   "cfg_evidence": {
+    "proximity_only_indirect_sites": [
+     {
+      "instruction": "0x001ffc",
+      "raw_bytes": "d700",
+      "disassembly": "jal (r8,r7)"
+     }
+    ],
+    "resolved_target_chains": []
+   },
+   "dataflow_evidence": {
+    "distance_bytes": 32,
+    "proximity_is_not_source_to_target_propagation": true
+   },
+   "related_device_evidence": {
+    "SC14480/SC14CVMDECT": "RELATED_DEVICE_HYPOTHESIS"
+   },
+   "confidence": "UNRESOLVED",
+   "unresolved_paths": [
+    "target producer/table/stack/endianness unresolved",
+    "nearby read not proven to feed indirect call"
+   ]
+  }
+ }
+}

@@ -19,6 +19,13 @@ runtime indices, indirect writers, call/interrupt order and the physical
 SC14448 bank have not been exhaustively proved. The CR16B/GCC compare rule
 strengthens the local loop only; Q57 physical identity and Q75 are unchanged.
 
+E3.5 (`fon-e35-summary.md`) prioritizes Q75: Linux logical slot 5 is
+documented, but physical wire mapping → specific SC14448 receiver, firmware
+control-word decode and reverse status producer remain unknown. No resolved
+reads at the SC14480 PCM_IN0…3 addresses are seen in the bounded map; this
+does **not** exclude indirect, DMA or shared-memory ingress. Q46/Q55 and
+the resolved architectural Q57 address rule are unchanged.
+
 Status: **the only list of unresolved items for this project**
 
 Each item states what the question is, what would close it, and in which

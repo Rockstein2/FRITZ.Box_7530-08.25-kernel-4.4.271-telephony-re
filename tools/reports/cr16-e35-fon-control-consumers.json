@@ -1,0 +1,675 @@
+{
+ "tool": "cr16-pcm-ingress/1",
+ "linux_oem_sha256": {
+  "pcmlink.ko": "6620510bc1d4b0f4d670e1e93d3f308dc3002785d3129521156eb5e1bc4a363b",
+  "Piglet_noemif.ko": "24ef5a6ac42d43d1980631b43202f40c79a025a4d96337f45333a13a0d54567b"
+ },
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x0002d0",
+     "raw_bytes": "b05a0080",
+     "disassembly": "movw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x000586",
+     "raw_bytes": "b05a0080",
+     "disassembly": "movw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x000592",
+     "raw_bytes": "b25a0080",
+     "disassembly": "movw $0x8000:m,r2"
+    },
+    {
+     "instruction": "0x0005ba",
+     "raw_bytes": "b0320080",
+     "disassembly": "addw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x0005c8",
+     "raw_bytes": "b0320080",
+     "disassembly": "addw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x000620",
+     "raw_bytes": "b0320080",
+     "disassembly": "addw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x0006bc",
+     "raw_bytes": "bd5a0080",
+     "disassembly": "movw $0x8000:m,r13"
+    },
+    {
+     "instruction": "0x02002a",
+     "raw_bytes": "b7220080",
+     "disassembly": "andw $0x8000:m,r7"
+    },
+    {
+     "instruction": "0x021fbc",
+     "raw_bytes": "b0260080",
+     "disassembly": "orw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x025d06",
+     "raw_bytes": "b1220080",
+     "disassembly": "andw $0x8000:m,r1"
+    },
+    {
+     "instruction": "0x025d5e",
+     "raw_bytes": "b1220080",
+     "disassembly": "andw $0x8000:m,r1"
+    },
+    {
+     "instruction": "0x025de2",
+     "raw_bytes": "b4220080",
+     "disassembly": "andw $0x8000:m,r4"
+    },
+    {
+     "instruction": "0x026c18",
+     "raw_bytes": "b05a0080",
+     "disassembly": "movw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x02772e",
+     "raw_bytes": "b0320080",
+     "disassembly": "addw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x02775a",
+     "raw_bytes": "b0320080",
+     "disassembly": "addw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x02797a",
+     "raw_bytes": "b0320080",
+     "disassembly": "addw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x027b52",
+     "raw_bytes": "b25a0080",
+     "disassembly": "movw $0x8000:m,r2"
+    },
+    {
+     "instruction": "0x02801e",
+     "raw_bytes": "70000100420e",
+     "disassembly": "movd $0x10e42:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x028024",
+     "raw_bytes": "7200ff006048",
+     "disassembly": "movd $0xff4860:l,(r3,r2)"
+    },
+    {
+     "instruction": "0x02802a",
+     "raw_bytes": "007e",
+     "disassembly": "tbitw $0x0:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x02802e",
+     "raw_bytes": "526e",
+     "disassembly": "cbitw $0x5:s,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x028032",
+     "raw_bytes": "5276",
+     "disassembly": "sbitw $0x5:s,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x028034",
+     "raw_bytes": "407e",
+     "disassembly": "tbitw $0x4:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x028038",
+     "raw_bytes": "726e",
+     "disassembly": "cbitw $0x7:s,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x02803c",
+     "raw_bytes": "7276",
+     "disassembly": "sbitw $0x7:s,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x028044",
+     "raw_bytes": "627e",
+     "disassembly": "tbitw $0x6:s,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x028048",
+     "raw_bytes": "3076",
+     "disassembly": "sbitw $0x3:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x02804c",
+     "raw_bytes": "306e",
+     "disassembly": "cbitw $0x3:s,0x0:s(r1,r0)"
+    }
+   ],
+   "cfg_evidence": {
+    "matched_immediate_is_not_consumer": true,
+    "slot5_source_to_sink": false
+   },
+   "dataflow_evidence": {
+    "literal_hits_only": {
+     "0x4000": [],
+     "0x8000": [
+      {
+       "instruction": "0x0002d0",
+       "raw_bytes": "b05a0080",
+       "disassembly": "movw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x000586",
+       "raw_bytes": "b05a0080",
+       "disassembly": "movw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x000592",
+       "raw_bytes": "b25a0080",
+       "disassembly": "movw $0x8000:m,r2"
+      },
+      {
+       "instruction": "0x0005ba",
+       "raw_bytes": "b0320080",
+       "disassembly": "addw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x0005c8",
+       "raw_bytes": "b0320080",
+       "disassembly": "addw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x000620",
+       "raw_bytes": "b0320080",
+       "disassembly": "addw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x0006bc",
+       "raw_bytes": "bd5a0080",
+       "disassembly": "movw $0x8000:m,r13"
+      },
+      {
+       "instruction": "0x02002a",
+       "raw_bytes": "b7220080",
+       "disassembly": "andw $0x8000:m,r7"
+      },
+      {
+       "instruction": "0x021fbc",
+       "raw_bytes": "b0260080",
+       "disassembly": "orw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x025d06",
+       "raw_bytes": "b1220080",
+       "disassembly": "andw $0x8000:m,r1"
+      },
+      {
+       "instruction": "0x025d5e",
+       "raw_bytes": "b1220080",
+       "disassembly": "andw $0x8000:m,r1"
+      },
+      {
+       "instruction": "0x025de2",
+       "raw_bytes": "b4220080",
+       "disassembly": "andw $0x8000:m,r4"
+      },
+      {
+       "instruction": "0x026c18",
+       "raw_bytes": "b05a0080",
+       "disassembly": "movw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x02772e",
+       "raw_bytes": "b0320080",
+       "disassembly": "addw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x02775a",
+       "raw_bytes": "b0320080",
+       "disassembly": "addw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x02797a",
+       "raw_bytes": "b0320080",
+       "disassembly": "addw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x027b52",
+       "raw_bytes": "b25a0080",
+       "disassembly": "movw $0x8000:m,r2"
+      }
+     ]
+    },
+    "normal_control_formula": {
+     "marker": "0x4000",
+     "bits": {
+      "0..3": "reg48[4..7]",
+      "4": "reg2c[17]",
+      "5..8": "reg48[8..11]",
+      "9": "reg2c[18]",
+      "14": "marker"
+     }
+    },
+    "special_control_formula": {
+     "marker": "0x8000",
+     "payload": "special_field (reg30 / TDMPriv+0x7f4)",
+     "overlap_and_other_bits": "NOT_EXCLUDED: OR, no masking of special_field"
+    },
+    "decoded_word_consumer": null,
+    "bounded_gpio_state_path_not_proven_FON": {
+     "function_candidate": "0x02801e",
+     "input_provenance": [
+      "0x00010e42[0,4]",
+      "0x00ff4860[6]"
+     ],
+     "output_effects": "RMW bits 5/7 at architectural 0x00ff4860; RAM status bit3",
+     "instruction_provenance": [
+      {
+       "instruction": "0x02801e",
+       "raw_bytes": "70000100420e",
+       "disassembly": "movd $0x10e42:l,(r1,r0)"
+      },
+      {
+       "instruction": "0x028024",
+       "raw_bytes": "7200ff006048",
+       "disassembly": "movd $0xff4860:l,(r3,r2)"
+      },
+      {
+       "instruction": "0x02802a",
+       "raw_bytes": "007e",
+       "disassembly": "tbitw $0x0:s,0x0:s(r1,r0)"
+      },
+      {
+       "instruction": "0x02802e",
+       "raw_bytes": "526e",
+       "disassembly": "cbitw $0x5:s,0x0:s(r3,r2)"
+      },
+      {
+       "instruction": "0x028032",
+       "raw_bytes": "5276",
+       "disassembly": "sbitw $0x5:s,0x0:s(r3,r2)"
+      },
+      {
+       "instruction": "0x028034",
+       "raw_bytes": "407e",
+       "disassembly": "tbitw $0x4:s,0x0:s(r1,r0)"
+      },
+      {
+       "instruction": "0x028038",
+       "raw_bytes": "726e",
+       "disassembly": "cbitw $0x7:s,0x0:s(r3,r2)"
+      },
+      {
+       "instruction": "0x02803c",
+       "raw_bytes": "7276",
+       "disassembly": "sbitw $0x7:s,0x0:s(r3,r2)"
+      },
+      {
+       "instruction": "0x028044",
+       "raw_bytes": "627e",
+       "disassembly": "tbitw $0x6:s,0x0:s(r3,r2)"
+      },
+      {
+       "instruction": "0x028048",
+       "raw_bytes": "3076",
+       "disassembly": "sbitw $0x3:s,0x0:s(r1,r0)"
+      },
+      {
+       "instruction": "0x02804c",
+       "raw_bytes": "306e",
+       "disassembly": "cbitw $0x3:s,0x0:s(r1,r0)"
+      }
+     ],
+     "cfg_branch_edges": [
+      [
+       "0x02802c",
+       "0x028032"
+      ],
+      [
+       "0x028036",
+       "0x02803c"
+      ],
+      [
+       "0x028046",
+       "0x02804c"
+      ]
+     ],
+     "linux_slot5_input": "UNPROVEN",
+     "FON_meaning": "UNPROVEN",
+     "reference_hint": "SC14CVMDECT P3_DATA_REG, RELATED_DEVICE_HYPOTHESIS",
+     "confidence": "PROVEN_UNDER_CFG_MODEL for local RAM-bit/GPIO effects only"
+    }
+   },
+   "related_device_evidence": {
+    "SC14480/SC14CVMDECT": "RELATED_DEVICE_HYPOTHESIS"
+   },
+   "confidence": "UNRESOLVED",
+   "unresolved_paths": [
+    "matched constants can be address arithmetic or unrelated flags",
+    "no proven PCM input to decode/branch to analog side-effect chain"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x000236",
+     "raw_bytes": "b25a0080",
+     "disassembly": "movw $0x8000:m,r2"
+    },
+    {
+     "instruction": "0x0003ee",
+     "raw_bytes": "b05a0080",
+     "disassembly": "movw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x0003fa",
+     "raw_bytes": "b25a0080",
+     "disassembly": "movw $0x8000:m,r2"
+    },
+    {
+     "instruction": "0x000500",
+     "raw_bytes": "b05a0080",
+     "disassembly": "movw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x000bb2",
+     "raw_bytes": "b2320080",
+     "disassembly": "addw $0x8000:m,r2"
+    },
+    {
+     "instruction": "0x000bba",
+     "raw_bytes": "b2320080",
+     "disassembly": "addw $0x8000:m,r2"
+    },
+    {
+     "instruction": "0x000bc4",
+     "raw_bytes": "b2320080",
+     "disassembly": "addw $0x8000:m,r2"
+    },
+    {
+     "instruction": "0x000bce",
+     "raw_bytes": "b2320080",
+     "disassembly": "addw $0x8000:m,r2"
+    },
+    {
+     "instruction": "0x000bd8",
+     "raw_bytes": "b2320080",
+     "disassembly": "addw $0x8000:m,r2"
+    },
+    {
+     "instruction": "0x000c04",
+     "raw_bytes": "b0320080",
+     "disassembly": "addw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x000c26",
+     "raw_bytes": "b0320080",
+     "disassembly": "addw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x0035d2",
+     "raw_bytes": "b0320080",
+     "disassembly": "addw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x00360a",
+     "raw_bytes": "b0320080",
+     "disassembly": "addw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x0037ce",
+     "raw_bytes": "b0320080",
+     "disassembly": "addw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x003934",
+     "raw_bytes": "b25a0080",
+     "disassembly": "movw $0x8000:m,r2"
+    },
+    {
+     "instruction": "0x02002a",
+     "raw_bytes": "b7220080",
+     "disassembly": "andw $0x8000:m,r7"
+    },
+    {
+     "instruction": "0x022672",
+     "raw_bytes": "b0260080",
+     "disassembly": "orw $0x8000:m,r0"
+    },
+    {
+     "instruction": "0x003cd8",
+     "raw_bytes": "7000ff006048",
+     "disassembly": "movd $0xff4860:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x003cde",
+     "raw_bytes": "110000f1360e",
+     "disassembly": "tbitw $0x0:s,0x10e36:l"
+    },
+    {
+     "instruction": "0x003ce6",
+     "raw_bytes": "506e",
+     "disassembly": "cbitw $0x5:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x003cea",
+     "raw_bytes": "5076",
+     "disassembly": "sbitw $0x5:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x003cec",
+     "raw_bytes": "7076",
+     "disassembly": "sbitw $0x7:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x003cf4",
+     "raw_bytes": "607e",
+     "disassembly": "tbitw $0x6:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x003cf8",
+     "raw_bytes": "3276",
+     "disassembly": "sbitw $0x3:s,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x003cfc",
+     "raw_bytes": "326e",
+     "disassembly": "cbitw $0x3:s,0x0:s(r3,r2)"
+    }
+   ],
+   "cfg_evidence": {
+    "matched_immediate_is_not_consumer": true,
+    "slot5_source_to_sink": false
+   },
+   "dataflow_evidence": {
+    "literal_hits_only": {
+     "0x4000": [],
+     "0x8000": [
+      {
+       "instruction": "0x000236",
+       "raw_bytes": "b25a0080",
+       "disassembly": "movw $0x8000:m,r2"
+      },
+      {
+       "instruction": "0x0003ee",
+       "raw_bytes": "b05a0080",
+       "disassembly": "movw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x0003fa",
+       "raw_bytes": "b25a0080",
+       "disassembly": "movw $0x8000:m,r2"
+      },
+      {
+       "instruction": "0x000500",
+       "raw_bytes": "b05a0080",
+       "disassembly": "movw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x000bb2",
+       "raw_bytes": "b2320080",
+       "disassembly": "addw $0x8000:m,r2"
+      },
+      {
+       "instruction": "0x000bba",
+       "raw_bytes": "b2320080",
+       "disassembly": "addw $0x8000:m,r2"
+      },
+      {
+       "instruction": "0x000bc4",
+       "raw_bytes": "b2320080",
+       "disassembly": "addw $0x8000:m,r2"
+      },
+      {
+       "instruction": "0x000bce",
+       "raw_bytes": "b2320080",
+       "disassembly": "addw $0x8000:m,r2"
+      },
+      {
+       "instruction": "0x000bd8",
+       "raw_bytes": "b2320080",
+       "disassembly": "addw $0x8000:m,r2"
+      },
+      {
+       "instruction": "0x000c04",
+       "raw_bytes": "b0320080",
+       "disassembly": "addw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x000c26",
+       "raw_bytes": "b0320080",
+       "disassembly": "addw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x0035d2",
+       "raw_bytes": "b0320080",
+       "disassembly": "addw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x00360a",
+       "raw_bytes": "b0320080",
+       "disassembly": "addw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x0037ce",
+       "raw_bytes": "b0320080",
+       "disassembly": "addw $0x8000:m,r0"
+      },
+      {
+       "instruction": "0x003934",
+       "raw_bytes": "b25a0080",
+       "disassembly": "movw $0x8000:m,r2"
+      },
+      {
+       "instruction": "0x02002a",
+       "raw_bytes": "b7220080",
+       "disassembly": "andw $0x8000:m,r7"
+      },
+      {
+       "instruction": "0x022672",
+       "raw_bytes": "b0260080",
+       "disassembly": "orw $0x8000:m,r0"
+      }
+     ]
+    },
+    "normal_control_formula": {
+     "marker": "0x4000",
+     "bits": {
+      "0..3": "reg48[4..7]",
+      "4": "reg2c[17]",
+      "5..8": "reg48[8..11]",
+      "9": "reg2c[18]",
+      "14": "marker"
+     }
+    },
+    "special_control_formula": {
+     "marker": "0x8000",
+     "payload": "special_field (reg30 / TDMPriv+0x7f4)",
+     "overlap_and_other_bits": "NOT_EXCLUDED: OR, no masking of special_field"
+    },
+    "decoded_word_consumer": null,
+    "bounded_gpio_state_path_not_proven_FON": {
+     "function_candidate": "0x003cd8",
+     "input_provenance": [
+      "0x00010e36[0]",
+      "0x00ff4860[6]"
+     ],
+     "output_effects": "RMW bits 5/7 at architectural 0x00ff4860; RAM status bit3",
+     "instruction_provenance": [
+      {
+       "instruction": "0x003cd8",
+       "raw_bytes": "7000ff006048",
+       "disassembly": "movd $0xff4860:l,(r1,r0)"
+      },
+      {
+       "instruction": "0x003cde",
+       "raw_bytes": "110000f1360e",
+       "disassembly": "tbitw $0x0:s,0x10e36:l"
+      },
+      {
+       "instruction": "0x003ce6",
+       "raw_bytes": "506e",
+       "disassembly": "cbitw $0x5:s,0x0:s(r1,r0)"
+      },
+      {
+       "instruction": "0x003cea",
+       "raw_bytes": "5076",
+       "disassembly": "sbitw $0x5:s,0x0:s(r1,r0)"
+      },
+      {
+       "instruction": "0x003cec",
+       "raw_bytes": "7076",
+       "disassembly": "sbitw $0x7:s,0x0:s(r1,r0)"
+      },
+      {
+       "instruction": "0x003cf4",
+       "raw_bytes": "607e",
+       "disassembly": "tbitw $0x6:s,0x0:s(r1,r0)"
+      },
+      {
+       "instruction": "0x003cf8",
+       "raw_bytes": "3276",
+       "disassembly": "sbitw $0x3:s,0x0:s(r3,r2)"
+      },
+      {
+       "instruction": "0x003cfc",
+       "raw_bytes": "326e",
+       "disassembly": "cbitw $0x3:s,0x0:s(r3,r2)"
+      }
+     ],
+     "cfg_branch_edges": [
+      [
+       "0x003ce4",
+       "0x003cea"
+      ],
+      [
+       "0x003cf6",
+       "0x003cfc"
+      ]
+     ],
+     "linux_slot5_input": "UNPROVEN",
+     "FON_meaning": "UNPROVEN",
+     "reference_hint": "SC14CVMDECT P3_DATA_REG, RELATED_DEVICE_HYPOTHESIS",
+     "confidence": "PROVEN_UNDER_CFG_MODEL for local RAM-bit/GPIO effects only"
+    }
+   },
+   "related_device_evidence": {
+    "SC14480/SC14CVMDECT": "RELATED_DEVICE_HYPOTHESIS"
+   },
+   "confidence": "UNRESOLVED",
+   "unresolved_paths": [
+    "matched constants can be address arithmetic or unrelated flags",
+    "no proven PCM input to decode/branch to analog side-effect chain"
+   ]
+  }
+ }
+}

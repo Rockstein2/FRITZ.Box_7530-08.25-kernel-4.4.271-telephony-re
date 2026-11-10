@@ -1,0 +1,1443 @@
+{
+ "tool": "cr16-pcm-ingress/1",
+ "linux_oem_sha256": {
+  "pcmlink.ko": "6620510bc1d4b0f4d670e1e93d3f308dc3002785d3129521156eb5e1bc4a363b",
+  "Piglet_noemif.ko": "24ef5a6ac42d43d1980631b43202f40c79a025a4d96337f45333a13a0d54567b"
+ },
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x0011d4",
+     "raw_bytes": "7000ff005848",
+     "disassembly": "movd $0xff4858:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x0011da",
+     "raw_bytes": "2090",
+     "disassembly": "loadw 0x0:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x0011e0",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0011e2",
+     "raw_bytes": "2090",
+     "disassembly": "loadw 0x0:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x0011e6",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x001208",
+     "raw_bytes": "7200ff006848",
+     "disassembly": "movd $0xff4868:l,(r3,r2)"
+    },
+    {
+     "instruction": "0x00120e",
+     "raw_bytes": "0290",
+     "disassembly": "loadw 0x0:s(r3,r2),r0"
+    },
+    {
+     "instruction": "0x001212",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x001230",
+     "raw_bytes": "0290",
+     "disassembly": "loadw 0x0:s(r3,r2),r0"
+    },
+    {
+     "instruction": "0x001236",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x001242",
+     "raw_bytes": "0290",
+     "disassembly": "loadw 0x0:s(r3,r2),r0"
+    },
+    {
+     "instruction": "0x001248",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x001348",
+     "raw_bytes": "2fc90660",
+     "disassembly": "storw r2,0xf6006:m"
+    },
+    {
+     "instruction": "0x0013bc",
+     "raw_bytes": "7400ff006848",
+     "disassembly": "movd $0xff4868:l,(r5,r4)"
+    },
+    {
+     "instruction": "0x0013c2",
+     "raw_bytes": "6490",
+     "disassembly": "loadw 0x0:s(r5,r4),r6"
+    },
+    {
+     "instruction": "0x0013c6",
+     "raw_bytes": "64d0",
+     "disassembly": "storw r6,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x001442",
+     "raw_bytes": "ff775848",
+     "disassembly": "sbitw $0xf:s,0xf4858:m"
+    },
+    {
+     "instruction": "0x00145c",
+     "raw_bytes": "0fc90660",
+     "disassembly": "storw r0,0xf6006:m"
+    },
+    {
+     "instruction": "0x001492",
+     "raw_bytes": "7600ff005848",
+     "disassembly": "movd $0xff4858:l,(r7,r6)"
+    },
+    {
+     "instruction": "0x0014c8",
+     "raw_bytes": "7800ff006848",
+     "disassembly": "movd $0xff4868:l,(r9,r8)"
+    },
+    {
+     "instruction": "0x0014ce",
+     "raw_bytes": "b890",
+     "disassembly": "loadw 0x0:s(r9,r8),r11"
+    },
+    {
+     "instruction": "0x0014d2",
+     "raw_bytes": "b8d0",
+     "disassembly": "storw r11,0x0:s(r9,r8)"
+    },
+    {
+     "instruction": "0x0014d4",
+     "raw_bytes": "e876",
+     "disassembly": "sbitw $0xe:s,0x0:s(r9,r8)"
+    },
+    {
+     "instruction": "0x002582",
+     "raw_bytes": "7000ff000660",
+     "disassembly": "movd $0xff6006:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x00258c",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0025aa",
+     "raw_bytes": "2090",
+     "disassembly": "loadw 0x0:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x0025b4",
+     "raw_bytes": "00c2",
+     "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x02602c",
+     "raw_bytes": "0f890660",
+     "disassembly": "loadw 0xf6006:m,r0"
+    },
+    {
+     "instruction": "0x028cde",
+     "raw_bytes": "0f890660",
+     "disassembly": "loadw 0xf6006:m,r0"
+    }
+   ],
+   "cfg_evidence": {
+    "source_to_firmware_consumer": false,
+    "physical_pcm_slot_to_SC14448_ingress": "UNKNOWN"
+   },
+   "dataflow_evidence": {
+    "candidate_register_accesses": [
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x0011d4",
+       "raw_bytes": "7000ff005848",
+       "disassembly": "movd $0xff4858:l,(r1,r0)"
+      },
+      "address_provenance": [
+       "0x0011d4"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0011da",
+       "raw_bytes": "2090",
+       "disassembly": "loadw 0x0:s(r1,r0),r2"
+      },
+      "address_provenance": [
+       "0x0011d4"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0011e0",
+       "raw_bytes": "20d0",
+       "disassembly": "storw r2,0x0:s(r1,r0)"
+      },
+      "address_provenance": [
+       "0x0011d4"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0011e2",
+       "raw_bytes": "2090",
+       "disassembly": "loadw 0x0:s(r1,r0),r2"
+      },
+      "address_provenance": [
+       "0x0011d4"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0011e6",
+       "raw_bytes": "20d0",
+       "disassembly": "storw r2,0x0:s(r1,r0)"
+      },
+      "address_provenance": [
+       "0x0011d4"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x001208",
+       "raw_bytes": "7200ff006848",
+       "disassembly": "movd $0xff4868:l,(r3,r2)"
+      },
+      "address_provenance": [
+       "0x001208"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x00120e",
+       "raw_bytes": "0290",
+       "disassembly": "loadw 0x0:s(r3,r2),r0"
+      },
+      "address_provenance": [
+       "0x001208"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x001212",
+       "raw_bytes": "02d0",
+       "disassembly": "storw r0,0x0:s(r3,r2)"
+      },
+      "address_provenance": [
+       "0x001208"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x001230",
+       "raw_bytes": "0290",
+       "disassembly": "loadw 0x0:s(r3,r2),r0"
+      },
+      "address_provenance": [
+       "0x001208"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x001236",
+       "raw_bytes": "02d0",
+       "disassembly": "storw r0,0x0:s(r3,r2)"
+      },
+      "address_provenance": [
+       "0x001208"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x001242",
+       "raw_bytes": "0290",
+       "disassembly": "loadw 0x0:s(r3,r2),r0"
+      },
+      "address_provenance": [
+       "0x001208"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x001248",
+       "raw_bytes": "02d0",
+       "disassembly": "storw r0,0x0:s(r3,r2)"
+      },
+      "address_provenance": [
+       "0x001208"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x001348",
+       "raw_bytes": "2fc90660",
+       "disassembly": "storw r2,0xf6006:m"
+      },
+      "address_provenance": [
+       "0x001348"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x0013bc",
+       "raw_bytes": "7400ff006848",
+       "disassembly": "movd $0xff4868:l,(r5,r4)"
+      },
+      "address_provenance": [
+       "0x0013bc"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0013c2",
+       "raw_bytes": "6490",
+       "disassembly": "loadw 0x0:s(r5,r4),r6"
+      },
+      "address_provenance": [
+       "0x0013bc"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0013c6",
+       "raw_bytes": "64d0",
+       "disassembly": "storw r6,0x0:s(r5,r4)"
+      },
+      "address_provenance": [
+       "0x0013bc"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "RMW",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x001442",
+       "raw_bytes": "ff775848",
+       "disassembly": "sbitw $0xf:s,0xf4858:m"
+      },
+      "address_provenance": [
+       "0x001442"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x00145c",
+       "raw_bytes": "0fc90660",
+       "disassembly": "storw r0,0xf6006:m"
+      },
+      "address_provenance": [
+       "0x00145c"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x001492",
+       "raw_bytes": "7600ff005848",
+       "disassembly": "movd $0xff4858:l,(r7,r6)"
+      },
+      "address_provenance": [
+       "0x001492"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x0014c8",
+       "raw_bytes": "7800ff006848",
+       "disassembly": "movd $0xff4868:l,(r9,r8)"
+      },
+      "address_provenance": [
+       "0x0014c8"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0014ce",
+       "raw_bytes": "b890",
+       "disassembly": "loadw 0x0:s(r9,r8),r11"
+      },
+      "address_provenance": [
+       "0x0014c8"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0014d2",
+       "raw_bytes": "b8d0",
+       "disassembly": "storw r11,0x0:s(r9,r8)"
+      },
+      "address_provenance": [
+       "0x0014c8"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "RMW",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0014d4",
+       "raw_bytes": "e876",
+       "disassembly": "sbitw $0xe:s,0x0:s(r9,r8)"
+      },
+      "address_provenance": [
+       "0x0014c8"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x002582",
+       "raw_bytes": "7000ff000660",
+       "disassembly": "movd $0xff6006:l,(r1,r0)"
+      },
+      "address_provenance": [
+       "0x002582"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x00258c",
+       "raw_bytes": "20d0",
+       "disassembly": "storw r2,0x0:s(r1,r0)"
+      },
+      "address_provenance": [
+       "0x002582"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0025aa",
+       "raw_bytes": "2090",
+       "disassembly": "loadw 0x0:s(r1,r0),r2"
+      },
+      "address_provenance": [
+       "0x002582"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0025b4",
+       "raw_bytes": "00c2",
+       "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+      },
+      "address_provenance": [
+       "0x002582"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x02602c",
+       "raw_bytes": "0f890660",
+       "disassembly": "loadw 0xf6006:m,r0"
+      },
+      "address_provenance": [
+       "0x02602c"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x028cde",
+       "raw_bytes": "0f890660",
+       "disassembly": "loadw 0xf6006:m,r0"
+      },
+      "address_provenance": [
+       "0x028cde"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     }
+    ],
+    "read_value_to_control_word_bits": "NOT_ESTABLISHED",
+    "linux_side_logical_control": {
+     "normal": {
+      "marker": "0x4000",
+      "bits": {
+       "0..3": "reg48[4..7]",
+       "4": "reg2c[17]",
+       "5..8": "reg48[8..11]",
+       "9": "reg2c[18]",
+       "14": "marker"
+      }
+     },
+     "special": {
+      "marker": "0x8000",
+      "payload": "special_field (reg30 / TDMPriv+0x7f4)",
+      "overlap_and_other_bits": "NOT_EXCLUDED: OR, no masking of special_field"
+     },
+     "rx": {
+      "gate": "bit15 clear",
+      "reg44": "0x00020008 | ((rx_status<<3)&0x0f00) | ((rx_status<<4)&0x00ff)",
+      "mapped_bits": "rx[0..3]->reg44[4..7]; rx[5..8]->reg44[8..11]",
+      "hook_poll": "reg44[7] <- rx_status[3] (Linux-side only)",
+      "raw_dma_position": "logical slot != raw DMA index; physical wire order UNKNOWN"
+     }
+    },
+    "raw_dma_word_is_not_physical_slot": true
+   },
+   "related_device_evidence": {
+    "SC14480/SC14CVMDECT": "RELATED_DEVICE_HYPOTHESIS"
+   },
+   "confidence": "UNRESOLVED",
+   "unresolved_paths": [
+    "no verified slot-5 hardware-to-peripheral mapping",
+    "no read-to-control-consumer def-use chain",
+    "indirect and hardware-populated memory sources not excluded"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x000c4a",
+     "raw_bytes": "7000ff005848",
+     "disassembly": "movd $0xff4858:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x000c50",
+     "raw_bytes": "2090",
+     "disassembly": "loadw 0x0:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x000c56",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x000c58",
+     "raw_bytes": "2090",
+     "disassembly": "loadw 0x0:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x000c5c",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x000c7e",
+     "raw_bytes": "7200ff006848",
+     "disassembly": "movd $0xff4868:l,(r3,r2)"
+    },
+    {
+     "instruction": "0x000c84",
+     "raw_bytes": "0290",
+     "disassembly": "loadw 0x0:s(r3,r2),r0"
+    },
+    {
+     "instruction": "0x000c88",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x000ca6",
+     "raw_bytes": "0290",
+     "disassembly": "loadw 0x0:s(r3,r2),r0"
+    },
+    {
+     "instruction": "0x000cac",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x000cb8",
+     "raw_bytes": "0290",
+     "disassembly": "loadw 0x0:s(r3,r2),r0"
+    },
+    {
+     "instruction": "0x000cbe",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x000dbe",
+     "raw_bytes": "2fc90660",
+     "disassembly": "storw r2,0xf6006:m"
+    },
+    {
+     "instruction": "0x000e32",
+     "raw_bytes": "7400ff006848",
+     "disassembly": "movd $0xff4868:l,(r5,r4)"
+    },
+    {
+     "instruction": "0x000e38",
+     "raw_bytes": "6490",
+     "disassembly": "loadw 0x0:s(r5,r4),r6"
+    },
+    {
+     "instruction": "0x000e3c",
+     "raw_bytes": "64d0",
+     "disassembly": "storw r6,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x000eb8",
+     "raw_bytes": "ff775848",
+     "disassembly": "sbitw $0xf:s,0xf4858:m"
+    },
+    {
+     "instruction": "0x000ed2",
+     "raw_bytes": "0fc90660",
+     "disassembly": "storw r0,0xf6006:m"
+    },
+    {
+     "instruction": "0x000f0e",
+     "raw_bytes": "7600ff005848",
+     "disassembly": "movd $0xff4858:l,(r7,r6)"
+    },
+    {
+     "instruction": "0x000f44",
+     "raw_bytes": "7800ff006848",
+     "disassembly": "movd $0xff4868:l,(r9,r8)"
+    },
+    {
+     "instruction": "0x000f4a",
+     "raw_bytes": "b890",
+     "disassembly": "loadw 0x0:s(r9,r8),r11"
+    },
+    {
+     "instruction": "0x000f4e",
+     "raw_bytes": "b8d0",
+     "disassembly": "storw r11,0x0:s(r9,r8)"
+    },
+    {
+     "instruction": "0x000f50",
+     "raw_bytes": "e876",
+     "disassembly": "sbitw $0xe:s,0x0:s(r9,r8)"
+    },
+    {
+     "instruction": "0x001e3e",
+     "raw_bytes": "7000ff000660",
+     "disassembly": "movd $0xff6006:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x001e48",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x001e66",
+     "raw_bytes": "2090",
+     "disassembly": "loadw 0x0:s(r1,r0),r2"
+    },
+    {
+     "instruction": "0x001e70",
+     "raw_bytes": "00c2",
+     "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0267e2",
+     "raw_bytes": "0f890660",
+     "disassembly": "loadw 0xf6006:m,r0"
+    },
+    {
+     "instruction": "0x027c96",
+     "raw_bytes": "0f890660",
+     "disassembly": "loadw 0xf6006:m,r0"
+    }
+   ],
+   "cfg_evidence": {
+    "source_to_firmware_consumer": false,
+    "physical_pcm_slot_to_SC14448_ingress": "UNKNOWN"
+   },
+   "dataflow_evidence": {
+    "candidate_register_accesses": [
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x000c4a",
+       "raw_bytes": "7000ff005848",
+       "disassembly": "movd $0xff4858:l,(r1,r0)"
+      },
+      "address_provenance": [
+       "0x000c4a"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000c50",
+       "raw_bytes": "2090",
+       "disassembly": "loadw 0x0:s(r1,r0),r2"
+      },
+      "address_provenance": [
+       "0x000c4a"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000c56",
+       "raw_bytes": "20d0",
+       "disassembly": "storw r2,0x0:s(r1,r0)"
+      },
+      "address_provenance": [
+       "0x000c4a"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000c58",
+       "raw_bytes": "2090",
+       "disassembly": "loadw 0x0:s(r1,r0),r2"
+      },
+      "address_provenance": [
+       "0x000c4a"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000c5c",
+       "raw_bytes": "20d0",
+       "disassembly": "storw r2,0x0:s(r1,r0)"
+      },
+      "address_provenance": [
+       "0x000c4a"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x000c7e",
+       "raw_bytes": "7200ff006848",
+       "disassembly": "movd $0xff4868:l,(r3,r2)"
+      },
+      "address_provenance": [
+       "0x000c7e"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000c84",
+       "raw_bytes": "0290",
+       "disassembly": "loadw 0x0:s(r3,r2),r0"
+      },
+      "address_provenance": [
+       "0x000c7e"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000c88",
+       "raw_bytes": "02d0",
+       "disassembly": "storw r0,0x0:s(r3,r2)"
+      },
+      "address_provenance": [
+       "0x000c7e"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000ca6",
+       "raw_bytes": "0290",
+       "disassembly": "loadw 0x0:s(r3,r2),r0"
+      },
+      "address_provenance": [
+       "0x000c7e"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000cac",
+       "raw_bytes": "02d0",
+       "disassembly": "storw r0,0x0:s(r3,r2)"
+      },
+      "address_provenance": [
+       "0x000c7e"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000cb8",
+       "raw_bytes": "0290",
+       "disassembly": "loadw 0x0:s(r3,r2),r0"
+      },
+      "address_provenance": [
+       "0x000c7e"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000cbe",
+       "raw_bytes": "02d0",
+       "disassembly": "storw r0,0x0:s(r3,r2)"
+      },
+      "address_provenance": [
+       "0x000c7e"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000dbe",
+       "raw_bytes": "2fc90660",
+       "disassembly": "storw r2,0xf6006:m"
+      },
+      "address_provenance": [
+       "0x000dbe"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x000e32",
+       "raw_bytes": "7400ff006848",
+       "disassembly": "movd $0xff4868:l,(r5,r4)"
+      },
+      "address_provenance": [
+       "0x000e32"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000e38",
+       "raw_bytes": "6490",
+       "disassembly": "loadw 0x0:s(r5,r4),r6"
+      },
+      "address_provenance": [
+       "0x000e32"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000e3c",
+       "raw_bytes": "64d0",
+       "disassembly": "storw r6,0x0:s(r5,r4)"
+      },
+      "address_provenance": [
+       "0x000e32"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "RMW",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000eb8",
+       "raw_bytes": "ff775848",
+       "disassembly": "sbitw $0xf:s,0xf4858:m"
+      },
+      "address_provenance": [
+       "0x000eb8"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000ed2",
+       "raw_bytes": "0fc90660",
+       "disassembly": "storw r0,0xf6006:m"
+      },
+      "address_provenance": [
+       "0x000ed2"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4858",
+      "reference_device_name": "SC14CVMDECT P2_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x000f0e",
+       "raw_bytes": "7600ff005848",
+       "disassembly": "movd $0xff4858:l,(r7,r6)"
+      },
+      "address_provenance": [
+       "0x000f0e"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x000f44",
+       "raw_bytes": "7800ff006848",
+       "disassembly": "movd $0xff4868:l,(r9,r8)"
+      },
+      "address_provenance": [
+       "0x000f44"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000f4a",
+       "raw_bytes": "b890",
+       "disassembly": "loadw 0x0:s(r9,r8),r11"
+      },
+      "address_provenance": [
+       "0x000f44"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000f4e",
+       "raw_bytes": "b8d0",
+       "disassembly": "storw r11,0x0:s(r9,r8)"
+      },
+      "address_provenance": [
+       "0x000f44"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff4868",
+      "reference_device_name": "SC14CVMDECT P3_MODE_REG (pinmux only)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "RMW",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x000f50",
+       "raw_bytes": "e876",
+       "disassembly": "sbitw $0xe:s,0x0:s(r9,r8)"
+      },
+      "address_provenance": [
+       "0x000f44"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "ADDRESS_LOAD",
+      "width_bits": 32,
+      "instruction": {
+       "instruction": "0x001e3e",
+       "raw_bytes": "7000ff000660",
+       "disassembly": "movd $0xff6006:l,(r1,r0)"
+      },
+      "address_provenance": [
+       "0x001e3e"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x001e48",
+       "raw_bytes": "20d0",
+       "disassembly": "storw r2,0x0:s(r1,r0)"
+      },
+      "address_provenance": [
+       "0x001e3e"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x001e66",
+       "raw_bytes": "2090",
+       "disassembly": "loadw 0x0:s(r1,r0),r2"
+      },
+      "address_provenance": [
+       "0x001e3e"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "WRITE",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x001e70",
+       "raw_bytes": "00c2",
+       "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+      },
+      "address_provenance": [
+       "0x001e3e"
+      ],
+      "value_expression": "UNRESOLVED",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x0267e2",
+       "raw_bytes": "0f890660",
+       "disassembly": "loadw 0xf6006:m,r0"
+      },
+      "address_provenance": [
+       "0x0267e2"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     },
+     {
+      "architectural_address": "0x00ff6006",
+      "reference_device_name": "SC14480 DIP_CTRL_REG (not PCM by address)",
+      "reference_status": "RELATED_DEVICE_CANDIDATE",
+      "operation": "READ",
+      "width_bits": 16,
+      "instruction": {
+       "instruction": "0x027c96",
+       "raw_bytes": "0f890660",
+       "disassembly": "loadw 0xf6006:m,r0"
+      },
+      "address_provenance": [
+       "0x027c96"
+      ],
+      "value_expression": "UNKNOWN_FOR_READ",
+      "caller_or_irq_context": "UNRESOLVED",
+      "confidence": "ADDRESS_ONLY"
+     }
+    ],
+    "read_value_to_control_word_bits": "NOT_ESTABLISHED",
+    "linux_side_logical_control": {
+     "normal": {
+      "marker": "0x4000",
+      "bits": {
+       "0..3": "reg48[4..7]",
+       "4": "reg2c[17]",
+       "5..8": "reg48[8..11]",
+       "9": "reg2c[18]",
+       "14": "marker"
+      }
+     },
+     "special": {
+      "marker": "0x8000",
+      "payload": "special_field (reg30 / TDMPriv+0x7f4)",
+      "overlap_and_other_bits": "NOT_EXCLUDED: OR, no masking of special_field"
+     },
+     "rx": {
+      "gate": "bit15 clear",
+      "reg44": "0x00020008 | ((rx_status<<3)&0x0f00) | ((rx_status<<4)&0x00ff)",
+      "mapped_bits": "rx[0..3]->reg44[4..7]; rx[5..8]->reg44[8..11]",
+      "hook_poll": "reg44[7] <- rx_status[3] (Linux-side only)",
+      "raw_dma_position": "logical slot != raw DMA index; physical wire order UNKNOWN"
+     }
+    },
+    "raw_dma_word_is_not_physical_slot": true
+   },
+   "related_device_evidence": {
+    "SC14480/SC14CVMDECT": "RELATED_DEVICE_HYPOTHESIS"
+   },
+   "confidence": "UNRESOLVED",
+   "unresolved_paths": [
+    "no verified slot-5 hardware-to-peripheral mapping",
+    "no read-to-control-consumer def-use chain",
+    "indirect and hardware-populated memory sources not excluded"
+   ]
+  }
+ }
+}
