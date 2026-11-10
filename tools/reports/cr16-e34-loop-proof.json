@@ -1,0 +1,251 @@
+{
+ "tool": "cr16-e34-loop-proof/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x025f92",
+     "raw_bytes": "770000007c93",
+     "disassembly": "movd $0x937c:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x025f98",
+     "raw_bytes": "17c2",
+     "disassembly": "storw $0x1:s,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x025f9a",
+     "raw_bytes": "b25a0110",
+     "disassembly": "movw $0x1001:m,r2"
+    },
+    {
+     "instruction": "0x025f9e",
+     "raw_bytes": "fdc01dc6",
+     "disassembly": "bal (ra),*-0x25ba:m"
+    },
+    {
+     "instruction": "0x0025ba",
+     "raw_bytes": "0701",
+     "disassembly": "push $0x1,r7"
+    },
+    {
+     "instruction": "0x0025bc",
+     "raw_bytes": "700000007c93",
+     "disassembly": "movd $0x937c:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x0025d0",
+     "raw_bytes": "24d0",
+     "disassembly": "storw r2,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x0025d2",
+     "raw_bytes": "1332",
+     "disassembly": "addw $0x1:s,r3"
+    },
+    {
+     "instruction": "0x0025d4",
+     "raw_bytes": "30d0",
+     "disassembly": "storw r3,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0025d6",
+     "raw_bytes": "0703",
+     "disassembly": "popret $0x1,r7"
+    },
+    {
+     "instruction": "0x025fa2",
+     "raw_bytes": "0790",
+     "disassembly": "loadw 0x0:s(r8,r7),r0"
+    },
+    {
+     "instruction": "0x025fa4",
+     "raw_bytes": "b0520002",
+     "disassembly": "cmpw $0x200:m,r0"
+    },
+    {
+     "instruction": "0x025fa8",
+     "raw_bytes": "491f",
+     "disassembly": "bhi *-0x25f9a:s"
+    }
+   ],
+   "cfg_provenance": {
+    "helper_direct_call": true,
+    "backedge": true,
+    "no_instruction_between_cmp_and_bhi": true,
+    "global_entry_coverage": false
+   },
+   "dataflow_provenance": {
+    "r0_definition": {
+     "instruction": "0x025fa2",
+     "raw_bytes": "0790",
+     "disassembly": "loadw 0x0:s(r8,r7),r0"
+    },
+    "r0_is_abi_return": false,
+    "counter_initial_value": 1,
+    "r8_r7_cell_address": "0x937c",
+    "r7_saved_and_restored_in_helper": true,
+    "counter_step": 1,
+    "compare_immediate": 512,
+    "condition": "first operand 512 > second operand r0 (unsigned)",
+    "local_loop_count": 511,
+    "all_path_loop_count": null,
+    "local_index_range": [
+     1,
+     511
+    ],
+    "local_last_counter_after_increment": 512,
+    "local_last_written_address": "0x010003fe",
+    "flag_source": "CR16B manual CMPi PSR.L; GCC CR16 condition LTU->hi",
+    "reference_identifiers": {
+     "cr16b_manual": "https://my.eng.utah.edu/~cs3710/handouts/cr16.pdf",
+     "cr16b_sha256": "3d6b25b5a0ab9949ebe4b540cdfc093d71f8fad91cf075d1d9b6306b09fb6a94",
+     "gcc_cr16": "https://git.raptorcs.com/git/ppe42-gcc/plain/gcc/config/cr16/cr16.c",
+     "gcc_sha256": "37aecb4c744cbf47be3143a1c7df85cad7ad91259bb6a947204d56e5985dcd4c"
+    }
+   },
+   "related_device_evidence": {
+    "SC14480": "RELATED_DEVICE_HYPOTHESIS",
+    "DIP_RAM": "512 x 16-bit, printed pp. 131-132; not proved for SC14448"
+   },
+   "unknown_entries": [
+    "unresolved indirect entry/call target"
+   ],
+   "unknown_writers": [
+    "unresolved register-pair aliases/copies/DMA"
+   ],
+   "unresolved_paths": [
+    "SC14448 CR16Cplus-specific flag differences not ruled out",
+    "external writes to counter cell / interrupt interleaving",
+    "unresolved indirect entries and unknown calls"
+   ],
+   "confidence": "PROVEN_UNDER_LOCAL_CFG_MODEL"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x026748",
+     "raw_bytes": "77000000b694",
+     "disassembly": "movd $0x94b6:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x02674e",
+     "raw_bytes": "17c2",
+     "disassembly": "storw $0x1:s,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x026750",
+     "raw_bytes": "b25a0110",
+     "disassembly": "movw $0x1001:m,r2"
+    },
+    {
+     "instruction": "0x026754",
+     "raw_bytes": "fdc023b7",
+     "disassembly": "bal (ra),*-0x1e76:m"
+    },
+    {
+     "instruction": "0x001e76",
+     "raw_bytes": "0701",
+     "disassembly": "push $0x1,r7"
+    },
+    {
+     "instruction": "0x001e78",
+     "raw_bytes": "70000000b694",
+     "disassembly": "movd $0x94b6:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x001e8c",
+     "raw_bytes": "24d0",
+     "disassembly": "storw r2,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x001e8e",
+     "raw_bytes": "1332",
+     "disassembly": "addw $0x1:s,r3"
+    },
+    {
+     "instruction": "0x001e90",
+     "raw_bytes": "30d0",
+     "disassembly": "storw r3,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x001e92",
+     "raw_bytes": "0703",
+     "disassembly": "popret $0x1,r7"
+    },
+    {
+     "instruction": "0x026758",
+     "raw_bytes": "0790",
+     "disassembly": "loadw 0x0:s(r8,r7),r0"
+    },
+    {
+     "instruction": "0x02675a",
+     "raw_bytes": "b0520002",
+     "disassembly": "cmpw $0x200:m,r0"
+    },
+    {
+     "instruction": "0x02675e",
+     "raw_bytes": "491f",
+     "disassembly": "bhi *-0x26750:s"
+    }
+   ],
+   "cfg_provenance": {
+    "helper_direct_call": true,
+    "backedge": true,
+    "no_instruction_between_cmp_and_bhi": true,
+    "global_entry_coverage": false
+   },
+   "dataflow_provenance": {
+    "r0_definition": {
+     "instruction": "0x026758",
+     "raw_bytes": "0790",
+     "disassembly": "loadw 0x0:s(r8,r7),r0"
+    },
+    "r0_is_abi_return": false,
+    "counter_initial_value": 1,
+    "r8_r7_cell_address": "0x94b6",
+    "r7_saved_and_restored_in_helper": true,
+    "counter_step": 1,
+    "compare_immediate": 512,
+    "condition": "first operand 512 > second operand r0 (unsigned)",
+    "local_loop_count": 511,
+    "all_path_loop_count": null,
+    "local_index_range": [
+     1,
+     511
+    ],
+    "local_last_counter_after_increment": 512,
+    "local_last_written_address": "0x010003fe",
+    "flag_source": "CR16B manual CMPi PSR.L; GCC CR16 condition LTU->hi",
+    "reference_identifiers": {
+     "cr16b_manual": "https://my.eng.utah.edu/~cs3710/handouts/cr16.pdf",
+     "cr16b_sha256": "3d6b25b5a0ab9949ebe4b540cdfc093d71f8fad91cf075d1d9b6306b09fb6a94",
+     "gcc_cr16": "https://git.raptorcs.com/git/ppe42-gcc/plain/gcc/config/cr16/cr16.c",
+     "gcc_sha256": "37aecb4c744cbf47be3143a1c7df85cad7ad91259bb6a947204d56e5985dcd4c"
+    }
+   },
+   "related_device_evidence": {
+    "SC14480": "RELATED_DEVICE_HYPOTHESIS",
+    "DIP_RAM": "512 x 16-bit, printed pp. 131-132; not proved for SC14448"
+   },
+   "unknown_entries": [
+    "unresolved indirect entry/call target"
+   ],
+   "unknown_writers": [
+    "unresolved register-pair aliases/copies/DMA"
+   ],
+   "unresolved_paths": [
+    "SC14448 CR16Cplus-specific flag differences not ruled out",
+    "external writes to counter cell / interrupt interleaving",
+    "unresolved indirect entries and unknown calls"
+   ],
+   "confidence": "PROVEN_UNDER_LOCAL_CFG_MODEL"
+  }
+ }
+}

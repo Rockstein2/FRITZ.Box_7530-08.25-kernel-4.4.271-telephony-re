@@ -55,3 +55,13 @@ Examples:
 
 See `../docs/history/fon-pcmlink-register-path.md` for the recovered call graph and the
 confidence labels.
+# FON-E3.4 offline analysis
+
+`cr16_dip_program.py` reads both SHA256-checked firmware images through the
+local CR16 objdump and produces seven staged, fail-closed reports:
+`reports/cr16-e34-*.json`. It never executes firmware or contacts hardware.
+Run `python3 tools/tests/test_cr16_dip_program.py` for synthetic boundaries,
+NON_CONVERGED rejection and fresh-directory JSON replay. External CR16B,
+GCC and OsmocomDECT references remain under `../work/cr16/references/`,
+outside Git. The analysis proves only a local 511-store model; unknown
+writers/interrupts prevent an all-path or final-program claim.

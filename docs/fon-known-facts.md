@@ -16,6 +16,15 @@ register meaning and global ordering are not proven. The static `0xD6`
 pointer is `0x01027F80`; the DSP IRQ forms `+0x58` with a 32-bit register
 pair. None of these facts proves a slot-5 consumer.
 
+E3.4 offline refinement (`fon-e34-summary.md`): the separate indexed writer
+packs high byte `r2` and low byte `r3` into `r3=(r2<<8)|r3`, and writes at
+`0x01000000+2*zero_extend16(r4)`. A local post-fill caller sets index 2,
+high `0x12`, low `0xAA`, producing `0x12AA` at `0x01000004` on that path.
+The loop caller explicitly reloads `r0` from the counter cell; CR16 compare
+orientation yields 511 stores on the isolated local CFG path, **not** an
+all-path proof. No final DIP program or SC14448 physical register mapping
+has been confirmed.
+
 Status: **confirmed evidence only. Anything not listed here is either an open
 question (`fon-open-questions.md`) or historical reasoning under
 `docs/history/`.**

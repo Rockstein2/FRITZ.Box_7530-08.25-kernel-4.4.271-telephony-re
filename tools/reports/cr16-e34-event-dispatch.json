@@ -1,0 +1,260 @@
+{
+ "tool": "cr16-e34-event-dispatch/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x028acc",
+     "raw_bytes": "a259",
+     "disassembly": "movb r10,r2"
+    },
+    {
+     "instruction": "0x028ace",
+     "raw_bytes": "e220",
+     "disassembly": "andb $0xe:s,r2"
+    },
+    {
+     "instruction": "0x028ad0",
+     "raw_bytes": "420d",
+     "disassembly": "bne0b r2,*+0x2a:s"
+    },
+    {
+     "instruction": "0x028ad8",
+     "raw_bytes": "ca26",
+     "disassembly": "orw $0xc:s,r10"
+    },
+    {
+     "instruction": "0x028ada",
+     "raw_bytes": "fa06",
+     "disassembly": "tbit $0xf:s,r10"
+    },
+    {
+     "instruction": "0x028adc",
+     "raw_bytes": "9710",
+     "disassembly": "bfc *+0x28aea:s"
+    },
+    {
+     "instruction": "0x028aea",
+     "raw_bytes": "3a06",
+     "disassembly": "tbit $0x3:s,r10"
+    },
+    {
+     "instruction": "0x028aec",
+     "raw_bytes": "9310",
+     "disassembly": "bfc *+0x28af2:s"
+    },
+    {
+     "instruction": "0x028aee",
+     "raw_bytes": "fdc03bb0",
+     "disassembly": "bal (ra),*-0x3b28:m"
+    },
+    {
+     "instruction": "0x028af2",
+     "raw_bytes": "2a06",
+     "disassembly": "tbit $0x2:s,r10"
+    },
+    {
+     "instruction": "0x028af4",
+     "raw_bytes": "9310",
+     "disassembly": "bfc *+0x28afa:s"
+    },
+    {
+     "instruction": "0x028af6",
+     "raw_bytes": "fdc043b0",
+     "disassembly": "bal (ra),*-0x3b38:m"
+    },
+    {
+     "instruction": "0x02873e",
+     "raw_bytes": "e020",
+     "disassembly": "andb $0xe:s,r0"
+    },
+    {
+     "instruction": "0x028742",
+     "raw_bytes": "0612",
+     "disassembly": "beq *+0x2878e:s"
+    }
+   ],
+   "cfg_provenance": {
+    "dsp_nonzero_gate_target": "0x028afa",
+    "bit3_false_target": "0x028af2",
+    "bit2_false_target": "0x028afa",
+    "bit3_true_direct_helper": "0x003b28",
+    "bit2_true_direct_helper": "0x003b38",
+    "selected_edges_verified": true,
+    "dip_gate": [
+     {
+      "instruction": "0x028742",
+      "raw_bytes": "0612",
+      "disassembly": "beq *+0x2878e:s"
+     },
+     "0x02878e"
+    ],
+    "p2test_dip_branches": []
+   },
+   "dataflow_provenance": {
+    "dsp": "r10 low-byte & 0x0e; nonzero skips; zero ORs 0x0c into r10 then tests bits 3/2",
+    "normal_dip": "r9 & 0x0e -> r0; beq on zero",
+    "p2test_dip": null
+   },
+   "related_device_evidence": {
+    "SC14480": "RELATED_DEVICE_HYPOTHESIS",
+    "DIP_RAM": "512 x 16-bit, printed pp. 131-132; not proved for SC14448"
+   },
+   "unknown_entries": [
+    "unresolved indirect entry/call target"
+   ],
+   "unknown_writers": [
+    "unresolved register-pair aliases/copies/DMA"
+   ],
+   "unresolved_paths": [
+    "indirect downstream calls and event meaning",
+    "bit-test/branch instruction semantics on SC14448 not emulated",
+    "complete register-clobber proof across helper calls"
+   ],
+   "confidence": "PARTIALLY_PROVEN"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x02794c",
+     "raw_bytes": "a259",
+     "disassembly": "movb r10,r2"
+    },
+    {
+     "instruction": "0x02794e",
+     "raw_bytes": "e220",
+     "disassembly": "andb $0xe:s,r2"
+    },
+    {
+     "instruction": "0x027950",
+     "raw_bytes": "420d",
+     "disassembly": "bne0b r2,*+0x2a:s"
+    },
+    {
+     "instruction": "0x027958",
+     "raw_bytes": "ca26",
+     "disassembly": "orw $0xc:s,r10"
+    },
+    {
+     "instruction": "0x02795a",
+     "raw_bytes": "fa06",
+     "disassembly": "tbit $0xf:s,r10"
+    },
+    {
+     "instruction": "0x02795c",
+     "raw_bytes": "9710",
+     "disassembly": "bfc *+0x2796a:s"
+    },
+    {
+     "instruction": "0x02796a",
+     "raw_bytes": "3a06",
+     "disassembly": "tbit $0x3:s,r10"
+    },
+    {
+     "instruction": "0x02796c",
+     "raw_bytes": "9310",
+     "disassembly": "bfc *+0x27972:s"
+    },
+    {
+     "instruction": "0x02796e",
+     "raw_bytes": "ffc0d7fd",
+     "disassembly": "bal (ra),*-0x27744:m"
+    },
+    {
+     "instruction": "0x027972",
+     "raw_bytes": "2a06",
+     "disassembly": "tbit $0x2:s,r10"
+    },
+    {
+     "instruction": "0x027974",
+     "raw_bytes": "9310",
+     "disassembly": "bfc *+0x2797a:s"
+    },
+    {
+     "instruction": "0x027976",
+     "raw_bytes": "ffc0dffd",
+     "disassembly": "bal (ra),*-0x27754:m"
+    },
+    {
+     "instruction": "0x025d84",
+     "raw_bytes": "0050",
+     "disassembly": "cmpb $0x0:s,r0"
+    },
+    {
+     "instruction": "0x025d86",
+     "raw_bytes": "00188e07",
+     "disassembly": "beq *+0x26514:m"
+    }
+   ],
+   "cfg_provenance": {
+    "dsp_nonzero_gate_target": "0x02797a",
+    "bit3_false_target": "0x027972",
+    "bit2_false_target": "0x02797a",
+    "bit3_true_direct_helper": "0x027744",
+    "bit2_true_direct_helper": "0x027754",
+    "selected_edges_verified": true,
+    "dip_gate": [
+     {
+      "instruction": "0x025d86",
+      "raw_bytes": "00188e07",
+      "disassembly": "beq *+0x26514:m"
+     },
+     "0x026514"
+    ],
+    "p2test_dip_branches": [
+     [
+      {
+       "instruction": "0x025db4",
+       "raw_bytes": "0510",
+       "disassembly": "beq *+0x25dbe:s"
+      },
+      "0x025dbe"
+     ],
+     [
+      {
+       "instruction": "0x025db8",
+       "raw_bytes": "0913",
+       "disassembly": "beq *+0x25e2a:s"
+      },
+      "0x025e2a"
+     ],
+     [
+      {
+       "instruction": "0x025dba",
+       "raw_bytes": "e018d007",
+       "disassembly": "br *+0x2658a:m"
+      },
+      "0x02658a"
+     ]
+    ]
+   },
+   "dataflow_provenance": {
+    "dsp": "r10 low-byte & 0x0e; nonzero skips; zero ORs 0x0c into r10 then tests bits 3/2",
+    "normal_dip": null,
+    "p2test_dip": "[0x953e] gate; r9 == 0x0e/0x0f/other"
+   },
+   "related_device_evidence": {
+    "SC14480": "RELATED_DEVICE_HYPOTHESIS",
+    "DIP_RAM": "512 x 16-bit, printed pp. 131-132; not proved for SC14448"
+   },
+   "unknown_entries": [
+    "unresolved indirect entry/call target"
+   ],
+   "unknown_writers": [
+    "unresolved register-pair aliases/copies/DMA"
+   ],
+   "unresolved_paths": [
+    "indirect downstream calls and event meaning",
+    "bit-test/branch instruction semantics on SC14448 not emulated",
+    "complete register-clobber proof across helper calls"
+   ],
+   "confidence": "PARTIALLY_PROVEN"
+  }
+ }
+}

@@ -1,0 +1,95 @@
+{
+ "tool": "cr16-e34-fon-relevance/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x002618",
+     "raw_bytes": "30d0",
+     "disassembly": "storw r3,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x003704",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x028ad0",
+     "raw_bytes": "420d",
+     "disassembly": "bne0b r2,*+0x2a:s"
+    }
+   ],
+   "cfg_provenance": {
+    "only_new_DIP_writer_and_bounded_event_paths": true,
+    "slot5_source_to_sink": false
+   },
+   "dataflow_provenance": {
+    "no_slot5_consumer_proven": true,
+    "no_register_name_inferred_from_SC14480": true
+   },
+   "related_device_evidence": {
+    "SC14480": "RELATED_DEVICE_HYPOTHESIS",
+    "DIP_RAM": "512 x 16-bit, printed pp. 131-132; not proved for SC14448"
+   },
+   "unknown_entries": [
+    "unresolved indirect entry/call target"
+   ],
+   "unknown_writers": [
+    "unresolved register-pair aliases/copies/DMA"
+   ],
+   "unresolved_paths": [
+    "slot-5 hardware ingress and data transformation",
+    "indirect memory aliases, unknown callbacks and register identity"
+   ],
+   "confidence": "UNRESOLVED"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x001ed4",
+     "raw_bytes": "30d0",
+     "disassembly": "storw r3,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x003456",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x027950",
+     "raw_bytes": "420d",
+     "disassembly": "bne0b r2,*+0x2a:s"
+    }
+   ],
+   "cfg_provenance": {
+    "only_new_DIP_writer_and_bounded_event_paths": true,
+    "slot5_source_to_sink": false
+   },
+   "dataflow_provenance": {
+    "no_slot5_consumer_proven": true,
+    "no_register_name_inferred_from_SC14480": true
+   },
+   "related_device_evidence": {
+    "SC14480": "RELATED_DEVICE_HYPOTHESIS",
+    "DIP_RAM": "512 x 16-bit, printed pp. 131-132; not proved for SC14448"
+   },
+   "unknown_entries": [
+    "unresolved indirect entry/call target"
+   ],
+   "unknown_writers": [
+    "unresolved register-pair aliases/copies/DMA"
+   ],
+   "unresolved_paths": [
+    "slot-5 hardware ingress and data transformation",
+    "indirect memory aliases, unknown callbacks and register identity"
+   ],
+   "confidence": "UNRESOLVED"
+  }
+ }
+}

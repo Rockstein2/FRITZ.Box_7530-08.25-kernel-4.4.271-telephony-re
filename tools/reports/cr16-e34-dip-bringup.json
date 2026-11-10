@@ -1,0 +1,155 @@
+{
+ "tool": "cr16-e34-dip-bringup/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x025faa",
+     "raw_bytes": "fdc0afc5",
+     "disassembly": "bal (ra),*-0x2558:m"
+    },
+    {
+     "instruction": "0x00255e",
+     "raw_bytes": "0fc10064",
+     "disassembly": "storw $0x0:s,0xf6400:m"
+    },
+    {
+     "instruction": "0x002566",
+     "raw_bytes": "0fc90264",
+     "disassembly": "storw r0,0xf6402:m"
+    },
+    {
+     "instruction": "0x002582",
+     "raw_bytes": "7000ff000660",
+     "disassembly": "movd $0xff6006:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x002588",
+     "raw_bytes": "b25a8000",
+     "disassembly": "movw $0x80:m,r2"
+    },
+    {
+     "instruction": "0x00258c",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0025b4",
+     "raw_bytes": "00c2",
+     "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+    }
+   ],
+   "cfg_provenance": {
+    "fill_exit_call_to_bmc": [
+     "0x025faa",
+     "0x002558"
+    ],
+    "entire_callee_segment_fallthrough": true,
+    "callee_segment_conditional_jumps": 0,
+    "call_returns_assumed": true,
+    "global_order_proven": false
+   },
+   "dataflow_provenance": {
+    "bmc0": "immediate 0",
+    "bmc2": "movw 0xf0 -> r0 -> storw",
+    "control_stop": "movd 0xff6006 -> r1:r0; movw 0x80 -> r2; storw",
+    "control_release": "same r1:r0; storw immediate 0",
+    "sc14448_URST_semantics": "UNRESOLVED"
+   },
+   "related_device_evidence": {
+    "SC14480": "RELATED_DEVICE_HYPOTHESIS",
+    "DIP_RAM": "512 x 16-bit, printed pp. 131-132; not proved for SC14448"
+   },
+   "unknown_entries": [
+    "unresolved indirect entry/call target"
+   ],
+   "unknown_writers": [
+    "unresolved register-pair aliases/copies/DMA"
+   ],
+   "unresolved_paths": [
+    "call returns/interleavings and prior control state",
+    "other callers can modify the same registers",
+    "physical map unknown"
+   ],
+   "confidence": "PARTIALLY_PROVEN"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x026760",
+     "raw_bytes": "fdc0adb6",
+     "disassembly": "bal (ra),*-0x1e0c:m"
+    },
+    {
+     "instruction": "0x001e12",
+     "raw_bytes": "0fc10064",
+     "disassembly": "storw $0x0:s,0xf6400:m"
+    },
+    {
+     "instruction": "0x001e1a",
+     "raw_bytes": "0fc90264",
+     "disassembly": "storw r0,0xf6402:m"
+    },
+    {
+     "instruction": "0x001e3e",
+     "raw_bytes": "7000ff000660",
+     "disassembly": "movd $0xff6006:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x001e44",
+     "raw_bytes": "b25a8000",
+     "disassembly": "movw $0x80:m,r2"
+    },
+    {
+     "instruction": "0x001e48",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x001e70",
+     "raw_bytes": "00c2",
+     "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+    }
+   ],
+   "cfg_provenance": {
+    "fill_exit_call_to_bmc": [
+     "0x026760",
+     "0x001e0c"
+    ],
+    "entire_callee_segment_fallthrough": true,
+    "callee_segment_conditional_jumps": 0,
+    "call_returns_assumed": true,
+    "global_order_proven": false
+   },
+   "dataflow_provenance": {
+    "bmc0": "immediate 0",
+    "bmc2": "movw 0xf0 -> r0 -> storw",
+    "control_stop": "movd 0xff6006 -> r1:r0; movw 0x80 -> r2; storw",
+    "control_release": "same r1:r0; storw immediate 0",
+    "sc14448_URST_semantics": "UNRESOLVED"
+   },
+   "related_device_evidence": {
+    "SC14480": "RELATED_DEVICE_HYPOTHESIS",
+    "DIP_RAM": "512 x 16-bit, printed pp. 131-132; not proved for SC14448"
+   },
+   "unknown_entries": [
+    "unresolved indirect entry/call target"
+   ],
+   "unknown_writers": [
+    "unresolved register-pair aliases/copies/DMA"
+   ],
+   "unresolved_paths": [
+    "call returns/interleavings and prior control state",
+    "other callers can modify the same registers",
+    "physical map unknown"
+   ],
+   "confidence": "PARTIALLY_PROVEN"
+  }
+ }
+}

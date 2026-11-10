@@ -167,3 +167,9 @@ generic status register. Printed p. 177 describes DSP_INT_REG vector bits as
 write-one-to-clear. Printed pp. 35–38 list BR/BR_B0 but defer the detailed
 encoding to AN-D-140, absent offline. These are **SC14480** facts only;
 E3.3 makes no SC14448 physical-register identity claim.
+
+E3.4 separately observes CR16-stored words `0x1001` and `0x12AA` in the
+SC14448 firmware. SC14480 Table 10 lists `BR=0x01`, `BR_B0=0x10`,
+`M_CON=0xAA` and `JMPF=0x12`, but gives no complete parameter/word format
+here; AN-D-140 was not found in the public search. No opcode byte-order or
+SC14448 instruction compatibility follows from those name matches.

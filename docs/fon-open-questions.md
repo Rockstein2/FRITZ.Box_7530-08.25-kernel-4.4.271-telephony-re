@@ -12,6 +12,13 @@ documented in `fon-e33-summary.md`. Full CFG/counter-writer coverage,
 remain open. Q57's architectural abs20 result is unchanged; SC14448 register
 identity and Q75 slot-5 source-to-sink path remain unproved.
 
+E3.4 (`fon-e34-summary.md`) resolves the local byte-packing formula and
+local 511-iteration count, including an index-2 `0x12AA` write after fill
+on a checked caller path. Q46/Q55 remain open because final cell values,
+runtime indices, indirect writers, call/interrupt order and the physical
+SC14448 bank have not been exhaustively proved. The CR16B/GCC compare rule
+strengthens the local loop only; Q57 physical identity and Q75 are unchanged.
+
 Status: **the only list of unresolved items for this project**
 
 Each item states what the question is, what would close it, and in which

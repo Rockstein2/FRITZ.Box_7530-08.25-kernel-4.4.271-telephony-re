@@ -233,3 +233,7 @@ Bounded offline traces of `dip_int` and `dsp_int` in
 logical slot 5. This is not a whole-firmware negative result: unknown
 indirect calls, bank identities and other firmware paths remain. Q75 stays
 open; no slot-5 handler is asserted.
+
+E3.4 extends that bounded check to DIP word writers and verified IRQ branch
+edges (`fon-e34-summary.md`). It finds no Linux slot-5 source-to-firmware
+consumer proof and does not close Q75.

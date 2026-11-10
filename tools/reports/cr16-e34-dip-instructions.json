@@ -1,0 +1,149 @@
+{
+ "tool": "cr16-e34-dip-instructions/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x025f9a",
+     "raw_bytes": "b25a0110",
+     "disassembly": "movw $0x1001:m,r2"
+    },
+    {
+     "instruction": "0x025fca",
+     "raw_bytes": "245a",
+     "disassembly": "movw $0x2:s,r4"
+    },
+    {
+     "instruction": "0x025fcc",
+     "raw_bytes": "b358aa00",
+     "disassembly": "movb $0xaa:m,r3"
+    },
+    {
+     "instruction": "0x025fd0",
+     "raw_bytes": "b2581200",
+     "disassembly": "movb $0x12:m,r2"
+    },
+    {
+     "instruction": "0x002618",
+     "raw_bytes": "30d0",
+     "disassembly": "storw r3,0x0:s(r1,r0)"
+    }
+   ],
+   "cfg_provenance": {
+    "exact_SC14448_instruction_stream": false
+   },
+   "dataflow_provenance": {
+    "fill_word": "0x1001",
+    "local_post_fill_word_index_2": "0x12aa",
+    "runtime_word": "((r2&0xff)<<8)|(r3&0xff)"
+   },
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "SC14480_table10": "0x01 BR, 0x10 BR_B0, 0xaa M_CON, 0x12 JMPF",
+    "OsmocomDECT_SC14421": "BR=0x01; not an SC14448 encoding proof",
+    "AN_D_140": "NOT_FOUND"
+   },
+   "unknown_entries": [
+    "unresolved indirect entry/call target"
+   ],
+   "unknown_writers": [
+    "unresolved register-pair aliases/copies/DMA"
+   ],
+   "unresolved_paths": [
+    "opcode position, branch parameter, bank and target",
+    "SC14448 instruction-set compatibility",
+    "runtime DIP program contents"
+   ],
+   "confidence": "CANDIDATE",
+   "pseudo_disassembly": [
+    {
+     "index": 1,
+     "raw_word": "0x1001",
+     "opcode": "UNKNOWN_BYTE_ORDER",
+     "branch_target": null
+    },
+    {
+     "index": 2,
+     "raw_word": "0x12aa on local later path",
+     "opcode": "UNKNOWN_BYTE_ORDER",
+     "branch_target": null
+    }
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x026750",
+     "raw_bytes": "b25a0110",
+     "disassembly": "movw $0x1001:m,r2"
+    },
+    {
+     "instruction": "0x026780",
+     "raw_bytes": "245a",
+     "disassembly": "movw $0x2:s,r4"
+    },
+    {
+     "instruction": "0x026782",
+     "raw_bytes": "b358aa00",
+     "disassembly": "movb $0xaa:m,r3"
+    },
+    {
+     "instruction": "0x026786",
+     "raw_bytes": "b2581200",
+     "disassembly": "movb $0x12:m,r2"
+    },
+    {
+     "instruction": "0x001ed4",
+     "raw_bytes": "30d0",
+     "disassembly": "storw r3,0x0:s(r1,r0)"
+    }
+   ],
+   "cfg_provenance": {
+    "exact_SC14448_instruction_stream": false
+   },
+   "dataflow_provenance": {
+    "fill_word": "0x1001",
+    "local_post_fill_word_index_2": "0x12aa",
+    "runtime_word": "((r2&0xff)<<8)|(r3&0xff)"
+   },
+   "related_device_evidence": {
+    "status": "RELATED_DEVICE_HYPOTHESIS",
+    "SC14480_table10": "0x01 BR, 0x10 BR_B0, 0xaa M_CON, 0x12 JMPF",
+    "OsmocomDECT_SC14421": "BR=0x01; not an SC14448 encoding proof",
+    "AN_D_140": "NOT_FOUND"
+   },
+   "unknown_entries": [
+    "unresolved indirect entry/call target"
+   ],
+   "unknown_writers": [
+    "unresolved register-pair aliases/copies/DMA"
+   ],
+   "unresolved_paths": [
+    "opcode position, branch parameter, bank and target",
+    "SC14448 instruction-set compatibility",
+    "runtime DIP program contents"
+   ],
+   "confidence": "CANDIDATE",
+   "pseudo_disassembly": [
+    {
+     "index": 1,
+     "raw_word": "0x1001",
+     "opcode": "UNKNOWN_BYTE_ORDER",
+     "branch_target": null
+    },
+    {
+     "index": 2,
+     "raw_word": "0x12aa on local later path",
+     "opcode": "UNKNOWN_BYTE_ORDER",
+     "branch_target": null
+    }
+   ]
+  }
+ }
+}

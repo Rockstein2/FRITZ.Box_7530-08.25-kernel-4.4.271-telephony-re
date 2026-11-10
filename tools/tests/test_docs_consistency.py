@@ -911,7 +911,7 @@ _root_current = {
     "fon-dialog-minimal-loader.md", "fon-tdm-control-only-plan.md",
     "fon-e0-summary.md", "fon-sc14448-pcmlink-protocol.md",
     "fon-e1-summary.md", "fon-e2-summary.md", "fon-e3-summary.md",
-    "fon-e32-summary.md", "fon-e33-summary.md",
+    "fon-e32-summary.md", "fon-e33-summary.md", "fon-e34-summary.md",
 }
 _root_analysis = [p.name for p in DOCS.glob("*.md")
                   if p.name not in _root_current]
