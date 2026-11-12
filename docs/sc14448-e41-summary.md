@@ -73,3 +73,8 @@ Q46/Q55/Q75 are unchanged. The primary blocker has narrowed from an unknown
 queue producer to **unknown provenance of its callers' input data** and
 unknown physical host ingress. No new indirect target is proven. Analog FON
 was not separately prioritized. K1/K2 remain NO-GO.
+
+**E4.2 follow-up:** `sc14448-e42-summary.md` traces the allocator's caller
+tags (21/18 locally excluded, 1/1 unknown) and distinguishes case-7's
+`item+2` state write `0x23` from `item+3` tag `0x22`. The local call to
+parser does not establish a producer-backed entry to its `0x23` branch.

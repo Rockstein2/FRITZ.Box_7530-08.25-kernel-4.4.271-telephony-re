@@ -1,0 +1,7553 @@
+{
+ "tool": "cr16-queue-provenance/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x000428",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x000596",
+     "raw_bytes": "20d1",
+     "disassembly": "storw r2,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0005ae",
+     "raw_bytes": "08c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r9,r8)"
+    },
+    {
+     "instruction": "0x00060a",
+     "raw_bytes": "00c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x0006a4",
+     "raw_bytes": "07c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0006de",
+     "raw_bytes": "04c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r5,r4)"
+    },
+    {
+     "instruction": "0x000738",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x00074a",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x000d1a",
+     "raw_bytes": "c4d1",
+     "disassembly": "storw r12,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x000d34",
+     "raw_bytes": "c4d1",
+     "disassembly": "storw r12,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x000d4e",
+     "raw_bytes": "c4d1",
+     "disassembly": "storw r12,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x000d68",
+     "raw_bytes": "c4d1",
+     "disassembly": "storw r12,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x000d82",
+     "raw_bytes": "c4d1",
+     "disassembly": "storw r12,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x000f60",
+     "raw_bytes": "02c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r3,r2)"
+    },
+    {
+     "instruction": "0x000f76",
+     "raw_bytes": "09c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r10,r9)"
+    },
+    {
+     "instruction": "0x000ff4",
+     "raw_bytes": "09c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r10,r9)"
+    },
+    {
+     "instruction": "0x001004",
+     "raw_bytes": "00c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x001122",
+     "raw_bytes": "20d1",
+     "disassembly": "storw r2,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x001144",
+     "raw_bytes": "00c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x001150",
+     "raw_bytes": "00c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x00119c",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x001578",
+     "raw_bytes": "64d1",
+     "disassembly": "storw r6,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x00185e",
+     "raw_bytes": "07c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x002636",
+     "raw_bytes": "20f2",
+     "disassembly": "storb r2,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x00263e",
+     "raw_bytes": "24830300",
+     "disassembly": "storb $0x2:s,0x3:m(r5,r4)"
+    },
+    {
+     "instruction": "0x00264c",
+     "raw_bytes": "14830300",
+     "disassembly": "storb $0x1:s,0x3:m(r5,r4)"
+    },
+    {
+     "instruction": "0x002784",
+     "raw_bytes": "00830200",
+     "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x002788",
+     "raw_bytes": "20f3",
+     "disassembly": "storb r2,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0027ca",
+     "raw_bytes": "40f2",
+     "disassembly": "storb r4,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0027d6",
+     "raw_bytes": "70f3",
+     "disassembly": "storb r7,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x002826",
+     "raw_bytes": "40f2",
+     "disassembly": "storb r4,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x00282a",
+     "raw_bytes": "20f3",
+     "disassembly": "storb r2,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x002842",
+     "raw_bytes": "42f2",
+     "disassembly": "storb r4,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x00298c",
+     "raw_bytes": "0af2",
+     "disassembly": "storb r0,0x2:s(r11,r10)"
+    },
+    {
+     "instruction": "0x003132",
+     "raw_bytes": "80f2",
+     "disassembly": "storb r8,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0031ca",
+     "raw_bytes": "10830300",
+     "disassembly": "storb $0x1:s,0x3:m(r1,r0)"
+    },
+    {
+     "instruction": "0x0031e4",
+     "raw_bytes": "09f3",
+     "disassembly": "storb r0,0x3:s(r10,r9)"
+    },
+    {
+     "instruction": "0x0034a8",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0034f6",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x00354a",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x003812",
+     "raw_bytes": "02f2",
+     "disassembly": "storb r0,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x00384c",
+     "raw_bytes": "02f2",
+     "disassembly": "storb r0,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x00385c",
+     "raw_bytes": "02f2",
+     "disassembly": "storb r0,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x003928",
+     "raw_bytes": "02f2",
+     "disassembly": "storb r0,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x00392a",
+     "raw_bytes": "b2f3",
+     "disassembly": "storb r11,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x003a76",
+     "raw_bytes": "07b3",
+     "disassembly": "loadb 0x3:s(r8,r7),r0"
+    },
+    {
+     "instruction": "0x003a78",
+     "raw_bytes": "13000070cb93",
+     "disassembly": "storb r0,0x93cb:l"
+    },
+    {
+     "instruction": "0x003c16",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x009d50",
+     "raw_bytes": "40830200",
+     "disassembly": "storb $0x4:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x009dea",
+     "raw_bytes": "c2830200",
+     "disassembly": "storb $0xc:s,0x2:m(r3,r2)"
+    },
+    {
+     "instruction": "0x009e38",
+     "raw_bytes": "42f0",
+     "disassembly": "storb r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x009e40",
+     "raw_bytes": "80830200",
+     "disassembly": "storb $0x8:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x009e44",
+     "raw_bytes": "80ef0300",
+     "disassembly": "stord (r9,r8),0x3:m(r1,r0)"
+    },
+    {
+     "instruction": "0x017300",
+     "raw_bytes": "97f3",
+     "disassembly": "storb r9,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x017308",
+     "raw_bytes": "84f3",
+     "disassembly": "storb r8,0x3:s(r5,r4)"
+    },
+    {
+     "instruction": "0x01736a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017372",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01737a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017382",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01738a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017392",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01739a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0173b2",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0173c8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0173d0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0173f0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017404",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01740c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017420",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017434",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01743c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017454",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017468",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017484",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017498",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174a0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174b4",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174c8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174d0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174e8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174fc",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017500",
+     "raw_bytes": "b6f3",
+     "disassembly": "storb r11,0x3:s(r7,r6)"
+    },
+    {
+     "instruction": "0x017518",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01752c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017534",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017548",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01755c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017564",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01757c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017590",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017594",
+     "raw_bytes": "b6f3",
+     "disassembly": "storb r11,0x3:s(r7,r6)"
+    },
+    {
+     "instruction": "0x0175ac",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0175c0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0175c8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0175dc",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0175f0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0175f8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017610",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017624",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0176fe",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017710",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017718",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017724",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017736",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01773e",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01774a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01775c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017764",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017770",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017782",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01778a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017796",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0177a8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0177b0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0177b8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0177cc",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0177d4",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0177dc",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0177f0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0177f8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017800",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017814",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017848",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017850",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017858",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01786e",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017876",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017894",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x0178a0",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x0178dc",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0178e4",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0178ec",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017902",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01790a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017928",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017934",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017970",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017978",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017980",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017996",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01799e",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0179bc",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x0179c8",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017a04",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017a0c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017a14",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017a2a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017a32",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017a50",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017a5c",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017a98",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017aa0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017aa8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017abe",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017ac6",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017ae4",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017af0",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017b08",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017b42",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017b90",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017bde",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017c40",
+     "raw_bytes": "c0ef0200",
+     "disassembly": "stord (r12),0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x017c52",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017cb4",
+     "raw_bytes": "c0ef0200",
+     "disassembly": "stord (r12),0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x017cc6",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017d62",
+     "raw_bytes": "1aff0300",
+     "disassembly": "storb r1,0x3:m(r11,r10)"
+    },
+    {
+     "instruction": "0x017df6",
+     "raw_bytes": "baf3",
+     "disassembly": "storb r11,0x3:s(r11,r10)"
+    },
+    {
+     "instruction": "0x017e48",
+     "raw_bytes": "baf3",
+     "disassembly": "storb r11,0x3:s(r11,r10)"
+    },
+    {
+     "instruction": "0x02005a",
+     "raw_bytes": "b0f2",
+     "disassembly": "storb r11,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x02005c",
+     "raw_bytes": "a0f3",
+     "disassembly": "storb r10,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0202bc",
+     "raw_bytes": "10830200",
+     "disassembly": "storb $0x1:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x0202ea",
+     "raw_bytes": "09f3",
+     "disassembly": "storb r0,0x3:s(r10,r9)"
+    },
+    {
+     "instruction": "0x020366",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x020368",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02037a",
+     "raw_bytes": "00830200",
+     "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x02037e",
+     "raw_bytes": "00830300",
+     "disassembly": "storb $0x0:s,0x3:m(r1,r0)"
+    },
+    {
+     "instruction": "0x0203e8",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x020400",
+     "raw_bytes": "07830300",
+     "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x02046e",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02093e",
+     "raw_bytes": "04f2",
+     "disassembly": "storb r0,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x020946",
+     "raw_bytes": "02830200",
+     "disassembly": "storb $0x0:s,0x2:m(r3,r2)"
+    },
+    {
+     "instruction": "0x020958",
+     "raw_bytes": "04f2",
+     "disassembly": "storb r0,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x02098e",
+     "raw_bytes": "09f3",
+     "disassembly": "storb r0,0x3:s(r10,r9)"
+    },
+    {
+     "instruction": "0x020a02",
+     "raw_bytes": "40d1",
+     "disassembly": "storw r4,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x020d42",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x020f6e",
+     "raw_bytes": "00830200",
+     "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x020f74",
+     "raw_bytes": "40f3",
+     "disassembly": "storb r4,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0210ee",
+     "raw_bytes": "04830200",
+     "disassembly": "storb $0x0:s,0x2:m(r5,r4)"
+    },
+    {
+     "instruction": "0x0210f2",
+     "raw_bytes": "04830300",
+     "disassembly": "storb $0x0:s,0x3:m(r5,r4)"
+    },
+    {
+     "instruction": "0x0211b6",
+     "raw_bytes": "14830200",
+     "disassembly": "storb $0x1:s,0x2:m(r5,r4)"
+    },
+    {
+     "instruction": "0x0211ba",
+     "raw_bytes": "04830300",
+     "disassembly": "storb $0x0:s,0x3:m(r5,r4)"
+    },
+    {
+     "instruction": "0x021218",
+     "raw_bytes": "86e1",
+     "disassembly": "stord (r9,r8),0x2:s(r7,r6)"
+    },
+    {
+     "instruction": "0x0215ba",
+     "raw_bytes": "86f2",
+     "disassembly": "storb r8,0x2:s(r7,r6)"
+    },
+    {
+     "instruction": "0x0215be",
+     "raw_bytes": "86f3",
+     "disassembly": "storb r8,0x3:s(r7,r6)"
+    },
+    {
+     "instruction": "0x0215d0",
+     "raw_bytes": "86f2",
+     "disassembly": "storb r8,0x2:s(r7,r6)"
+    },
+    {
+     "instruction": "0x0215d4",
+     "raw_bytes": "06f3",
+     "disassembly": "storb r0,0x3:s(r7,r6)"
+    },
+    {
+     "instruction": "0x021674",
+     "raw_bytes": "09f2",
+     "disassembly": "storb r0,0x2:s(r10,r9)"
+    },
+    {
+     "instruction": "0x021678",
+     "raw_bytes": "09f3",
+     "disassembly": "storb r0,0x3:s(r10,r9)"
+    },
+    {
+     "instruction": "0x021854",
+     "raw_bytes": "89710200",
+     "disassembly": "sbitw $0x8:s,0x2:m(r10,r9)"
+    },
+    {
+     "instruction": "0x021858",
+     "raw_bytes": "69710200",
+     "disassembly": "sbitw $0x6:s,0x2:m(r10,r9)"
+    },
+    {
+     "instruction": "0x02188a",
+     "raw_bytes": "89710200",
+     "disassembly": "sbitw $0x8:s,0x2:m(r10,r9)"
+    },
+    {
+     "instruction": "0x02188e",
+     "raw_bytes": "79710200",
+     "disassembly": "sbitw $0x7:s,0x2:m(r10,r9)"
+    },
+    {
+     "instruction": "0x021aac",
+     "raw_bytes": "27f2",
+     "disassembly": "storb r2,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x021ab4",
+     "raw_bytes": "27f3",
+     "disassembly": "storb r2,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x021af0",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x021af8",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x021b38",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x021b44",
+     "raw_bytes": "17f3",
+     "disassembly": "storb r1,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x021d38",
+     "raw_bytes": "f7830200",
+     "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x021d40",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x021db8",
+     "raw_bytes": "37830200",
+     "disassembly": "storb $0x3:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x021dbe",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022210",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022214",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022238",
+     "raw_bytes": "17f2",
+     "disassembly": "storb r1,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022240",
+     "raw_bytes": "27f3",
+     "disassembly": "storb r2,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02226a",
+     "raw_bytes": "47f3",
+     "disassembly": "storb r4,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02227c",
+     "raw_bytes": "f7830200",
+     "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022284",
+     "raw_bytes": "17f3",
+     "disassembly": "storb r1,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0222a0",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0222a4",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0222c6",
+     "raw_bytes": "f7830200",
+     "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0222ca",
+     "raw_bytes": "07830300",
+     "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0222d2",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0222da",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0222e4",
+     "raw_bytes": "17f3",
+     "disassembly": "storb r1,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022418",
+     "raw_bytes": "09e1",
+     "disassembly": "stord (r1,r0),0x2:s(r10,r9)"
+    },
+    {
+     "instruction": "0x0224d2",
+     "raw_bytes": "09e1",
+     "disassembly": "stord (r1,r0),0x2:s(r10,r9)"
+    },
+    {
+     "instruction": "0x0226e8",
+     "raw_bytes": "09d1",
+     "disassembly": "storw r0,0x2:s(r10,r9)"
+    },
+    {
+     "instruction": "0x0227ea",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02280c",
+     "raw_bytes": "17830300",
+     "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022818",
+     "raw_bytes": "27830300",
+     "disassembly": "storb $0x2:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022834",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022850",
+     "raw_bytes": "37830300",
+     "disassembly": "storb $0x3:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022880",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022a44",
+     "raw_bytes": "07830300",
+     "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022a76",
+     "raw_bytes": "17830300",
+     "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022a82",
+     "raw_bytes": "27830300",
+     "disassembly": "storb $0x2:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022c8e",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022c90",
+     "raw_bytes": "07830300",
+     "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x023002",
+     "raw_bytes": "17730300",
+     "disassembly": "sbitb $0x1,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0230b2",
+     "raw_bytes": "276b0300",
+     "disassembly": "cbitb $0x2,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0230e8",
+     "raw_bytes": "276b0300",
+     "disassembly": "cbitb $0x2,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x023532",
+     "raw_bytes": "02f3",
+     "disassembly": "storb r0,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x0241f2",
+     "raw_bytes": "c7f2",
+     "disassembly": "storb r12,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0241fa",
+     "raw_bytes": "92f2",
+     "disassembly": "storb r9,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x024a22",
+     "raw_bytes": "30f2",
+     "disassembly": "storb r3,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x024a34",
+     "raw_bytes": "30f3",
+     "disassembly": "storb r3,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x025026",
+     "raw_bytes": "02f2",
+     "disassembly": "storb r0,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x02504c",
+     "raw_bytes": "02f3",
+     "disassembly": "storb r0,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x025cee",
+     "raw_bytes": "12d1",
+     "disassembly": "storw r1,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x025d50",
+     "raw_bytes": "72d1",
+     "disassembly": "storw r7,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x026150",
+     "raw_bytes": "27f2",
+     "disassembly": "storb r2,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x026158",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02615c",
+     "raw_bytes": "07830200",
+     "disassembly": "storb $0x0:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x026160",
+     "raw_bytes": "07830300",
+     "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0261d2",
+     "raw_bytes": "70f2",
+     "disassembly": "storb r7,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0261d4",
+     "raw_bytes": "10830300",
+     "disassembly": "storb $0x1:s,0x3:m(r1,r0)"
+    },
+    {
+     "instruction": "0x0263e2",
+     "raw_bytes": "a0830200",
+     "disassembly": "storb $0xa:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x0269fa",
+     "raw_bytes": "0af2",
+     "disassembly": "storb r0,0x2:s(r11,r10)"
+    },
+    {
+     "instruction": "0x0269fe",
+     "raw_bytes": "0af3",
+     "disassembly": "storb r0,0x3:s(r11,r10)"
+    },
+    {
+     "instruction": "0x026b5c",
+     "raw_bytes": "13d1",
+     "disassembly": "storw r1,0x2:s(r4,r3)"
+    },
+    {
+     "instruction": "0x026ca2",
+     "raw_bytes": "0a830300",
+     "disassembly": "storb $0x0:s,0x3:m(r11,r10)"
+    },
+    {
+     "instruction": "0x026d54",
+     "raw_bytes": "0a830300",
+     "disassembly": "storb $0x0:s,0x3:m(r11,r10)"
+    },
+    {
+     "instruction": "0x02732e",
+     "raw_bytes": "97f2",
+     "disassembly": "storb r9,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x027330",
+     "raw_bytes": "17830300",
+     "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x027394",
+     "raw_bytes": "c7f2",
+     "disassembly": "storb r12,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0273be",
+     "raw_bytes": "b7f3",
+     "disassembly": "storb r11,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0273ec",
+     "raw_bytes": "b7f2",
+     "disassembly": "storb r11,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0273ee",
+     "raw_bytes": "97f3",
+     "disassembly": "storb r9,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x027442",
+     "raw_bytes": "a0f2",
+     "disassembly": "storb r10,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x027788",
+     "raw_bytes": "30e1",
+     "disassembly": "stord (r4,r3),0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x027ae8",
+     "raw_bytes": "20d1",
+     "disassembly": "storw r2,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x02822a",
+     "raw_bytes": "20f2",
+     "disassembly": "storb r2,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x028382",
+     "raw_bytes": "30f2",
+     "disassembly": "storb r3,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x028394",
+     "raw_bytes": "30f3",
+     "disassembly": "storb r3,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x02848c",
+     "raw_bytes": "00830200",
+     "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x028498",
+     "raw_bytes": "20f3",
+     "disassembly": "storb r2,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0284a6",
+     "raw_bytes": "20f2",
+     "disassembly": "storb r2,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0284bc",
+     "raw_bytes": "30f3",
+     "disassembly": "storb r3,0x3:s(r1,r0)"
+    }
+   ],
+   "cfg_evidence": {
+    "candidate_store_displacements_2_or_3": 277,
+    "candidate_stores": [
+     {
+      "site": {
+       "instruction": "0x000428",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x000596",
+       "raw_bytes": "20d1",
+       "disassembly": "storw r2,0x2:s(r1,r0)"
+      },
+      "effective_address": "0x000116ea",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0005ae",
+       "raw_bytes": "08c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r9,r8)"
+      },
+      "effective_address": "0x000116d0",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x00060a",
+       "raw_bytes": "00c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0006a4",
+       "raw_bytes": "07c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0006de",
+       "raw_bytes": "04c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r5,r4)"
+      },
+      "effective_address": "0x00010830",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000738",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00074a",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": "0x0001094a",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000d1a",
+       "raw_bytes": "c4d1",
+       "disassembly": "storw r12,0x2:s(r5,r4)"
+      },
+      "effective_address": "0x000113da",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000d34",
+       "raw_bytes": "c4d1",
+       "disassembly": "storw r12,0x2:s(r5,r4)"
+      },
+      "effective_address": "0x000114c2",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000d4e",
+       "raw_bytes": "c4d1",
+       "disassembly": "storw r12,0x2:s(r5,r4)"
+      },
+      "effective_address": "0x000115aa",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000d68",
+       "raw_bytes": "c4d1",
+       "disassembly": "storw r12,0x2:s(r5,r4)"
+      },
+      "effective_address": "0x00011c18",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000d82",
+       "raw_bytes": "c4d1",
+       "disassembly": "storw r12,0x2:s(r5,r4)"
+      },
+      "effective_address": "0x00011d00",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000f60",
+       "raw_bytes": "02c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r3,r2)"
+      },
+      "effective_address": "0x00010e22",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000f76",
+       "raw_bytes": "09c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x000ff4",
+       "raw_bytes": "09c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x001004",
+       "raw_bytes": "00c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": "0x00010e1c",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x001122",
+       "raw_bytes": "20d1",
+       "disassembly": "storw r2,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x001144",
+       "raw_bytes": "00c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x001150",
+       "raw_bytes": "00c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00119c",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x001578",
+       "raw_bytes": "64d1",
+       "disassembly": "storw r6,0x2:s(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00185e",
+       "raw_bytes": "07c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x002636",
+       "raw_bytes": "20f2",
+       "disassembly": "storb r2,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00263e",
+       "raw_bytes": "24830300",
+       "disassembly": "storb $0x2:s,0x3:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00264c",
+       "raw_bytes": "14830300",
+       "disassembly": "storb $0x1:s,0x3:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x002784",
+       "raw_bytes": "00830200",
+       "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": "0x00010702",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x002788",
+       "raw_bytes": "20f3",
+       "disassembly": "storb r2,0x3:s(r1,r0)"
+      },
+      "effective_address": "0x00010703",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0027ca",
+       "raw_bytes": "40f2",
+       "disassembly": "storb r4,0x2:s(r1,r0)"
+      },
+      "effective_address": "0x0001070f",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0027d6",
+       "raw_bytes": "70f3",
+       "disassembly": "storb r7,0x3:s(r1,r0)"
+      },
+      "effective_address": "0x00010710",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x002826",
+       "raw_bytes": "40f2",
+       "disassembly": "storb r4,0x2:s(r1,r0)"
+      },
+      "effective_address": "0x0001071c",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x00282a",
+       "raw_bytes": "20f3",
+       "disassembly": "storb r2,0x3:s(r1,r0)"
+      },
+      "effective_address": "0x0001071d",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x002842",
+       "raw_bytes": "42f2",
+       "disassembly": "storb r4,0x2:s(r3,r2)"
+      },
+      "effective_address": "0x00010729",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x00298c",
+       "raw_bytes": "0af2",
+       "disassembly": "storb r0,0x2:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x003132",
+       "raw_bytes": "80f2",
+       "disassembly": "storb r8,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0031ca",
+       "raw_bytes": "10830300",
+       "disassembly": "storb $0x1:s,0x3:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0031e4",
+       "raw_bytes": "09f3",
+       "disassembly": "storb r0,0x3:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0034a8",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0034f6",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00354a",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x003812",
+       "raw_bytes": "02f2",
+       "disassembly": "storb r0,0x2:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00384c",
+       "raw_bytes": "02f2",
+       "disassembly": "storb r0,0x2:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00385c",
+       "raw_bytes": "02f2",
+       "disassembly": "storb r0,0x2:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x003928",
+       "raw_bytes": "02f2",
+       "disassembly": "storb r0,0x2:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00392a",
+       "raw_bytes": "b2f3",
+       "disassembly": "storb r11,0x3:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x003c16",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x009d50",
+       "raw_bytes": "40830200",
+       "disassembly": "storb $0x4:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x009dea",
+       "raw_bytes": "c2830200",
+       "disassembly": "storb $0xc:s,0x2:m(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x009e40",
+       "raw_bytes": "80830200",
+       "disassembly": "storb $0x8:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x009e44",
+       "raw_bytes": "80ef0300",
+       "disassembly": "stord (r9,r8),0x3:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017300",
+       "raw_bytes": "97f3",
+       "disassembly": "storb r9,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017308",
+       "raw_bytes": "84f3",
+       "disassembly": "storb r8,0x3:s(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01736a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017372",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01737a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017382",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01738a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017392",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01739a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0173b2",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0173c8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0173d0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0173f0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017404",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01740c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017420",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017434",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01743c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017454",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017468",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017484",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017498",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174a0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174b4",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174c8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174d0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174e8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174fc",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017500",
+       "raw_bytes": "b6f3",
+       "disassembly": "storb r11,0x3:s(r7,r6)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017518",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01752c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017534",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017548",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01755c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017564",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01757c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017590",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017594",
+       "raw_bytes": "b6f3",
+       "disassembly": "storb r11,0x3:s(r7,r6)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175ac",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175c0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175c8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175dc",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175f0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175f8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017610",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017624",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0176fe",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017710",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017718",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017724",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017736",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01773e",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01774a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01775c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017764",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017770",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017782",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01778a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017796",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177a8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177b0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177b8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177cc",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177d4",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177dc",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177f0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177f8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017800",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017814",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017848",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017850",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017858",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01786e",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017876",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017894",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0178a0",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0178dc",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0178e4",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0178ec",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017902",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01790a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017928",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017934",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017970",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017978",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017980",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017996",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01799e",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0179bc",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0179c8",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017a04",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017a0c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017a14",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017a2a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017a32",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017a50",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017a5c",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017a98",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017aa0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017aa8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017abe",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017ac6",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017ae4",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017af0",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017b08",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017b42",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017b90",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017bde",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017c40",
+       "raw_bytes": "c0ef0200",
+       "disassembly": "stord (r12),0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017c52",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017cb4",
+       "raw_bytes": "c0ef0200",
+       "disassembly": "stord (r12),0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017cc6",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017d62",
+       "raw_bytes": "1aff0300",
+       "disassembly": "storb r1,0x3:m(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017df6",
+       "raw_bytes": "baf3",
+       "disassembly": "storb r11,0x3:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017e48",
+       "raw_bytes": "baf3",
+       "disassembly": "storb r11,0x3:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02005a",
+       "raw_bytes": "b0f2",
+       "disassembly": "storb r11,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02005c",
+       "raw_bytes": "a0f3",
+       "disassembly": "storb r10,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0202bc",
+       "raw_bytes": "10830200",
+       "disassembly": "storb $0x1:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0202ea",
+       "raw_bytes": "09f3",
+       "disassembly": "storb r0,0x3:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020366",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020368",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02037a",
+       "raw_bytes": "00830200",
+       "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02037e",
+       "raw_bytes": "00830300",
+       "disassembly": "storb $0x0:s,0x3:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0203e8",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020400",
+       "raw_bytes": "07830300",
+       "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02046e",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02093e",
+       "raw_bytes": "04f2",
+       "disassembly": "storb r0,0x2:s(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020946",
+       "raw_bytes": "02830200",
+       "disassembly": "storb $0x0:s,0x2:m(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020958",
+       "raw_bytes": "04f2",
+       "disassembly": "storb r0,0x2:s(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02098e",
+       "raw_bytes": "09f3",
+       "disassembly": "storb r0,0x3:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020a02",
+       "raw_bytes": "40d1",
+       "disassembly": "storw r4,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020d42",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020f6e",
+       "raw_bytes": "00830200",
+       "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020f74",
+       "raw_bytes": "40f3",
+       "disassembly": "storb r4,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0210ee",
+       "raw_bytes": "04830200",
+       "disassembly": "storb $0x0:s,0x2:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0210f2",
+       "raw_bytes": "04830300",
+       "disassembly": "storb $0x0:s,0x3:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0211b6",
+       "raw_bytes": "14830200",
+       "disassembly": "storb $0x1:s,0x2:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0211ba",
+       "raw_bytes": "04830300",
+       "disassembly": "storb $0x0:s,0x3:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021218",
+       "raw_bytes": "86e1",
+       "disassembly": "stord (r9,r8),0x2:s(r7,r6)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0215ba",
+       "raw_bytes": "86f2",
+       "disassembly": "storb r8,0x2:s(r7,r6)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0215be",
+       "raw_bytes": "86f3",
+       "disassembly": "storb r8,0x3:s(r7,r6)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0215d0",
+       "raw_bytes": "86f2",
+       "disassembly": "storb r8,0x2:s(r7,r6)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0215d4",
+       "raw_bytes": "06f3",
+       "disassembly": "storb r0,0x3:s(r7,r6)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021674",
+       "raw_bytes": "09f2",
+       "disassembly": "storb r0,0x2:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021678",
+       "raw_bytes": "09f3",
+       "disassembly": "storb r0,0x3:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021854",
+       "raw_bytes": "89710200",
+       "disassembly": "sbitw $0x8:s,0x2:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021858",
+       "raw_bytes": "69710200",
+       "disassembly": "sbitw $0x6:s,0x2:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02188a",
+       "raw_bytes": "89710200",
+       "disassembly": "sbitw $0x8:s,0x2:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02188e",
+       "raw_bytes": "79710200",
+       "disassembly": "sbitw $0x7:s,0x2:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021aac",
+       "raw_bytes": "27f2",
+       "disassembly": "storb r2,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021ab4",
+       "raw_bytes": "27f3",
+       "disassembly": "storb r2,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021af0",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021af8",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021b38",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021b44",
+       "raw_bytes": "17f3",
+       "disassembly": "storb r1,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021d38",
+       "raw_bytes": "f7830200",
+       "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021d40",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021db8",
+       "raw_bytes": "37830200",
+       "disassembly": "storb $0x3:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021dbe",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022210",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022214",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022238",
+       "raw_bytes": "17f2",
+       "disassembly": "storb r1,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022240",
+       "raw_bytes": "27f3",
+       "disassembly": "storb r2,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02226a",
+       "raw_bytes": "47f3",
+       "disassembly": "storb r4,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02227c",
+       "raw_bytes": "f7830200",
+       "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022284",
+       "raw_bytes": "17f3",
+       "disassembly": "storb r1,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0222a0",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0222a4",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0222c6",
+       "raw_bytes": "f7830200",
+       "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0222ca",
+       "raw_bytes": "07830300",
+       "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0222d2",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0222da",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0222e4",
+       "raw_bytes": "17f3",
+       "disassembly": "storb r1,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022418",
+       "raw_bytes": "09e1",
+       "disassembly": "stord (r1,r0),0x2:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0224d2",
+       "raw_bytes": "09e1",
+       "disassembly": "stord (r1,r0),0x2:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0226e8",
+       "raw_bytes": "09d1",
+       "disassembly": "storw r0,0x2:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0227ea",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02280c",
+       "raw_bytes": "17830300",
+       "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022818",
+       "raw_bytes": "27830300",
+       "disassembly": "storb $0x2:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022834",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022850",
+       "raw_bytes": "37830300",
+       "disassembly": "storb $0x3:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022880",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022a44",
+       "raw_bytes": "07830300",
+       "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022a76",
+       "raw_bytes": "17830300",
+       "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022a82",
+       "raw_bytes": "27830300",
+       "disassembly": "storb $0x2:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022c8e",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022c90",
+       "raw_bytes": "07830300",
+       "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x023002",
+       "raw_bytes": "17730300",
+       "disassembly": "sbitb $0x1,0x3:m(r8,r7)"
+      },
+      "effective_address": "0x000024f3",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0230b2",
+       "raw_bytes": "276b0300",
+       "disassembly": "cbitb $0x2,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0230e8",
+       "raw_bytes": "276b0300",
+       "disassembly": "cbitb $0x2,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x023532",
+       "raw_bytes": "02f3",
+       "disassembly": "storb r0,0x3:s(r3,r2)"
+      },
+      "effective_address": "0x00009bed",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0241f2",
+       "raw_bytes": "c7f2",
+       "disassembly": "storb r12,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0241fa",
+       "raw_bytes": "92f2",
+       "disassembly": "storb r9,0x2:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x024a22",
+       "raw_bytes": "30f2",
+       "disassembly": "storb r3,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x024a34",
+       "raw_bytes": "30f3",
+       "disassembly": "storb r3,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x025026",
+       "raw_bytes": "02f2",
+       "disassembly": "storb r0,0x2:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02504c",
+       "raw_bytes": "02f3",
+       "disassembly": "storb r0,0x3:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x025cee",
+       "raw_bytes": "12d1",
+       "disassembly": "storw r1,0x2:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x025d50",
+       "raw_bytes": "72d1",
+       "disassembly": "storw r7,0x2:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026150",
+       "raw_bytes": "27f2",
+       "disassembly": "storb r2,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026158",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02615c",
+       "raw_bytes": "07830200",
+       "disassembly": "storb $0x0:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026160",
+       "raw_bytes": "07830300",
+       "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0261d2",
+       "raw_bytes": "70f2",
+       "disassembly": "storb r7,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0261d4",
+       "raw_bytes": "10830300",
+       "disassembly": "storb $0x1:s,0x3:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0263e2",
+       "raw_bytes": "a0830200",
+       "disassembly": "storb $0xa:s,0x2:m(r1,r0)"
+      },
+      "effective_address": "0x0000244c",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0269fa",
+       "raw_bytes": "0af2",
+       "disassembly": "storb r0,0x2:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0269fe",
+       "raw_bytes": "0af3",
+       "disassembly": "storb r0,0x3:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026b5c",
+       "raw_bytes": "13d1",
+       "disassembly": "storw r1,0x2:s(r4,r3)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026ca2",
+       "raw_bytes": "0a830300",
+       "disassembly": "storb $0x0:s,0x3:m(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026d54",
+       "raw_bytes": "0a830300",
+       "disassembly": "storb $0x0:s,0x3:m(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02732e",
+       "raw_bytes": "97f2",
+       "disassembly": "storb r9,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x027330",
+       "raw_bytes": "17830300",
+       "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x027394",
+       "raw_bytes": "c7f2",
+       "disassembly": "storb r12,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0273be",
+       "raw_bytes": "b7f3",
+       "disassembly": "storb r11,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0273ec",
+       "raw_bytes": "b7f2",
+       "disassembly": "storb r11,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0273ee",
+       "raw_bytes": "97f3",
+       "disassembly": "storb r9,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x027442",
+       "raw_bytes": "a0f2",
+       "disassembly": "storb r10,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x027788",
+       "raw_bytes": "30e1",
+       "disassembly": "stord (r4,r3),0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x027ae8",
+       "raw_bytes": "20d1",
+       "disassembly": "storw r2,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02822a",
+       "raw_bytes": "20f2",
+       "disassembly": "storb r2,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x028382",
+       "raw_bytes": "30f2",
+       "disassembly": "storb r3,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x028394",
+       "raw_bytes": "30f3",
+       "disassembly": "storb r3,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02848c",
+       "raw_bytes": "00830200",
+       "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x028498",
+       "raw_bytes": "20f3",
+       "disassembly": "storb r2,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0284a6",
+       "raw_bytes": "20f2",
+       "disassembly": "storb r2,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0284bc",
+       "raw_bytes": "30f3",
+       "disassembly": "storb r3,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     }
+    ]
+   },
+   "dataflow_evidence": {
+    "case7_store": "payload-2=item+2 (state); tag item+3 remains allocator r2=0x22 on this selected path",
+    "dispatcher_store": "separate global RAM",
+    "header_tag_post_allocation": "UNKNOWN_ALL_PATHS"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "candidate stores not equated to item+3 without pair/alias and lifetime proof",
+    "unresolved memcpy, wider overlapping writes, interrupts and DMA"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x00020e",
+     "raw_bytes": "34730300",
+     "disassembly": "sbitb $0x3,0x3:m(r5,r4)"
+    },
+    {
+     "instruction": "0x000240",
+     "raw_bytes": "09d1",
+     "disassembly": "storw r0,0x2:s(r10,r9)"
+    },
+    {
+     "instruction": "0x0002f0",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0003fe",
+     "raw_bytes": "20d1",
+     "disassembly": "storw r2,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x000416",
+     "raw_bytes": "08c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r9,r8)"
+    },
+    {
+     "instruction": "0x00046a",
+     "raw_bytes": "00c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x000522",
+     "raw_bytes": "04c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r5,r4)"
+    },
+    {
+     "instruction": "0x00057c",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x00058e",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x00064e",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0006ec",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x00078a",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x000828",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0009a8",
+     "raw_bytes": "c2d1",
+     "disassembly": "storw r12,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x0009c2",
+     "raw_bytes": "c2d1",
+     "disassembly": "storw r12,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x0009dc",
+     "raw_bytes": "c2d1",
+     "disassembly": "storw r12,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x000afa",
+     "raw_bytes": "02c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r3,r2)"
+    },
+    {
+     "instruction": "0x000b0e",
+     "raw_bytes": "09c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r10,r9)"
+    },
+    {
+     "instruction": "0x000b58",
+     "raw_bytes": "07c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x000b86",
+     "raw_bytes": "09c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r10,r9)"
+    },
+    {
+     "instruction": "0x000b96",
+     "raw_bytes": "00c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x000bd2",
+     "raw_bytes": "20d1",
+     "disassembly": "storw r2,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x000c10",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x000ff4",
+     "raw_bytes": "64d1",
+     "disassembly": "storw r6,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x0012e0",
+     "raw_bytes": "07c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x001ef2",
+     "raw_bytes": "20f2",
+     "disassembly": "storb r2,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x001efa",
+     "raw_bytes": "24830300",
+     "disassembly": "storb $0x2:s,0x3:m(r5,r4)"
+    },
+    {
+     "instruction": "0x001f08",
+     "raw_bytes": "14830300",
+     "disassembly": "storb $0x1:s,0x3:m(r5,r4)"
+    },
+    {
+     "instruction": "0x002040",
+     "raw_bytes": "00830200",
+     "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x002044",
+     "raw_bytes": "20f3",
+     "disassembly": "storb r2,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x002086",
+     "raw_bytes": "40f2",
+     "disassembly": "storb r4,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x002092",
+     "raw_bytes": "70f3",
+     "disassembly": "storb r7,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0020e2",
+     "raw_bytes": "40f2",
+     "disassembly": "storb r4,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0020e6",
+     "raw_bytes": "20f3",
+     "disassembly": "storb r2,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0020fe",
+     "raw_bytes": "42f2",
+     "disassembly": "storb r4,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x002248",
+     "raw_bytes": "0af2",
+     "disassembly": "storb r0,0x2:s(r11,r10)"
+    },
+    {
+     "instruction": "0x002cde",
+     "raw_bytes": "80f2",
+     "disassembly": "storb r8,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x002d74",
+     "raw_bytes": "10830300",
+     "disassembly": "storb $0x1:s,0x3:m(r1,r0)"
+    },
+    {
+     "instruction": "0x002d8e",
+     "raw_bytes": "09f3",
+     "disassembly": "storb r0,0x3:s(r10,r9)"
+    },
+    {
+     "instruction": "0x002fb8",
+     "raw_bytes": "caf2",
+     "disassembly": "storb r12,0x2:s(r11,r10)"
+    },
+    {
+     "instruction": "0x0030aa",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0030ac",
+     "raw_bytes": "47830300",
+     "disassembly": "storb $0x4:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0031c0",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x00321e",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x003274",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0032c4",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0032e8",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0038d0",
+     "raw_bytes": "04d1",
+     "disassembly": "storw r0,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x017300",
+     "raw_bytes": "97f3",
+     "disassembly": "storb r9,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x017308",
+     "raw_bytes": "84f3",
+     "disassembly": "storb r8,0x3:s(r5,r4)"
+    },
+    {
+     "instruction": "0x01736a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017372",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01737a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017382",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01738a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017392",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01739a",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0173b2",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0173c8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0173d0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0173f0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017404",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01740c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017420",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017434",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01743c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017454",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017468",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017484",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017498",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174a0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174b4",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174c8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174d0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174e8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0174fc",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017500",
+     "raw_bytes": "b6f3",
+     "disassembly": "storb r11,0x3:s(r7,r6)"
+    },
+    {
+     "instruction": "0x017518",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01752c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017534",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017548",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01755c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017564",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01757c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017590",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017594",
+     "raw_bytes": "b6f3",
+     "disassembly": "storb r11,0x3:s(r7,r6)"
+    },
+    {
+     "instruction": "0x0175ac",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0175c0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0175c8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0175dc",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0175f0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0175f8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017610",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017624",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017638",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017640",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01764c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017654",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017660",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017668",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017670",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017684",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01768c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0176a0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0176a8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0176bc",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0176f0",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0176f8",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017700",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017716",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01771e",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01773c",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017748",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017784",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01778c",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017794",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0177aa",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0177b2",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0177d0",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x0177dc",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017818",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017820",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017828",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x01783e",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017846",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x017864",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017870",
+     "raw_bytes": "88f3",
+     "disassembly": "storb r8,0x3:s(r9,r8)"
+    },
+    {
+     "instruction": "0x017880",
+     "raw_bytes": "90f3",
+     "disassembly": "storb r9,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0178be",
+     "raw_bytes": "baf3",
+     "disassembly": "storb r11,0x3:s(r11,r10)"
+    },
+    {
+     "instruction": "0x0178e2",
+     "raw_bytes": "1aff0300",
+     "disassembly": "storb r1,0x3:m(r11,r10)"
+    },
+    {
+     "instruction": "0x017976",
+     "raw_bytes": "baf3",
+     "disassembly": "storb r11,0x3:s(r11,r10)"
+    },
+    {
+     "instruction": "0x0179c8",
+     "raw_bytes": "baf3",
+     "disassembly": "storb r11,0x3:s(r11,r10)"
+    },
+    {
+     "instruction": "0x02008e",
+     "raw_bytes": "b0f2",
+     "disassembly": "storb r11,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x020090",
+     "raw_bytes": "a0f3",
+     "disassembly": "storb r10,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0200ce",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0200d0",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0200e2",
+     "raw_bytes": "00830200",
+     "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x0200e6",
+     "raw_bytes": "00830300",
+     "disassembly": "storb $0x0:s,0x3:m(r1,r0)"
+    },
+    {
+     "instruction": "0x020156",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02016e",
+     "raw_bytes": "07830300",
+     "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0201dc",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x020610",
+     "raw_bytes": "04f2",
+     "disassembly": "storb r0,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x020618",
+     "raw_bytes": "02830200",
+     "disassembly": "storb $0x0:s,0x2:m(r3,r2)"
+    },
+    {
+     "instruction": "0x02062a",
+     "raw_bytes": "04f2",
+     "disassembly": "storb r0,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x02065a",
+     "raw_bytes": "09f3",
+     "disassembly": "storb r0,0x3:s(r10,r9)"
+    },
+    {
+     "instruction": "0x0206ce",
+     "raw_bytes": "40d1",
+     "disassembly": "storw r4,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x020a54",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x020aee",
+     "raw_bytes": "02f3",
+     "disassembly": "storb r0,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x020afc",
+     "raw_bytes": "04d1",
+     "disassembly": "storw r0,0x2:s(r5,r4)"
+    },
+    {
+     "instruction": "0x020b0a",
+     "raw_bytes": "04c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r5,r4)"
+    },
+    {
+     "instruction": "0x020b56",
+     "raw_bytes": "07830200",
+     "disassembly": "storb $0x0:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x020b5a",
+     "raw_bytes": "17830300",
+     "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x020bb2",
+     "raw_bytes": "09830300",
+     "disassembly": "storb $0x0:s,0x3:m(r10,r9)"
+    },
+    {
+     "instruction": "0x020bcc",
+     "raw_bytes": "29f3",
+     "disassembly": "storb r2,0x3:s(r10,r9)"
+    },
+    {
+     "instruction": "0x020bea",
+     "raw_bytes": "09830200",
+     "disassembly": "storb $0x0:s,0x2:m(r10,r9)"
+    },
+    {
+     "instruction": "0x020c00",
+     "raw_bytes": "09f3",
+     "disassembly": "storb r0,0x3:s(r10,r9)"
+    },
+    {
+     "instruction": "0x020e2a",
+     "raw_bytes": "00830200",
+     "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x020e30",
+     "raw_bytes": "40f3",
+     "disassembly": "storb r4,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x020fcc",
+     "raw_bytes": "04830200",
+     "disassembly": "storb $0x0:s,0x2:m(r5,r4)"
+    },
+    {
+     "instruction": "0x020fd0",
+     "raw_bytes": "04830300",
+     "disassembly": "storb $0x0:s,0x3:m(r5,r4)"
+    },
+    {
+     "instruction": "0x0210b6",
+     "raw_bytes": "14830200",
+     "disassembly": "storb $0x1:s,0x2:m(r5,r4)"
+    },
+    {
+     "instruction": "0x0210ba",
+     "raw_bytes": "04830300",
+     "disassembly": "storb $0x0:s,0x3:m(r5,r4)"
+    },
+    {
+     "instruction": "0x021118",
+     "raw_bytes": "86e1",
+     "disassembly": "stord (r9,r8),0x2:s(r7,r6)"
+    },
+    {
+     "instruction": "0x0213a0",
+     "raw_bytes": "09f2",
+     "disassembly": "storb r0,0x2:s(r10,r9)"
+    },
+    {
+     "instruction": "0x0213a4",
+     "raw_bytes": "09f3",
+     "disassembly": "storb r0,0x3:s(r10,r9)"
+    },
+    {
+     "instruction": "0x02153c",
+     "raw_bytes": "09f2",
+     "disassembly": "storb r0,0x2:s(r10,r9)"
+    },
+    {
+     "instruction": "0x0216ee",
+     "raw_bytes": "0af3",
+     "disassembly": "storb r0,0x3:s(r11,r10)"
+    },
+    {
+     "instruction": "0x02176c",
+     "raw_bytes": "a0830200",
+     "disassembly": "storb $0xa:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x021770",
+     "raw_bytes": "70f3",
+     "disassembly": "storb r7,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0218f8",
+     "raw_bytes": "07830200",
+     "disassembly": "storb $0x0:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x021986",
+     "raw_bytes": "19830200",
+     "disassembly": "storb $0x1:s,0x2:m(r10,r9)"
+    },
+    {
+     "instruction": "0x02198a",
+     "raw_bytes": "59830300",
+     "disassembly": "storb $0x5:s,0x3:m(r10,r9)"
+    },
+    {
+     "instruction": "0x021b6c",
+     "raw_bytes": "07830200",
+     "disassembly": "storb $0x0:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x021e24",
+     "raw_bytes": "17830200",
+     "disassembly": "storb $0x1:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x021e28",
+     "raw_bytes": "27830300",
+     "disassembly": "storb $0x2:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0221aa",
+     "raw_bytes": "27f2",
+     "disassembly": "storb r2,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0221b2",
+     "raw_bytes": "27f3",
+     "disassembly": "storb r2,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0221ee",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0221f6",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022236",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022242",
+     "raw_bytes": "17f3",
+     "disassembly": "storb r1,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022434",
+     "raw_bytes": "f7830200",
+     "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x02243c",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022494",
+     "raw_bytes": "37830200",
+     "disassembly": "storb $0x3:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x02249a",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02272c",
+     "raw_bytes": "02690200",
+     "disassembly": "cbitw $0x0:s,0x2:m(r3,r2)"
+    },
+    {
+     "instruction": "0x02274c",
+     "raw_bytes": "02710200",
+     "disassembly": "sbitw $0x0:s,0x2:m(r3,r2)"
+    },
+    {
+     "instruction": "0x022848",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02284c",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022870",
+     "raw_bytes": "17f2",
+     "disassembly": "storb r1,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022878",
+     "raw_bytes": "17f3",
+     "disassembly": "storb r1,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022888",
+     "raw_bytes": "f7830200",
+     "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022890",
+     "raw_bytes": "17f3",
+     "disassembly": "storb r1,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0228ac",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0228b0",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0228d2",
+     "raw_bytes": "f7830200",
+     "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0228d6",
+     "raw_bytes": "07830300",
+     "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0228de",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0228e6",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0228f0",
+     "raw_bytes": "17f3",
+     "disassembly": "storb r1,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022a10",
+     "raw_bytes": "0ae1",
+     "disassembly": "stord (r1,r0),0x2:s(r11,r10)"
+    },
+    {
+     "instruction": "0x022aae",
+     "raw_bytes": "0ae1",
+     "disassembly": "stord (r1,r0),0x2:s(r11,r10)"
+    },
+    {
+     "instruction": "0x022c8e",
+     "raw_bytes": "09d1",
+     "disassembly": "storw r0,0x2:s(r10,r9)"
+    },
+    {
+     "instruction": "0x022d9a",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022dce",
+     "raw_bytes": "17830300",
+     "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022dda",
+     "raw_bytes": "27830300",
+     "disassembly": "storb $0x2:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022df6",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022e10",
+     "raw_bytes": "37830300",
+     "disassembly": "storb $0x3:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022e42",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x022e8a",
+     "raw_bytes": "2a830200",
+     "disassembly": "storb $0x2:s,0x2:m(r11,r10)"
+    },
+    {
+     "instruction": "0x022e8e",
+     "raw_bytes": "daf3",
+     "disassembly": "storb r13,0x3:s(r11,r10)"
+    },
+    {
+     "instruction": "0x022f74",
+     "raw_bytes": "9af2",
+     "disassembly": "storb r9,0x2:s(r11,r10)"
+    },
+    {
+     "instruction": "0x022f82",
+     "raw_bytes": "0a830300",
+     "disassembly": "storb $0x0:s,0x3:m(r11,r10)"
+    },
+    {
+     "instruction": "0x022f8e",
+     "raw_bytes": "2a830300",
+     "disassembly": "storb $0x2:s,0x3:m(r11,r10)"
+    },
+    {
+     "instruction": "0x022f98",
+     "raw_bytes": "1a830300",
+     "disassembly": "storb $0x1:s,0x3:m(r11,r10)"
+    },
+    {
+     "instruction": "0x022fdc",
+     "raw_bytes": "07830300",
+     "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022fee",
+     "raw_bytes": "17830300",
+     "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x022ffa",
+     "raw_bytes": "27830300",
+     "disassembly": "storb $0x2:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0231fe",
+     "raw_bytes": "07f2",
+     "disassembly": "storb r0,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x023200",
+     "raw_bytes": "07830300",
+     "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x02352e",
+     "raw_bytes": "17730300",
+     "disassembly": "sbitb $0x1,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x0235e4",
+     "raw_bytes": "276b0300",
+     "disassembly": "cbitb $0x2,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x023616",
+     "raw_bytes": "276b0300",
+     "disassembly": "cbitb $0x2,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x024552",
+     "raw_bytes": "9af2",
+     "disassembly": "storb r9,0x2:s(r11,r10)"
+    },
+    {
+     "instruction": "0x02455c",
+     "raw_bytes": "c2f2",
+     "disassembly": "storb r12,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x024d36",
+     "raw_bytes": "30f2",
+     "disassembly": "storb r3,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x024d48",
+     "raw_bytes": "30f3",
+     "disassembly": "storb r3,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x025b62",
+     "raw_bytes": "17830200",
+     "disassembly": "storb $0x1:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x025b66",
+     "raw_bytes": "57830300",
+     "disassembly": "storb $0x5:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x026900",
+     "raw_bytes": "27f2",
+     "disassembly": "storb r2,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x026908",
+     "raw_bytes": "07f3",
+     "disassembly": "storb r0,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02690c",
+     "raw_bytes": "07830200",
+     "disassembly": "storb $0x0:s,0x2:m(r8,r7)"
+    },
+    {
+     "instruction": "0x026910",
+     "raw_bytes": "07830300",
+     "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+    },
+    {
+     "instruction": "0x026982",
+     "raw_bytes": "70f2",
+     "disassembly": "storb r7,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x026984",
+     "raw_bytes": "10830300",
+     "disassembly": "storb $0x1:s,0x3:m(r1,r0)"
+    },
+    {
+     "instruction": "0x026a92",
+     "raw_bytes": "09830200",
+     "disassembly": "storb $0x0:s,0x2:m(r10,r9)"
+    },
+    {
+     "instruction": "0x026b6c",
+     "raw_bytes": "09f2",
+     "disassembly": "storb r0,0x2:s(r10,r9)"
+    },
+    {
+     "instruction": "0x026b80",
+     "raw_bytes": "09f3",
+     "disassembly": "storb r0,0x3:s(r10,r9)"
+    },
+    {
+     "instruction": "0x026bbe",
+     "raw_bytes": "09f2",
+     "disassembly": "storb r0,0x2:s(r10,r9)"
+    },
+    {
+     "instruction": "0x026bc6",
+     "raw_bytes": "09f3",
+     "disassembly": "storb r0,0x3:s(r10,r9)"
+    },
+    {
+     "instruction": "0x026c72",
+     "raw_bytes": "20f3",
+     "disassembly": "storb r2,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x026c9a",
+     "raw_bytes": "20f3",
+     "disassembly": "storb r2,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x026d72",
+     "raw_bytes": "20f3",
+     "disassembly": "storb r2,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x026d8a",
+     "raw_bytes": "20f3",
+     "disassembly": "storb r2,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x026e4e",
+     "raw_bytes": "20f3",
+     "disassembly": "storb r2,0x3:s(r1,r0)"
+    },
+    {
+     "instruction": "0x026e78",
+     "raw_bytes": "20f2",
+     "disassembly": "storb r2,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x026e80",
+     "raw_bytes": "20f2",
+     "disassembly": "storb r2,0x2:s(r1,r0)"
+    },
+    {
+     "instruction": "0x026ee6",
+     "raw_bytes": "c7f2",
+     "disassembly": "storb r12,0x2:s(r8,r7)"
+    },
+    {
+     "instruction": "0x026f10",
+     "raw_bytes": "b7f3",
+     "disassembly": "storb r11,0x3:s(r8,r7)"
+    },
+    {
+     "instruction": "0x02703a",
+     "raw_bytes": "02f2",
+     "disassembly": "storb r0,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x02703c",
+     "raw_bytes": "b2f3",
+     "disassembly": "storb r11,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x027194",
+     "raw_bytes": "07b3",
+     "disassembly": "loadb 0x3:s(r8,r7),r0"
+    },
+    {
+     "instruction": "0x027196",
+     "raw_bytes": "130000701295",
+     "disassembly": "storb r0,0x9512:l"
+    },
+    {
+     "instruction": "0x027352",
+     "raw_bytes": "40830200",
+     "disassembly": "storb $0x4:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x0273ec",
+     "raw_bytes": "c2830200",
+     "disassembly": "storb $0xc:s,0x2:m(r3,r2)"
+    },
+    {
+     "instruction": "0x02743a",
+     "raw_bytes": "42f0",
+     "disassembly": "storb r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x027442",
+     "raw_bytes": "80830200",
+     "disassembly": "storb $0x8:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x027446",
+     "raw_bytes": "80ef0300",
+     "disassembly": "stord (r9,r8),0x3:m(r1,r0)"
+    },
+    {
+     "instruction": "0x027832",
+     "raw_bytes": "07d1",
+     "disassembly": "storw r0,0x2:s(r8,r7)"
+    }
+   ],
+   "cfg_evidence": {
+    "candidate_store_displacements_2_or_3": 256,
+    "candidate_stores": [
+     {
+      "site": {
+       "instruction": "0x00020e",
+       "raw_bytes": "34730300",
+       "disassembly": "sbitb $0x3,0x3:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x000240",
+       "raw_bytes": "09d1",
+       "disassembly": "storw r0,0x2:s(r10,r9)"
+      },
+      "effective_address": "0x000114c6",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0002f0",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0003fe",
+       "raw_bytes": "20d1",
+       "disassembly": "storw r2,0x2:s(r1,r0)"
+      },
+      "effective_address": "0x000114f8",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000416",
+       "raw_bytes": "08c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r9,r8)"
+      },
+      "effective_address": "0x000114de",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x00046a",
+       "raw_bytes": "00c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x000522",
+       "raw_bytes": "04c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r5,r4)"
+      },
+      "effective_address": "0x00010824",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x00057c",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00058e",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": "0x0001093e",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x00064e",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0006ec",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00078a",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x000828",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0009a8",
+       "raw_bytes": "c2d1",
+       "disassembly": "storw r12,0x2:s(r3,r2)"
+      },
+      "effective_address": "0x00011200",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0009c2",
+       "raw_bytes": "c2d1",
+       "disassembly": "storw r12,0x2:s(r3,r2)"
+      },
+      "effective_address": "0x000112e8",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0009dc",
+       "raw_bytes": "c2d1",
+       "disassembly": "storw r12,0x2:s(r3,r2)"
+      },
+      "effective_address": "0x000113d0",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000afa",
+       "raw_bytes": "02c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r3,r2)"
+      },
+      "effective_address": "0x00010e16",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000b0e",
+       "raw_bytes": "09c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x000b58",
+       "raw_bytes": "07c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x000b86",
+       "raw_bytes": "09c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x000b96",
+       "raw_bytes": "00c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": "0x00010e10",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x000bd2",
+       "raw_bytes": "20d1",
+       "disassembly": "storw r2,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x000c10",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x000ff4",
+       "raw_bytes": "64d1",
+       "disassembly": "storw r6,0x2:s(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0012e0",
+       "raw_bytes": "07c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x001ef2",
+       "raw_bytes": "20f2",
+       "disassembly": "storb r2,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x001efa",
+       "raw_bytes": "24830300",
+       "disassembly": "storb $0x2:s,0x3:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x001f08",
+       "raw_bytes": "14830300",
+       "disassembly": "storb $0x1:s,0x3:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x002040",
+       "raw_bytes": "00830200",
+       "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": "0x00010702",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x002044",
+       "raw_bytes": "20f3",
+       "disassembly": "storb r2,0x3:s(r1,r0)"
+      },
+      "effective_address": "0x00010703",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x002086",
+       "raw_bytes": "40f2",
+       "disassembly": "storb r4,0x2:s(r1,r0)"
+      },
+      "effective_address": "0x0001070f",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x002092",
+       "raw_bytes": "70f3",
+       "disassembly": "storb r7,0x3:s(r1,r0)"
+      },
+      "effective_address": "0x00010710",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0020e2",
+       "raw_bytes": "40f2",
+       "disassembly": "storb r4,0x2:s(r1,r0)"
+      },
+      "effective_address": "0x0001071c",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0020e6",
+       "raw_bytes": "20f3",
+       "disassembly": "storb r2,0x3:s(r1,r0)"
+      },
+      "effective_address": "0x0001071d",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0020fe",
+       "raw_bytes": "42f2",
+       "disassembly": "storb r4,0x2:s(r3,r2)"
+      },
+      "effective_address": "0x00010729",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x002248",
+       "raw_bytes": "0af2",
+       "disassembly": "storb r0,0x2:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x002cde",
+       "raw_bytes": "80f2",
+       "disassembly": "storb r8,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x002d74",
+       "raw_bytes": "10830300",
+       "disassembly": "storb $0x1:s,0x3:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x002d8e",
+       "raw_bytes": "09f3",
+       "disassembly": "storb r0,0x3:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x002fb8",
+       "raw_bytes": "caf2",
+       "disassembly": "storb r12,0x2:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0030aa",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0030ac",
+       "raw_bytes": "47830300",
+       "disassembly": "storb $0x4:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0031c0",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x00321e",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x003274",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0032c4",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0032e8",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0038d0",
+       "raw_bytes": "04d1",
+       "disassembly": "storw r0,0x2:s(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017300",
+       "raw_bytes": "97f3",
+       "disassembly": "storb r9,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017308",
+       "raw_bytes": "84f3",
+       "disassembly": "storb r8,0x3:s(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01736a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017372",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01737a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017382",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01738a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017392",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01739a",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0173b2",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0173c8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0173d0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0173f0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017404",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01740c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017420",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017434",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01743c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017454",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017468",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017484",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017498",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174a0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174b4",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174c8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174d0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174e8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0174fc",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017500",
+       "raw_bytes": "b6f3",
+       "disassembly": "storb r11,0x3:s(r7,r6)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017518",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01752c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017534",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017548",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01755c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017564",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01757c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017590",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017594",
+       "raw_bytes": "b6f3",
+       "disassembly": "storb r11,0x3:s(r7,r6)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175ac",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175c0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175c8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175dc",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175f0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0175f8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017610",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017624",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017638",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017640",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01764c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017654",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017660",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017668",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017670",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017684",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01768c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0176a0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0176a8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0176bc",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0176f0",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0176f8",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017700",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017716",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01771e",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01773c",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017748",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017784",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01778c",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017794",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177aa",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177b2",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177d0",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0177dc",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017818",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017820",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017828",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x01783e",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017846",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017864",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017870",
+       "raw_bytes": "88f3",
+       "disassembly": "storb r8,0x3:s(r9,r8)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x017880",
+       "raw_bytes": "90f3",
+       "disassembly": "storb r9,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0178be",
+       "raw_bytes": "baf3",
+       "disassembly": "storb r11,0x3:s(r11,r10)"
+      },
+      "effective_address": "0xae027dc4",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0178e2",
+       "raw_bytes": "1aff0300",
+       "disassembly": "storb r1,0x3:m(r11,r10)"
+      },
+      "effective_address": "0xae027dc4",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x017976",
+       "raw_bytes": "baf3",
+       "disassembly": "storb r11,0x3:s(r11,r10)"
+      },
+      "effective_address": "0xae027dc4",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0179c8",
+       "raw_bytes": "baf3",
+       "disassembly": "storb r11,0x3:s(r11,r10)"
+      },
+      "effective_address": "0xae027dc4",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x02008e",
+       "raw_bytes": "b0f2",
+       "disassembly": "storb r11,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020090",
+       "raw_bytes": "a0f3",
+       "disassembly": "storb r10,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0200ce",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0200d0",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0200e2",
+       "raw_bytes": "00830200",
+       "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0200e6",
+       "raw_bytes": "00830300",
+       "disassembly": "storb $0x0:s,0x3:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020156",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02016e",
+       "raw_bytes": "07830300",
+       "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0201dc",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020610",
+       "raw_bytes": "04f2",
+       "disassembly": "storb r0,0x2:s(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020618",
+       "raw_bytes": "02830200",
+       "disassembly": "storb $0x0:s,0x2:m(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02062a",
+       "raw_bytes": "04f2",
+       "disassembly": "storb r0,0x2:s(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02065a",
+       "raw_bytes": "09f3",
+       "disassembly": "storb r0,0x3:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0206ce",
+       "raw_bytes": "40d1",
+       "disassembly": "storw r4,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020a54",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020aee",
+       "raw_bytes": "02f3",
+       "disassembly": "storb r0,0x3:s(r3,r2)"
+      },
+      "effective_address": "0x00001ac3",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x020afc",
+       "raw_bytes": "04d1",
+       "disassembly": "storw r0,0x2:s(r5,r4)"
+      },
+      "effective_address": "0x00001acf",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x020b0a",
+       "raw_bytes": "04c30200",
+       "disassembly": "storw $0x0:s,0x2:m(r5,r4)"
+      },
+      "effective_address": "0x00001acf",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x020b56",
+       "raw_bytes": "07830200",
+       "disassembly": "storb $0x0:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020b5a",
+       "raw_bytes": "17830300",
+       "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020bb2",
+       "raw_bytes": "09830300",
+       "disassembly": "storb $0x0:s,0x3:m(r10,r9)"
+      },
+      "effective_address": "0x00001ac2",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x020bcc",
+       "raw_bytes": "29f3",
+       "disassembly": "storb r2,0x3:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020bea",
+       "raw_bytes": "09830200",
+       "disassembly": "storb $0x0:s,0x2:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020c00",
+       "raw_bytes": "09f3",
+       "disassembly": "storb r0,0x3:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020e2a",
+       "raw_bytes": "00830200",
+       "disassembly": "storb $0x0:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020e30",
+       "raw_bytes": "40f3",
+       "disassembly": "storb r4,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020fcc",
+       "raw_bytes": "04830200",
+       "disassembly": "storb $0x0:s,0x2:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x020fd0",
+       "raw_bytes": "04830300",
+       "disassembly": "storb $0x0:s,0x3:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0210b6",
+       "raw_bytes": "14830200",
+       "disassembly": "storb $0x1:s,0x2:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0210ba",
+       "raw_bytes": "04830300",
+       "disassembly": "storb $0x0:s,0x3:m(r5,r4)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021118",
+       "raw_bytes": "86e1",
+       "disassembly": "stord (r9,r8),0x2:s(r7,r6)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0213a0",
+       "raw_bytes": "09f2",
+       "disassembly": "storb r0,0x2:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0213a4",
+       "raw_bytes": "09f3",
+       "disassembly": "storb r0,0x3:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02153c",
+       "raw_bytes": "09f2",
+       "disassembly": "storb r0,0x2:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0216ee",
+       "raw_bytes": "0af3",
+       "disassembly": "storb r0,0x3:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02176c",
+       "raw_bytes": "a0830200",
+       "disassembly": "storb $0xa:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021770",
+       "raw_bytes": "70f3",
+       "disassembly": "storb r7,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0218f8",
+       "raw_bytes": "07830200",
+       "disassembly": "storb $0x0:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021986",
+       "raw_bytes": "19830200",
+       "disassembly": "storb $0x1:s,0x2:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02198a",
+       "raw_bytes": "59830300",
+       "disassembly": "storb $0x5:s,0x3:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021b6c",
+       "raw_bytes": "07830200",
+       "disassembly": "storb $0x0:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021e24",
+       "raw_bytes": "17830200",
+       "disassembly": "storb $0x1:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x021e28",
+       "raw_bytes": "27830300",
+       "disassembly": "storb $0x2:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0221aa",
+       "raw_bytes": "27f2",
+       "disassembly": "storb r2,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0221b2",
+       "raw_bytes": "27f3",
+       "disassembly": "storb r2,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0221ee",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0221f6",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022236",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022242",
+       "raw_bytes": "17f3",
+       "disassembly": "storb r1,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022434",
+       "raw_bytes": "f7830200",
+       "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02243c",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022494",
+       "raw_bytes": "37830200",
+       "disassembly": "storb $0x3:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02249a",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02272c",
+       "raw_bytes": "02690200",
+       "disassembly": "cbitw $0x0:s,0x2:m(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02274c",
+       "raw_bytes": "02710200",
+       "disassembly": "sbitw $0x0:s,0x2:m(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022848",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02284c",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022870",
+       "raw_bytes": "17f2",
+       "disassembly": "storb r1,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022878",
+       "raw_bytes": "17f3",
+       "disassembly": "storb r1,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022888",
+       "raw_bytes": "f7830200",
+       "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022890",
+       "raw_bytes": "17f3",
+       "disassembly": "storb r1,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0228ac",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0228b0",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0228d2",
+       "raw_bytes": "f7830200",
+       "disassembly": "storb $0xf:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0228d6",
+       "raw_bytes": "07830300",
+       "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0228de",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0228e6",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0228f0",
+       "raw_bytes": "17f3",
+       "disassembly": "storb r1,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022a10",
+       "raw_bytes": "0ae1",
+       "disassembly": "stord (r1,r0),0x2:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022aae",
+       "raw_bytes": "0ae1",
+       "disassembly": "stord (r1,r0),0x2:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022c8e",
+       "raw_bytes": "09d1",
+       "disassembly": "storw r0,0x2:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022d9a",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022dce",
+       "raw_bytes": "17830300",
+       "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022dda",
+       "raw_bytes": "27830300",
+       "disassembly": "storb $0x2:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022df6",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022e10",
+       "raw_bytes": "37830300",
+       "disassembly": "storb $0x3:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022e42",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022e8a",
+       "raw_bytes": "2a830200",
+       "disassembly": "storb $0x2:s,0x2:m(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022e8e",
+       "raw_bytes": "daf3",
+       "disassembly": "storb r13,0x3:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022f74",
+       "raw_bytes": "9af2",
+       "disassembly": "storb r9,0x2:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022f82",
+       "raw_bytes": "0a830300",
+       "disassembly": "storb $0x0:s,0x3:m(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022f8e",
+       "raw_bytes": "2a830300",
+       "disassembly": "storb $0x2:s,0x3:m(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022f98",
+       "raw_bytes": "1a830300",
+       "disassembly": "storb $0x1:s,0x3:m(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022fdc",
+       "raw_bytes": "07830300",
+       "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022fee",
+       "raw_bytes": "17830300",
+       "disassembly": "storb $0x1:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x022ffa",
+       "raw_bytes": "27830300",
+       "disassembly": "storb $0x2:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0231fe",
+       "raw_bytes": "07f2",
+       "disassembly": "storb r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x023200",
+       "raw_bytes": "07830300",
+       "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02352e",
+       "raw_bytes": "17730300",
+       "disassembly": "sbitb $0x1,0x3:m(r8,r7)"
+      },
+      "effective_address": "0x00001d52",
+      "address_kind": "RESOLVED"
+     },
+     {
+      "site": {
+       "instruction": "0x0235e4",
+       "raw_bytes": "276b0300",
+       "disassembly": "cbitb $0x2,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x023616",
+       "raw_bytes": "276b0300",
+       "disassembly": "cbitb $0x2,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x024552",
+       "raw_bytes": "9af2",
+       "disassembly": "storb r9,0x2:s(r11,r10)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02455c",
+       "raw_bytes": "c2f2",
+       "disassembly": "storb r12,0x2:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x024d36",
+       "raw_bytes": "30f2",
+       "disassembly": "storb r3,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x024d48",
+       "raw_bytes": "30f3",
+       "disassembly": "storb r3,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x025b62",
+       "raw_bytes": "17830200",
+       "disassembly": "storb $0x1:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x025b66",
+       "raw_bytes": "57830300",
+       "disassembly": "storb $0x5:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026900",
+       "raw_bytes": "27f2",
+       "disassembly": "storb r2,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026908",
+       "raw_bytes": "07f3",
+       "disassembly": "storb r0,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02690c",
+       "raw_bytes": "07830200",
+       "disassembly": "storb $0x0:s,0x2:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026910",
+       "raw_bytes": "07830300",
+       "disassembly": "storb $0x0:s,0x3:m(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026982",
+       "raw_bytes": "70f2",
+       "disassembly": "storb r7,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026984",
+       "raw_bytes": "10830300",
+       "disassembly": "storb $0x1:s,0x3:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026a92",
+       "raw_bytes": "09830200",
+       "disassembly": "storb $0x0:s,0x2:m(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026b6c",
+       "raw_bytes": "09f2",
+       "disassembly": "storb r0,0x2:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026b80",
+       "raw_bytes": "09f3",
+       "disassembly": "storb r0,0x3:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026bbe",
+       "raw_bytes": "09f2",
+       "disassembly": "storb r0,0x2:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026bc6",
+       "raw_bytes": "09f3",
+       "disassembly": "storb r0,0x3:s(r10,r9)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026c72",
+       "raw_bytes": "20f3",
+       "disassembly": "storb r2,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026c9a",
+       "raw_bytes": "20f3",
+       "disassembly": "storb r2,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026d72",
+       "raw_bytes": "20f3",
+       "disassembly": "storb r2,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026d8a",
+       "raw_bytes": "20f3",
+       "disassembly": "storb r2,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026e4e",
+       "raw_bytes": "20f3",
+       "disassembly": "storb r2,0x3:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026e78",
+       "raw_bytes": "20f2",
+       "disassembly": "storb r2,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026e80",
+       "raw_bytes": "20f2",
+       "disassembly": "storb r2,0x2:s(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026ee6",
+       "raw_bytes": "c7f2",
+       "disassembly": "storb r12,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x026f10",
+       "raw_bytes": "b7f3",
+       "disassembly": "storb r11,0x3:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02703a",
+       "raw_bytes": "02f2",
+       "disassembly": "storb r0,0x2:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x02703c",
+       "raw_bytes": "b2f3",
+       "disassembly": "storb r11,0x3:s(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x027352",
+       "raw_bytes": "40830200",
+       "disassembly": "storb $0x4:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x0273ec",
+       "raw_bytes": "c2830200",
+       "disassembly": "storb $0xc:s,0x2:m(r3,r2)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x027442",
+       "raw_bytes": "80830200",
+       "disassembly": "storb $0x8:s,0x2:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x027446",
+       "raw_bytes": "80ef0300",
+       "disassembly": "stord (r9,r8),0x3:m(r1,r0)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     },
+     {
+      "site": {
+       "instruction": "0x027832",
+       "raw_bytes": "07d1",
+       "disassembly": "storw r0,0x2:s(r8,r7)"
+      },
+      "effective_address": null,
+      "address_kind": "UNKNOWN"
+     }
+    ]
+   },
+   "dataflow_evidence": {
+    "case7_store": "payload-2=item+2 (state); tag item+3 remains allocator r2=0x22 on this selected path",
+    "dispatcher_store": "separate global RAM",
+    "header_tag_post_allocation": "UNKNOWN_ALL_PATHS"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "candidate stores not equated to item+3 without pair/alias and lifetime proof",
+    "unresolved memcpy, wider overlapping writes, interrupts and DMA"
+   ]
+  }
+ }
+}

@@ -1,0 +1,151 @@
+{
+ "tool": "cr16-queue-provenance/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x00392a",
+     "raw_bytes": "b2f3",
+     "disassembly": "storb r11,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x0039f2",
+     "raw_bytes": "00c07664",
+     "disassembly": "bal (ra),*+0x9e68:m"
+    },
+    {
+     "instruction": "0x003a76",
+     "raw_bytes": "07b3",
+     "disassembly": "loadb 0x3:s(r8,r7),r0"
+    },
+    {
+     "instruction": "0x003a78",
+     "raw_bytes": "13000070cb93",
+     "disassembly": "storb r0,0x93cb:l"
+    },
+    {
+     "instruction": "0x009e38",
+     "raw_bytes": "42f0",
+     "disassembly": "storb r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x009e76",
+     "raw_bytes": "b5502300",
+     "disassembly": "cmpb $0x23:m,r5"
+    }
+   ],
+   "cfg_evidence": {
+    "parser_direct_callers": [
+     {
+      "instruction": "0x0039f2",
+      "raw_bytes": "00c07664",
+      "disassembly": "bal (ra),*+0x9e68:m"
+     }
+    ],
+    "direct_call_site_to_parser": true,
+    "tag_23_branch": {
+     "instruction": "0x009e7a",
+     "raw_bytes": "0c10",
+     "disassembly": "beq *+0x9e92:s"
+    }
+   },
+   "dataflow_evidence": {
+    "allocator_to_item_tag": "PROVEN_UNDER_LOCAL_CFG_MODEL",
+    "item_to_main_tag_global": "PROVEN_UNDER_LOCAL_CFG_MODEL",
+    "main_to_dispatch_to_parser": "PROVEN_UNDER_LOCAL_CFG_MODEL",
+    "specific_allocator_generation_to_parser_tag_23": "UNRESOLVED",
+    "case7_subtype8_entry_tag": "0x22 (not 0x23) on selected construction path",
+    "alternative_parser_entry": "no other resolved direct caller; indirect callers not excluded",
+    "global_0x23_is_not_item_tag": true
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "indirect caller and non-adjacent input paths not globally enumerated",
+    "branch conditions, unknown calls and unsupported memory aliases",
+    "queue wrap/overwrite/interrupt generation prevents record identity proof"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x02703c",
+     "raw_bytes": "b2f3",
+     "disassembly": "storb r11,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x02710c",
+     "raw_bytes": "00c05e03",
+     "disassembly": "bal (ra),*+0x2746a:m"
+    },
+    {
+     "instruction": "0x027194",
+     "raw_bytes": "07b3",
+     "disassembly": "loadb 0x3:s(r8,r7),r0"
+    },
+    {
+     "instruction": "0x027196",
+     "raw_bytes": "130000701295",
+     "disassembly": "storb r0,0x9512:l"
+    },
+    {
+     "instruction": "0x02743a",
+     "raw_bytes": "42f0",
+     "disassembly": "storb r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x027478",
+     "raw_bytes": "b5502300",
+     "disassembly": "cmpb $0x23:m,r5"
+    }
+   ],
+   "cfg_evidence": {
+    "parser_direct_callers": [
+     {
+      "instruction": "0x02710c",
+      "raw_bytes": "00c05e03",
+      "disassembly": "bal (ra),*+0x2746a:m"
+     }
+    ],
+    "direct_call_site_to_parser": true,
+    "tag_23_branch": {
+     "instruction": "0x02747c",
+     "raw_bytes": "0c10",
+     "disassembly": "beq *+0x27494:s"
+    }
+   },
+   "dataflow_evidence": {
+    "allocator_to_item_tag": "PROVEN_UNDER_LOCAL_CFG_MODEL",
+    "item_to_main_tag_global": "PROVEN_UNDER_LOCAL_CFG_MODEL",
+    "main_to_dispatch_to_parser": "PROVEN_UNDER_LOCAL_CFG_MODEL",
+    "specific_allocator_generation_to_parser_tag_23": "UNRESOLVED",
+    "case7_subtype8_entry_tag": "0x22 (not 0x23) on selected construction path",
+    "alternative_parser_entry": "no other resolved direct caller; indirect callers not excluded",
+    "global_0x23_is_not_item_tag": true
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "indirect caller and non-adjacent input paths not globally enumerated",
+    "branch conditions, unknown calls and unsupported memory aliases",
+    "queue wrap/overwrite/interrupt generation prevents record identity proof"
+   ]
+  }
+ }
+}

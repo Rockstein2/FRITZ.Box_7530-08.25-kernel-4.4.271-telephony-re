@@ -1,0 +1,1663 @@
+{
+ "tool": "cr16-queue-provenance/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x00386a",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x00392a",
+     "raw_bytes": "b2f3",
+     "disassembly": "storb r11,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x003934",
+     "raw_bytes": "a701",
+     "disassembly": "push $0x3,r7,RA"
+    },
+    {
+     "instruction": "0x003936",
+     "raw_bytes": "375b",
+     "disassembly": "movw r3,r7"
+    },
+    {
+     "instruction": "0x003938",
+     "raw_bytes": "4855",
+     "disassembly": "movd (r5,r4),(r9,r8)"
+    },
+    {
+     "instruction": "0x00393a",
+     "raw_bytes": "ffc031ff",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x003958",
+     "raw_bytes": "b2582900",
+     "disassembly": "movb $0x29:m,r2"
+    },
+    {
+     "instruction": "0x00395c",
+     "raw_bytes": "ffc00fff",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x009d3e",
+     "raw_bytes": "b2582200",
+     "disassembly": "movb $0x22:m,r2"
+    },
+    {
+     "instruction": "0x009d42",
+     "raw_bytes": "ffc0299b",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x009dd6",
+     "raw_bytes": "b2582200",
+     "disassembly": "movb $0x22:m,r2"
+    },
+    {
+     "instruction": "0x009dda",
+     "raw_bytes": "ffc0919a",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x009e26",
+     "raw_bytes": "b2582200",
+     "disassembly": "movb $0x22:m,r2"
+    },
+    {
+     "instruction": "0x009e2a",
+     "raw_bytes": "ffc0419a",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x009f36",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x009f3a",
+     "raw_bytes": "ffc03199",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x02004a",
+     "raw_bytes": "5258",
+     "disassembly": "movb $0x5:s,r2"
+    },
+    {
+     "instruction": "0x02004c",
+     "raw_bytes": "fec01f38",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x02029e",
+     "raw_bytes": "3258",
+     "disassembly": "movb $0x3:s,r2"
+    },
+    {
+     "instruction": "0x0202a0",
+     "raw_bytes": "fec0cb35",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x020f48",
+     "raw_bytes": "5258",
+     "disassembly": "movb $0x5:s,r2"
+    },
+    {
+     "instruction": "0x020f4a",
+     "raw_bytes": "fec02129",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x022896",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x02289a",
+     "raw_bytes": "fec0d10f",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x0229b2",
+     "raw_bytes": "5258",
+     "disassembly": "movb $0x5:s,r2"
+    },
+    {
+     "instruction": "0x0229b4",
+     "raw_bytes": "fec0b70e",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x025010",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x025014",
+     "raw_bytes": "fdc057e8",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x025b22",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x025b26",
+     "raw_bytes": "fdc045dd",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x026116",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x02611a",
+     "raw_bytes": "fdc051d7",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x0261c0",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x0261c4",
+     "raw_bytes": "fdc0a7d6",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x026356",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x02635a",
+     "raw_bytes": "fdc011d5",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x0269d6",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x0269da",
+     "raw_bytes": "fdc091ce",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x02731c",
+     "raw_bytes": "3258",
+     "disassembly": "movb $0x3:s,r2"
+    },
+    {
+     "instruction": "0x02731e",
+     "raw_bytes": "fdc04dc5",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x027384",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x027388",
+     "raw_bytes": "fdc0e3c4",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x0273d8",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x0273dc",
+     "raw_bytes": "fdc08fc4",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x027430",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x027434",
+     "raw_bytes": "fdc037c4",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x0274a2",
+     "raw_bytes": "3258",
+     "disassembly": "movb $0x3:s,r2"
+    },
+    {
+     "instruction": "0x0274a4",
+     "raw_bytes": "fdc0c7c3",
+     "disassembly": "bal (ra),*-0x386a:m"
+    }
+   ],
+   "cfg_evidence": {
+    "direct_callers": 22,
+    "parser_direct_callers": [
+     {
+      "instruction": "0x0039f2",
+      "raw_bytes": "00c07664",
+      "disassembly": "bal (ra),*+0x9e68:m"
+     }
+    ],
+    "leaf_summary_site": []
+   },
+   "dataflow_evidence": {
+    "entry_abi": "r2 low byte -> r11 at allocator+4; r3 word -> r8 payload length",
+    "callers": [
+     {
+      "call": {
+       "instruction": "0x00393a",
+       "raw_bytes": "ffc031ff",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_SOURCE_UNKNOWN",
+      "possible_constant_values": [],
+      "definitions": [
+       {
+        "kind": "UNKNOWN_ENTRY",
+        "value": null,
+        "path_reversed": [
+         {
+          "instruction": "0x003938",
+          "raw_bytes": "4855",
+          "disassembly": "movd (r5,r4),(r9,r8)"
+         },
+         {
+          "instruction": "0x003936",
+          "raw_bytes": "375b",
+          "disassembly": "movw r3,r7"
+         },
+         {
+          "instruction": "0x003934",
+          "raw_bytes": "a701",
+          "disassembly": "push $0x3,r7,RA"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x00395c",
+       "raw_bytes": "ffc00fff",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x29"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x29",
+        "path_reversed": [
+         {
+          "instruction": "0x003958",
+          "raw_bytes": "b2582900",
+          "disassembly": "movb $0x29:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x009d42",
+       "raw_bytes": "ffc0299b",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x22"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x22",
+        "path_reversed": [
+         {
+          "instruction": "0x009d3e",
+          "raw_bytes": "b2582200",
+          "disassembly": "movb $0x22:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x009dda",
+       "raw_bytes": "ffc0919a",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x22"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x22",
+        "path_reversed": [
+         {
+          "instruction": "0x009dd6",
+          "raw_bytes": "b2582200",
+          "disassembly": "movb $0x22:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x009e2a",
+       "raw_bytes": "ffc0419a",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x22"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x22",
+        "path_reversed": [
+         {
+          "instruction": "0x009e26",
+          "raw_bytes": "b2582200",
+          "disassembly": "movb $0x22:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x009f3a",
+       "raw_bytes": "ffc03199",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x009f36",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x02004c",
+       "raw_bytes": "fec01f38",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x05"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x05",
+        "path_reversed": [
+         {
+          "instruction": "0x02004a",
+          "raw_bytes": "5258",
+          "disassembly": "movb $0x5:s,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x0202a0",
+       "raw_bytes": "fec0cb35",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x03"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x03",
+        "path_reversed": [
+         {
+          "instruction": "0x02029e",
+          "raw_bytes": "3258",
+          "disassembly": "movb $0x3:s,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x020f4a",
+       "raw_bytes": "fec02129",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x05"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x05",
+        "path_reversed": [
+         {
+          "instruction": "0x020f48",
+          "raw_bytes": "5258",
+          "disassembly": "movb $0x5:s,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x02289a",
+       "raw_bytes": "fec0d10f",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x022896",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x0229b4",
+       "raw_bytes": "fec0b70e",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x05"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x05",
+        "path_reversed": [
+         {
+          "instruction": "0x0229b2",
+          "raw_bytes": "5258",
+          "disassembly": "movb $0x5:s,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x025014",
+       "raw_bytes": "fdc057e8",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x025010",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x025b26",
+       "raw_bytes": "fdc045dd",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x025b22",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x02611a",
+       "raw_bytes": "fdc051d7",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x026116",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x0261c4",
+       "raw_bytes": "fdc0a7d6",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x0261c0",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x02635a",
+       "raw_bytes": "fdc011d5",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x026356",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x0269da",
+       "raw_bytes": "fdc091ce",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x0269d6",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x02731e",
+       "raw_bytes": "fdc04dc5",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x03"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x03",
+        "path_reversed": [
+         {
+          "instruction": "0x02731c",
+          "raw_bytes": "3258",
+          "disassembly": "movb $0x3:s,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x027388",
+       "raw_bytes": "fdc0e3c4",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x027384",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x0273dc",
+       "raw_bytes": "fdc08fc4",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x0273d8",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x027434",
+       "raw_bytes": "fdc037c4",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x027430",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x0274a4",
+       "raw_bytes": "fdc0c7c3",
+       "disassembly": "bal (ra),*-0x386a:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x03"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x03",
+        "path_reversed": [
+         {
+          "instruction": "0x0274a2",
+          "raw_bytes": "3258",
+          "disassembly": "movb $0x3:s,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     }
+    ]
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "indirect caller and non-adjacent input paths not globally enumerated",
+    "branch conditions, unknown calls and unsupported memory aliases",
+    "queue wrap/overwrite/interrupt generation prevents record identity proof"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009b7a",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x009b7e",
+     "raw_bytes": "01c0fed3",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x02007e",
+     "raw_bytes": "5258",
+     "disassembly": "movb $0x5:s,r2"
+    },
+    {
+     "instruction": "0x020080",
+     "raw_bytes": "00c0fc6e",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x020e04",
+     "raw_bytes": "5258",
+     "disassembly": "movb $0x5:s,r2"
+    },
+    {
+     "instruction": "0x020e06",
+     "raw_bytes": "00c07661",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x02175a",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x02175e",
+     "raw_bytes": "00c01e58",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x021966",
+     "raw_bytes": "00c01419",
+     "disassembly": "bal (ra),*+0x2327a:m"
+    },
+    {
+     "instruction": "0x02196a",
+     "raw_bytes": "00c01256",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x021de2",
+     "raw_bytes": "00c09814",
+     "disassembly": "bal (ra),*+0x2327a:m"
+    },
+    {
+     "instruction": "0x021de6",
+     "raw_bytes": "00c09651",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x021fe8",
+     "raw_bytes": "00c09212",
+     "disassembly": "bal (ra),*+0x2327a:m"
+    },
+    {
+     "instruction": "0x021fec",
+     "raw_bytes": "00c0904f",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x022e56",
+     "raw_bytes": "00c02404",
+     "disassembly": "bal (ra),*+0x2327a:m"
+    },
+    {
+     "instruction": "0x022e5a",
+     "raw_bytes": "00c02241",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x022f4e",
+     "raw_bytes": "5258",
+     "disassembly": "movb $0x5:s,r2"
+    },
+    {
+     "instruction": "0x022f50",
+     "raw_bytes": "00c02c40",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x02327a",
+     "raw_bytes": "f35a",
+     "disassembly": "movw $0xf:s,r3"
+    },
+    {
+     "instruction": "0x02327c",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x023280",
+     "raw_bytes": "ee0a",
+     "disassembly": "jump (ra)"
+    },
+    {
+     "instruction": "0x023e24",
+     "raw_bytes": "ffc057f4",
+     "disassembly": "bal (ra),*-0x2327a:m"
+    },
+    {
+     "instruction": "0x023e28",
+     "raw_bytes": "00c05431",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x0265da",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x0265de",
+     "raw_bytes": "00c09e09",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x0268cc",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x0268d0",
+     "raw_bytes": "00c0ac06",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x026970",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x026974",
+     "raw_bytes": "00c00806",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x026ed6",
+     "raw_bytes": "b2581400",
+     "disassembly": "movb $0x14:m,r2"
+    },
+    {
+     "instruction": "0x026eda",
+     "raw_bytes": "00c0a200",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x026f7c",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x02703c",
+     "raw_bytes": "b2f3",
+     "disassembly": "storb r11,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x027046",
+     "raw_bytes": "a701",
+     "disassembly": "push $0x3,r7,RA"
+    },
+    {
+     "instruction": "0x027048",
+     "raw_bytes": "375b",
+     "disassembly": "movw r3,r7"
+    },
+    {
+     "instruction": "0x02704a",
+     "raw_bytes": "4855",
+     "disassembly": "movd (r5,r4),(r9,r8)"
+    },
+    {
+     "instruction": "0x02704c",
+     "raw_bytes": "ffc031ff",
+     "disassembly": "bal (ra),*-0x26f7c:m"
+    },
+    {
+     "instruction": "0x02706a",
+     "raw_bytes": "b2582900",
+     "disassembly": "movb $0x29:m,r2"
+    },
+    {
+     "instruction": "0x02706e",
+     "raw_bytes": "ffc00fff",
+     "disassembly": "bal (ra),*-0x26f7c:m"
+    },
+    {
+     "instruction": "0x027340",
+     "raw_bytes": "b2582200",
+     "disassembly": "movb $0x22:m,r2"
+    },
+    {
+     "instruction": "0x027344",
+     "raw_bytes": "ffc039fc",
+     "disassembly": "bal (ra),*-0x26f7c:m"
+    },
+    {
+     "instruction": "0x0273d8",
+     "raw_bytes": "b2582200",
+     "disassembly": "movb $0x22:m,r2"
+    },
+    {
+     "instruction": "0x0273dc",
+     "raw_bytes": "ffc0a1fb",
+     "disassembly": "bal (ra),*-0x26f7c:m"
+    },
+    {
+     "instruction": "0x027428",
+     "raw_bytes": "b2582200",
+     "disassembly": "movb $0x22:m,r2"
+    },
+    {
+     "instruction": "0x02742c",
+     "raw_bytes": "ffc051fb",
+     "disassembly": "bal (ra),*-0x26f7c:m"
+    }
+   ],
+   "cfg_evidence": {
+    "direct_callers": 19,
+    "parser_direct_callers": [
+     {
+      "instruction": "0x02710c",
+      "raw_bytes": "00c05e03",
+      "disassembly": "bal (ra),*+0x2746a:m"
+     }
+    ],
+    "leaf_summary_site": [
+     {
+      "instruction": "0x02327a",
+      "raw_bytes": "f35a",
+      "disassembly": "movw $0xf:s,r3"
+     },
+     {
+      "instruction": "0x02327c",
+      "raw_bytes": "b2581400",
+      "disassembly": "movb $0x14:m,r2"
+     },
+     {
+      "instruction": "0x023280",
+      "raw_bytes": "ee0a",
+      "disassembly": "jump (ra)"
+     }
+    ]
+   },
+   "dataflow_evidence": {
+    "entry_abi": "r2 low byte -> r11 at allocator+4; r3 word -> r8 payload length",
+    "callers": [
+     {
+      "call": {
+       "instruction": "0x009b7e",
+       "raw_bytes": "01c0fed3",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x009b7a",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x020080",
+       "raw_bytes": "00c0fc6e",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x05"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x05",
+        "path_reversed": [
+         {
+          "instruction": "0x02007e",
+          "raw_bytes": "5258",
+          "disassembly": "movb $0x5:s,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x020e06",
+       "raw_bytes": "00c07661",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x05"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x05",
+        "path_reversed": [
+         {
+          "instruction": "0x020e04",
+          "raw_bytes": "5258",
+          "disassembly": "movb $0x5:s,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x02175e",
+       "raw_bytes": "00c01e58",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x02175a",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x02196a",
+       "raw_bytes": "00c01256",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST_LEAF_RETURN",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x021966",
+          "raw_bytes": "00c01419",
+          "disassembly": "bal (ra),*+0x2327a:m"
+         },
+         {
+          "instruction": "0x02327a",
+          "raw_bytes": "f35a",
+          "disassembly": "movw $0xf:s,r3"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x021de6",
+       "raw_bytes": "00c09651",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST_LEAF_RETURN",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x021de2",
+          "raw_bytes": "00c09814",
+          "disassembly": "bal (ra),*+0x2327a:m"
+         },
+         {
+          "instruction": "0x02327a",
+          "raw_bytes": "f35a",
+          "disassembly": "movw $0xf:s,r3"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x021fec",
+       "raw_bytes": "00c0904f",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST_LEAF_RETURN",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x021fe8",
+          "raw_bytes": "00c09212",
+          "disassembly": "bal (ra),*+0x2327a:m"
+         },
+         {
+          "instruction": "0x02327a",
+          "raw_bytes": "f35a",
+          "disassembly": "movw $0xf:s,r3"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x022e5a",
+       "raw_bytes": "00c02241",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST_LEAF_RETURN",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x022e56",
+          "raw_bytes": "00c02404",
+          "disassembly": "bal (ra),*+0x2327a:m"
+         },
+         {
+          "instruction": "0x02327a",
+          "raw_bytes": "f35a",
+          "disassembly": "movw $0xf:s,r3"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x022f50",
+       "raw_bytes": "00c02c40",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x05"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x05",
+        "path_reversed": [
+         {
+          "instruction": "0x022f4e",
+          "raw_bytes": "5258",
+          "disassembly": "movb $0x5:s,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x023e28",
+       "raw_bytes": "00c05431",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST_LEAF_RETURN",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x023e24",
+          "raw_bytes": "ffc057f4",
+          "disassembly": "bal (ra),*-0x2327a:m"
+         },
+         {
+          "instruction": "0x02327a",
+          "raw_bytes": "f35a",
+          "disassembly": "movw $0xf:s,r3"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x0265de",
+       "raw_bytes": "00c09e09",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x0265da",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x0268d0",
+       "raw_bytes": "00c0ac06",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x0268cc",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x026974",
+       "raw_bytes": "00c00806",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x026970",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x026eda",
+       "raw_bytes": "00c0a200",
+       "disassembly": "bal (ra),*+0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x14"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x14",
+        "path_reversed": [
+         {
+          "instruction": "0x026ed6",
+          "raw_bytes": "b2581400",
+          "disassembly": "movb $0x14:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x02704c",
+       "raw_bytes": "ffc031ff",
+       "disassembly": "bal (ra),*-0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_SOURCE_UNKNOWN",
+      "possible_constant_values": [],
+      "definitions": [
+       {
+        "kind": "UNKNOWN_ENTRY",
+        "value": null,
+        "path_reversed": [
+         {
+          "instruction": "0x02704a",
+          "raw_bytes": "4855",
+          "disassembly": "movd (r5,r4),(r9,r8)"
+         },
+         {
+          "instruction": "0x027048",
+          "raw_bytes": "375b",
+          "disassembly": "movw r3,r7"
+         },
+         {
+          "instruction": "0x027046",
+          "raw_bytes": "a701",
+          "disassembly": "push $0x3,r7,RA"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x02706e",
+       "raw_bytes": "ffc00fff",
+       "disassembly": "bal (ra),*-0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x29"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x29",
+        "path_reversed": [
+         {
+          "instruction": "0x02706a",
+          "raw_bytes": "b2582900",
+          "disassembly": "movb $0x29:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x027344",
+       "raw_bytes": "ffc039fc",
+       "disassembly": "bal (ra),*-0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x22"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x22",
+        "path_reversed": [
+         {
+          "instruction": "0x027340",
+          "raw_bytes": "b2582200",
+          "disassembly": "movb $0x22:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x0273dc",
+       "raw_bytes": "ffc0a1fb",
+       "disassembly": "bal (ra),*-0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x22"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x22",
+        "path_reversed": [
+         {
+          "instruction": "0x0273d8",
+          "raw_bytes": "b2582200",
+          "disassembly": "movb $0x22:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     },
+     {
+      "call": {
+       "instruction": "0x02742c",
+       "raw_bytes": "ffc051fb",
+       "disassembly": "bal (ra),*-0x26f7c:m"
+      },
+      "tag_status_at_allocator_entry": "TAG_23_EXCLUDED_UNDER_MODEL",
+      "possible_constant_values": [
+       "0x22"
+      ],
+      "definitions": [
+       {
+        "kind": "CONST",
+        "value": "0x22",
+        "path_reversed": [
+         {
+          "instruction": "0x027428",
+          "raw_bytes": "b2582200",
+          "disassembly": "movb $0x22:m,r2"
+         }
+        ]
+       }
+      ],
+      "conditions": "BRANCH_CONSTRAINTS_UNMODELLED",
+      "header_to_parser": "UNRESOLVED"
+     }
+    ]
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "indirect caller and non-adjacent input paths not globally enumerated",
+    "branch conditions, unknown calls and unsupported memory aliases",
+    "queue wrap/overwrite/interrupt generation prevents record identity proof"
+   ]
+  }
+ }
+}

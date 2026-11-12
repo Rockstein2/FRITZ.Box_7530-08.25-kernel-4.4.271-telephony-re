@@ -915,6 +915,7 @@ _root_current = {
     "fon-e35-summary.md",
     "sc14448-e4-summary.md",
     "sc14448-e41-summary.md",
+    "sc14448-e42-summary.md",
 }
 _root_analysis = [p.name for p in DOCS.glob("*.md")
                   if p.name not in _root_current]

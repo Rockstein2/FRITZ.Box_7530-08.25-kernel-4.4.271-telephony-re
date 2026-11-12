@@ -47,6 +47,7 @@ Verify the canonical layout and all SHA256 manifests with
 | `fon-e35-summary.md` | E3.5 PCM ingress register inventory, Linux control/status signatures and explicit Q75 source-to-sink boundary. |
 | `sc14448-e4-summary.md` | E4 bounded function map, verified ISR vectors, runtime queue/command parser and UART TX with host RX boundary. |
 | `sc14448-e41-summary.md` | E4.1 local software queue producer, item header/payload offsets, command13 pointer write and TX/host boundary. |
+| `sc14448-e42-summary.md` | E4.2 allocator tag slicing, state/tag distinction and unresolved parser-branch reachability. |
 
 ### External reference registry (`references/`)
 

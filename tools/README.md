@@ -72,6 +72,12 @@ headers from parser payload-relative offsets. `test_cr16_queue_trace.py`
 checks fresh replay and fail-closed preservation; command/TX tests protect
 against unsupported pointer-range, host-ingress and response claims.
 
+SC14448-E4.2: `python3 tools/cr16_queue_provenance.py` regenerates six
+`reports/cr16-e42-*.json`; `python3 tools/tests/test_cr16_queue_provenance.py`
+tests synthetic tag sources, call clobbers and fresh replay/rollback.
+`TAG_23_EXCLUDED_UNDER_MODEL` applies only at a direct allocator call,
+**not** to the parser after unknown header aliases or queue wrap.
+
 FON-E3.5: `python3 tools/cr16_pcm_ingress.py` regenerates the seven
 `reports/cr16-e35-*.json` candidate/proof-boundary inventories from both
 SHA-checked images. `cr16_fon_ctrl_trace.py` shares the same fail-closed

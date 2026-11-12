@@ -1,0 +1,161 @@
+{
+ "tool": "cr16-queue-provenance/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009e26",
+     "raw_bytes": "b2582200",
+     "disassembly": "movb $0x22:m,r2"
+    },
+    {
+     "instruction": "0x009e2a",
+     "raw_bytes": "ffc0419a",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x009e38",
+     "raw_bytes": "42f0",
+     "disassembly": "storb r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x009e3e",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x009e40",
+     "raw_bytes": "80830200",
+     "disassembly": "storb $0x8:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x009e44",
+     "raw_bytes": "80ef0300",
+     "disassembly": "stord (r9,r8),0x3:m(r1,r0)"
+    },
+    {
+     "instruction": "0x009e48",
+     "raw_bytes": "70df0700",
+     "disassembly": "storw r7,0x7:m(r1,r0)"
+    },
+    {
+     "instruction": "0x009e94",
+     "raw_bytes": "b2526701",
+     "disassembly": "cmpw $0x167:m,r2"
+    },
+    {
+     "instruction": "0x009e9a",
+     "raw_bytes": "b252f1ff",
+     "disassembly": "cmpw $0xfff1:m,r2"
+    }
+   ],
+   "cfg_evidence": {
+    "selected_internal_type_constructor": {
+     "instruction": "0x009e2a",
+     "raw_bytes": "ffc0419a",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    "type_consumption_requires_tag_0x23": true
+   },
+   "dataflow_evidence": {
+    "case7_new_type": "0xfff1, subtype 8, tag 0x22 and state 0x23 on selected path",
+    "case7_to_parser_type_branch": "UNRESOLVED; tag 0x22 fails selected 0x23 comparison absent rewrite",
+    "0x0167_producer": "UNRESOLVED",
+    "0xfff1_parser_input": "UNRESOLVED",
+    "unsupported_subtype": "parser takes default return on selected branch; subtype 8 not a named case"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "global type producer/writer coverage incomplete",
+    "parser subtype 8 cannot be assumed processed"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x027428",
+     "raw_bytes": "b2582200",
+     "disassembly": "movb $0x22:m,r2"
+    },
+    {
+     "instruction": "0x02742c",
+     "raw_bytes": "ffc051fb",
+     "disassembly": "bal (ra),*-0x26f7c:m"
+    },
+    {
+     "instruction": "0x02743a",
+     "raw_bytes": "42f0",
+     "disassembly": "storb r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x027440",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x027442",
+     "raw_bytes": "80830200",
+     "disassembly": "storb $0x8:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x027446",
+     "raw_bytes": "80ef0300",
+     "disassembly": "stord (r9,r8),0x3:m(r1,r0)"
+    },
+    {
+     "instruction": "0x02744a",
+     "raw_bytes": "70df0700",
+     "disassembly": "storw r7,0x7:m(r1,r0)"
+    },
+    {
+     "instruction": "0x027496",
+     "raw_bytes": "b2526701",
+     "disassembly": "cmpw $0x167:m,r2"
+    },
+    {
+     "instruction": "0x02749c",
+     "raw_bytes": "b252f1ff",
+     "disassembly": "cmpw $0xfff1:m,r2"
+    }
+   ],
+   "cfg_evidence": {
+    "selected_internal_type_constructor": {
+     "instruction": "0x02742c",
+     "raw_bytes": "ffc051fb",
+     "disassembly": "bal (ra),*-0x26f7c:m"
+    },
+    "type_consumption_requires_tag_0x23": true
+   },
+   "dataflow_evidence": {
+    "case7_new_type": "0xfff1, subtype 8, tag 0x22 and state 0x23 on selected path",
+    "case7_to_parser_type_branch": "UNRESOLVED; tag 0x22 fails selected 0x23 comparison absent rewrite",
+    "0x0167_producer": "UNRESOLVED",
+    "0xfff1_parser_input": "UNRESOLVED",
+    "unsupported_subtype": "parser takes default return on selected branch; subtype 8 not a named case"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "global type producer/writer coverage incomplete",
+    "parser subtype 8 cannot be assumed processed"
+   ]
+  }
+ }
+}
