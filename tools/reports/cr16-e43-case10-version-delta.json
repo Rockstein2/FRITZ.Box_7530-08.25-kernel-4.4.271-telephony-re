@@ -1,0 +1,193 @@
+{
+ "tool": "cr16-command-effects/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009ef6",
+     "raw_bytes": "30b4",
+     "disassembly": "loadb 0x4:s(r1,r0),r3"
+    },
+    {
+     "instruction": "0x009efa",
+     "raw_bytes": "01c0b8d9",
+     "disassembly": "bal (ra),*+0x278b2:m"
+    },
+    {
+     "instruction": "0x0278b6",
+     "raw_bytes": "b7501200",
+     "disassembly": "cmpb $0x12:m,r7"
+    },
+    {
+     "instruction": "0x0278c2",
+     "raw_bytes": "b3501700",
+     "disassembly": "cmpb $0x17:m,r3"
+    },
+    {
+     "instruction": "0x0278ca",
+     "raw_bytes": "ffc071fe",
+     "disassembly": "bal (ra),*-0x2773a:m"
+    },
+    {
+     "instruction": "0x02773a",
+     "raw_bytes": "1701",
+     "disassembly": "push $0x2,r7"
+    },
+    {
+     "instruction": "0x02788a",
+     "raw_bytes": "a701",
+     "disassembly": "push $0x3,r7,RA"
+    },
+    {
+     "instruction": "0x0278ae",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    }
+   ],
+   "cfg_evidence": {
+    "bounds_comparisons": [
+     {
+      "instruction": "0x0278b6",
+      "raw_bytes": "b7501200",
+      "disassembly": "cmpb $0x12:m,r7"
+     },
+     {
+      "instruction": "0x0278c2",
+      "raw_bytes": "b3501700",
+      "disassembly": "cmpb $0x17:m,r3"
+     }
+    ],
+    "lookup_call": {
+     "instruction": "0x0278ca",
+     "raw_bytes": "ffc071fe",
+     "disassembly": "bal (ra),*-0x2773a:m"
+    },
+    "helper_call_after_lookup": "0x278e8"
+   },
+   "dataflow_evidence": {
+    "first_comparison": "$0x12:m,r7",
+    "second_comparison": "$0x17:m,r3",
+    "local_direct_calls": [
+     "0x02773a",
+     "0x02788a"
+    ],
+    "selected_helper_store": {
+     "instruction": "0x0278ae",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    "state_effect": "conditional indexed RAM store only; actual address/value need callee and branch proof",
+    "version_equivalence": "NOT_PROVEN"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "E4.2: no producer-backed parser tag-0x23 path proved",
+    "indirect entries and queue/header aliases unexcluded",
+    "unknown external control, memory target range, interrupt interleaving"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x0274f8",
+     "raw_bytes": "30b4",
+     "disassembly": "loadb 0x4:s(r1,r0),r3"
+    },
+    {
+     "instruction": "0x0274fc",
+     "raw_bytes": "fdc001c2",
+     "disassembly": "bal (ra),*-0x36fc:m"
+    },
+    {
+     "instruction": "0x003700",
+     "raw_bytes": "c750",
+     "disassembly": "cmpb $0xc:s,r7"
+    },
+    {
+     "instruction": "0x003708",
+     "raw_bytes": "b3501100",
+     "disassembly": "cmpb $0x11:m,r3"
+    },
+    {
+     "instruction": "0x003710",
+     "raw_bytes": "ffc0cffe",
+     "disassembly": "bal (ra),*-0x35de:m"
+    },
+    {
+     "instruction": "0x0035de",
+     "raw_bytes": "1701",
+     "disassembly": "push $0x2,r7"
+    },
+    {
+     "instruction": "0x0036d4",
+     "raw_bytes": "a701",
+     "disassembly": "push $0x3,r7,RA"
+    },
+    {
+     "instruction": "0x0036f8",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    }
+   ],
+   "cfg_evidence": {
+    "bounds_comparisons": [
+     {
+      "instruction": "0x003700",
+      "raw_bytes": "c750",
+      "disassembly": "cmpb $0xc:s,r7"
+     },
+     {
+      "instruction": "0x003708",
+      "raw_bytes": "b3501100",
+      "disassembly": "cmpb $0x11:m,r3"
+     }
+    ],
+    "lookup_call": {
+     "instruction": "0x003710",
+     "raw_bytes": "ffc0cffe",
+     "disassembly": "bal (ra),*-0x35de:m"
+    },
+    "helper_call_after_lookup": "0x00372e"
+   },
+   "dataflow_evidence": {
+    "first_comparison": "$0xc:s,r7",
+    "second_comparison": "$0x11:m,r3",
+    "local_direct_calls": [
+     "0x0035de",
+     "0x0036d4"
+    ],
+    "selected_helper_store": {
+     "instruction": "0x0036f8",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    "state_effect": "conditional indexed RAM store only; actual address/value need callee and branch proof",
+    "version_equivalence": "NOT_PROVEN"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "E4.2: no producer-backed parser tag-0x23 path proved",
+    "indirect entries and queue/header aliases unexcluded",
+    "unknown external control, memory target range, interrupt interleaving"
+   ]
+  }
+ }
+}

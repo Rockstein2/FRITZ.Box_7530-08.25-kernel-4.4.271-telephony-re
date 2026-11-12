@@ -1,0 +1,117 @@
+{
+ "tool": "cr16-command-effects/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009ed0",
+     "raw_bytes": "409f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r4"
+    },
+    {
+     "instruction": "0x009e38",
+     "raw_bytes": "42f0",
+     "disassembly": "storb r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x0278ae",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x009ee6",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    }
+   ],
+   "cfg_evidence": {
+    "conditional_edges": [
+     "case7\u2192new queue item",
+     "case9\u2192case10 helper (first indirect call)",
+     "case10\u2192lookup/helper RAM store candidate",
+     "case13\u2192pointer write"
+    ]
+   },
+   "dataflow_evidence": {
+    "producer_backed_edges": [],
+    "known_RAM_transition": "case7 writes item+2=0x23 (local, conditional)",
+    "unknown_state_destinations": [
+     "case10 helper indexed RAM",
+     "case13 pointer"
+    ],
+    "DSP_DIP_PCM_GPIO_link": "UNRESOLVED"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "E4.2: no producer-backed parser tag-0x23 path proved",
+    "indirect entries and queue/header aliases unexcluded",
+    "unknown external control, memory target range, interrupt interleaving"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x0274d2",
+     "raw_bytes": "409f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r4"
+    },
+    {
+     "instruction": "0x02743a",
+     "raw_bytes": "42f0",
+     "disassembly": "storb r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x0036f8",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0274e8",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    }
+   ],
+   "cfg_evidence": {
+    "conditional_edges": [
+     "case7\u2192new queue item",
+     "case9\u2192case10 helper (first indirect call)",
+     "case10\u2192lookup/helper RAM store candidate",
+     "case13\u2192pointer write"
+    ]
+   },
+   "dataflow_evidence": {
+    "producer_backed_edges": [],
+    "known_RAM_transition": "case7 writes item+2=0x23 (local, conditional)",
+    "unknown_state_destinations": [
+     "case10 helper indexed RAM",
+     "case13 pointer"
+    ],
+    "DSP_DIP_PCM_GPIO_link": "UNRESOLVED"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "E4.2: no producer-backed parser tag-0x23 path proved",
+    "indirect entries and queue/header aliases unexcluded",
+    "unknown external control, memory target range, interrupt interleaving"
+   ]
+  }
+ }
+}

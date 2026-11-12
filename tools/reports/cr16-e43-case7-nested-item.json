@@ -1,0 +1,147 @@
+{
+ "tool": "cr16-command-effects/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009ed0",
+     "raw_bytes": "409f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r4"
+    },
+    {
+     "instruction": "0x009e26",
+     "raw_bytes": "b2582200",
+     "disassembly": "movb $0x22:m,r2"
+    },
+    {
+     "instruction": "0x009e2a",
+     "raw_bytes": "ffc0419a",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x009e38",
+     "raw_bytes": "42f0",
+     "disassembly": "storb r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x009e3e",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x009e40",
+     "raw_bytes": "80830200",
+     "disassembly": "storb $0x8:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x009e5c",
+     "raw_bytes": "01c098ee",
+     "disassembly": "bal (ra),*+0x28cf4:m"
+    }
+   ],
+   "cfg_evidence": {
+    "selected_case": {
+     "instruction": "0x009ed0",
+     "raw_bytes": "409f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r4"
+    },
+    "helper": "0x009e10"
+   },
+   "dataflow_evidence": {
+    "incoming_pointer": "payload+3, producer unknown",
+    "incoming_length": "payload+7, producer unknown",
+    "outgoing_header_tag": "0x22",
+    "outgoing_state": "0x23 at item+2",
+    "new_payload": "0xfff1 subtype 8, pointer and length, then copied bytes",
+    "next_consumer": "UNRESOLVED; not proved parser's 0x23 branch",
+    "recursive_parser_entry": "NOT_PROVEN"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "E4.2: no producer-backed parser tag-0x23 path proved",
+    "indirect entries and queue/header aliases unexcluded",
+    "unknown external control, memory target range, interrupt interleaving"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x0274d2",
+     "raw_bytes": "409f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r4"
+    },
+    {
+     "instruction": "0x027428",
+     "raw_bytes": "b2582200",
+     "disassembly": "movb $0x22:m,r2"
+    },
+    {
+     "instruction": "0x02742c",
+     "raw_bytes": "ffc051fb",
+     "disassembly": "bal (ra),*-0x26f7c:m"
+    },
+    {
+     "instruction": "0x02743a",
+     "raw_bytes": "42f0",
+     "disassembly": "storb r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x027440",
+     "raw_bytes": "20d0",
+     "disassembly": "storw r2,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x027442",
+     "raw_bytes": "80830200",
+     "disassembly": "storb $0x8:s,0x2:m(r1,r0)"
+    },
+    {
+     "instruction": "0x02745e",
+     "raw_bytes": "00c00608",
+     "disassembly": "bal (ra),*+0x27c64:m"
+    }
+   ],
+   "cfg_evidence": {
+    "selected_case": {
+     "instruction": "0x0274d2",
+     "raw_bytes": "409f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r4"
+    },
+    "helper": "0x027412"
+   },
+   "dataflow_evidence": {
+    "incoming_pointer": "payload+3, producer unknown",
+    "incoming_length": "payload+7, producer unknown",
+    "outgoing_header_tag": "0x22",
+    "outgoing_state": "0x23 at item+2",
+    "new_payload": "0xfff1 subtype 8, pointer and length, then copied bytes",
+    "next_consumer": "UNRESOLVED; not proved parser's 0x23 branch",
+    "recursive_parser_entry": "NOT_PROVEN"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "E4.2: no producer-backed parser tag-0x23 path proved",
+    "indirect entries and queue/header aliases unexcluded",
+    "unknown external control, memory target range, interrupt interleaving"
+   ]
+  }
+ }
+}

@@ -1,0 +1,251 @@
+{
+ "tool": "cr16-command-effects/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009eea",
+     "raw_bytes": "00af0300",
+     "disassembly": "loadd 0x3:m(r1,r0),(r1,r0)"
+    },
+    {
+     "instruction": "0x009ef0",
+     "raw_bytes": "01c0c4e0",
+     "disassembly": "bal (ra),*+0x27fb4:m"
+    },
+    {
+     "instruction": "0x027fb4",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x027fba",
+     "raw_bytes": "7a000100593c",
+     "disassembly": "movd $0x13c59:l,(r11,r10)"
+    },
+    {
+     "instruction": "0x027fc0",
+     "raw_bytes": "77000100da1d",
+     "disassembly": "movd $0x11dda:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x027fda",
+     "raw_bytes": "da00",
+     "disassembly": "jal (r11,r10)"
+    },
+    {
+     "instruction": "0x027fe2",
+     "raw_bytes": "da00",
+     "disassembly": "jal (r11,r10)"
+    },
+    {
+     "instruction": "0x02800a",
+     "raw_bytes": "da00",
+     "disassembly": "jal (r11,r10)"
+    },
+    {
+     "instruction": "0x028014",
+     "raw_bytes": "da00",
+     "disassembly": "jal (r11,r10)"
+    },
+    {
+     "instruction": "0x0278b2",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    }
+   ],
+   "cfg_evidence": {
+    "first_indirect_site": {
+     "instruction": "0x027fda",
+     "raw_bytes": "da00",
+     "disassembly": "jal (r11,r10)"
+    },
+    "source_literal": {
+     "instruction": "0x027fba",
+     "raw_bytes": "7a000100593c",
+     "disassembly": "movd $0x13c59:l,(r11,r10)"
+    },
+    "first_target": {
+     "instruction": "0x0278b2",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    "first_target_confidence": "PROVEN_UNDER_LOCAL_CFG_MODEL",
+    "ISA_basis": "CR16B Programmer's Reference Manual \u00a7JAL (PC bit0=0, pair low16\u2192bits1..16, high4\u2192bits17..20); SC14448 compatibility assumption",
+    "later_sites": [
+     {
+      "site": {
+       "instruction": "0x027fe2",
+       "raw_bytes": "da00",
+       "disassembly": "jal (r11,r10)"
+      },
+      "target": "UNRESOLVED_CLOBBER_AFTER_PRIOR_CALL"
+     },
+     {
+      "site": {
+       "instruction": "0x02800a",
+       "raw_bytes": "da00",
+       "disassembly": "jal (r11,r10)"
+      },
+      "target": "UNRESOLVED_CLOBBER_AFTER_PRIOR_CALL"
+     },
+     {
+      "site": {
+       "instruction": "0x028014",
+       "raw_bytes": "da00",
+       "disassembly": "jal (r11,r10)"
+      },
+      "target": "UNRESOLVED_CLOBBER_AFTER_PRIOR_CALL"
+     }
+    ]
+   },
+   "dataflow_evidence": {
+    "pair_word_address": "0x13c59",
+    "pc_byte_address": "0x0278b2",
+    "first_call_register_preservation": "no r10/r11 write or call between literal and first JAL",
+    "table_base": "$0x11dda:l,(r8,r7)",
+    "input_from_case9": "load pointer32 from payload+3; use low word as helper index",
+    "first_target_effect": "case10 helper conditional effects; source table/data pointers unresolved"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "E4.2: no producer-backed parser tag-0x23 path proved",
+    "indirect entries and queue/header aliases unexcluded",
+    "unknown external control, memory target range, interrupt interleaving",
+    "r10:r11 preservation after first JAL not proved; no subsequent target promoted"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x0274ec",
+     "raw_bytes": "00af0300",
+     "disassembly": "loadd 0x3:m(r1,r0),(r1,r0)"
+    },
+    {
+     "instruction": "0x0274f2",
+     "raw_bytes": "fdc081c7",
+     "disassembly": "bal (ra),*-0x3c72:m"
+    },
+    {
+     "instruction": "0x003c72",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x003c78",
+     "raw_bytes": "7a0000007e1b",
+     "disassembly": "movd $0x1b7e:l,(r11,r10)"
+    },
+    {
+     "instruction": "0x003c7e",
+     "raw_bytes": "770000000000",
+     "disassembly": "movd $0x0:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x003c98",
+     "raw_bytes": "da00",
+     "disassembly": "jal (r11,r10)"
+    },
+    {
+     "instruction": "0x003ca0",
+     "raw_bytes": "da00",
+     "disassembly": "jal (r11,r10)"
+    },
+    {
+     "instruction": "0x003cc6",
+     "raw_bytes": "da00",
+     "disassembly": "jal (r11,r10)"
+    },
+    {
+     "instruction": "0x003cce",
+     "raw_bytes": "da00",
+     "disassembly": "jal (r11,r10)"
+    },
+    {
+     "instruction": "0x0036fc",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    }
+   ],
+   "cfg_evidence": {
+    "first_indirect_site": {
+     "instruction": "0x003c98",
+     "raw_bytes": "da00",
+     "disassembly": "jal (r11,r10)"
+    },
+    "source_literal": {
+     "instruction": "0x003c78",
+     "raw_bytes": "7a0000007e1b",
+     "disassembly": "movd $0x1b7e:l,(r11,r10)"
+    },
+    "first_target": {
+     "instruction": "0x0036fc",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    "first_target_confidence": "PROVEN_UNDER_LOCAL_CFG_MODEL",
+    "ISA_basis": "CR16B Programmer's Reference Manual \u00a7JAL (PC bit0=0, pair low16\u2192bits1..16, high4\u2192bits17..20); SC14448 compatibility assumption",
+    "later_sites": [
+     {
+      "site": {
+       "instruction": "0x003ca0",
+       "raw_bytes": "da00",
+       "disassembly": "jal (r11,r10)"
+      },
+      "target": "UNRESOLVED_CLOBBER_AFTER_PRIOR_CALL"
+     },
+     {
+      "site": {
+       "instruction": "0x003cc6",
+       "raw_bytes": "da00",
+       "disassembly": "jal (r11,r10)"
+      },
+      "target": "UNRESOLVED_CLOBBER_AFTER_PRIOR_CALL"
+     },
+     {
+      "site": {
+       "instruction": "0x003cce",
+       "raw_bytes": "da00",
+       "disassembly": "jal (r11,r10)"
+      },
+      "target": "UNRESOLVED_CLOBBER_AFTER_PRIOR_CALL"
+     }
+    ]
+   },
+   "dataflow_evidence": {
+    "pair_word_address": "0x01b7e",
+    "pc_byte_address": "0x0036fc",
+    "first_call_register_preservation": "no r10/r11 write or call between literal and first JAL",
+    "table_base": "$0x0:l,(r8,r7)",
+    "input_from_case9": "load pointer32 from payload+3; use low word as helper index",
+    "first_target_effect": "case10 helper conditional effects; source table/data pointers unresolved"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "E4.2: no producer-backed parser tag-0x23 path proved",
+    "indirect entries and queue/header aliases unexcluded",
+    "unknown external control, memory target range, interrupt interleaving",
+    "r10:r11 preservation after first JAL not proved; no subsequent target promoted"
+   ]
+  }
+ }
+}
