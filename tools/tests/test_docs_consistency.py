@@ -1635,6 +1635,50 @@ for _p in (REFDIR.rglob("*")):
                                         ".bz2", ".xz", ".bin", ".hex"),
               True)
 
+# ---------------------------------------------------------------------------
+# 23. E6 PCMLINK BRING-UP: the consolidated model must not regress into the
+#     review findings (version mixing, linear ordering, executed stages as
+#     future steps, C2-as-MATCH, descriptor MISSING, full-rollback claim).
+# ---------------------------------------------------------------------------
+_e6 = DOCS / "fon-e6-pcmlink-bringup.md"
+_e6_text = _e6.read_text() if _e6.is_file() else ""
+
+check("E6: bootlog version labelled 07.28 / 4.4.60",
+      "07.28" in _e6_text and "4.4.60" in _e6_text, True)
+check("E6: timestamps not presented as 08.25 measurements",
+      "not our measurement" in _e6_text
+      or "not our measurements" in _e6_text, True)
+check("E6: module ordering caveat recorded",
+      "does **not** prove" in _e6_text
+      and "overlapping or lazy" in _e6_text, True)
+check("E6: 2026-11-07 executions recorded as done",
+      "DONE 2026-11-07" in _e6_text and "no repeat needed" in _e6_text,
+      True)
+check("E6: executed C1 reset values recorded",
+      "0x00010001" in _e6_text and "0x00000102" in _e6_text, True)
+check("E6: executed C2 values recorded as observations",
+      "0x06070007" in _e6_text and "0x00240000" in _e6_text
+      and "0x10000005" in _e6_text, True)
+check("E6: clock-gate stop unconfirmed recorded",
+      "NOT CONFIRMED" in _e6_text and "clk_branch_toggle" in _e6_text,
+      True)
+check("E6: corrected C2 marked not run",
+      "NOT RUN" in _e6_text and "never run" in _e6_text, True)
+check("E6: C2 vs OEM order marked PARTIAL with the phase diffs",
+      "PARTIAL." in _e6_text and "clksel(2)" in _e6_text
+      and "ENABLE" in _e6_text, True)
+check("E6: DMA descriptors implemented, not missing",
+      "implemented" in _e6_text and "156 B" in _e6_text
+      and "16 descriptors" in _e6_text, True)
+check("E6: rollback is quiescent state, not restoration",
+      "does **not** restore the prior register state" in _e6_text
+      and "not a restoration of the" in _e6_text, True)
+check("E6: negative FSC/BCLK result cannot discriminate",
+      "nothing by itself" in _e6_text
+      and "cannot discriminate" in _e6_text, True)
+check("E6: scope stage blocked on net identification",
+      "blocked on net" in _e6_text, True)
+
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
 sys.exit(1 if fails else 0)
