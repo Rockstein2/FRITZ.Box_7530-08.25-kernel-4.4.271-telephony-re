@@ -1,0 +1,193 @@
+{
+ "tool": "cr16-audio-architecture/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x00133a (normal)",
+   "dataflow_evidence": {
+    "components": [
+     {
+      "component": "SC14448 reset/boot",
+      "oem_sequence_known": "PARTIALLY (bootloader handshake separate)",
+      "register_values_known": "NO",
+      "hardware_dependencies_known": "NO",
+      "offline_implementation_possible": "LIMITED",
+      "runtime_confirmation_required": "YES",
+      "blocker": "first-level loader and reset vector semantics"
+     },
+     {
+      "component": "firmware loading",
+      "oem_sequence_known": "PARTIALLY (second-level image loads at fixed addresses including the 0x17300 DSP block)",
+      "register_values_known": "NO",
+      "hardware_dependencies_known": "NO",
+      "offline_implementation_possible": "LIMITED",
+      "runtime_confirmation_required": "YES",
+      "blocker": "loader protocol not fully recovered"
+     },
+     {
+      "component": "clock initialization",
+      "oem_sequence_known": "PROVEN_FIRMWARE_CONFIG (PLL sequence, CODEC/PER/DSP dividers, CLK_AMBA)",
+      "register_values_known": "PROVEN (values above)",
+      "hardware_dependencies_known": "SC14480_ANALOGY",
+      "offline_implementation_possible": "YES (values known)",
+      "runtime_confirmation_required": "YES (SC14448 divider semantics)",
+      "blocker": "register identity analogy"
+     },
+     {
+      "component": "PCM+ configuration",
+      "oem_sequence_known": "PROVEN_FIRMWARE_CONFIG (master/slave paths, 8 kHz frame, PCM_CLK select)",
+      "register_values_known": "PROVEN (PCM_CTRL 0x43/0x45)",
+      "hardware_dependencies_known": "SC14480_ANALOGY",
+      "offline_implementation_possible": "PARTIALLY",
+      "runtime_confirmation_required": "YES",
+      "blocker": "IPQ4019 slot/clock mismatch unproven"
+     },
+     {
+      "component": "DSP initialization",
+      "oem_sequence_known": "PROVEN_FIRMWARE_CONFIG (powerdown->program->enable, PC_START=0x7980)",
+      "register_values_known": "PROVEN",
+      "hardware_dependencies_known": "SC14480_ANALOGY",
+      "offline_implementation_possible": "YES",
+      "runtime_confirmation_required": "YES",
+      "blocker": "DSP execution mechanism (flash alias vs copy vs ROM)"
+     },
+     {
+      "component": "CODEC initialization",
+      "oem_sequence_known": "PROVEN_FIRMWARE_CONFIG (VREF->MIC->LSR->ADDA powerup order)",
+      "register_values_known": "PROVEN (bit sequences)",
+      "hardware_dependencies_known": "SC14480_ANALOGY",
+      "offline_implementation_possible": "YES",
+      "runtime_confirmation_required": "YES",
+      "blocker": "register identity analogy"
+     },
+     {
+      "component": "audio routing",
+      "oem_sequence_known": "UNRESOLVED (inside DSP microcode)",
+      "register_values_known": "NO",
+      "hardware_dependencies_known": "NO",
+      "offline_implementation_possible": "NO",
+      "runtime_confirmation_required": "YES",
+      "blocker": "DSP program not disassembled; no SC14448 DSP doc"
+     },
+     {
+      "component": "analog line control",
+      "oem_sequence_known": "NOT_REACHED (no proved command path)",
+      "register_values_known": "NO",
+      "hardware_dependencies_known": "NO",
+      "offline_implementation_possible": "NO",
+      "runtime_confirmation_required": "YES",
+      "blocker": "no producer-backed FON command path (E4.2)"
+     }
+    ]
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call normal 0x001866 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "the OEM firmware can be used as a closed DSP/CODEC engine only if the recovered register values hold on the SC14448 and the DSP program start is valid; neither is proven",
+    "no runtime audio test may be designed from register writes alone (K1/K2 NO-GO unchanged)"
+   ],
+   "confidence": "INVENTORY"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x000db0 (p2test)",
+   "dataflow_evidence": {
+    "components": [
+     {
+      "component": "SC14448 reset/boot",
+      "oem_sequence_known": "PARTIALLY (bootloader handshake separate)",
+      "register_values_known": "NO",
+      "hardware_dependencies_known": "NO",
+      "offline_implementation_possible": "LIMITED",
+      "runtime_confirmation_required": "YES",
+      "blocker": "first-level loader and reset vector semantics"
+     },
+     {
+      "component": "firmware loading",
+      "oem_sequence_known": "PARTIALLY (second-level image loads at fixed addresses including the 0x17300 DSP block)",
+      "register_values_known": "NO",
+      "hardware_dependencies_known": "NO",
+      "offline_implementation_possible": "LIMITED",
+      "runtime_confirmation_required": "YES",
+      "blocker": "loader protocol not fully recovered"
+     },
+     {
+      "component": "clock initialization",
+      "oem_sequence_known": "PROVEN_FIRMWARE_CONFIG (PLL sequence, CODEC/PER/DSP dividers, CLK_AMBA)",
+      "register_values_known": "PROVEN (values above)",
+      "hardware_dependencies_known": "SC14480_ANALOGY",
+      "offline_implementation_possible": "YES (values known)",
+      "runtime_confirmation_required": "YES (SC14448 divider semantics)",
+      "blocker": "register identity analogy"
+     },
+     {
+      "component": "PCM+ configuration",
+      "oem_sequence_known": "PROVEN_FIRMWARE_CONFIG (master/slave paths, 8 kHz frame, PCM_CLK select)",
+      "register_values_known": "PROVEN (PCM_CTRL 0x43/0x45)",
+      "hardware_dependencies_known": "SC14480_ANALOGY",
+      "offline_implementation_possible": "PARTIALLY",
+      "runtime_confirmation_required": "YES",
+      "blocker": "IPQ4019 slot/clock mismatch unproven"
+     },
+     {
+      "component": "DSP initialization",
+      "oem_sequence_known": "PROVEN_FIRMWARE_CONFIG (powerdown->program->enable, PC_START=0x7980)",
+      "register_values_known": "PROVEN",
+      "hardware_dependencies_known": "SC14480_ANALOGY",
+      "offline_implementation_possible": "YES",
+      "runtime_confirmation_required": "YES",
+      "blocker": "DSP execution mechanism (flash alias vs copy vs ROM)"
+     },
+     {
+      "component": "CODEC initialization",
+      "oem_sequence_known": "PROVEN_FIRMWARE_CONFIG (VREF->MIC->LSR->ADDA powerup order)",
+      "register_values_known": "PROVEN (bit sequences)",
+      "hardware_dependencies_known": "SC14480_ANALOGY",
+      "offline_implementation_possible": "YES",
+      "runtime_confirmation_required": "YES",
+      "blocker": "register identity analogy"
+     },
+     {
+      "component": "audio routing",
+      "oem_sequence_known": "UNRESOLVED (inside DSP microcode)",
+      "register_values_known": "NO",
+      "hardware_dependencies_known": "NO",
+      "offline_implementation_possible": "NO",
+      "runtime_confirmation_required": "YES",
+      "blocker": "DSP program not disassembled; no SC14448 DSP doc"
+     },
+     {
+      "component": "analog line control",
+      "oem_sequence_known": "NOT_REACHED (no proved command path)",
+      "register_values_known": "NO",
+      "hardware_dependencies_known": "NO",
+      "offline_implementation_possible": "NO",
+      "runtime_confirmation_required": "YES",
+      "blocker": "no producer-backed FON command path (E4.2)"
+     }
+    ]
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call p2test 0x0012e8 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "the OEM firmware can be used as a closed DSP/CODEC engine only if the recovered register values hold on the SC14448 and the DSP program start is valid; neither is proven",
+    "no runtime audio test may be designed from register writes alone (K1/K2 NO-GO unchanged)"
+   ],
+   "confidence": "INVENTORY"
+  }
+ }
+}

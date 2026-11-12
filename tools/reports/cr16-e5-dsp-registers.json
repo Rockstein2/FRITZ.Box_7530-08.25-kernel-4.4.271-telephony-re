@@ -1,0 +1,1093 @@
+{
+ "tool": "cr16-audio-architecture/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x00133a (normal)",
+   "instruction_provenance": [
+    {
+     "label": "guard_compare",
+     "why": "DSP_BASE == [0xD6] else skip whole function",
+     "instruction": "0x00133a",
+     "raw_bytes": "90000201807f",
+     "disassembly": "cmpd $0x1027f80:l,(r1,r0)",
+     "effective_address": null,
+     "value_or_bitop": null,
+     "register_analogy": null,
+     "function": "0x001330"
+    },
+    {
+     "label": "dip_ctrl_write",
+     "why": "value = 0x80 when caller passes r2!=0 (proven: movb $1,r2 at 0x001460)",
+     "instruction": "0x001348",
+     "raw_bytes": "2fc90660",
+     "disassembly": "storw r2,0xf6006:m",
+     "effective_address": "0x00ff6006",
+     "value_or_bitop": "0x80",
+     "register_analogy": {
+      "reference_name": "DIP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001330"
+    },
+    {
+     "label": "dsp_ctrl_powerdown",
+     "why": "clear DSP_CTRL bit2 (DSP_EN=0 under analogy)",
+     "instruction": "0x00134c",
+     "raw_bytes": "20695000",
+     "disassembly": "cbitw $0x2:s,0x50:m(r1,r0)",
+     "effective_address": "0x01027fd0",
+     "value_or_bitop": "bit2=0",
+     "register_analogy": {
+      "reference_name": "DSP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001330"
+    },
+    {
+     "label": "codec_adda_powerdown",
+     "why": "CODEC_ADDA |= 3 (AD_PD=1, DA_PD=1 under analogy)",
+     "instruction": "0x00135a",
+     "raw_bytes": "42d0",
+     "disassembly": "storw r4,0x0:s(r3,r2)",
+     "effective_address": "0x00ff5808",
+     "value_or_bitop": "or 0x3",
+     "register_analogy": {
+      "reference_name": "CODEC_ADDA_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001330"
+    },
+    {
+     "label": "dsp_int_clear",
+     "why": "DSP_INT = 0xFFFF (write-1-to-clear semantics under analogy)",
+     "instruction": "0x00135e",
+     "raw_bytes": "20df5800",
+     "disassembly": "storw r2,0x58:m(r1,r0)",
+     "effective_address": "0x01027fd8",
+     "value_or_bitop": "0xffff",
+     "register_analogy": {
+      "reference_name": "DSP_INT_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001330"
+    },
+    {
+     "label": "clk_codec_off",
+     "why": "CLK_CODEC = 0 (all codec/PCM/main clocks off under analogy)",
+     "instruction": "0x001362",
+     "raw_bytes": "0fc10440",
+     "disassembly": "storw $0x0:s,0xf4004:m",
+     "effective_address": "0x00ff4004",
+     "value_or_bitop": "0x0000",
+     "register_analogy": {
+      "reference_name": "CLK_CODEC_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001330"
+    },
+    {
+     "label": "call_codec_clock_init",
+     "why": "direct call to the codec-clock init",
+     "instruction": "0x001366",
+     "raw_bytes": "00c00201",
+     "disassembly": "bal (ra),*+0x1468:m",
+     "effective_address": null,
+     "value_or_bitop": null,
+     "register_analogy": null,
+     "function": "0x001330"
+    },
+    {
+     "label": "call_post_init",
+     "why": "direct call to the post-init helper (data region/status)",
+     "instruction": "0x00136a",
+     "raw_bytes": "ffc01ff3",
+     "disassembly": "bal (ra),*-0x688:m",
+     "effective_address": null,
+     "value_or_bitop": null,
+     "register_analogy": null,
+     "function": "0x001330"
+    },
+    {
+     "label": "dsp_pc_literal",
+     "why": "flash address of the embedded DSP program block",
+     "instruction": "0x001370",
+     "raw_bytes": "720001000073",
+     "disassembly": "movd $0x17300:l,(r3,r2)",
+     "effective_address": null,
+     "value_or_bitop": "0x17300",
+     "register_analogy": null,
+     "function": "0x001330"
+    },
+    {
+     "label": "dsp_pc_shift_add",
+     "why": "DSP_PC = ((0x17300 >> 1) + 0xC000) & 0xFFFF = 0x7980",
+     "instruction": "0x001378",
+     "raw_bytes": "b23200c0",
+     "disassembly": "addw $0xc000:m,r2",
+     "effective_address": "0x01027fd4",
+     "value_or_bitop": "0x7980",
+     "register_analogy": {
+      "reference_name": "DSP_PC_START_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001330"
+    },
+    {
+     "label": "dsp_pc_store",
+     "why": "DSP_PC_START = 0x7980",
+     "instruction": "0x00137c",
+     "raw_bytes": "20df5400",
+     "disassembly": "storw r2,0x54:m(r1,r0)",
+     "effective_address": "0x01027fd4",
+     "value_or_bitop": "0x7980",
+     "register_analogy": {
+      "reference_name": "DSP_PC_START_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001330"
+    },
+    {
+     "label": "main_sync1_zero",
+     "instruction": "0x00185e",
+     "raw_bytes": "07c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r8,r7)",
+     "effective_address": "0x01027f82",
+     "value_or_bitop": "0x0000",
+     "register_analogy": {
+      "reference_name": "DSP_MAIN_SYNC1_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001856"
+    },
+    {
+     "label": "helper_patch_call",
+     "instruction": "0x001866",
+     "raw_bytes": "ffc0c9ff",
+     "disassembly": "bal (ra),*-0x182e:m",
+     "effective_address": null,
+     "value_or_bitop": "r2=0x7c00, target address unresolved",
+     "register_analogy": null,
+     "function": "0x001856"
+    },
+    {
+     "label": "dsp_int_prio1",
+     "instruction": "0x00186e",
+     "raw_bytes": "07df5c00",
+     "disassembly": "storw r0,0x5c:m(r8,r7)",
+     "effective_address": "0x01027fdc",
+     "value_or_bitop": "0x0773",
+     "register_analogy": {
+      "reference_name": "DSP_INT_PRIO1_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001856"
+    },
+    {
+     "label": "main_ctrl_400",
+     "instruction": "0x00187a",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)",
+     "effective_address": "0x01027fbc",
+     "value_or_bitop": "0x0400",
+     "register_analogy": {
+      "reference_name": "DSP_MAIN_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001856"
+    },
+    {
+     "label": "clk_amba_bit7",
+     "instruction": "0x00187c",
+     "raw_bytes": "7f770040",
+     "disassembly": "sbitw $0x7:s,0xf4000:m",
+     "effective_address": "0x00ff4000",
+     "value_or_bitop": "bit7=1",
+     "register_analogy": {
+      "reference_name": "CLK_AMBA_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001856"
+    },
+    {
+     "label": "dsp_ctrl_enable",
+     "instruction": "0x001884",
+     "raw_bytes": "07da",
+     "disassembly": "storw r0,0x14:s(r8,r7)",
+     "effective_address": "0x01027fd0",
+     "value_or_bitop": "or 0xC (DSP_CLK_EN|DSP_EN under analogy)",
+     "register_analogy": {
+      "reference_name": "DSP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001856"
+    },
+    {
+     "label": "dsp_ctrl_dbg",
+     "instruction": "0x001886",
+     "raw_bytes": "8776",
+     "disassembly": "sbitw $0x8:s,0x0:s(r8,r7)",
+     "effective_address": "0x01027fd0",
+     "value_or_bitop": "bit8=1 (DBG_EN)",
+     "register_analogy": {
+      "reference_name": "DSP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001856"
+    },
+    {
+     "label": "int_prio_or30",
+     "instruction": "0x001928",
+     "raw_bytes": "31d0",
+     "disassembly": "storw r3,0x0:s(r2,r1)",
+     "effective_address": "0x00ff5404",
+     "value_or_bitop": "or 0x30",
+     "register_analogy": {
+      "reference_name": "INT_PRIO0_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    },
+    {
+     "label": "pending_2000",
+     "instruction": "0x001934",
+     "raw_bytes": "0fc90254",
+     "disassembly": "storw r0,0xf5402:m",
+     "effective_address": "0x00ff5402",
+     "value_or_bitop": "0x2000",
+     "register_analogy": {
+      "reference_name": "RESET_INT_PENDING_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    },
+    {
+     "label": "dsp_int_mask",
+     "instruction": "0x00194c",
+     "raw_bytes": "42d0",
+     "disassembly": "storw r4,0x0:s(r3,r2)",
+     "effective_address": "0x01027fda",
+     "value_or_bitop": "or 0x803c",
+     "register_analogy": {
+      "reference_name": "DSP_INT_MASK_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    },
+    {
+     "label": "clk_dsp_9",
+     "instruction": "0x00194e",
+     "raw_bytes": "9fc10640",
+     "disassembly": "storw $0x9:s,0xf4006:m",
+     "effective_address": "0x00ff4006",
+     "value_or_bitop": "0x0009",
+     "register_analogy": {
+      "reference_name": "CLK_DSP_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    },
+    {
+     "label": "dsp_en",
+     "instruction": "0x001952",
+     "raw_bytes": "20715000",
+     "disassembly": "sbitw $0x2:s,0x50:m(r1,r0)",
+     "effective_address": "0x01027fd0",
+     "value_or_bitop": "bit2=1 (DSP_EN)",
+     "register_analogy": {
+      "reference_name": "DSP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    },
+    {
+     "label": "adda_on",
+     "instruction": "0x001962",
+     "raw_bytes": "42d0",
+     "disassembly": "storw r4,0x0:s(r3,r2)",
+     "effective_address": "0x00ff5808",
+     "value_or_bitop": "and 0x7ffc (AD_PD=0, DA_PD=0)",
+     "register_analogy": {
+      "reference_name": "CODEC_ADDA_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    },
+    {
+     "label": "vref_init_0",
+     "instruction": "0x001964",
+     "raw_bytes": "4f6f0458",
+     "disassembly": "cbitw $0x4:s,0xf5804:m",
+     "effective_address": "0x00ff5804",
+     "value_or_bitop": "bit4=0 (VREF_INIT off after precharge)",
+     "register_analogy": {
+      "reference_name": "CODEC_VREF_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    },
+    {
+     "label": "main_ctrl_400b",
+     "instruction": "0x00196c",
+     "raw_bytes": "20df3c00",
+     "disassembly": "storw r2,0x3c:m(r1,r0)",
+     "effective_address": "0x01027fbc",
+     "value_or_bitop": "0x0400",
+     "register_analogy": {
+      "reference_name": "DSP_MAIN_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    },
+    {
+     "label": "call_clk2",
+     "instruction": "0x001972",
+     "raw_bytes": "ffc019ff",
+     "disassembly": "bal (ra),*-0x188a:m",
+     "effective_address": null,
+     "value_or_bitop": "r2=4",
+     "register_analogy": null,
+     "function": "0x00190e"
+    },
+    {
+     "label": "call_cfg",
+     "instruction": "0x001976",
+     "raw_bytes": "ffc0e1fe",
+     "disassembly": "bal (ra),*-0x1856:m",
+     "effective_address": null,
+     "value_or_bitop": null,
+     "register_analogy": null,
+     "function": "0x00190e"
+    },
+    {
+     "label": "codec_test_cor",
+     "instruction": "0x001992",
+     "raw_bytes": "c476",
+     "disassembly": "sbitw $0xc:s,0x0:s(r5,r4)",
+     "effective_address": "0x00ff580c",
+     "value_or_bitop": "bit12=1 (COR_ON)",
+     "register_analogy": {
+      "reference_name": "CODEC_TEST_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    },
+    {
+     "label": "mic_mute_cond",
+     "instruction": "0x0019a6",
+     "raw_bytes": "01d0",
+     "disassembly": "storw r0,0x0:s(r2,r1)",
+     "effective_address": "0x00ff5800",
+     "value_or_bitop": "conditional or 0x8 (MIC_MUTE) when CLK_DA_LSR_SEL==11",
+     "register_analogy": {
+      "reference_name": "CODEC_MIC_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    },
+    {
+     "label": "offset_copy",
+     "instruction": "0x0019b0",
+     "raw_bytes": "0fc90e58",
+     "disassembly": "storw r0,0xf580e:m",
+     "effective_address": "0x00ff580e",
+     "value_or_bitop": "value read from CODEC_OFFSET1",
+     "register_analogy": {
+      "reference_name": "CODEC_OFFSET2_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    },
+    {
+     "label": "dsp_clk_off",
+     "instruction": "0x0019b8",
+     "raw_bytes": "30695000",
+     "disassembly": "cbitw $0x3:s,0x50:m(r1,r0)",
+     "effective_address": "0x01027fd0",
+     "value_or_bitop": "bit3=0 (DSP_CLK_EN gated after bring-up)",
+     "register_analogy": {
+      "reference_name": "DSP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x00190e"
+    }
+   ],
+   "control_flow_evidence": {
+    "main_to_dsp_init_chain": [
+     {
+      "from": "0x003a0c",
+      "via": {
+       "instruction": "0x003a0c",
+       "raw_bytes": "ffc07dd9",
+       "disassembly": "bal (ra),*-0x1388:m"
+      },
+      "to": "0x001388",
+      "status": "DIRECT_RESOLVED_CALL"
+     },
+     {
+      "from": "0x001462",
+      "via": {
+       "instruction": "0x001462",
+       "raw_bytes": "ffc0cffe",
+       "disassembly": "bal (ra),*-0x1330:m"
+      },
+      "to": "0x001330",
+      "status": "DIRECT_RESOLVED_CALL"
+     }
+    ],
+    "main_to_dsp_init_chain_status": "PROVEN",
+    "main_to_enable_chain": [
+     {
+      "from": "0x003a34",
+      "via": {
+       "instruction": "0x003a34",
+       "raw_bytes": "ffc0d7df",
+       "disassembly": "bal (ra),*-0x1a0a:m"
+      },
+      "to": "0x001a0a",
+      "status": "DIRECT_RESOLVED_CALL"
+     },
+     {
+      "from": "0x001a4a",
+      "via": {
+       "instruction": "0x001a4a",
+       "raw_bytes": "ffc0c5fe",
+       "disassembly": "bal (ra),*-0x190e:m"
+      },
+      "to": "0x00190e",
+      "status": "DIRECT_RESOLVED_CALL"
+     }
+    ],
+    "main_to_enable_chain_status": "PROVEN",
+    "main_to_codec_chain": [
+     {
+      "from": "0x003a10",
+      "via": {
+       "instruction": "0x003a10",
+       "raw_bytes": "ffc00dd9",
+       "disassembly": "bal (ra),*-0x131c:m"
+      },
+      "to": "0x00131c",
+      "status": "DIRECT_RESOLVED_CALL"
+     },
+     {
+      "from": "0x00131e",
+      "via": {
+       "instruction": "0x00131e",
+       "raw_bytes": "ffc0b1fe",
+       "disassembly": "bal (ra),*-0x11ce:m"
+      },
+      "to": "0x0011ce",
+      "status": "DIRECT_RESOLVED_CALL"
+     }
+    ],
+    "main_to_codec_chain_status": "PROVEN",
+    "base_guard_instruction": {
+     "instruction": "0x00133a",
+     "raw_bytes": "90000201807f",
+     "disassembly": "cmpd $0x1027f80:l,(r1,r0)"
+    },
+    "runtime_dsp_observers": {
+     "dsp_isr": {
+      "vector_index": 29,
+      "vector_reference_name": "dsp_int (reference numbering)",
+      "state_byte": "0x93cb",
+      "state_byte_written_value": "0x28",
+      "dsp_int_read_clear": {
+       "instruction": "0x028ab4",
+       "raw_bytes": "a0d0",
+       "disassembly": "storw r10,0x0:s(r1,r0)"
+      },
+      "vector_bit3_call": "0x3b28",
+      "vector_bit2_call": "0x3b38",
+      "end_instruction": {
+       "instruction": "0x028b0a",
+       "raw_bytes": "0300",
+       "disassembly": "retx"
+      },
+      "status": "PROVEN_FIRMWARE_HANDLER"
+     },
+     "phase_info_monitor": {
+      "read_site": {
+       "instruction": "0x0287f8",
+       "raw_bytes": "209f3800",
+       "disassembly": "loadw 0x38:m(r1,r0),r2"
+      },
+      "effective_address": "0x01027fb8",
+      "structure": 165884,
+      "status": "PROVEN_FIRMWARE_READ; caller chain main->dispatcher -> monitor verified locally"
+     }
+    }
+   },
+   "dataflow_evidence": {
+    "base_cell_address_expression": "[0xD6]+offset",
+    "base_cell_guard_check": "cmpd $0x1027f80,([0xD6])",
+    "dsp_pc_start_value": "0x7980",
+    "dsp_pc_formula": "((0x17300>>1)+0xC000)&0xffff"
+   },
+   "related_device_evidence": {
+    "status": "SC14480_ANALOGY_ONLY",
+    "source": "SC14480 rev 1.0 datasheet (related device), printed pages 131-132, 160-183; PDF SHA256 a0b0300cc0dc50ac98bff4c9021dcbb86ba7b063554f406ac8f65c84a51782d0"
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call normal 0x001866 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "the 0x7c00 helper patch target (r4,r3) is not resolved from any caller of the DSP config function",
+    "no CR16-side DSP_CR16_INT (bit4) write site was found; the DSP is started by main-counter syncs (DSP_SYNC0-2) per the MAIN_SYNC1=0 configuration",
+    "SC14448 meaning of [0xD6]+0x64 (written 0x0001) is not in the SC14480 reference tables"
+   ],
+   "confidence": "PROVEN_FIRMWARE_ACCESSES_WITH_REFERENCE_ANALOGIES"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x000db0 (p2test)",
+   "instruction_provenance": [
+    {
+     "label": "guard_compare",
+     "why": "DSP_BASE == [0xD6] else skip whole function",
+     "instruction": "0x000db0",
+     "raw_bytes": "90000201807f",
+     "disassembly": "cmpd $0x1027f80:l,(r1,r0)",
+     "effective_address": null,
+     "value_or_bitop": null,
+     "register_analogy": null,
+     "function": "0x000da6"
+    },
+    {
+     "label": "dip_ctrl_write",
+     "why": "value = 0x80 when caller passes r2!=0 (proven: movb $1,r2 at 0x000ed6)",
+     "instruction": "0x000dbe",
+     "raw_bytes": "2fc90660",
+     "disassembly": "storw r2,0xf6006:m",
+     "effective_address": "0x00ff6006",
+     "value_or_bitop": "0x80",
+     "register_analogy": {
+      "reference_name": "DIP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x000da6"
+    },
+    {
+     "label": "dsp_ctrl_powerdown",
+     "why": "clear DSP_CTRL bit2 (DSP_EN=0 under analogy)",
+     "instruction": "0x000dc2",
+     "raw_bytes": "20695000",
+     "disassembly": "cbitw $0x2:s,0x50:m(r1,r0)",
+     "effective_address": "0x01027fd0",
+     "value_or_bitop": "bit2=0",
+     "register_analogy": {
+      "reference_name": "DSP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x000da6"
+    },
+    {
+     "label": "codec_adda_powerdown",
+     "why": "CODEC_ADDA |= 3 (AD_PD=1, DA_PD=1 under analogy)",
+     "instruction": "0x000dd0",
+     "raw_bytes": "42d0",
+     "disassembly": "storw r4,0x0:s(r3,r2)",
+     "effective_address": "0x00ff5808",
+     "value_or_bitop": "or 0x3",
+     "register_analogy": {
+      "reference_name": "CODEC_ADDA_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x000da6"
+    },
+    {
+     "label": "dsp_int_clear",
+     "why": "DSP_INT = 0xFFFF (write-1-to-clear semantics under analogy)",
+     "instruction": "0x000dd4",
+     "raw_bytes": "20df5800",
+     "disassembly": "storw r2,0x58:m(r1,r0)",
+     "effective_address": "0x01027fd8",
+     "value_or_bitop": "0xffff",
+     "register_analogy": {
+      "reference_name": "DSP_INT_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x000da6"
+    },
+    {
+     "label": "clk_codec_off",
+     "why": "CLK_CODEC = 0 (all codec/PCM/main clocks off under analogy)",
+     "instruction": "0x000dd8",
+     "raw_bytes": "0fc10440",
+     "disassembly": "storw $0x0:s,0xf4004:m",
+     "effective_address": "0x00ff4004",
+     "value_or_bitop": "0x0000",
+     "register_analogy": {
+      "reference_name": "CLK_CODEC_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x000da6"
+    },
+    {
+     "label": "call_codec_clock_init",
+     "why": "direct call to the codec-clock init",
+     "instruction": "0x000ddc",
+     "raw_bytes": "00c00801",
+     "disassembly": "bal (ra),*+0xee4:m",
+     "effective_address": null,
+     "value_or_bitop": null,
+     "register_analogy": null,
+     "function": "0x000da6"
+    },
+    {
+     "label": "call_post_init",
+     "why": "direct call to the post-init helper (data region/status)",
+     "instruction": "0x000de0",
+     "raw_bytes": "ffc003f7",
+     "disassembly": "bal (ra),*-0x4e2:m",
+     "effective_address": null,
+     "value_or_bitop": null,
+     "register_analogy": null,
+     "function": "0x000da6"
+    },
+    {
+     "label": "dsp_pc_literal",
+     "why": "flash address of the embedded DSP program block",
+     "instruction": "0x000de6",
+     "raw_bytes": "720001000073",
+     "disassembly": "movd $0x17300:l,(r3,r2)",
+     "effective_address": null,
+     "value_or_bitop": "0x17300",
+     "register_analogy": null,
+     "function": "0x000da6"
+    },
+    {
+     "label": "dsp_pc_shift_add",
+     "why": "DSP_PC = ((0x17300 >> 1) + 0xC000) & 0xFFFF = 0x7980",
+     "instruction": "0x000dee",
+     "raw_bytes": "b23200c0",
+     "disassembly": "addw $0xc000:m,r2",
+     "effective_address": "0x01027fd4",
+     "value_or_bitop": "0x7980",
+     "register_analogy": {
+      "reference_name": "DSP_PC_START_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x000da6"
+    },
+    {
+     "label": "dsp_pc_store",
+     "why": "DSP_PC_START = 0x7980",
+     "instruction": "0x000df2",
+     "raw_bytes": "20df5400",
+     "disassembly": "storw r2,0x54:m(r1,r0)",
+     "effective_address": "0x01027fd4",
+     "value_or_bitop": "0x7980",
+     "register_analogy": {
+      "reference_name": "DSP_PC_START_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x000da6"
+    },
+    {
+     "label": "main_sync1_zero",
+     "instruction": "0x0012e0",
+     "raw_bytes": "07c30200",
+     "disassembly": "storw $0x0:s,0x2:m(r8,r7)",
+     "effective_address": "0x01027f82",
+     "value_or_bitop": "0x0000",
+     "register_analogy": {
+      "reference_name": "DSP_MAIN_SYNC1_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x0012d8"
+    },
+    {
+     "label": "helper_patch_call",
+     "instruction": "0x0012e8",
+     "raw_bytes": "ffc0c9ff",
+     "disassembly": "bal (ra),*-0x12b0:m",
+     "effective_address": null,
+     "value_or_bitop": "r2=0x7c00, target address unresolved",
+     "register_analogy": null,
+     "function": "0x0012d8"
+    },
+    {
+     "label": "dsp_int_prio1",
+     "instruction": "0x0012f0",
+     "raw_bytes": "07df5c00",
+     "disassembly": "storw r0,0x5c:m(r8,r7)",
+     "effective_address": "0x01027fdc",
+     "value_or_bitop": "0x0773",
+     "register_analogy": {
+      "reference_name": "DSP_INT_PRIO1_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x0012d8"
+    },
+    {
+     "label": "main_ctrl_400",
+     "instruction": "0x0012fc",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)",
+     "effective_address": "0x01027fbc",
+     "value_or_bitop": "0x0400",
+     "register_analogy": {
+      "reference_name": "DSP_MAIN_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x0012d8"
+    },
+    {
+     "label": "clk_amba_bit7",
+     "instruction": "0x0012fe",
+     "raw_bytes": "7f770040",
+     "disassembly": "sbitw $0x7:s,0xf4000:m",
+     "effective_address": "0x00ff4000",
+     "value_or_bitop": "bit7=1",
+     "register_analogy": {
+      "reference_name": "CLK_AMBA_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x0012d8"
+    },
+    {
+     "label": "dsp_ctrl_enable",
+     "instruction": "0x001306",
+     "raw_bytes": "07da",
+     "disassembly": "storw r0,0x14:s(r8,r7)",
+     "effective_address": "0x01027fd0",
+     "value_or_bitop": "or 0xC (DSP_CLK_EN|DSP_EN under analogy)",
+     "register_analogy": {
+      "reference_name": "DSP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x0012d8"
+    },
+    {
+     "label": "dsp_ctrl_dbg",
+     "instruction": "0x001308",
+     "raw_bytes": "8776",
+     "disassembly": "sbitw $0x8:s,0x0:s(r8,r7)",
+     "effective_address": "0x01027fd0",
+     "value_or_bitop": "bit8=1 (DBG_EN)",
+     "register_analogy": {
+      "reference_name": "DSP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x0012d8"
+    },
+    {
+     "label": "int_prio_or30",
+     "instruction": "0x0013aa",
+     "raw_bytes": "31d0",
+     "disassembly": "storw r3,0x0:s(r2,r1)",
+     "effective_address": "0x00ff5404",
+     "value_or_bitop": "or 0x30",
+     "register_analogy": {
+      "reference_name": "INT_PRIO0_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    },
+    {
+     "label": "pending_2000",
+     "instruction": "0x0013b6",
+     "raw_bytes": "0fc90254",
+     "disassembly": "storw r0,0xf5402:m",
+     "effective_address": "0x00ff5402",
+     "value_or_bitop": "0x2000",
+     "register_analogy": {
+      "reference_name": "RESET_INT_PENDING_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    },
+    {
+     "label": "dsp_int_mask",
+     "instruction": "0x0013ce",
+     "raw_bytes": "42d0",
+     "disassembly": "storw r4,0x0:s(r3,r2)",
+     "effective_address": "0x01027fda",
+     "value_or_bitop": "or 0x803c",
+     "register_analogy": {
+      "reference_name": "DSP_INT_MASK_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    },
+    {
+     "label": "clk_dsp_9",
+     "instruction": "0x0013d0",
+     "raw_bytes": "9fc10640",
+     "disassembly": "storw $0x9:s,0xf4006:m",
+     "effective_address": "0x00ff4006",
+     "value_or_bitop": "0x0009",
+     "register_analogy": {
+      "reference_name": "CLK_DSP_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    },
+    {
+     "label": "dsp_en",
+     "instruction": "0x0013d4",
+     "raw_bytes": "20715000",
+     "disassembly": "sbitw $0x2:s,0x50:m(r1,r0)",
+     "effective_address": "0x01027fd0",
+     "value_or_bitop": "bit2=1 (DSP_EN)",
+     "register_analogy": {
+      "reference_name": "DSP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    },
+    {
+     "label": "adda_on",
+     "instruction": "0x0013e4",
+     "raw_bytes": "42d0",
+     "disassembly": "storw r4,0x0:s(r3,r2)",
+     "effective_address": "0x00ff5808",
+     "value_or_bitop": "and 0x7ffc (AD_PD=0, DA_PD=0)",
+     "register_analogy": {
+      "reference_name": "CODEC_ADDA_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    },
+    {
+     "label": "vref_init_0",
+     "instruction": "0x0013e6",
+     "raw_bytes": "4f6f0458",
+     "disassembly": "cbitw $0x4:s,0xf5804:m",
+     "effective_address": "0x00ff5804",
+     "value_or_bitop": "bit4=0 (VREF_INIT off after precharge)",
+     "register_analogy": {
+      "reference_name": "CODEC_VREF_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    },
+    {
+     "label": "main_ctrl_400b",
+     "instruction": "0x0013ee",
+     "raw_bytes": "20df3c00",
+     "disassembly": "storw r2,0x3c:m(r1,r0)",
+     "effective_address": "0x01027fbc",
+     "value_or_bitop": "0x0400",
+     "register_analogy": {
+      "reference_name": "DSP_MAIN_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    },
+    {
+     "label": "call_clk2",
+     "instruction": "0x0013f4",
+     "raw_bytes": "ffc019ff",
+     "disassembly": "bal (ra),*-0x130c:m",
+     "effective_address": null,
+     "value_or_bitop": "r2=4",
+     "register_analogy": null,
+     "function": "0x001390"
+    },
+    {
+     "label": "call_cfg",
+     "instruction": "0x0013f8",
+     "raw_bytes": "ffc0e1fe",
+     "disassembly": "bal (ra),*-0x12d8:m",
+     "effective_address": null,
+     "value_or_bitop": null,
+     "register_analogy": null,
+     "function": "0x001390"
+    },
+    {
+     "label": "codec_test_cor",
+     "instruction": "0x001414",
+     "raw_bytes": "c476",
+     "disassembly": "sbitw $0xc:s,0x0:s(r5,r4)",
+     "effective_address": "0x00ff580c",
+     "value_or_bitop": "bit12=1 (COR_ON)",
+     "register_analogy": {
+      "reference_name": "CODEC_TEST_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    },
+    {
+     "label": "mic_mute_cond",
+     "instruction": "0x001428",
+     "raw_bytes": "01d0",
+     "disassembly": "storw r0,0x0:s(r2,r1)",
+     "effective_address": "0x00ff5800",
+     "value_or_bitop": "conditional or 0x8 (MIC_MUTE) when CLK_DA_LSR_SEL==11",
+     "register_analogy": {
+      "reference_name": "CODEC_MIC_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    },
+    {
+     "label": "offset_copy",
+     "instruction": "0x001432",
+     "raw_bytes": "0fc90e58",
+     "disassembly": "storw r0,0xf580e:m",
+     "effective_address": "0x00ff580e",
+     "value_or_bitop": "value read from CODEC_OFFSET1",
+     "register_analogy": {
+      "reference_name": "CODEC_OFFSET2_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    },
+    {
+     "label": "dsp_clk_off",
+     "instruction": "0x00143a",
+     "raw_bytes": "30695000",
+     "disassembly": "cbitw $0x3:s,0x50:m(r1,r0)",
+     "effective_address": "0x01027fd0",
+     "value_or_bitop": "bit3=0 (DSP_CLK_EN gated after bring-up)",
+     "register_analogy": {
+      "reference_name": "DSP_CTRL_REG",
+      "status": "SC14480_ANALOGY_UNVERIFIED_SC14448"
+     },
+     "function": "0x001390"
+    }
+   ],
+   "control_flow_evidence": {
+    "main_to_dsp_init_chain": [
+     {
+      "from": "0x027126",
+      "via": {
+       "instruction": "0x027126",
+       "raw_bytes": "fdc0d99c",
+       "disassembly": "bal (ra),*-0xdfe:m"
+      },
+      "to": "0x000dfe",
+      "status": "DIRECT_RESOLVED_CALL"
+     },
+     {
+      "from": "0x000ed8",
+      "via": {
+       "instruction": "0x000ed8",
+       "raw_bytes": "ffc0cffe",
+       "disassembly": "bal (ra),*-0xda6:m"
+      },
+      "to": "0x000da6",
+      "status": "DIRECT_RESOLVED_CALL"
+     }
+    ],
+    "main_to_dsp_init_chain_status": "PROVEN",
+    "main_to_enable_chain": [
+     {
+      "from": "0x027152",
+      "via": {
+       "instruction": "0x027152",
+       "raw_bytes": "fdc0efa2",
+       "disassembly": "bal (ra),*-0x1440:m"
+      },
+      "to": "0x001440",
+      "status": "DIRECT_RESOLVED_CALL"
+     },
+     {
+      "from": "0x001480",
+      "via": {
+       "instruction": "0x001480",
+       "raw_bytes": "ffc011ff",
+       "disassembly": "bal (ra),*-0x1390:m"
+      },
+      "to": "0x001390",
+      "status": "DIRECT_RESOLVED_CALL"
+     }
+    ],
+    "main_to_enable_chain_status": "PROVEN",
+    "main_to_codec_chain": [
+     {
+      "from": "0x02712a",
+      "via": {
+       "instruction": "0x02712a",
+       "raw_bytes": "fdc0699c",
+       "disassembly": "bal (ra),*-0xd92:m"
+      },
+      "to": "0x000d92",
+      "status": "DIRECT_RESOLVED_CALL"
+     },
+     {
+      "from": "0x000d94",
+      "via": {
+       "instruction": "0x000d94",
+       "raw_bytes": "ffc0b1fe",
+       "disassembly": "bal (ra),*-0xc44:m"
+      },
+      "to": "0x000c44",
+      "status": "DIRECT_RESOLVED_CALL"
+     }
+    ],
+    "main_to_codec_chain_status": "PROVEN",
+    "base_guard_instruction": {
+     "instruction": "0x000db0",
+     "raw_bytes": "90000201807f",
+     "disassembly": "cmpd $0x1027f80:l,(r1,r0)"
+    },
+    "runtime_dsp_observers": {
+     "dsp_isr": {
+      "vector_index": 29,
+      "vector_reference_name": "dsp_int (reference numbering)",
+      "state_byte": "0x9512",
+      "state_byte_written_value": "0x28",
+      "dsp_int_read_clear": {
+       "instruction": "0x027934",
+       "raw_bytes": "a0d0",
+       "disassembly": "storw r10,0x0:s(r1,r0)"
+      },
+      "vector_bit3_call": "0x27744",
+      "vector_bit2_call": "0x27754",
+      "end_instruction": {
+       "instruction": "0x02798a",
+       "raw_bytes": "0300",
+       "disassembly": "retx"
+      },
+      "status": "PROVEN_FIRMWARE_HANDLER"
+     },
+     "phase_info_monitor": {
+      "read_site": {
+       "instruction": "0x027542",
+       "raw_bytes": "209f3800",
+       "disassembly": "loadw 0x38:m(r1,r0),r2"
+      },
+      "effective_address": "0x01027fb8",
+      "structure": 161094,
+      "status": "PROVEN_FIRMWARE_READ; caller chain main->dispatcher -> monitor verified locally"
+     }
+    }
+   },
+   "dataflow_evidence": {
+    "base_cell_address_expression": "[0xD6]+offset",
+    "base_cell_guard_check": "cmpd $0x1027f80,([0xD6])",
+    "dsp_pc_start_value": "0x7980",
+    "dsp_pc_formula": "((0x17300>>1)+0xC000)&0xffff"
+   },
+   "related_device_evidence": {
+    "status": "SC14480_ANALOGY_ONLY",
+    "source": "SC14480 rev 1.0 datasheet (related device), printed pages 131-132, 160-183; PDF SHA256 a0b0300cc0dc50ac98bff4c9021dcbb86ba7b063554f406ac8f65c84a51782d0"
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call p2test 0x0012e8 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "the 0x7c00 helper patch target (r4,r3) is not resolved from any caller of the DSP config function",
+    "no CR16-side DSP_CR16_INT (bit4) write site was found; the DSP is started by main-counter syncs (DSP_SYNC0-2) per the MAIN_SYNC1=0 configuration",
+    "SC14448 meaning of [0xD6]+0x64 (written 0x0001) is not in the SC14480 reference tables"
+   ],
+   "confidence": "PROVEN_FIRMWARE_ACCESSES_WITH_REFERENCE_ANALOGIES"
+  }
+ }
+}

@@ -1,0 +1,369 @@
+{
+ "tool": "cr16-audio-architecture/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x00133a (normal)",
+   "instruction_provenance": [
+    {
+     "instruction": "0x0014f8",
+     "raw_bytes": "00c07400",
+     "disassembly": "bal (ra),*+0x156c:m"
+    },
+    {
+     "instruction": "0x0014fc",
+     "raw_bytes": "24c2",
+     "disassembly": "storw $0x2:s,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x0014fe",
+     "raw_bytes": "6476",
+     "disassembly": "sbitw $0x6:s,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x00152c",
+     "raw_bytes": "146e",
+     "disassembly": "cbitw $0x1:s,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x00152e",
+     "raw_bytes": "2476",
+     "disassembly": "sbitw $0x2:s,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x00155e",
+     "raw_bytes": "0476",
+     "disassembly": "sbitw $0x0:s,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x00155c",
+     "raw_bytes": "8c76",
+     "disassembly": "sbitw $0x8:s,0x0:s(r12)"
+    },
+    {
+     "instruction": "0x0014c6",
+     "raw_bytes": "e876",
+     "disassembly": "sbitw $0xe:s,0x0:s(r9,r8)"
+    },
+    {
+     "instruction": "0x0014c4",
+     "raw_bytes": "9876",
+     "disassembly": "sbitw $0x9:s,0x0:s(r9,r8)"
+    },
+    {
+     "instruction": "0x0287f8",
+     "raw_bytes": "209f3800",
+     "disassembly": "loadw 0x38:m(r1,r0),r2"
+    }
+   ],
+   "dataflow_evidence": {
+    "pcm_ctrl_effective_address": "0x01027fb6",
+    "pcm_ctrl_path_a_ops": [
+     {
+      "op": "c",
+      "bit": 1
+     },
+     {
+      "op": "s",
+      "bit": 1
+     },
+     {
+      "op": "s",
+      "bit": 6
+     },
+     {
+      "op": "c",
+      "bit": 7
+     },
+     {
+      "op": "c",
+      "bit": 8
+     },
+     {
+      "op": "c",
+      "bit": 9
+     },
+     {
+      "op": "c",
+      "bit": 15
+     },
+     {
+      "op": "s",
+      "bit": 0
+     }
+    ],
+    "pcm_ctrl_path_a_composed": "0x0043",
+    "pcm_ctrl_path_a_mode": "PCM_MASTER=1, PCM_PPOD=1, PCM_EN=1 (SC14480 analogy)",
+    "pcm_ctrl_path_b_ops": [
+     {
+      "op": "c",
+      "bit": 1
+     },
+     {
+      "op": "s",
+      "bit": 2
+     },
+     {
+      "op": "c",
+      "bit": 4
+     },
+     {
+      "op": "c",
+      "bit": 3
+     },
+     {
+      "op": "s",
+      "bit": 6
+     },
+     {
+      "op": "c",
+      "bit": 7
+     },
+     {
+      "op": "c",
+      "bit": 8
+     },
+     {
+      "op": "c",
+      "bit": 9
+     },
+     {
+      "op": "c",
+      "bit": 15
+     },
+     {
+      "op": "s",
+      "bit": 0
+     }
+    ],
+    "pcm_ctrl_path_b_composed": "0x0045",
+    "pcm_ctrl_path_b_mode": "PCM_MASTER=0, DSP_PCM_SYNC=1, PCM_PPOD=1, PCM_EN=1 (slave synced to external PCM_FSC; SC14480 analogy)",
+    "pcm_ctrl_fscdel_conditional": "PCM_FSC0DEL = not flag_byte bit3 (runtime-selected)",
+    "path_select": "flag_byte bit0 (0 = path A master, 1 = path B slave)",
+    "flag_byte": "0x93cd",
+    "flag_byte_image_value": "NOT_IN_IMAGE",
+    "flag_byte_producer": "return value of helper call (0x3cbe/0x278da wrapper, r2=7) stored by the clock init",
+    "clk_codec_pcm_en": "bit14=1 (CLK_PCM_EN under analogy)",
+    "clk_codec_pcm_sel": "bit8=0; bit9 = flag_byte bit3 -> 1.152 MHz or 2.304 MHz PCM_CLK under the SC14480 divider analogy",
+    "main_sync1_pcm_sync": "0x3fff mask leaves PCM_SYNC=00 -> 8 kHz frame (SC14480 analogy)",
+    "dip_ctrl2_slotcnt_res": "bit8=1 (DIP slot counter resumes with the DSP main counter)",
+    "phase_info_monitor": {
+     "read_site": {
+      "instruction": "0x0287f8",
+      "raw_bytes": "209f3800",
+      "disassembly": "loadw 0x38:m(r1,r0),r2"
+     },
+     "effective_address": "0x01027fb8",
+     "structure": 165884,
+     "status": "PROVEN_FIRMWARE_READ; caller chain main->dispatcher -> monitor verified locally"
+    },
+    "interface_mismatch_with_linux": [
+     "Linux OEM side: 8 x 16-bit slots, nominal BCLK 1.024 MHz",
+     "SC14448 firmware (SC14480 analogy): 4 PCM channels, PCM_CLK 1.152/2.304 MHz, 8 kHz frame",
+     "these are different interfaces; no slot mapping is proven"
+    ]
+   },
+   "related_device_evidence": {
+    "status": "SC14480_ANALOGY_ONLY",
+    "source": "SC14480 rev 1.0 datasheet (related device), printed pages 131-132, 160-183; PDF SHA256 a0b0300cc0dc50ac98bff4c9021dcbb86ba7b063554f406ac8f65c84a51782d0"
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call normal 0x001866 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "no instruction-level PCM_INx/CODEC_IN data flow is provable: the DSP microcode performs the PCM<->CODEC conversion",
+    "the IPQ4019 TDM slot-to-SC14448 channel mapping is unknown",
+    "slot 5 is not claimed as any consumer; the FON control-word question stays open (Q46/Q55)"
+   ],
+   "confidence": "CONFIGURATION_PROVEN_DATA_PATH_UNVERIFIED"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x000db0 (p2test)",
+   "instruction_provenance": [
+    {
+     "instruction": "0x000f74",
+     "raw_bytes": "00c07400",
+     "disassembly": "bal (ra),*+0xfe8:m"
+    },
+    {
+     "instruction": "0x000f78",
+     "raw_bytes": "24c2",
+     "disassembly": "storw $0x2:s,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x000f7a",
+     "raw_bytes": "6476",
+     "disassembly": "sbitw $0x6:s,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x000fa8",
+     "raw_bytes": "146e",
+     "disassembly": "cbitw $0x1:s,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x000faa",
+     "raw_bytes": "2476",
+     "disassembly": "sbitw $0x2:s,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x000fda",
+     "raw_bytes": "0476",
+     "disassembly": "sbitw $0x0:s,0x0:s(r5,r4)"
+    },
+    {
+     "instruction": "0x000fd8",
+     "raw_bytes": "8c76",
+     "disassembly": "sbitw $0x8:s,0x0:s(r12)"
+    },
+    {
+     "instruction": "0x000f42",
+     "raw_bytes": "e876",
+     "disassembly": "sbitw $0xe:s,0x0:s(r9,r8)"
+    },
+    {
+     "instruction": "0x000f40",
+     "raw_bytes": "9876",
+     "disassembly": "sbitw $0x9:s,0x0:s(r9,r8)"
+    },
+    {
+     "instruction": "0x027542",
+     "raw_bytes": "209f3800",
+     "disassembly": "loadw 0x38:m(r1,r0),r2"
+    }
+   ],
+   "dataflow_evidence": {
+    "pcm_ctrl_effective_address": "0x01027fb6",
+    "pcm_ctrl_path_a_ops": [
+     {
+      "op": "c",
+      "bit": 1
+     },
+     {
+      "op": "s",
+      "bit": 1
+     },
+     {
+      "op": "s",
+      "bit": 6
+     },
+     {
+      "op": "c",
+      "bit": 7
+     },
+     {
+      "op": "c",
+      "bit": 8
+     },
+     {
+      "op": "c",
+      "bit": 9
+     },
+     {
+      "op": "c",
+      "bit": 15
+     },
+     {
+      "op": "s",
+      "bit": 0
+     }
+    ],
+    "pcm_ctrl_path_a_composed": "0x0043",
+    "pcm_ctrl_path_a_mode": "PCM_MASTER=1, PCM_PPOD=1, PCM_EN=1 (SC14480 analogy)",
+    "pcm_ctrl_path_b_ops": [
+     {
+      "op": "c",
+      "bit": 1
+     },
+     {
+      "op": "s",
+      "bit": 2
+     },
+     {
+      "op": "c",
+      "bit": 4
+     },
+     {
+      "op": "c",
+      "bit": 3
+     },
+     {
+      "op": "s",
+      "bit": 6
+     },
+     {
+      "op": "c",
+      "bit": 7
+     },
+     {
+      "op": "c",
+      "bit": 8
+     },
+     {
+      "op": "c",
+      "bit": 9
+     },
+     {
+      "op": "c",
+      "bit": 15
+     },
+     {
+      "op": "s",
+      "bit": 0
+     }
+    ],
+    "pcm_ctrl_path_b_composed": "0x0045",
+    "pcm_ctrl_path_b_mode": "PCM_MASTER=0, DSP_PCM_SYNC=1, PCM_PPOD=1, PCM_EN=1 (slave synced to external PCM_FSC; SC14480 analogy)",
+    "pcm_ctrl_fscdel_conditional": "PCM_FSC0DEL = not flag_byte bit3 (runtime-selected)",
+    "path_select": "flag_byte bit0 (0 = path A master, 1 = path B slave)",
+    "flag_byte": "0x9514",
+    "flag_byte_image_value": "NOT_IN_IMAGE",
+    "flag_byte_producer": "return value of helper call (0x3cbe/0x278da wrapper, r2=7) stored by the clock init",
+    "clk_codec_pcm_en": "bit14=1 (CLK_PCM_EN under analogy)",
+    "clk_codec_pcm_sel": "bit8=0; bit9 = flag_byte bit3 -> 1.152 MHz or 2.304 MHz PCM_CLK under the SC14480 divider analogy",
+    "main_sync1_pcm_sync": "0x3fff mask leaves PCM_SYNC=00 -> 8 kHz frame (SC14480 analogy)",
+    "dip_ctrl2_slotcnt_res": "bit8=1 (DIP slot counter resumes with the DSP main counter)",
+    "phase_info_monitor": {
+     "read_site": {
+      "instruction": "0x027542",
+      "raw_bytes": "209f3800",
+      "disassembly": "loadw 0x38:m(r1,r0),r2"
+     },
+     "effective_address": "0x01027fb8",
+     "structure": 161094,
+     "status": "PROVEN_FIRMWARE_READ; caller chain main->dispatcher -> monitor verified locally"
+    },
+    "interface_mismatch_with_linux": [
+     "Linux OEM side: 8 x 16-bit slots, nominal BCLK 1.024 MHz",
+     "SC14448 firmware (SC14480 analogy): 4 PCM channels, PCM_CLK 1.152/2.304 MHz, 8 kHz frame",
+     "these are different interfaces; no slot mapping is proven"
+    ]
+   },
+   "related_device_evidence": {
+    "status": "SC14480_ANALOGY_ONLY",
+    "source": "SC14480 rev 1.0 datasheet (related device), printed pages 131-132, 160-183; PDF SHA256 a0b0300cc0dc50ac98bff4c9021dcbb86ba7b063554f406ac8f65c84a51782d0"
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call p2test 0x0012e8 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "no instruction-level PCM_INx/CODEC_IN data flow is provable: the DSP microcode performs the PCM<->CODEC conversion",
+    "the IPQ4019 TDM slot-to-SC14448 channel mapping is unknown",
+    "slot 5 is not claimed as any consumer; the FON control-word question stays open (Q46/Q55)"
+   ],
+   "confidence": "CONFIGURATION_PROVEN_DATA_PATH_UNVERIFIED"
+  }
+ }
+}

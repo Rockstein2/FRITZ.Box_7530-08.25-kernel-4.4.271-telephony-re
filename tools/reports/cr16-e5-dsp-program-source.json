@@ -1,0 +1,169 @@
+{
+ "tool": "cr16-audio-architecture/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x00133a (normal)",
+   "instruction_provenance": [
+    {
+     "instruction": "0x001370",
+     "raw_bytes": "720001000073",
+     "disassembly": "movd $0x17300:l,(r3,r2)"
+    },
+    {
+     "instruction": "0x001376",
+     "raw_bytes": "f24b",
+     "disassembly": "lshd $-1:s,(r3,r2)"
+    },
+    {
+     "instruction": "0x001378",
+     "raw_bytes": "b23200c0",
+     "disassembly": "addw $0xc000:m,r2"
+    },
+    {
+     "instruction": "0x00137c",
+     "raw_bytes": "20df5400",
+     "disassembly": "storw r2,0x54:m(r1,r0)"
+    }
+   ],
+   "dataflow_evidence": {
+    "embedded_block": {
+     "run_present": true,
+     "run_start": "0x017300",
+     "run_end_exclusive": "0x017e7a",
+     "byte_length": 2938,
+     "word_length": 1469,
+     "first_bytes": "97f380393fbf84bf84f3f07fff7f89ff",
+     "block_sha256": "0c791f2df750066aef5e21692b8a207e0fee2b01d37b0360fb653afb48ff0f73",
+     "trailer_run": [
+      [
+       "0x017fe0",
+       "0x017ff8"
+      ]
+     ]
+    },
+    "dsp_pc_start_value": "0x7980",
+    "transform": "DSP_PC = ((flash_addr >> 1) + 0xC000) & 0xFFFF (firmware arithmetic, verified in both images)",
+    "program_source_classification": "DSP_PROGRAM_EMBEDDED_IN_FIRMWARE_IMAGE",
+    "program_source_why": "firmware derives DSP_PC_START from this block; the execution mechanism (flash alias vs copy vs ROM) is unproven",
+    "microcode_ram_literal_sites": [
+     "0x023f28"
+    ],
+    "microcode_rom_literal_sites": [
+     "0x023f28"
+    ],
+    "copy_loop_found": false,
+    "copy_loop_search_scope": "storw/stord into 0x0103xxxx/0x0104xxxx windows; no resolved sites",
+    "dsp_data_space_transform_sites": [
+     "0x0005ba",
+     "0x0005c8",
+     "0x000620",
+     "0x02772e",
+     "0x02775a",
+     "0x02797a"
+    ],
+    "dsp_program_space_transform_sites": [
+     "0x001378"
+    ],
+    "dsp_data_space_transform": "DSP_ADDR = ((cr16_addr >> 1) + 0x8000) & 0xFFFF (candidate)"
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call normal 0x001866 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "whether the Gen2DSP executes the 0x17300 block in place (flash alias), from a copy, or from internal ROM is unproven; the PC derivation only proves the start address arithmetic",
+    "the DSP microcode itself is not disassembled and its PCM/CODEC data flow cannot be verified offline",
+    "normal and p2test embed different-sized blocks (0xB7A vs 0x6FA bytes); the difference is not explained"
+   ],
+   "confidence": "FIRMWARE_DERIVATION_PROVEN_EXECUTION_MECHANISM_UNKNOWN"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x000db0 (p2test)",
+   "instruction_provenance": [
+    {
+     "instruction": "0x000de6",
+     "raw_bytes": "720001000073",
+     "disassembly": "movd $0x17300:l,(r3,r2)"
+    },
+    {
+     "instruction": "0x000dec",
+     "raw_bytes": "f24b",
+     "disassembly": "lshd $-1:s,(r3,r2)"
+    },
+    {
+     "instruction": "0x000dee",
+     "raw_bytes": "b23200c0",
+     "disassembly": "addw $0xc000:m,r2"
+    },
+    {
+     "instruction": "0x000df2",
+     "raw_bytes": "20df5400",
+     "disassembly": "storw r2,0x54:m(r1,r0)"
+    }
+   ],
+   "dataflow_evidence": {
+    "embedded_block": {
+     "run_present": true,
+     "run_start": "0x017300",
+     "run_end_exclusive": "0x0179fa",
+     "byte_length": 1786,
+     "word_length": 893,
+     "first_bytes": "97f380393fbf84bf84f3f07fff7f89ff",
+     "block_sha256": "51a99f5d7be55e14dc21c527737ec5f7558edca5fbde4ed37736c314f5535dd0",
+     "trailer_run": [
+      [
+       "0x017fe0",
+       "0x017ff8"
+      ]
+     ]
+    },
+    "dsp_pc_start_value": "0x7980",
+    "transform": "DSP_PC = ((flash_addr >> 1) + 0xC000) & 0xFFFF (firmware arithmetic, verified in both images)",
+    "program_source_classification": "DSP_PROGRAM_EMBEDDED_IN_FIRMWARE_IMAGE",
+    "program_source_why": "firmware derives DSP_PC_START from this block; the execution mechanism (flash alias vs copy vs ROM) is unproven",
+    "microcode_ram_literal_sites": [],
+    "microcode_rom_literal_sites": [],
+    "copy_loop_found": false,
+    "copy_loop_search_scope": "storw/stord into 0x0103xxxx/0x0104xxxx windows; no resolved sites",
+    "dsp_data_space_transform_sites": [
+     "0x000bb2",
+     "0x000bba",
+     "0x000bc4",
+     "0x000bce",
+     "0x000bd8",
+     "0x000c04",
+     "0x000c26",
+     "0x0035d2",
+     "0x00360a",
+     "0x0037ce"
+    ],
+    "dsp_program_space_transform_sites": [
+     "0x000dee"
+    ],
+    "dsp_data_space_transform": "DSP_ADDR = ((cr16_addr >> 1) + 0x8000) & 0xFFFF (candidate)"
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call p2test 0x0012e8 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "whether the Gen2DSP executes the 0x17300 block in place (flash alias), from a copy, or from internal ROM is unproven; the PC derivation only proves the start address arithmetic",
+    "the DSP microcode itself is not disassembled and its PCM/CODEC data flow cannot be verified offline",
+    "normal and p2test embed different-sized blocks (0xB7A vs 0x6FA bytes); the difference is not explained"
+   ],
+   "confidence": "FIRMWARE_DERIVATION_PROVEN_EXECUTION_MECHANISM_UNKNOWN"
+  }
+ }
+}

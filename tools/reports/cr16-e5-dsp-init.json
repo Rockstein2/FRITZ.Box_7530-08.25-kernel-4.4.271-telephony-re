@@ -1,0 +1,531 @@
+{
+ "tool": "cr16-audio-architecture/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x00133a (normal)",
+   "instruction_provenance": [
+    {
+     "instruction": "0x00134c",
+     "raw_bytes": "20695000",
+     "disassembly": "cbitw $0x2:s,0x50:m(r1,r0)"
+    },
+    {
+     "instruction": "0x001348",
+     "raw_bytes": "2fc90660",
+     "disassembly": "storw r2,0xf6006:m"
+    },
+    {
+     "instruction": "0x00135e",
+     "raw_bytes": "20df5800",
+     "disassembly": "storw r2,0x58:m(r1,r0)"
+    },
+    {
+     "instruction": "0x00135a",
+     "raw_bytes": "42d0",
+     "disassembly": "storw r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x001362",
+     "raw_bytes": "0fc10440",
+     "disassembly": "storw $0x0:s,0xf4004:m"
+    },
+    {
+     "instruction": "0x001366",
+     "raw_bytes": "00c00201",
+     "disassembly": "bal (ra),*+0x1468:m"
+    },
+    {
+     "instruction": "0x001468",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x00136a",
+     "raw_bytes": "ffc01ff3",
+     "disassembly": "bal (ra),*-0x688:m"
+    },
+    {
+     "instruction": "0x001370",
+     "raw_bytes": "720001000073",
+     "disassembly": "movd $0x17300:l,(r3,r2)"
+    },
+    {
+     "instruction": "0x001378",
+     "raw_bytes": "b23200c0",
+     "disassembly": "addw $0xc000:m,r2"
+    },
+    {
+     "instruction": "0x00137c",
+     "raw_bytes": "20df5400",
+     "disassembly": "storw r2,0x54:m(r1,r0)"
+    },
+    {
+     "instruction": "0x00190e",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x001952",
+     "raw_bytes": "20715000",
+     "disassembly": "sbitw $0x2:s,0x50:m(r1,r0)"
+    },
+    {
+     "instruction": "0x001972",
+     "raw_bytes": "ffc019ff",
+     "disassembly": "bal (ra),*-0x188a:m"
+    },
+    {
+     "instruction": "0x001976",
+     "raw_bytes": "ffc0e1fe",
+     "disassembly": "bal (ra),*-0x1856:m"
+    },
+    {
+     "instruction": "0x001962",
+     "raw_bytes": "42d0",
+     "disassembly": "storw r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x001964",
+     "raw_bytes": "4f6f0458",
+     "disassembly": "cbitw $0x4:s,0xf5804:m"
+    },
+    {
+     "instruction": "0x0019b8",
+     "raw_bytes": "30695000",
+     "disassembly": "cbitw $0x3:s,0x50:m(r1,r0)"
+    }
+   ],
+   "control_flow_evidence": {
+    "main_to_dsp_init": "PROVEN",
+    "main_to_enable": "PROVEN",
+    "main_to_codec": "PROVEN",
+    "enable_calls_clk2_with_r2_4": {
+     "instruction": "0x001970",
+     "raw_bytes": "4258",
+     "disassembly": "movb $0x4:s,r2"
+    },
+    "clk2_r2_4_path_is_taken": "PROVEN_FROM_THIS_CALLER",
+    "unknown_callers_of_clk2": "other callers may exercise the r2!=4 skip path",
+    "convergence": true
+   },
+   "dataflow_evidence": {
+    "stages": [
+     {
+      "stage": "clock/reset stop",
+      "evidence": [
+       {
+        "instruction": "0x00134c",
+        "raw_bytes": "20695000",
+        "disassembly": "cbitw $0x2:s,0x50:m(r1,r0)"
+       },
+       {
+        "instruction": "0x001348",
+        "raw_bytes": "2fc90660",
+        "disassembly": "storw r2,0xf6006:m"
+       }
+      ],
+      "why": "DSP powered down, DIP sequencer stopped"
+     },
+     {
+      "stage": "interrupt/state clear",
+      "evidence": [
+       {
+        "instruction": "0x00135e",
+        "raw_bytes": "20df5800",
+        "disassembly": "storw r2,0x58:m(r1,r0)"
+       },
+       {
+        "instruction": "0x00135a",
+        "raw_bytes": "42d0",
+        "disassembly": "storw r4,0x0:s(r3,r2)"
+       }
+      ],
+      "why": "DSP_INT cleared (0xFFFF), CODEC converters powered down"
+     },
+     {
+      "stage": "clock source off",
+      "evidence": [
+       {
+        "instruction": "0x001362",
+        "raw_bytes": "0fc10440",
+        "disassembly": "storw $0x0:s,0xf4004:m"
+       }
+      ],
+      "why": "CLK_CODEC=0 before reconfiguration"
+     },
+     {
+      "stage": "codec clock init",
+      "evidence": [
+       {
+        "instruction": "0x001366",
+        "raw_bytes": "00c00201",
+        "disassembly": "bal (ra),*+0x1468:m"
+       },
+       {
+        "instruction": "0x001468",
+        "raw_bytes": "e701",
+        "disassembly": "push $0x7,r7,RA"
+       }
+      ],
+      "why": "direct call into the PLL/codec-clock configuration"
+     },
+     {
+      "stage": "post init",
+      "evidence": [
+       {
+        "instruction": "0x00136a",
+        "raw_bytes": "ffc01ff3",
+        "disassembly": "bal (ra),*-0x688:m"
+       }
+      ],
+      "why": "direct call to the post-init helper"
+     },
+     {
+      "stage": "DSP program selection",
+      "evidence": [
+       {
+        "instruction": "0x001370",
+        "raw_bytes": "720001000073",
+        "disassembly": "movd $0x17300:l,(r3,r2)"
+       },
+       {
+        "instruction": "0x001378",
+        "raw_bytes": "b23200c0",
+        "disassembly": "addw $0xc000:m,r2"
+       },
+       {
+        "instruction": "0x00137c",
+        "raw_bytes": "20df5400",
+        "disassembly": "storw r2,0x54:m(r1,r0)"
+       }
+      ],
+      "why": "DSP_PC_START = ((0x17300>>1)+0xC000)&0xffff = 0x7980"
+     },
+     {
+      "stage": "runtime enable",
+      "evidence": [
+       {
+        "instruction": "0x00190e",
+        "raw_bytes": "9701",
+        "disassembly": "push $0x2,r7,RA"
+       },
+       {
+        "instruction": "0x001952",
+        "raw_bytes": "20715000",
+        "disassembly": "sbitw $0x2:s,0x50:m(r1,r0)"
+       },
+       {
+        "instruction": "0x001972",
+        "raw_bytes": "ffc019ff",
+        "disassembly": "bal (ra),*-0x188a:m"
+       },
+       {
+        "instruction": "0x001976",
+        "raw_bytes": "ffc0e1fe",
+        "disassembly": "bal (ra),*-0x1856:m"
+       },
+       {
+        "instruction": "0x001962",
+        "raw_bytes": "42d0",
+        "disassembly": "storw r4,0x0:s(r3,r2)"
+       },
+       {
+        "instruction": "0x001964",
+        "raw_bytes": "4f6f0458",
+        "disassembly": "cbitw $0x4:s,0xf5804:m"
+       },
+       {
+        "instruction": "0x0019b8",
+        "raw_bytes": "30695000",
+        "disassembly": "cbitw $0x3:s,0x50:m(r1,r0)"
+       }
+      ],
+      "why": "DSP_EN=1, INT_MASK|=0x803c, CLK_DSP=9, MAIN_CTRL=0x400, CODEC AD/DA on, VREF_INIT=0, final DSP_CLK gate off"
+     }
+    ]
+   },
+   "related_device_evidence": {
+    "status": "SC14480_ANALOGY_ONLY",
+    "source": "SC14480 rev 1.0 datasheet (related device), printed pages 131-132, 160-183; PDF SHA256 a0b0300cc0dc50ac98bff4c9021dcbb86ba7b063554f406ac8f65c84a51782d0"
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call normal 0x001866 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "the post-init call (0x688/0x4e2) semantics are not analysed (data-region helper)",
+    "ordering across interrupts is not modelled; the init functions run with interrupts disabled only in parts"
+   ],
+   "confidence": "SEQUENCE_PROVEN_PER_STAGE_VALUES_PROVEN"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x000db0 (p2test)",
+   "instruction_provenance": [
+    {
+     "instruction": "0x000dc2",
+     "raw_bytes": "20695000",
+     "disassembly": "cbitw $0x2:s,0x50:m(r1,r0)"
+    },
+    {
+     "instruction": "0x000dbe",
+     "raw_bytes": "2fc90660",
+     "disassembly": "storw r2,0xf6006:m"
+    },
+    {
+     "instruction": "0x000dd4",
+     "raw_bytes": "20df5800",
+     "disassembly": "storw r2,0x58:m(r1,r0)"
+    },
+    {
+     "instruction": "0x000dd0",
+     "raw_bytes": "42d0",
+     "disassembly": "storw r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x000dd8",
+     "raw_bytes": "0fc10440",
+     "disassembly": "storw $0x0:s,0xf4004:m"
+    },
+    {
+     "instruction": "0x000ddc",
+     "raw_bytes": "00c00801",
+     "disassembly": "bal (ra),*+0xee4:m"
+    },
+    {
+     "instruction": "0x000ee4",
+     "raw_bytes": "e701",
+     "disassembly": "push $0x7,r7,RA"
+    },
+    {
+     "instruction": "0x000de0",
+     "raw_bytes": "ffc003f7",
+     "disassembly": "bal (ra),*-0x4e2:m"
+    },
+    {
+     "instruction": "0x000de6",
+     "raw_bytes": "720001000073",
+     "disassembly": "movd $0x17300:l,(r3,r2)"
+    },
+    {
+     "instruction": "0x000dee",
+     "raw_bytes": "b23200c0",
+     "disassembly": "addw $0xc000:m,r2"
+    },
+    {
+     "instruction": "0x000df2",
+     "raw_bytes": "20df5400",
+     "disassembly": "storw r2,0x54:m(r1,r0)"
+    },
+    {
+     "instruction": "0x001390",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x0013d4",
+     "raw_bytes": "20715000",
+     "disassembly": "sbitw $0x2:s,0x50:m(r1,r0)"
+    },
+    {
+     "instruction": "0x0013f4",
+     "raw_bytes": "ffc019ff",
+     "disassembly": "bal (ra),*-0x130c:m"
+    },
+    {
+     "instruction": "0x0013f8",
+     "raw_bytes": "ffc0e1fe",
+     "disassembly": "bal (ra),*-0x12d8:m"
+    },
+    {
+     "instruction": "0x0013e4",
+     "raw_bytes": "42d0",
+     "disassembly": "storw r4,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x0013e6",
+     "raw_bytes": "4f6f0458",
+     "disassembly": "cbitw $0x4:s,0xf5804:m"
+    },
+    {
+     "instruction": "0x00143a",
+     "raw_bytes": "30695000",
+     "disassembly": "cbitw $0x3:s,0x50:m(r1,r0)"
+    }
+   ],
+   "control_flow_evidence": {
+    "main_to_dsp_init": "PROVEN",
+    "main_to_enable": "PROVEN",
+    "main_to_codec": "PROVEN",
+    "enable_calls_clk2_with_r2_4": {
+     "instruction": "0x0013f2",
+     "raw_bytes": "4258",
+     "disassembly": "movb $0x4:s,r2"
+    },
+    "clk2_r2_4_path_is_taken": "PROVEN_FROM_THIS_CALLER",
+    "unknown_callers_of_clk2": "other callers may exercise the r2!=4 skip path",
+    "convergence": true
+   },
+   "dataflow_evidence": {
+    "stages": [
+     {
+      "stage": "clock/reset stop",
+      "evidence": [
+       {
+        "instruction": "0x000dc2",
+        "raw_bytes": "20695000",
+        "disassembly": "cbitw $0x2:s,0x50:m(r1,r0)"
+       },
+       {
+        "instruction": "0x000dbe",
+        "raw_bytes": "2fc90660",
+        "disassembly": "storw r2,0xf6006:m"
+       }
+      ],
+      "why": "DSP powered down, DIP sequencer stopped"
+     },
+     {
+      "stage": "interrupt/state clear",
+      "evidence": [
+       {
+        "instruction": "0x000dd4",
+        "raw_bytes": "20df5800",
+        "disassembly": "storw r2,0x58:m(r1,r0)"
+       },
+       {
+        "instruction": "0x000dd0",
+        "raw_bytes": "42d0",
+        "disassembly": "storw r4,0x0:s(r3,r2)"
+       }
+      ],
+      "why": "DSP_INT cleared (0xFFFF), CODEC converters powered down"
+     },
+     {
+      "stage": "clock source off",
+      "evidence": [
+       {
+        "instruction": "0x000dd8",
+        "raw_bytes": "0fc10440",
+        "disassembly": "storw $0x0:s,0xf4004:m"
+       }
+      ],
+      "why": "CLK_CODEC=0 before reconfiguration"
+     },
+     {
+      "stage": "codec clock init",
+      "evidence": [
+       {
+        "instruction": "0x000ddc",
+        "raw_bytes": "00c00801",
+        "disassembly": "bal (ra),*+0xee4:m"
+       },
+       {
+        "instruction": "0x000ee4",
+        "raw_bytes": "e701",
+        "disassembly": "push $0x7,r7,RA"
+       }
+      ],
+      "why": "direct call into the PLL/codec-clock configuration"
+     },
+     {
+      "stage": "post init",
+      "evidence": [
+       {
+        "instruction": "0x000de0",
+        "raw_bytes": "ffc003f7",
+        "disassembly": "bal (ra),*-0x4e2:m"
+       }
+      ],
+      "why": "direct call to the post-init helper"
+     },
+     {
+      "stage": "DSP program selection",
+      "evidence": [
+       {
+        "instruction": "0x000de6",
+        "raw_bytes": "720001000073",
+        "disassembly": "movd $0x17300:l,(r3,r2)"
+       },
+       {
+        "instruction": "0x000dee",
+        "raw_bytes": "b23200c0",
+        "disassembly": "addw $0xc000:m,r2"
+       },
+       {
+        "instruction": "0x000df2",
+        "raw_bytes": "20df5400",
+        "disassembly": "storw r2,0x54:m(r1,r0)"
+       }
+      ],
+      "why": "DSP_PC_START = ((0x17300>>1)+0xC000)&0xffff = 0x7980"
+     },
+     {
+      "stage": "runtime enable",
+      "evidence": [
+       {
+        "instruction": "0x001390",
+        "raw_bytes": "9701",
+        "disassembly": "push $0x2,r7,RA"
+       },
+       {
+        "instruction": "0x0013d4",
+        "raw_bytes": "20715000",
+        "disassembly": "sbitw $0x2:s,0x50:m(r1,r0)"
+       },
+       {
+        "instruction": "0x0013f4",
+        "raw_bytes": "ffc019ff",
+        "disassembly": "bal (ra),*-0x130c:m"
+       },
+       {
+        "instruction": "0x0013f8",
+        "raw_bytes": "ffc0e1fe",
+        "disassembly": "bal (ra),*-0x12d8:m"
+       },
+       {
+        "instruction": "0x0013e4",
+        "raw_bytes": "42d0",
+        "disassembly": "storw r4,0x0:s(r3,r2)"
+       },
+       {
+        "instruction": "0x0013e6",
+        "raw_bytes": "4f6f0458",
+        "disassembly": "cbitw $0x4:s,0xf5804:m"
+       },
+       {
+        "instruction": "0x00143a",
+        "raw_bytes": "30695000",
+        "disassembly": "cbitw $0x3:s,0x50:m(r1,r0)"
+       }
+      ],
+      "why": "DSP_EN=1, INT_MASK|=0x803c, CLK_DSP=9, MAIN_CTRL=0x400, CODEC AD/DA on, VREF_INIT=0, final DSP_CLK gate off"
+     }
+    ]
+   },
+   "related_device_evidence": {
+    "status": "SC14480_ANALOGY_ONLY",
+    "source": "SC14480 rev 1.0 datasheet (related device), printed pages 131-132, 160-183; PDF SHA256 a0b0300cc0dc50ac98bff4c9021dcbb86ba7b063554f406ac8f65c84a51782d0"
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call p2test 0x0012e8 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "the post-init call (0x688/0x4e2) semantics are not analysed (data-region helper)",
+    "ordering across interrupts is not modelled; the init functions run with interrupts disabled only in parts"
+   ],
+   "confidence": "SEQUENCE_PROVEN_PER_STAGE_VALUES_PROVEN"
+  }
+ }
+}

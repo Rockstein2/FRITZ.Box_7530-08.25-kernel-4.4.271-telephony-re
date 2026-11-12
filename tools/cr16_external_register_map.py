@@ -41,7 +41,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 
-TOOL_VERSION = "cr16-external-register-map/1"
+TOOL_VERSION = "cr16-external-register-map/2"
 # Upstream and the fork are both used.  The fork adds chip configs (including
 # an SC14448 entry) and more peripherals, so it is the primary source; the
 # upstream commit stays recorded for reproducibility.
@@ -80,6 +80,22 @@ def extract_defines(device_dir):
                             "file": name})
     out.sort(key=lambda r: int(r["address"], 16))
     return out
+
+
+def reloc_abs20(value):
+    """CR16 abs20 ISA expansion (E3.2): values above 0xEFFFF map to
+    0xFF0000..0xFFFFFF; this is an ISA rule, not a hardware alias proof."""
+    value &= 0xFFFFF
+    return value | 0xF00000 if value > 0xEFFFF else value
+
+
+def architectural_match_status(low_form, ref_addr):
+    """Classify a low-20-bit match under the ISA rule only."""
+    if 0xF0000 <= low_form <= 0xFFFFF and reloc_abs20(low_form) == ref_addr:
+        return "SAME_ARCHITECTURAL_ADDRESS_BY_RELOC_ABS20"
+    if low_form == ref_addr:
+        return "EXACT_ARCHITECTURAL_ADDRESS"
+    return "LOW_BITS_ONLY_NO_ISA_RULE"
 
 
 def first_level_rows():
@@ -301,11 +317,13 @@ def build(device_dir, xref_path, firmware=None):
         # the same *logical* register may appear under a different high half
         entry["low_bit_matches"] = {
             f"0x{a:08x}": {
-                image: [{"instruction": r["instruction"],
-                         "operation": r["operation"],
-                         "width_bits": r["width_bits"]}
-                        for r in rows]
-                for image, rows in ours[a].items()}
+                "architectural_status": architectural_match_status(a, addr),
+                "accesses": {
+                    image: [{"instruction": r["instruction"],
+                             "operation": r["operation"],
+                             "width_bits": r["width_bits"]}
+                            for r in rows]
+                    for image, rows in ours[a].items()}}
             for a in ours if (a & LOW_MASK) == low and a != addr}
         entry["found_in_our_firmware"] = bool(same)
         entry["low_bit_candidates"] = low_matches
@@ -399,7 +417,14 @@ def build(device_dir, xref_path, firmware=None):
                    "candidate, never proof of the same hardware on SC14448",
         "low_mask": f"0x{LOW_MASK:08x}",
         "registers": registers,
-        "alias_conclusion": "UNKNOWN — no hardware evidence",
+        "alias_conclusion": "UNKNOWN — no hardware evidence. A low-20-bit "
+                            "match against an abs20-encoded site is the "
+                            "SAME ARCHITECTURAL ADDRESS by the RELOC_ABS20 "
+                            "ISA rule (E3.2: encoded 0xFxxxx expands to "
+                            "effective 0x00FFxxxx); the physical SC14448 "
+                            "register identity stays CANDIDATE",
+        "alias_conclusion_isa_rule": "PROVEN_BY_ISA_IMPLEMENTATIONS",
+        "alias_conclusion_physical": "UNKNOWN_NO_HARDWARE_EVIDENCE",
         "level_rule": "FUNCTIONAL_REGISTER_MATCH requires an entry in "
                       "MANUAL_EVIDENCE, which names the instructions that "
                       "were compared by hand; an access pattern alone stops "

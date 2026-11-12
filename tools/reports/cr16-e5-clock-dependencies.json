@@ -1,0 +1,275 @@
+{
+ "tool": "cr16-audio-architecture/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x00133a (normal)",
+   "instruction_provenance": [
+    {
+     "instruction": "0x00134c",
+     "raw_bytes": "20695000",
+     "disassembly": "cbitw $0x2:s,0x50:m(r1,r0)"
+    },
+    {
+     "instruction": "0x001896",
+     "raw_bytes": "376e",
+     "disassembly": "cbitw $0x3:s,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0018b8",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0018f4",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x001908",
+     "raw_bytes": "3776",
+     "disassembly": "sbitw $0x3:s,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0018be",
+     "raw_bytes": "0fc90240",
+     "disassembly": "storw r0,0xf4002:m"
+    },
+    {
+     "instruction": "0x0018c2",
+     "raw_bytes": "0fc90c40",
+     "disassembly": "storw r0,0xf400c:m"
+    },
+    {
+     "instruction": "0x0018ca",
+     "raw_bytes": "1fc90e40",
+     "disassembly": "storw r1,0xf400e:m"
+    },
+    {
+     "instruction": "0x0018ce",
+     "raw_bytes": "0fc90640",
+     "disassembly": "storw r0,0xf4006:m"
+    },
+    {
+     "instruction": "0x0018ec",
+     "raw_bytes": "0fc91240",
+     "disassembly": "storw r0,0xf4012:m"
+    },
+    {
+     "instruction": "0x00187a",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x00196c",
+     "raw_bytes": "20df3c00",
+     "disassembly": "storw r2,0x3c:m(r1,r0)"
+    },
+    {
+     "instruction": "0x00187c",
+     "raw_bytes": "7f770040",
+     "disassembly": "sbitw $0x7:s,0xf4000:m"
+    },
+    {
+     "instruction": "0x001348",
+     "raw_bytes": "2fc90660",
+     "disassembly": "storw r2,0xf6006:m"
+    },
+    {
+     "instruction": "0x00155c",
+     "raw_bytes": "8c76",
+     "disassembly": "sbitw $0x8:s,0x0:s(r12)"
+    },
+    {
+     "instruction": "0x0019b8",
+     "raw_bytes": "30695000",
+     "disassembly": "cbitw $0x3:s,0x50:m(r1,r0)"
+    }
+   ],
+   "dataflow_evidence": {
+    "dsp_main_ctrl_value": "0x0400",
+    "dsp_main_ctrl_analogy": "DSP_MAIN_CTRL=10: main counter starts on DIP <A_NORM> (DIP-synchronised start-up for voice connection)",
+    "dsp_main_ctrl_dependency_class": "DIP_DEPENDENT_START (waits for DIP <A_NORM> under the SC14480 analogy; the main counter generates the 8 kHz audio syncs)",
+    "main_sync1_value": "0x0000 -> all audio interfaces at 8 kHz under the SC14480 analogy; DSP_SYNC0-2 = 8 kHz periodic DSP start/interrupt",
+    "pll_sequence": [
+     "0x0000 -> 0x0800 -> 0x0852 -> 0x085A (CLK_PLL_CTRL with delays)"
+    ],
+    "clk_dsp": "0x0009 (CLK_DSP_EN=1, divider 1 under analogy)",
+    "clk_codec_div": "0x0009",
+    "clk_per_div": "0x0009",
+    "clk_per10_div": "0x0021",
+    "clk_pll_div": "0x001c",
+    "dip_ctrl_ur_stop": "0x80 written twice (DIP stopped before clock/DSP reconfiguration under analogy)",
+    "dip_ctrl2_slotcnt_res": "bit8=1 (slot counter follows the main counter)",
+    "dsp_clk_gated_after_bringup": "DSP_CTRL bit3 cleared at the end of the enable sequence",
+    "dependency_analysis": [
+     {
+      "aspect": "shared clock source",
+      "status": "PROVEN_FIRMWARE_CONFIG: PLL/codec/peripheral/DSP dividers programmed in the audio path"
+     },
+     {
+      "aspect": "shared initialization",
+      "status": "PROVEN_FIRMWARE_CONFIG: DSP init stops the DIP and sets SLOTCNT_RES"
+     },
+     {
+      "aspect": "audio timing vs DECT runtime",
+      "status": "RUNTIME_VERIFICATION_REQUIRED: DSP_MAIN_CTRL=0x400 selects DIP-synchronised start in the SC14480 analogy; whether the DIP must be radio-active or only issue <A_NORM> is not decidable offline"
+     }
+    ]
+   },
+   "related_device_evidence": {
+    "status": "SC14480_ANALOGY_ONLY",
+    "source": "SC14480 rev 1.0 datasheet (related device), printed pages 131-132, 160-183; PDF SHA256 a0b0300cc0dc50ac98bff4c9021dcbb86ba7b063554f406ac8f65c84a51782d0"
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call normal 0x001866 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "SC14448 register identity unproven; DIP/A_NORM behaviour is an SC14480 analogy",
+    "the DIP sequencer program (E3.3 fill loop) is not decoded, so whether <A_NORM> is ever issued is unknown"
+   ],
+   "confidence": "FIRMWARE_CONFIG_PROVEN_DECT_RUNTIME_DEPENDENCE_UNRESOLVED"
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "base_cell": "0x00d6",
+   "base_cell_image_value": "0x01027f80",
+   "base_cell_guard": "cmpd $0x1027f80 at 0x000db0 (p2test)",
+   "instruction_provenance": [
+    {
+     "instruction": "0x000dc2",
+     "raw_bytes": "20695000",
+     "disassembly": "cbitw $0x2:s,0x50:m(r1,r0)"
+    },
+    {
+     "instruction": "0x001318",
+     "raw_bytes": "376e",
+     "disassembly": "cbitw $0x3:s,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x00133a",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x001376",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x00138a",
+     "raw_bytes": "3776",
+     "disassembly": "sbitw $0x3:s,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x001340",
+     "raw_bytes": "0fc90240",
+     "disassembly": "storw r0,0xf4002:m"
+    },
+    {
+     "instruction": "0x001344",
+     "raw_bytes": "0fc90c40",
+     "disassembly": "storw r0,0xf400c:m"
+    },
+    {
+     "instruction": "0x00134c",
+     "raw_bytes": "1fc90e40",
+     "disassembly": "storw r1,0xf400e:m"
+    },
+    {
+     "instruction": "0x001350",
+     "raw_bytes": "0fc90640",
+     "disassembly": "storw r0,0xf4006:m"
+    },
+    {
+     "instruction": "0x00136e",
+     "raw_bytes": "0fc91240",
+     "disassembly": "storw r0,0xf4012:m"
+    },
+    {
+     "instruction": "0x0012fc",
+     "raw_bytes": "07d0",
+     "disassembly": "storw r0,0x0:s(r8,r7)"
+    },
+    {
+     "instruction": "0x0013ee",
+     "raw_bytes": "20df3c00",
+     "disassembly": "storw r2,0x3c:m(r1,r0)"
+    },
+    {
+     "instruction": "0x0012fe",
+     "raw_bytes": "7f770040",
+     "disassembly": "sbitw $0x7:s,0xf4000:m"
+    },
+    {
+     "instruction": "0x000dbe",
+     "raw_bytes": "2fc90660",
+     "disassembly": "storw r2,0xf6006:m"
+    },
+    {
+     "instruction": "0x000fd8",
+     "raw_bytes": "8c76",
+     "disassembly": "sbitw $0x8:s,0x0:s(r12)"
+    },
+    {
+     "instruction": "0x00143a",
+     "raw_bytes": "30695000",
+     "disassembly": "cbitw $0x3:s,0x50:m(r1,r0)"
+    }
+   ],
+   "dataflow_evidence": {
+    "dsp_main_ctrl_value": "0x0400",
+    "dsp_main_ctrl_analogy": "DSP_MAIN_CTRL=10: main counter starts on DIP <A_NORM> (DIP-synchronised start-up for voice connection)",
+    "dsp_main_ctrl_dependency_class": "DIP_DEPENDENT_START (waits for DIP <A_NORM> under the SC14480 analogy; the main counter generates the 8 kHz audio syncs)",
+    "main_sync1_value": "0x0000 -> all audio interfaces at 8 kHz under the SC14480 analogy; DSP_SYNC0-2 = 8 kHz periodic DSP start/interrupt",
+    "pll_sequence": [
+     "0x0000 -> 0x0800 -> 0x0852 -> 0x085A (CLK_PLL_CTRL with delays)"
+    ],
+    "clk_dsp": "0x0009 (CLK_DSP_EN=1, divider 1 under analogy)",
+    "clk_codec_div": "0x0009",
+    "clk_per_div": "0x0009",
+    "clk_per10_div": "0x0021",
+    "clk_pll_div": "0x001c",
+    "dip_ctrl_ur_stop": "0x80 written twice (DIP stopped before clock/DSP reconfiguration under analogy)",
+    "dip_ctrl2_slotcnt_res": "bit8=1 (slot counter follows the main counter)",
+    "dsp_clk_gated_after_bringup": "DSP_CTRL bit3 cleared at the end of the enable sequence",
+    "dependency_analysis": [
+     {
+      "aspect": "shared clock source",
+      "status": "PROVEN_FIRMWARE_CONFIG: PLL/codec/peripheral/DSP dividers programmed in the audio path"
+     },
+     {
+      "aspect": "shared initialization",
+      "status": "PROVEN_FIRMWARE_CONFIG: DSP init stops the DIP and sets SLOTCNT_RES"
+     },
+     {
+      "aspect": "audio timing vs DECT runtime",
+      "status": "RUNTIME_VERIFICATION_REQUIRED: DSP_MAIN_CTRL=0x400 selects DIP-synchronised start in the SC14480 analogy; whether the DIP must be radio-active or only issue <A_NORM> is not decidable offline"
+     }
+    ]
+   },
+   "related_device_evidence": {
+    "status": "SC14480_ANALOGY_ONLY",
+    "source": "SC14480 rev 1.0 datasheet (related device), printed pages 131-132, 160-183; PDF SHA256 a0b0300cc0dc50ac98bff4c9021dcbb86ba7b063554f406ac8f65c84a51782d0"
+   },
+   "unresolved_paths": [
+    "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
+    "external/indirect writers of the [0xD6] base cell are not excluded; the init guard re-reads it after calls",
+    "call p2test 0x0012e8 targets 0x182e/0x12b0, which is not on a decoded instruction boundary (helper body only locally consistent)",
+    "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
+    "no all-path proof that no other code writes the DSP window",
+    "SC14448 register identity unproven; DIP/A_NORM behaviour is an SC14480 analogy",
+    "the DIP sequencer program (E3.3 fill loop) is not decoded, so whether <A_NORM> is ever issued is unknown"
+   ],
+   "confidence": "FIRMWARE_CONFIG_PROVEN_DECT_RUNTIME_DEPENDENCE_UNRESOLVED"
+  }
+ }
+}
