@@ -1,0 +1,95 @@
+{
+ "tool": "cr16-queue-trace/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x00386a",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x0039f0",
+     "raw_bytes": "50f0",
+     "disassembly": "storb r5,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x009ee6",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    }
+   ],
+   "cfg_evidence": {
+    "producer_to_queue": "LOCAL_PROVEN_UNDER_CFG_MODEL",
+    "queue_to_parser": "LOCAL_PROVEN_UNDER_CFG_MODEL",
+    "host_to_producer": "UNRESOLVED",
+    "command_to_TX": "UNRESOLVED"
+   },
+   "dataflow_evidence": {
+    "main_blocker": "which callers fill producer input and how/if external bytes arrive",
+    "marker_correction": "dispatcher writes global RAM, not item+3; item tag supplied by allocator caller",
+    "pointer_write_target": "TARGET_RANGE_UNRESOLVED"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "external host transport and permissions",
+    "all-path queue full/wrap and element length",
+    "TX response provenance"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x026f7c",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x02710a",
+     "raw_bytes": "50f0",
+     "disassembly": "storb r5,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0274e8",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    }
+   ],
+   "cfg_evidence": {
+    "producer_to_queue": "LOCAL_PROVEN_UNDER_CFG_MODEL",
+    "queue_to_parser": "LOCAL_PROVEN_UNDER_CFG_MODEL",
+    "host_to_producer": "UNRESOLVED",
+    "command_to_TX": "UNRESOLVED"
+   },
+   "dataflow_evidence": {
+    "main_blocker": "which callers fill producer input and how/if external bytes arrive",
+    "marker_correction": "dispatcher writes global RAM, not item+3; item tag supplied by allocator caller",
+    "pointer_write_target": "TARGET_RANGE_UNRESOLVED"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "external host transport and permissions",
+    "all-path queue full/wrap and element length",
+    "TX response provenance"
+   ]
+  }
+ }
+}

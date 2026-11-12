@@ -65,6 +65,13 @@ to receive UART bytes. Run `python3 tools/tests/test_cr16_architecture.py`
 for fresh replay and fail-closed preservation, and the function-map,
 UART-runtime, and state-graph fixture scripts. No firmware execution.
 
+SC14448-E4.1: `python3 tools/cr16_queue_trace.py` regenerates ten staged
+`reports/cr16-e41-*.json` from verified firmware/oracle. The analysis
+finds a local software queue allocator and distinguishes 4-byte item
+headers from parser payload-relative offsets. `test_cr16_queue_trace.py`
+checks fresh replay and fail-closed preservation; command/TX tests protect
+against unsupported pointer-range, host-ingress and response claims.
+
 FON-E3.5: `python3 tools/cr16_pcm_ingress.py` regenerates the seven
 `reports/cr16-e35-*.json` candidate/proof-boundary inventories from both
 SHA-checked images. `cr16_fon_ctrl_trace.py` shares the same fail-closed

@@ -1,0 +1,199 @@
+{
+ "tool": "cr16-queue-trace/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x00386a",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x00387a",
+     "raw_bytes": "7d000000da00",
+     "disassembly": "movd $0xda:l,(r13)"
+    },
+    {
+     "instruction": "0x003888",
+     "raw_bytes": "0de0",
+     "disassembly": "stord (r1,r0),0x0:s(r13)"
+    },
+    {
+     "instruction": "0x00388a",
+     "raw_bytes": "79000000de00",
+     "disassembly": "movd $0xde:l,(r10,r9)"
+    },
+    {
+     "instruction": "0x003896",
+     "raw_bytes": "90000000fb0a",
+     "disassembly": "cmpd $0xafb:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x003920",
+     "raw_bytes": "82d0",
+     "disassembly": "storw r8,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x003922",
+     "raw_bytes": "12000070cb93",
+     "disassembly": "loadb 0x93cb:l,r0"
+    },
+    {
+     "instruction": "0x003928",
+     "raw_bytes": "02f2",
+     "disassembly": "storb r0,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x00392a",
+     "raw_bytes": "b2f3",
+     "disassembly": "storb r11,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x003a74",
+     "raw_bytes": "b790",
+     "disassembly": "loadw 0x0:s(r8,r7),r11"
+    },
+    {
+     "instruction": "0x003ad6",
+     "raw_bytes": "09e0",
+     "disassembly": "stord (r1,r0),0x0:s(r10,r9)"
+    }
+   ],
+   "cfg_evidence": {
+    "initializer_raw_bytes": {
+     "0xda": "fd020000",
+     "0xde": "fd020000"
+    },
+    "queue_consumer": "0x0039f8",
+    "local_empty_test": "pointer values compared for equality"
+   },
+   "dataflow_evidence": {
+    "initial_cells": {
+     "0xda": "0x000002fd",
+     "0xde": "0x000002fd"
+    },
+    "0xda": "allocation/write cursor on checked path",
+    "0xde": "consumption/read cursor on checked path",
+    "pointer_width_bits": 32,
+    "base": "0x000002fd",
+    "limit_comparison": "0x00000afb",
+    "buffer_span_candidate_bytes": 2048,
+    "allocation_size": "zero_extend16(r3)+4; runtime-dependent",
+    "wrap": "branch/reset to base on selected conditions; no all-path range proof",
+    "full_condition": "UNRESOLVED",
+    "synchronization": "di/ei seen in allocator and main"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "all-path overlap/full conditions and interrupt interleaving",
+    "unknown aliases may write pointer cells or buffer"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x026f7c",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x026f8c",
+     "raw_bytes": "7d000000da00",
+     "disassembly": "movd $0xda:l,(r13)"
+    },
+    {
+     "instruction": "0x026f9a",
+     "raw_bytes": "0de0",
+     "disassembly": "stord (r1,r0),0x0:s(r13)"
+    },
+    {
+     "instruction": "0x026f9c",
+     "raw_bytes": "79000000de00",
+     "disassembly": "movd $0xde:l,(r10,r9)"
+    },
+    {
+     "instruction": "0x026fa8",
+     "raw_bytes": "900000005b0a",
+     "disassembly": "cmpd $0xa5b:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x027032",
+     "raw_bytes": "82d0",
+     "disassembly": "storw r8,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x027034",
+     "raw_bytes": "120000701295",
+     "disassembly": "loadb 0x9512:l,r0"
+    },
+    {
+     "instruction": "0x02703a",
+     "raw_bytes": "02f2",
+     "disassembly": "storb r0,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x02703c",
+     "raw_bytes": "b2f3",
+     "disassembly": "storb r11,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x027192",
+     "raw_bytes": "b790",
+     "disassembly": "loadw 0x0:s(r8,r7),r11"
+    },
+    {
+     "instruction": "0x0271f4",
+     "raw_bytes": "09e0",
+     "disassembly": "stord (r1,r0),0x0:s(r10,r9)"
+    }
+   ],
+   "cfg_evidence": {
+    "initializer_raw_bytes": {
+     "0xda": "5d020000",
+     "0xde": "5d020000"
+    },
+    "queue_consumer": "0x027112",
+    "local_empty_test": "pointer values compared for equality"
+   },
+   "dataflow_evidence": {
+    "initial_cells": {
+     "0xda": "0x0000025d",
+     "0xde": "0x0000025d"
+    },
+    "0xda": "allocation/write cursor on checked path",
+    "0xde": "consumption/read cursor on checked path",
+    "pointer_width_bits": 32,
+    "base": "0x0000025d",
+    "limit_comparison": "0x00000a5b",
+    "buffer_span_candidate_bytes": 2048,
+    "allocation_size": "zero_extend16(r3)+4; runtime-dependent",
+    "wrap": "branch/reset to base on selected conditions; no all-path range proof",
+    "full_condition": "UNRESOLVED",
+    "synchronization": "di/ei seen in allocator and main"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "all-path overlap/full conditions and interrupt interleaving",
+    "unknown aliases may write pointer cells or buffer"
+   ]
+  }
+ }
+}

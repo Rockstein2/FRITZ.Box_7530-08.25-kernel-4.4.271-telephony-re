@@ -43,6 +43,14 @@ item byte `0x23`, type words `0x0167`/`0xFFF1`, and subcommand values
 7/9/10/13. **The queue producer is not proven to be UART RX**; these
 values are not assigned a host-facing protocol or FON semantic meaning.
 
+SC14448-E4.1 (`sc14448-e41-summary.md`) identifies the software queue
+allocator `0x386A` / `0x26F7C`: initial `[0xDA]=[0xDE]=0x2FD` normal,
+`0x25D` p2test; locally `[0xDA]` advances for allocations and `[0xDE]`
+for consumption. Item header is four bytes before the parser's payload
+pointer. Case 13 reads a pointer32 and word16 from payload+3/+7 and
+performs a `storw` to the pointer on its selected path. Neither an external
+producer nor the pointer's reachable target range is proven.
+
 Status: **confirmed evidence only. Anything not listed here is either an open
 question (`fon-open-questions.md`) or historical reasoning under
 `docs/history/`.**

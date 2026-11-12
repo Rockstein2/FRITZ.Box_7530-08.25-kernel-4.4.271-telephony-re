@@ -32,6 +32,13 @@ but UART-named RX/TX vectors are stubs and the queue producer/host ingress
 is unknown. Q75 lacks physical slot mapping and instruction-level path
 to FON effects. Q46/Q55 receive no new closure; Q57 abs20 remains solved.
 
+SC14448-E4.1 (`sc14448-e41-summary.md`) finds a software producer and
+selected circular queue mechanism, but the **input source of its callers**,
+the reachability of parser tag `0x23` from a particular caller, command13
+pointer target, and command→TX response are unresolved. No Q46/Q55/Q75
+closure follows. Keep architectural abs20 and physical register identity
+as separate claims.
+
 Status: **the only list of unresolved items for this project**
 
 Each item states what the question is, what would close it, and in which

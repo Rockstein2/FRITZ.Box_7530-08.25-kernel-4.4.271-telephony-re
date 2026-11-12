@@ -1,0 +1,591 @@
+{
+ "tool": "cr16-queue-trace/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009e68",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x009e94",
+     "raw_bytes": "b2526701",
+     "disassembly": "cmpw $0x167:m,r2"
+    },
+    {
+     "instruction": "0x009e9a",
+     "raw_bytes": "b252f1ff",
+     "disassembly": "cmpw $0xfff1:m,r2"
+    },
+    {
+     "instruction": "0x009ebc",
+     "raw_bytes": "7250",
+     "disassembly": "cmpb $0x7:s,r2"
+    },
+    {
+     "instruction": "0x009ec0",
+     "raw_bytes": "b2500900",
+     "disassembly": "cmpb $0x9:m,r2"
+    },
+    {
+     "instruction": "0x009ec6",
+     "raw_bytes": "a250",
+     "disassembly": "cmpb $0xa:s,r2"
+    },
+    {
+     "instruction": "0x009eca",
+     "raw_bytes": "d250",
+     "disassembly": "cmpb $0xd:s,r2"
+    },
+    {
+     "instruction": "0x009ed0",
+     "raw_bytes": "409f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r4"
+    },
+    {
+     "instruction": "0x009eea",
+     "raw_bytes": "00af0300",
+     "disassembly": "loadd 0x3:m(r1,r0),(r1,r0)"
+    },
+    {
+     "instruction": "0x009ef6",
+     "raw_bytes": "30b4",
+     "disassembly": "loadb 0x4:s(r1,r0),r3"
+    },
+    {
+     "instruction": "0x009ede",
+     "raw_bytes": "20af0300",
+     "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+    },
+    {
+     "instruction": "0x009ed8",
+     "raw_bytes": "ffc039ff",
+     "disassembly": "bal (ra),*-0x9e10:m"
+    },
+    {
+     "instruction": "0x009ef0",
+     "raw_bytes": "01c0c4e0",
+     "disassembly": "bal (ra),*+0x27fb4:m"
+    },
+    {
+     "instruction": "0x009efa",
+     "raw_bytes": "01c0b8d9",
+     "disassembly": "bal (ra),*+0x278b2:m"
+    }
+   ],
+   "cfg_evidence": {
+    "case_branches": [
+     {
+      "id": 7,
+      "branch": {
+       "instruction": "0x009ebe",
+       "raw_bytes": "0910",
+       "disassembly": "beq *+0x9ed0:s"
+      },
+      "target": {
+       "instruction": "0x009ed0",
+       "raw_bytes": "409f0700",
+       "disassembly": "loadw 0x7:m(r1,r0),r4"
+      },
+      "label": "UNNAMED_COMMAND"
+     },
+     {
+      "id": 9,
+      "branch": {
+       "instruction": "0x009ec4",
+       "raw_bytes": "0311",
+       "disassembly": "beq *+0x9eea:s"
+      },
+      "target": {
+       "instruction": "0x009eea",
+       "raw_bytes": "00af0300",
+       "disassembly": "loadd 0x3:m(r1,r0),(r1,r0)"
+      },
+      "label": "UNNAMED_COMMAND"
+     },
+     {
+      "id": 10,
+      "branch": {
+       "instruction": "0x009ec8",
+       "raw_bytes": "0711",
+       "disassembly": "beq *+0x9ef6:s"
+      },
+      "target": {
+       "instruction": "0x009ef6",
+       "raw_bytes": "30b4",
+       "disassembly": "loadb 0x4:s(r1,r0),r3"
+      },
+      "label": "UNNAMED_COMMAND"
+     },
+     {
+      "id": 13,
+      "branch": {
+       "instruction": "0x009ecc",
+       "raw_bytes": "0910",
+       "disassembly": "beq *+0x9ede:s"
+      },
+      "target": {
+       "instruction": "0x009ede",
+       "raw_bytes": "20af0300",
+       "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+      },
+      "label": "UNNAMED_COMMAND"
+     }
+    ],
+    "entry_requirements": "selected 0xfff1 branch, per-case byte comparison"
+   },
+   "dataflow_evidence": {
+    "cases": [
+     {
+      "id": 7,
+      "branch_target": {
+       "instruction": "0x009ed0",
+       "raw_bytes": "409f0700",
+       "disassembly": "loadw 0x7:m(r1,r0),r4"
+      },
+      "direct_call": {
+       "instruction": "0x009ed8",
+       "raw_bytes": "ffc039ff",
+       "disassembly": "bal (ra),*-0x9e10:m"
+      },
+      "callee": "0x009e10",
+      "selected_fields": [
+       "payload+3 pointer32",
+       "payload+7 word16"
+      ],
+      "downstream_effects": "PARTIAL; callee/interprocedural aliases unresolved",
+      "response_link": "UNRESOLVED",
+      "bounded_internal_effect": {
+       "alloc_call": {
+        "instruction": "0x009e2a",
+        "raw_bytes": "ffc0419a",
+        "disassembly": "bal (ra),*-0x386a:m"
+       },
+       "new_item_payload": "0xfff1 at +0; 0x08 at +2; source pointer at +3; length at +7",
+       "output": "another software queue item, not a proven UART TX response",
+       "instruction_provenance": [
+        {
+         "instruction": "0x009e2a",
+         "raw_bytes": "ffc0419a",
+         "disassembly": "bal (ra),*-0x386a:m"
+        },
+        {
+         "instruction": "0x009e3e",
+         "raw_bytes": "20d0",
+         "disassembly": "storw r2,0x0:s(r1,r0)"
+        },
+        {
+         "instruction": "0x009e40",
+         "raw_bytes": "80830200",
+         "disassembly": "storb $0x8:s,0x2:m(r1,r0)"
+        },
+        {
+         "instruction": "0x009e44",
+         "raw_bytes": "80ef0300",
+         "disassembly": "stord (r9,r8),0x3:m(r1,r0)"
+        },
+        {
+         "instruction": "0x009e48",
+         "raw_bytes": "70df0700",
+         "disassembly": "storw r7,0x7:m(r1,r0)"
+        },
+        {
+         "instruction": "0x009e52",
+         "raw_bytes": "2fe0",
+         "disassembly": "stord (r3,r2),0x0:s(sp)"
+        },
+        {
+         "instruction": "0x009e5c",
+         "raw_bytes": "01c098ee",
+         "disassembly": "bal (ra),*+0x28cf4:m"
+        }
+       ]
+      }
+     },
+     {
+      "id": 9,
+      "branch_target": {
+       "instruction": "0x009eea",
+       "raw_bytes": "00af0300",
+       "disassembly": "loadd 0x3:m(r1,r0),(r1,r0)"
+      },
+      "direct_call": {
+       "instruction": "0x009ef0",
+       "raw_bytes": "01c0c4e0",
+       "disassembly": "bal (ra),*+0x27fb4:m"
+      },
+      "callee": "0x027fb4",
+      "selected_fields": [
+       "payload+3 pointer32"
+      ],
+      "downstream_effects": "PARTIAL; callee/interprocedural aliases unresolved",
+      "response_link": "UNRESOLVED"
+     },
+     {
+      "id": 10,
+      "branch_target": {
+       "instruction": "0x009ef6",
+       "raw_bytes": "30b4",
+       "disassembly": "loadb 0x4:s(r1,r0),r3"
+      },
+      "direct_call": {
+       "instruction": "0x009efa",
+       "raw_bytes": "01c0b8d9",
+       "disassembly": "bal (ra),*+0x278b2:m"
+      },
+      "callee": "0x0278b2",
+      "selected_fields": [
+       "payload+3 byte",
+       "payload+4 byte"
+      ],
+      "downstream_effects": "PARTIAL; callee/interprocedural aliases unresolved",
+      "response_link": "UNRESOLVED",
+      "helper_input_bounds_differ": {
+       "comparisons": [
+        {
+         "instruction": "0x0278b6",
+         "raw_bytes": "b7501200",
+         "disassembly": "cmpb $0x12:m,r7"
+        },
+        {
+         "instruction": "0x0278c2",
+         "raw_bytes": "b3501700",
+         "disassembly": "cmpb $0x17:m,r3"
+        }
+       ],
+       "normal_p2test_equivalence": "NOT_PROVEN"
+      }
+     },
+     {
+      "id": 13,
+      "branch_target": {
+       "instruction": "0x009ede",
+       "raw_bytes": "20af0300",
+       "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+      },
+      "selected_fields": [
+       "payload+3 pointer32",
+       "payload+7 word16"
+      ],
+      "effect": {
+       "instruction": "0x009ee6",
+       "raw_bytes": "02d0",
+       "disassembly": "storw r0,0x0:s(r3,r2)"
+      },
+      "response_link": "UNRESOLVED"
+     }
+    ],
+    "unknown_command_id": "returns without a named handler",
+    "type_0x0167": "other selected calls, semantics unresolved"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "callee effects/ABI and memory ranges not fully proved",
+    "length validation and message origin unresolved"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x02746a",
+     "raw_bytes": "1e01",
+     "disassembly": "push RA"
+    },
+    {
+     "instruction": "0x027496",
+     "raw_bytes": "b2526701",
+     "disassembly": "cmpw $0x167:m,r2"
+    },
+    {
+     "instruction": "0x02749c",
+     "raw_bytes": "b252f1ff",
+     "disassembly": "cmpw $0xfff1:m,r2"
+    },
+    {
+     "instruction": "0x0274be",
+     "raw_bytes": "7250",
+     "disassembly": "cmpb $0x7:s,r2"
+    },
+    {
+     "instruction": "0x0274c2",
+     "raw_bytes": "b2500900",
+     "disassembly": "cmpb $0x9:m,r2"
+    },
+    {
+     "instruction": "0x0274c8",
+     "raw_bytes": "a250",
+     "disassembly": "cmpb $0xa:s,r2"
+    },
+    {
+     "instruction": "0x0274cc",
+     "raw_bytes": "d250",
+     "disassembly": "cmpb $0xd:s,r2"
+    },
+    {
+     "instruction": "0x0274d2",
+     "raw_bytes": "409f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r4"
+    },
+    {
+     "instruction": "0x0274ec",
+     "raw_bytes": "00af0300",
+     "disassembly": "loadd 0x3:m(r1,r0),(r1,r0)"
+    },
+    {
+     "instruction": "0x0274f8",
+     "raw_bytes": "30b4",
+     "disassembly": "loadb 0x4:s(r1,r0),r3"
+    },
+    {
+     "instruction": "0x0274e0",
+     "raw_bytes": "20af0300",
+     "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+    },
+    {
+     "instruction": "0x0274da",
+     "raw_bytes": "ffc039ff",
+     "disassembly": "bal (ra),*-0x27412:m"
+    },
+    {
+     "instruction": "0x0274f2",
+     "raw_bytes": "fdc081c7",
+     "disassembly": "bal (ra),*-0x3c72:m"
+    },
+    {
+     "instruction": "0x0274fc",
+     "raw_bytes": "fdc001c2",
+     "disassembly": "bal (ra),*-0x36fc:m"
+    }
+   ],
+   "cfg_evidence": {
+    "case_branches": [
+     {
+      "id": 7,
+      "branch": {
+       "instruction": "0x0274c0",
+       "raw_bytes": "0910",
+       "disassembly": "beq *+0x274d2:s"
+      },
+      "target": {
+       "instruction": "0x0274d2",
+       "raw_bytes": "409f0700",
+       "disassembly": "loadw 0x7:m(r1,r0),r4"
+      },
+      "label": "UNNAMED_COMMAND"
+     },
+     {
+      "id": 9,
+      "branch": {
+       "instruction": "0x0274c6",
+       "raw_bytes": "0311",
+       "disassembly": "beq *+0x274ec:s"
+      },
+      "target": {
+       "instruction": "0x0274ec",
+       "raw_bytes": "00af0300",
+       "disassembly": "loadd 0x3:m(r1,r0),(r1,r0)"
+      },
+      "label": "UNNAMED_COMMAND"
+     },
+     {
+      "id": 10,
+      "branch": {
+       "instruction": "0x0274ca",
+       "raw_bytes": "0711",
+       "disassembly": "beq *+0x274f8:s"
+      },
+      "target": {
+       "instruction": "0x0274f8",
+       "raw_bytes": "30b4",
+       "disassembly": "loadb 0x4:s(r1,r0),r3"
+      },
+      "label": "UNNAMED_COMMAND"
+     },
+     {
+      "id": 13,
+      "branch": {
+       "instruction": "0x0274ce",
+       "raw_bytes": "0910",
+       "disassembly": "beq *+0x274e0:s"
+      },
+      "target": {
+       "instruction": "0x0274e0",
+       "raw_bytes": "20af0300",
+       "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+      },
+      "label": "UNNAMED_COMMAND"
+     }
+    ],
+    "entry_requirements": "selected 0xfff1 branch, per-case byte comparison"
+   },
+   "dataflow_evidence": {
+    "cases": [
+     {
+      "id": 7,
+      "branch_target": {
+       "instruction": "0x0274d2",
+       "raw_bytes": "409f0700",
+       "disassembly": "loadw 0x7:m(r1,r0),r4"
+      },
+      "direct_call": {
+       "instruction": "0x0274da",
+       "raw_bytes": "ffc039ff",
+       "disassembly": "bal (ra),*-0x27412:m"
+      },
+      "callee": "0x027412",
+      "selected_fields": [
+       "payload+3 pointer32",
+       "payload+7 word16"
+      ],
+      "downstream_effects": "PARTIAL; callee/interprocedural aliases unresolved",
+      "response_link": "UNRESOLVED",
+      "bounded_internal_effect": {
+       "alloc_call": {
+        "instruction": "0x02742c",
+        "raw_bytes": "ffc051fb",
+        "disassembly": "bal (ra),*-0x26f7c:m"
+       },
+       "new_item_payload": "0xfff1 at +0; 0x08 at +2; source pointer at +3; length at +7",
+       "output": "another software queue item, not a proven UART TX response",
+       "instruction_provenance": [
+        {
+         "instruction": "0x02742c",
+         "raw_bytes": "ffc051fb",
+         "disassembly": "bal (ra),*-0x26f7c:m"
+        },
+        {
+         "instruction": "0x027440",
+         "raw_bytes": "20d0",
+         "disassembly": "storw r2,0x0:s(r1,r0)"
+        },
+        {
+         "instruction": "0x027442",
+         "raw_bytes": "80830200",
+         "disassembly": "storb $0x8:s,0x2:m(r1,r0)"
+        },
+        {
+         "instruction": "0x027446",
+         "raw_bytes": "80ef0300",
+         "disassembly": "stord (r9,r8),0x3:m(r1,r0)"
+        },
+        {
+         "instruction": "0x02744a",
+         "raw_bytes": "70df0700",
+         "disassembly": "storw r7,0x7:m(r1,r0)"
+        },
+        {
+         "instruction": "0x027454",
+         "raw_bytes": "2fe0",
+         "disassembly": "stord (r3,r2),0x0:s(sp)"
+        },
+        {
+         "instruction": "0x02745e",
+         "raw_bytes": "00c00608",
+         "disassembly": "bal (ra),*+0x27c64:m"
+        }
+       ]
+      }
+     },
+     {
+      "id": 9,
+      "branch_target": {
+       "instruction": "0x0274ec",
+       "raw_bytes": "00af0300",
+       "disassembly": "loadd 0x3:m(r1,r0),(r1,r0)"
+      },
+      "direct_call": {
+       "instruction": "0x0274f2",
+       "raw_bytes": "fdc081c7",
+       "disassembly": "bal (ra),*-0x3c72:m"
+      },
+      "callee": "0x003c72",
+      "selected_fields": [
+       "payload+3 pointer32"
+      ],
+      "downstream_effects": "PARTIAL; callee/interprocedural aliases unresolved",
+      "response_link": "UNRESOLVED"
+     },
+     {
+      "id": 10,
+      "branch_target": {
+       "instruction": "0x0274f8",
+       "raw_bytes": "30b4",
+       "disassembly": "loadb 0x4:s(r1,r0),r3"
+      },
+      "direct_call": {
+       "instruction": "0x0274fc",
+       "raw_bytes": "fdc001c2",
+       "disassembly": "bal (ra),*-0x36fc:m"
+      },
+      "callee": "0x0036fc",
+      "selected_fields": [
+       "payload+3 byte",
+       "payload+4 byte"
+      ],
+      "downstream_effects": "PARTIAL; callee/interprocedural aliases unresolved",
+      "response_link": "UNRESOLVED",
+      "helper_input_bounds_differ": {
+       "comparisons": [
+        {
+         "instruction": "0x003700",
+         "raw_bytes": "c750",
+         "disassembly": "cmpb $0xc:s,r7"
+        },
+        {
+         "instruction": "0x003708",
+         "raw_bytes": "b3501100",
+         "disassembly": "cmpb $0x11:m,r3"
+        }
+       ],
+       "normal_p2test_equivalence": "NOT_PROVEN"
+      }
+     },
+     {
+      "id": 13,
+      "branch_target": {
+       "instruction": "0x0274e0",
+       "raw_bytes": "20af0300",
+       "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+      },
+      "selected_fields": [
+       "payload+3 pointer32",
+       "payload+7 word16"
+      ],
+      "effect": {
+       "instruction": "0x0274e8",
+       "raw_bytes": "02d0",
+       "disassembly": "storw r0,0x0:s(r3,r2)"
+      },
+      "response_link": "UNRESOLVED"
+     }
+    ],
+    "unknown_command_id": "returns without a named handler",
+    "type_0x0167": "other selected calls, semantics unresolved"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "callee effects/ABI and memory ranges not fully proved",
+    "length validation and message origin unresolved"
+   ]
+  }
+ }
+}

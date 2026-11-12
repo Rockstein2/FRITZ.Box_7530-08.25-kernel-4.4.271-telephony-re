@@ -1,0 +1,107 @@
+{
+ "tool": "cr16-queue-trace/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009ed8",
+     "raw_bytes": "ffc039ff",
+     "disassembly": "bal (ra),*-0x9e10:m"
+    },
+    {
+     "instruction": "0x009ef0",
+     "raw_bytes": "01c0c4e0",
+     "disassembly": "bal (ra),*+0x27fb4:m"
+    },
+    {
+     "instruction": "0x009efa",
+     "raw_bytes": "01c0b8d9",
+     "disassembly": "bal (ra),*+0x278b2:m"
+    },
+    {
+     "instruction": "0x009f3a",
+     "raw_bytes": "ffc03199",
+     "disassembly": "bal (ra),*-0x386a:m"
+    },
+    {
+     "instruction": "0x009fb8",
+     "raw_bytes": "0fc90249",
+     "disassembly": "storw r0,0xf4902:m"
+    }
+   ],
+   "cfg_evidence": {
+    "command_to_TX_buffer_proven": false
+   },
+   "dataflow_evidence": {
+    "TX_event_from_queue_path": "0x009f3a",
+    "selected_command_to_response": "UNRESOLVED",
+    "response_framing": "UNRESOLVED"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "response constructor to TX RAM byte source not traced",
+    "asynchronous TX events may be unrelated to commands"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x0274da",
+     "raw_bytes": "ffc039ff",
+     "disassembly": "bal (ra),*-0x27412:m"
+    },
+    {
+     "instruction": "0x0274f2",
+     "raw_bytes": "fdc081c7",
+     "disassembly": "bal (ra),*-0x3c72:m"
+    },
+    {
+     "instruction": "0x0274fc",
+     "raw_bytes": "fdc001c2",
+     "disassembly": "bal (ra),*-0x36fc:m"
+    },
+    {
+     "instruction": "0x009b7e",
+     "raw_bytes": "01c0fed3",
+     "disassembly": "bal (ra),*+0x26f7c:m"
+    },
+    {
+     "instruction": "0x009bfc",
+     "raw_bytes": "0fc90249",
+     "disassembly": "storw r0,0xf4902:m"
+    }
+   ],
+   "cfg_evidence": {
+    "command_to_TX_buffer_proven": false
+   },
+   "dataflow_evidence": {
+    "TX_event_from_queue_path": "0x009b7e",
+    "selected_command_to_response": "UNRESOLVED",
+    "response_framing": "UNRESOLVED"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "response constructor to TX RAM byte source not traced",
+    "asynchronous TX events may be unrelated to commands"
+   ]
+  }
+ }
+}

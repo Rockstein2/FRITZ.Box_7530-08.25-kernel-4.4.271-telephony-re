@@ -1,0 +1,161 @@
+{
+ "tool": "cr16-queue-trace/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009fd6",
+     "raw_bytes": "5f7f0049",
+     "disassembly": "tbitw $0x5:s,0xf4900:m"
+    },
+    {
+     "instruction": "0x026080",
+     "raw_bytes": "7f896649",
+     "disassembly": "loadw 0xf4966:m,r7"
+    },
+    {
+     "instruction": "0x028dca",
+     "raw_bytes": "002c",
+     "disassembly": "nop"
+    },
+    {
+     "instruction": "0x028dcc",
+     "raw_bytes": "0300",
+     "disassembly": "retx"
+    }
+   ],
+   "cfg_evidence": {
+    "reference_UART_RX_vector_stub": true
+   },
+   "dataflow_evidence": {
+    "architectural_register_reads": [
+     {
+      "instruction": {
+       "instruction": "0x009fd6",
+       "raw_bytes": "5f7f0049",
+       "disassembly": "tbitw $0x5:s,0xf4900:m"
+      },
+      "effective_address": "0x00ff4900",
+      "width_bits": 16
+     },
+     {
+      "instruction": {
+       "instruction": "0x026080",
+       "raw_bytes": "7f896649",
+       "disassembly": "loadw 0xf4966:m,r7"
+      },
+      "effective_address": "0x00ff4966",
+      "width_bits": 16
+     }
+    ],
+    "runtime_RX_data_to_queue": "UNRESOLVED"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "no resolved second-level read at 0x00ff4902 in listed rows",
+    "other addresses, indirect reads, DMA and hardware sources unexcluded"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009c1a",
+     "raw_bytes": "5f7f0049",
+     "disassembly": "tbitw $0x5:s,0xf4900:m"
+    },
+    {
+     "instruction": "0x026836",
+     "raw_bytes": "7f896649",
+     "disassembly": "loadw 0xf4966:m,r7"
+    },
+    {
+     "instruction": "0x0276e0",
+     "raw_bytes": "0f897a49",
+     "disassembly": "loadw 0xf497a:m,r0"
+    },
+    {
+     "instruction": "0x0276e6",
+     "raw_bytes": "0f897a49",
+     "disassembly": "loadw 0xf497a:m,r0"
+    },
+    {
+     "instruction": "0x009ffc",
+     "raw_bytes": "002c",
+     "disassembly": "nop"
+    },
+    {
+     "instruction": "0x009ffe",
+     "raw_bytes": "0300",
+     "disassembly": "retx"
+    }
+   ],
+   "cfg_evidence": {
+    "reference_UART_RX_vector_stub": true
+   },
+   "dataflow_evidence": {
+    "architectural_register_reads": [
+     {
+      "instruction": {
+       "instruction": "0x009c1a",
+       "raw_bytes": "5f7f0049",
+       "disassembly": "tbitw $0x5:s,0xf4900:m"
+      },
+      "effective_address": "0x00ff4900",
+      "width_bits": 16
+     },
+     {
+      "instruction": {
+       "instruction": "0x026836",
+       "raw_bytes": "7f896649",
+       "disassembly": "loadw 0xf4966:m,r7"
+      },
+      "effective_address": "0x00ff4966",
+      "width_bits": 16
+     },
+     {
+      "instruction": {
+       "instruction": "0x0276e0",
+       "raw_bytes": "0f897a49",
+       "disassembly": "loadw 0xf497a:m,r0"
+      },
+      "effective_address": "0x00ff497a",
+      "width_bits": 16
+     },
+     {
+      "instruction": {
+       "instruction": "0x0276e6",
+       "raw_bytes": "0f897a49",
+       "disassembly": "loadw 0xf497a:m,r0"
+      },
+      "effective_address": "0x00ff497a",
+      "width_bits": 16
+     }
+    ],
+    "runtime_RX_data_to_queue": "UNRESOLVED"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "no resolved second-level read at 0x00ff4902 in listed rows",
+    "other addresses, indirect reads, DMA and hardware sources unexcluded"
+   ]
+  }
+ }
+}

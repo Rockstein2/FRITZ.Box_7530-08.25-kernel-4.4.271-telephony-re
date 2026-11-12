@@ -1,0 +1,103 @@
+{
+ "tool": "cr16-queue-trace/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009ede",
+     "raw_bytes": "20af0300",
+     "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+    },
+    {
+     "instruction": "0x009ee2",
+     "raw_bytes": "009f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r0"
+    },
+    {
+     "instruction": "0x009ee6",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    }
+   ],
+   "cfg_evidence": {
+    "local_straight_line": false,
+    "case_target": "0x009ede"
+   },
+   "dataflow_evidence": {
+    "pointer_source": "POINTER_FROM_QUEUE_ITEM payload+3 (record+7)",
+    "pointer_width_bits": 32,
+    "value_source": "loadw payload+7 (record+11)",
+    "write_width_bits": 16,
+    "effect": "storw r0,0(r3,r2)",
+    "byte_order": "CR16 typed loadd/loadw; external byte serialization unknown",
+    "range_check_in_selected_block": false,
+    "target_range": "TARGET_RANGE_UNRESOLVED",
+    "external_control": "EXTERNAL_CONTROL_NOT_PROVEN"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "queue item source and pointer alias/range unknown",
+    "no MMIO/DIP/DSP target is proven reachable",
+    "earlier checks on producer path not excluded"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x0274e0",
+     "raw_bytes": "20af0300",
+     "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+    },
+    {
+     "instruction": "0x0274e4",
+     "raw_bytes": "009f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r0"
+    },
+    {
+     "instruction": "0x0274e8",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    }
+   ],
+   "cfg_evidence": {
+    "local_straight_line": false,
+    "case_target": "0x0274e0"
+   },
+   "dataflow_evidence": {
+    "pointer_source": "POINTER_FROM_QUEUE_ITEM payload+3 (record+7)",
+    "pointer_width_bits": 32,
+    "value_source": "loadw payload+7 (record+11)",
+    "write_width_bits": 16,
+    "effect": "storw r0,0(r3,r2)",
+    "byte_order": "CR16 typed loadd/loadw; external byte serialization unknown",
+    "range_check_in_selected_block": false,
+    "target_range": "TARGET_RANGE_UNRESOLVED",
+    "external_control": "EXTERNAL_CONTROL_NOT_PROVEN"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "queue item source and pointer alias/range unknown",
+    "no MMIO/DIP/DSP target is proven reachable",
+    "earlier checks on producer path not excluded"
+   ]
+  }
+ }
+}

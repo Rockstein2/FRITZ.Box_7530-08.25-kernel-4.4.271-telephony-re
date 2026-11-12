@@ -1,0 +1,257 @@
+{
+ "tool": "cr16-queue-trace/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x003920",
+     "raw_bytes": "82d0",
+     "disassembly": "storw r8,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x003922",
+     "raw_bytes": "12000070cb93",
+     "disassembly": "loadb 0x93cb:l,r0"
+    },
+    {
+     "instruction": "0x003928",
+     "raw_bytes": "02f2",
+     "disassembly": "storb r0,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x00392a",
+     "raw_bytes": "b2f3",
+     "disassembly": "storb r11,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x003aba",
+     "raw_bytes": "7255",
+     "disassembly": "movd (r8,r7),(r3,r2)"
+    },
+    {
+     "instruction": "0x0039d8",
+     "raw_bytes": "70000000cb93",
+     "disassembly": "movd $0x93cb:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x0039f0",
+     "raw_bytes": "50f0",
+     "disassembly": "storb r5,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x0039f2",
+     "raw_bytes": "00c07664",
+     "disassembly": "bal (ra),*+0x9e68:m"
+    },
+    {
+     "instruction": "0x009e76",
+     "raw_bytes": "b5502300",
+     "disassembly": "cmpb $0x23:m,r5"
+    },
+    {
+     "instruction": "0x009ede",
+     "raw_bytes": "20af0300",
+     "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+    },
+    {
+     "instruction": "0x009ee2",
+     "raw_bytes": "009f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r0"
+    },
+    {
+     "instruction": "0x009ee6",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    }
+   ],
+   "cfg_evidence": {
+    "global_state_write_before_parser": true,
+    "parser_pointer": "item+4 passed via r3:r2 on selected main path"
+   },
+   "dataflow_evidence": {
+    "fields": [
+     {
+      "offset": 0,
+      "source": "allocated payload length (r3)",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 2,
+      "source": "state byte from image RAM status; exact semantics unknown",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 3,
+      "source": "allocator r2 tag; dispatcher only changes separate global state",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 4,
+      "source": "payload type word 0x0167 or 0xfff1 on parser branch",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 6,
+      "source": "subcommand byte for 0xfff1 branch only",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 7,
+      "source": "case13 pointer32 from payload+3",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 11,
+      "source": "case13 stored word from payload+7",
+      "bounds": "LENGTH_UNRESOLVED"
+     }
+    ],
+    "word_order": "CR16 little-endian memory for typed loads",
+    "total_size": "payload length + 4 on allocated path; global length unresolved",
+    "marker_0x23": "parser compares caller-supplied item+3 tag; dispatcher separately stores 0x23 in global RAM; NOT UART sync proof",
+    "type_0x0167_0xfff1": "observed comparison, meaning unresolved",
+    "nested_payload": "pointer and 16-bit value at +3/+7 relative to item+4"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "partial items and global buffer availability not proved",
+    "other item types may use different offsets"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x027032",
+     "raw_bytes": "82d0",
+     "disassembly": "storw r8,0x0:s(r3,r2)"
+    },
+    {
+     "instruction": "0x027034",
+     "raw_bytes": "120000701295",
+     "disassembly": "loadb 0x9512:l,r0"
+    },
+    {
+     "instruction": "0x02703a",
+     "raw_bytes": "02f2",
+     "disassembly": "storb r0,0x2:s(r3,r2)"
+    },
+    {
+     "instruction": "0x02703c",
+     "raw_bytes": "b2f3",
+     "disassembly": "storb r11,0x3:s(r3,r2)"
+    },
+    {
+     "instruction": "0x0271d8",
+     "raw_bytes": "7255",
+     "disassembly": "movd (r8,r7),(r3,r2)"
+    },
+    {
+     "instruction": "0x0270ea",
+     "raw_bytes": "700000001295",
+     "disassembly": "movd $0x9512:l,(r1,r0)"
+    },
+    {
+     "instruction": "0x02710a",
+     "raw_bytes": "50f0",
+     "disassembly": "storb r5,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x02710c",
+     "raw_bytes": "00c05e03",
+     "disassembly": "bal (ra),*+0x2746a:m"
+    },
+    {
+     "instruction": "0x027478",
+     "raw_bytes": "b5502300",
+     "disassembly": "cmpb $0x23:m,r5"
+    },
+    {
+     "instruction": "0x0274e0",
+     "raw_bytes": "20af0300",
+     "disassembly": "loadd 0x3:m(r1,r0),(r3,r2)"
+    },
+    {
+     "instruction": "0x0274e4",
+     "raw_bytes": "009f0700",
+     "disassembly": "loadw 0x7:m(r1,r0),r0"
+    },
+    {
+     "instruction": "0x0274e8",
+     "raw_bytes": "02d0",
+     "disassembly": "storw r0,0x0:s(r3,r2)"
+    }
+   ],
+   "cfg_evidence": {
+    "global_state_write_before_parser": true,
+    "parser_pointer": "item+4 passed via r3:r2 on selected main path"
+   },
+   "dataflow_evidence": {
+    "fields": [
+     {
+      "offset": 0,
+      "source": "allocated payload length (r3)",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 2,
+      "source": "state byte from image RAM status; exact semantics unknown",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 3,
+      "source": "allocator r2 tag; dispatcher only changes separate global state",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 4,
+      "source": "payload type word 0x0167 or 0xfff1 on parser branch",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 6,
+      "source": "subcommand byte for 0xfff1 branch only",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 7,
+      "source": "case13 pointer32 from payload+3",
+      "bounds": "LENGTH_UNRESOLVED"
+     },
+     {
+      "offset": 11,
+      "source": "case13 stored word from payload+7",
+      "bounds": "LENGTH_UNRESOLVED"
+     }
+    ],
+    "word_order": "CR16 little-endian memory for typed loads",
+    "total_size": "payload length + 4 on allocated path; global length unresolved",
+    "marker_0x23": "parser compares caller-supplied item+3 tag; dispatcher separately stores 0x23 in global RAM; NOT UART sync proof",
+    "type_0x0167_0xfff1": "observed comparison, meaning unresolved",
+    "nested_payload": "pointer and 16-bit value at +3/+7 relative to item+4"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "partial items and global buffer availability not proved",
+    "other item types may use different offsets"
+   ]
+  }
+ }
+}

@@ -50,3 +50,8 @@ UART RX vectors are stubs; (2) parser input length/complete handler and
 response semantics are unclosed; (3) indirect aliases, asynchronous paths
 and physical PCM/analog side effects have no source-to-sink proof.
 Q46/Q55/Q75 remain open. K1/K2 remain NO-GO; no hardware action.
+
+**Follow-up:** `sc14448-e41-summary.md` resolves the local software allocator
+and `[0xDA]/[0xDE]` cursor roles, and corrects queue-header versus payload
+offsets. It does not identify hardware/host ingress. The E4 result above
+is retained in its original bounded context.
