@@ -97,7 +97,7 @@ TDM_CTRL values, DMA channels, EOR#2 frame model) are documented in
 | map → `gcc_audio_blk_rst()` (assert, 20–24 ms, deassert) | ADSS probe | enable AHB clock → reset pulse → map → snapshot (order of clock/reset/map differs but is the conservative C1-proven order) | compatible |
 | `adss_glb_i2s_interface_en(ENABLE)` (`0x10` BIT0) | ADSS probe | step 6, before TDM config | match |
 | `adss_glb_audio_mode_B1K()` (`0x30` BIT28) | ADSS probe | step 10, **together with** the TDM bits at config time | **phase differs** (value matches) |
-| `adss_config_clk()`: `adss_glb_i2s_reset()` pulse (`0x14`), **`adss_config_clksel(2)`** (external pad clock) | TDM config | I2S_RST pulse present (step 7); **`clksel(2)` absent — `ADSS_GLB_CLK_I2S_CTRL` is never written** | **missing** |
+| `adss_config_clk()`: `adss_glb_i2s_reset()` pulse (`0x14`), **`adss_config_clksel(2)`** (external clock-source selection via the AVM ADCC) | TDM config | I2S_RST pulse present (step 7); **no proven equivalent of `adss_config_clksel(2)` exists in C2.1** — and the absence of a write to `ADSS_GLB_CLK_I2S_CTRL` (`0x18`) by itself proves nothing, because that register is a separate ADSS clock-output control and is not the ADCC clock-selection path | **missing** |
 | `adss_config_tdm(enable=DISABLE, …)` first, enable on start | TDM config | STEREO written **with `ENABLE` (BIT21) set** at config time | **differs** |
 | STEREO `DATA_WORD_SIZE(1)`, 16-bit words, `MCK_SEL` | TDM config | present (fixed after the executed C2) | match (untested on hardware) |
 | `GLB_TDM_CTRL` 8 slots + delays | TDM config | `0x06070007` | match (executed value readback-verified) |
@@ -119,7 +119,7 @@ corrected sequence has never run on hardware.
 | 4 | TDM DT node | `tdm@0` | `900/901` patches + test DTS; disabled in normal image | PARTIAL (ADCC phandles AVM-only) |
 | 5 | ADSS probe order | map → blk reset → I2S enable → B1K | C1/C2.1 code; executed C1 read-verified | MATCH (code), C2.1 untested |
 | 6 | Pinmux | `dakota_gpio_pinconfig` call; body UNKNOWN | none; mainline pinctrl has no PCM function | MISSING (Q31/Q77) |
-| 7 | Slave clock config | `clksel(2)`, dummy rates | **no `CLK_I2S_CTRL` write at all** | MISSING (was "PARTIAL" — corrected) |
+| 7 | Slave clock config | `adss_config_clksel(2)` via the AVM ADCC, dummy rates | C2.1 has **no proven equivalent of the OEM ADCC clock-selection path**; a plain `ADSS_GLB_CLK_I2S_CTRL` write would not be that equivalent (separate register, separate function) | PARTIAL/UNIMPLEMENTED OEM ADCC clock-selection equivalent |
 | 8 | STEREO/TDM_CTRL/AUDIO_MODE | GPL values | C2 values write+readback verified (old C2); corrected C2 not run | PARTIAL (values match; order/phasing differs, §4) |
 | 9 | DMA descriptors | `_mbox_desc` 156 B, `mbox_get_desc_size()`=L1_CACHE_ALIGN(156), NextPtr chain, 16 descriptors | **implemented**: `fon_mbox_desc` (156 B, `_Static_assert`), `fon_dma_build_ring()` (16 descriptors, cache-aligned stride, ping-pong buffers, 28-bit mask), host-tested (`fon_dma_test.c`) | MATCH at the descriptor level; MBOX register programming + start MISSING (`dma_start=-EOPNOTSUPP`) |
 | 10 | Frame geometry + EOR#2 | raw-memory model proven | `fon_tdm.c` builds the exact raw frame | MATCH (memory level); wire order UNKNOWN (Q74) |
@@ -132,18 +132,22 @@ corrected sequence has never run on hardware.
 
 `fon_c2.c` cleanup does **not** restore the prior register state:
 
-* it re-asserts `GCC_AUDIO_BCR` (block back to reset) and disables the
-  AHB clock;
+* `reset_control_assert()` is called (and its return value is kept);
+* `clk_disable_unprepare()` is called (void API);
+* the software clock enable count returns to 0;
 * the baseline snapshot is used for **comparison only** — `before` values
   are never written back;
 * the pre-C2 register state is unknown (the C1 notes already state that
   the reset pulse itself changes the register state);
-* the clock-gate stop is **unconfirmed** (the `clk_branch_toggle` warning
-  appeared on the disable path in both C1 and C2).
+* the **physical clock-gate halt is unverified**: the `clk_branch_toggle`
+  warning appeared on the disable path in both C1 and C2, so calling the
+  disable API is not proof that the gate stopped.
 
-The honest statement: C2.1 leaves the block **in reset with the clock
-dropped**, which is a bounded "quiescent" state, not a restoration of the
-original state. Any plan that calls this a full rollback is wrong.
+The honest statement: cleanup attempts to put ADSS into a reset-held
+state and releases the software clock reference; the actual clock-gate
+halt is unverified, the prior register values are not restored, and the
+pre-C2 reset state is unknown. That is **not** a full rollback and must
+not be described as a guaranteed "quiescent" state.
 
 ---
 
@@ -155,19 +159,28 @@ the `GPIO_IO(n)` input bits of the pins the OEM captures show as muxed
 (`FUNC_SEL` 2/3 for GPIO21/22/23/25/26/27); the one-shot kernel probe is
 the stock-OpenWrt path. No writes, no pinmux change, no reset, no upload.
 
-**What a positive result means:** periodic edges at ≈1.024 MHz (BCLK) and
-≈8 kHz (FSC) on the known OEM mux pins under OpenWrt ⇒ the SC14448 is
-running and driving the bus **without any OpenWrt-side action** — the
-whole driver question collapses to "read the frames correctly" and the
-firmware-upload/reset/pinmux gates become lower-risk (not bypassed).
+**What a positive result means — an observation, not a proof of origin.**
+Periodic edges at ≈1.024 MHz (BCLK) and ≈8 kHz (FSC) on the probed pins
+would confirm that the **IPQ4019 input path observes transitions at
+frequencies compatible with the OEM FSC/BCLK**. That:
+
+* raises the probability of a working external TDM clock;
+* justifies considering the next receiver-path analysis stage;
+* does **not** prove the signal source (no hardware SC14448↔GPIO
+  correspondence has been established);
+* does **not** prove that the SC14448 executes the stock firmware;
+* does **not** prove correct PCM frames or data;
+* does **not** remove the reset, firmware or pinmux requirements and
+  grants no automatic transition to C3 passive RX or C4.
 
 **What a negative result means — almost nothing by itself.** A flat or
 wrong reading can be any of: SC14448 held in reset (GPIO40 observed low
 as an input under OpenWrt), firmware never uploaded, pinmux `FUNC_SEL`
 different under OpenWrt (Linux reports no mux owner, but that is not a
 TLMM readback), the IPQ4019 input path not seeing the signal (pad
-configuration), or the wrong pins entirely. T3 alone cannot discriminate
-these; it only tells us whether the question is worth escalating.
+configuration), TLMM sampling limitations, or the wrong pins entirely.
+T3 alone cannot discriminate these; it only tells us whether the question
+is worth escalating.
 
 **Why the scope is not yet a prepared stage:** no electrical test point
 has been identified that provably carries FSC/BCLK (board BGA, internal
@@ -175,11 +188,12 @@ layers, continuity to the PCM nets not established — `fon-tdm-control-only-pla
 §3). Passive scope measurement (T4) therefore remains **blocked on net
 identification**, not merely gated.
 
-**Decision value:** a *positive* T3 result would justify moving directly
-toward read-only frame capture (C3 passive RX) and would de-prioritise
-the upload/reset reverse-engineering. A *negative* T3 result leaves the
-upload-path question (Q79/Q80, reset polarity) as the only way forward —
-it must not be used to conclude the SC14448 is dead.
+**Decision value:** a *positive* T3 result is a reason to continue with
+the receiver-path analysis, but it closes no hardware gate by itself; the
+upload/reset/pinmux questions (Q79/Q80, reset polarity) stay open and are
+only re-weighted, not resolved. A *negative* T3 result leaves the
+upload-path question as the only way forward — it must not be used to
+conclude the SC14448 is dead.
 
 ---
 

@@ -1638,46 +1638,88 @@ for _p in (REFDIR.rglob("*")):
 # ---------------------------------------------------------------------------
 # 23. E6 PCMLINK BRING-UP: the consolidated model must not regress into the
 #     review findings (version mixing, linear ordering, executed stages as
-#     future steps, C2-as-MATCH, descriptor MISSING, full-rollback claim).
+#     future steps, C2-as-MATCH, descriptor MISSING, full-rollback claim,
+#     over-strong clock-evidence claims).  Checks are scoped to the section
+#     that must carry the statement, not keyword-searched over the file.
 # ---------------------------------------------------------------------------
-_e6 = DOCS / "fon-e6-pcmlink-bringup.md"
-_e6_text = _e6.read_text() if _e6.is_file() else ""
+def _e6_section(heading):
+    """Text from a `## N. heading` line up to the next `## ` heading,
+    with whitespace collapsed so wrapped phrases still match."""
+    if _e6_text is None:
+        return ""
+    lines = _e6_text.splitlines()
+    out, active = [], False
+    for line in lines:
+        if line.startswith("## "):
+            active = line.startswith("## " + heading)
+            continue
+        if active:
+            out.append(line)
+    return " ".join("\n".join(out).split())
 
-check("E6: bootlog version labelled 07.28 / 4.4.60",
-      "07.28" in _e6_text and "4.4.60" in _e6_text, True)
-check("E6: timestamps not presented as 08.25 measurements",
-      "not our measurement" in _e6_text
-      or "not our measurements" in _e6_text, True)
-check("E6: module ordering caveat recorded",
-      "does **not** prove" in _e6_text
-      and "overlapping or lazy" in _e6_text, True)
-check("E6: 2026-11-07 executions recorded as done",
-      "DONE 2026-11-07" in _e6_text and "no repeat needed" in _e6_text,
+
+_e6 = DOCS / "fon-e6-pcmlink-bringup.md"
+_e6_text = _e6.read_text() if _e6.is_file() else None
+_e6_s1 = _e6_section("1. Already executed")
+_e6_s2 = _e6_section("2. The OEM reference sequence")
+_e6_s4 = _e6_section("4. `fon_c2.c` (corrected C2.1) vs the OEM order")
+_e6_s5 = _e6_section("5. Gap matrix (rev 2)")
+_e6_s6 = _e6_section("6. Rollback reality")
+_e6_s7 = _e6_section("7. The one question that changes the path")
+_e6_head = "\n".join(_e6_text.splitlines()[:12]) if _e6_text else ""
+
+check("E6: K1/K2 NO-GO in the header", "K1/K2" in _e6_head
+      and "NO-GO" in _e6_head, True)
+check("E6: bootlog version labelled 07.28 / 4.4.60 (sec 2)",
+      "07.28" in _e6_s2 and "4.4.60" in _e6_s2, True)
+check("E6: timestamps not presented as 08.25 measurements (sec 2)",
+      "not our measurement" in _e6_s2, True)
+check("E6: module ordering caveat recorded (sec 2)",
+      "does **not** prove" in _e6_s2 and "overlapping or lazy" in _e6_s2,
       True)
-check("E6: executed C1 reset values recorded",
-      "0x00010001" in _e6_text and "0x00000102" in _e6_text, True)
-check("E6: executed C2 values recorded as observations",
-      "0x06070007" in _e6_text and "0x00240000" in _e6_text
-      and "0x10000005" in _e6_text, True)
-check("E6: clock-gate stop unconfirmed recorded",
-      "NOT CONFIRMED" in _e6_text and "clk_branch_toggle" in _e6_text,
-      True)
-check("E6: corrected C2 marked not run",
-      "NOT RUN" in _e6_text and "never run" in _e6_text, True)
-check("E6: C2 vs OEM order marked PARTIAL with the phase diffs",
-      "PARTIAL." in _e6_text and "clksel(2)" in _e6_text
-      and "ENABLE" in _e6_text, True)
-check("E6: DMA descriptors implemented, not missing",
-      "implemented" in _e6_text and "156 B" in _e6_text
-      and "16 descriptors" in _e6_text, True)
-check("E6: rollback is quiescent state, not restoration",
-      "does **not** restore the prior register state" in _e6_text
-      and "not a restoration of the" in _e6_text, True)
-check("E6: negative FSC/BCLK result cannot discriminate",
-      "nothing by itself" in _e6_text
-      and "cannot discriminate" in _e6_text, True)
-check("E6: scope stage blocked on net identification",
-      "blocked on net" in _e6_text, True)
+check("E6: 2026-11-07 executions recorded as done (sec 1)",
+      "EXECUTED" in _e6_s1 and "NOT RUN" in _e6_s1, True)
+check("E6: executed C1 reset values recorded (sec 1)",
+      "0x00010001" in _e6_s1 and "0x00000102" in _e6_s1, True)
+check("E6: executed C2 values recorded as observations (sec 1)",
+      "0x06070007" in _e6_s1 and "0x00240000" in _e6_s1
+      and "0x10000005" in _e6_s1, True)
+check("E6: clock-gate stop unconfirmed recorded (sec 1)",
+      "NOT CONFIRMED" in _e6_s1 and "clk_branch_toggle" in _e6_s1, True)
+check("E6: corrected C2.1 still not run (sec 1)",
+      "NOT RUN" in _e6_s1 and "never run" in _e6_s4, True)
+check("E6: C2 vs OEM order marked PARTIAL (sec 4)",
+      "PARTIAL" in _e6_s4, True)
+check("E6: clksel(2) and ADSS_GLB_CLK_I2S_CTRL are distinguished (sec 4)",
+      "no proven equivalent" in _e6_s4
+      and "not the ADCC clock-selection path" in _e6_s4, True)
+check("E6: gap matrix keeps clksel(2) distinct (sec 5)",
+      "PARTIAL/UNIMPLEMENTED OEM ADCC clock-selection equivalent"
+      in _e6_s5 and "separate register" in _e6_s5, True)
+check("E6: DMA descriptors implemented, not missing (sec 5)",
+      "implemented" in _e6_s5 and "156 B" in _e6_s5
+      and "16 descriptors" in _e6_s5, True)
+check("E6: cleanup is an attempt, not a full rollback (sec 6)",
+      "attempts to put ADSS into a reset-held state" in _e6_s6
+      and "a full rollback" in _e6_s6, True)
+check("E6: cleanup is not called quiescent (sec 6)",
+      "in reset with the clock dropped" not in _e6_s6
+      and "must not be described as a guaranteed" in _e6_s6, True)
+check("E6: physical clock-gate halt unverified (sec 6)",
+      "unverified" in _e6_s6 and "clk_branch_toggle" in _e6_s6, True)
+check("E6: positive result is an observation, not firmware proof (sec 7)",
+      "IPQ4019 input path observes transitions" in _e6_s7
+      and "an observation, not a proof of origin" in _e6_s7, True)
+check("E6: positive result does not prove the SC14448 runs firmware "
+      "(sec 7)", "does **not** prove that the SC14448 executes the stock "
+      "firmware" in _e6_s7, True)
+check("E6: no automatic C0+ -> C3/C4 transition (sec 7)",
+      "grants no automatic transition" in _e6_s7
+      and "moving directly" not in _e6_s7, True)
+check("E6: negative result lists TLMM sampling limits (sec 7)",
+      "TLMM sampling limitations" in _e6_s7, True)
+check("E6: scope stage blocked on net identification (sec 7)",
+      "blocked on net" in _e6_s7, True)
 
 print()
 print(f"{fails} failure(s), {skips} skip(s)")
