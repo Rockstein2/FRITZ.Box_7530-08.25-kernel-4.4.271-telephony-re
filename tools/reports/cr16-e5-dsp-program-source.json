@@ -47,17 +47,29 @@
      ]
     },
     "dsp_pc_start_value": "0x7980",
-    "transform": "DSP_PC = ((flash_addr >> 1) + 0xC000) & 0xFFFF (firmware arithmetic, verified in both images)",
-    "program_source_classification": "DSP_PROGRAM_EMBEDDED_IN_FIRMWARE_IMAGE",
-    "program_source_why": "firmware derives DSP_PC_START from this block; the execution mechanism (flash alias vs copy vs ROM) is unproven",
+    "transform": "DSP_PC = ((flash_addr >> 1) + 0xC000) & 0xFFFF (firmware arithmetic, verified in both images; identical to the SC14480 Table 63 linear rule DSP = (CR16>>1) - 0x4000 mod 2^16)",
+    "program_source_classification": "DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START",
+    "program_source_why": "the firmware derives DSP_PC_START from this block address; the block content, its executability and the execution mechanism (flash alias vs copy vs ROM) are unproven",
+    "block_content_validation": "NONE: the block is not decoded as DSP instructions; no opcode/structure check exists",
     "microcode_ram_literal_sites": [
      "0x023f28"
     ],
     "microcode_rom_literal_sites": [
      "0x023f28"
     ],
-    "copy_loop_found": false,
-    "copy_loop_search_scope": "storw/stord into 0x0103xxxx/0x0104xxxx windows; no resolved sites",
+    "microcode_window_copy_search": {
+     "ram_window": [
+      "0x01030000",
+      "0x01033fff"
+     ],
+     "rom_window": [
+      "0x01040000",
+      "0x0104ffff"
+     ],
+     "resolved_direct_stores": [],
+     "resolved_direct_loads": [],
+     "status": "NONE_FOUND_BY_THIS_SCAN"
+    },
     "dsp_data_space_transform_sites": [
      "0x0005ba",
      "0x0005c8",
@@ -69,7 +81,56 @@
     "dsp_program_space_transform_sites": [
      "0x001378"
     ],
-    "dsp_data_space_transform": "DSP_ADDR = ((cr16_addr >> 1) + 0x8000) & 0xFFFF (candidate)"
+    "dsp_data_space_transform": "DSP_ADDR = ((cr16_addr >> 1) + 0x8000) & 0xFFFF (candidate)",
+    "sc14480_table63": {
+     "rows": [
+      {
+       "cr16": "0x01000000-0x010003ff",
+       "dsp": "0x0000-0x01ff",
+       "meaning": "DIP Micro code RAM"
+      },
+      {
+       "cr16": "0x01000400-0x01000fff",
+       "dsp": "0x0200-0x07ff",
+       "meaning": "DIP Micro code RAM (reserved)"
+      },
+      {
+       "cr16": "0x01030000-0x010307ff",
+       "dsp": "0x0000-0x03ff",
+       "meaning": "Gen2DSP Micro code RAM"
+      },
+      {
+       "cr16": "0x01030800-0x01037fff",
+       "dsp": "0x0400-0x3fff",
+       "meaning": "Gen2DSP Micro code RAM (Reserved)"
+      },
+      {
+       "cr16": "0x00010000-0x00013fff",
+       "dsp": "0x4000-0x5fff",
+       "meaning": "Gen2DSP Micro code RAM mapped in Shared RAM"
+      },
+      {
+       "cr16": "0x00014000-0x00017fff",
+       "dsp": "0x6000-0x7fff",
+       "meaning": "Gen2DSP Micro code RAM (Reserved)"
+      },
+      {
+       "cr16": "0x01040000-0x0104afff",
+       "dsp": "0x8000-0xd7ff",
+       "meaning": "Micro code ROM"
+      },
+      {
+       "cr16": "0x0104b000-0x0104ffff",
+       "dsp": "0xd800-0xffff",
+       "meaning": "Reserved"
+      }
+     ],
+     "linear_rule": "DSP = (CR16 >> 1) - 0x4000 (mod 2^16)",
+     "firmware_transform_identical_to_linear_rule": true,
+     "block_cr16_address": "0x017300",
+     "block_table63_region": "Gen2DSP Micro code RAM (Reserved) (0x00014000-0x00017fff -> 0x6000-0x7fff)",
+     "table63_conflict": "under the SC14480 map the block lies in a microcode region marked Reserved, not in the active shared-RAM row; the SC14448 memory organisation is unknown and the whole second-level image (code at 0x0+) does not fit the SC14480 program-flash map either"
+    }
    },
    "unresolved_paths": [
     "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
@@ -79,7 +140,8 @@
     "no all-path proof that no other code writes the DSP window",
     "whether the Gen2DSP executes the 0x17300 block in place (flash alias), from a copy, or from internal ROM is unproven; the PC derivation only proves the start address arithmetic",
     "the DSP microcode itself is not disassembled and its PCM/CODEC data flow cannot be verified offline",
-    "normal and p2test embed different-sized blocks (0xB7A vs 0x6FA bytes); the difference is not explained"
+    "normal and p2test embed different-sized blocks (0xB7A vs 0x6FA bytes); the difference is not explained",
+    "under the SC14480 Table 63 the block's CR16 range is a Reserved microcode region, not the active shared-RAM row; the SC14448 organisation is unknown"
    ],
    "confidence": "FIRMWARE_DERIVATION_PROVEN_EXECUTION_MECHANISM_UNKNOWN"
   },
@@ -129,13 +191,25 @@
      ]
     },
     "dsp_pc_start_value": "0x7980",
-    "transform": "DSP_PC = ((flash_addr >> 1) + 0xC000) & 0xFFFF (firmware arithmetic, verified in both images)",
-    "program_source_classification": "DSP_PROGRAM_EMBEDDED_IN_FIRMWARE_IMAGE",
-    "program_source_why": "firmware derives DSP_PC_START from this block; the execution mechanism (flash alias vs copy vs ROM) is unproven",
+    "transform": "DSP_PC = ((flash_addr >> 1) + 0xC000) & 0xFFFF (firmware arithmetic, verified in both images; identical to the SC14480 Table 63 linear rule DSP = (CR16>>1) - 0x4000 mod 2^16)",
+    "program_source_classification": "DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START",
+    "program_source_why": "the firmware derives DSP_PC_START from this block address; the block content, its executability and the execution mechanism (flash alias vs copy vs ROM) are unproven",
+    "block_content_validation": "NONE: the block is not decoded as DSP instructions; no opcode/structure check exists",
     "microcode_ram_literal_sites": [],
     "microcode_rom_literal_sites": [],
-    "copy_loop_found": false,
-    "copy_loop_search_scope": "storw/stord into 0x0103xxxx/0x0104xxxx windows; no resolved sites",
+    "microcode_window_copy_search": {
+     "ram_window": [
+      "0x01030000",
+      "0x01033fff"
+     ],
+     "rom_window": [
+      "0x01040000",
+      "0x0104ffff"
+     ],
+     "resolved_direct_stores": [],
+     "resolved_direct_loads": [],
+     "status": "NONE_FOUND_BY_THIS_SCAN"
+    },
     "dsp_data_space_transform_sites": [
      "0x000bb2",
      "0x000bba",
@@ -151,7 +225,56 @@
     "dsp_program_space_transform_sites": [
      "0x000dee"
     ],
-    "dsp_data_space_transform": "DSP_ADDR = ((cr16_addr >> 1) + 0x8000) & 0xFFFF (candidate)"
+    "dsp_data_space_transform": "DSP_ADDR = ((cr16_addr >> 1) + 0x8000) & 0xFFFF (candidate)",
+    "sc14480_table63": {
+     "rows": [
+      {
+       "cr16": "0x01000000-0x010003ff",
+       "dsp": "0x0000-0x01ff",
+       "meaning": "DIP Micro code RAM"
+      },
+      {
+       "cr16": "0x01000400-0x01000fff",
+       "dsp": "0x0200-0x07ff",
+       "meaning": "DIP Micro code RAM (reserved)"
+      },
+      {
+       "cr16": "0x01030000-0x010307ff",
+       "dsp": "0x0000-0x03ff",
+       "meaning": "Gen2DSP Micro code RAM"
+      },
+      {
+       "cr16": "0x01030800-0x01037fff",
+       "dsp": "0x0400-0x3fff",
+       "meaning": "Gen2DSP Micro code RAM (Reserved)"
+      },
+      {
+       "cr16": "0x00010000-0x00013fff",
+       "dsp": "0x4000-0x5fff",
+       "meaning": "Gen2DSP Micro code RAM mapped in Shared RAM"
+      },
+      {
+       "cr16": "0x00014000-0x00017fff",
+       "dsp": "0x6000-0x7fff",
+       "meaning": "Gen2DSP Micro code RAM (Reserved)"
+      },
+      {
+       "cr16": "0x01040000-0x0104afff",
+       "dsp": "0x8000-0xd7ff",
+       "meaning": "Micro code ROM"
+      },
+      {
+       "cr16": "0x0104b000-0x0104ffff",
+       "dsp": "0xd800-0xffff",
+       "meaning": "Reserved"
+      }
+     ],
+     "linear_rule": "DSP = (CR16 >> 1) - 0x4000 (mod 2^16)",
+     "firmware_transform_identical_to_linear_rule": true,
+     "block_cr16_address": "0x017300",
+     "block_table63_region": "Gen2DSP Micro code RAM (Reserved) (0x00014000-0x00017fff -> 0x6000-0x7fff)",
+     "table63_conflict": "under the SC14480 map the block lies in a microcode region marked Reserved, not in the active shared-RAM row; the SC14448 memory organisation is unknown and the whole second-level image (code at 0x0+) does not fit the SC14480 program-flash map either"
+    }
    },
    "unresolved_paths": [
     "SC14448 register identity is not proven; every register name is an SC14480 related-device analogy",
@@ -161,7 +284,8 @@
     "no all-path proof that no other code writes the DSP window",
     "whether the Gen2DSP executes the 0x17300 block in place (flash alias), from a copy, or from internal ROM is unproven; the PC derivation only proves the start address arithmetic",
     "the DSP microcode itself is not disassembled and its PCM/CODEC data flow cannot be verified offline",
-    "normal and p2test embed different-sized blocks (0xB7A vs 0x6FA bytes); the difference is not explained"
+    "normal and p2test embed different-sized blocks (0xB7A vs 0x6FA bytes); the difference is not explained",
+    "under the SC14480 Table 63 the block's CR16 range is a Reserved microcode region, not the active shared-RAM row; the SC14448 organisation is unknown"
    ],
    "confidence": "FIRMWARE_DERIVATION_PROVEN_EXECUTION_MECHANISM_UNKNOWN"
   }

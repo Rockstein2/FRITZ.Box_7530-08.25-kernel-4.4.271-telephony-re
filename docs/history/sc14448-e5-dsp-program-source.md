@@ -20,7 +20,8 @@ is unproven.
 
 ## The DSP program is embedded in the firmware image
 
-The second-level images carry a dedicated contiguous block at `0x17300`:
+The second-level images carry a dedicated contiguous block at `0x17300`
+(referenced by the firmware, not proven to be executed):
 
 | Image | Run | Bytes | 16-bit words | Block SHA256 | First bytes |
 |---|---|---|---|---|---|
@@ -30,19 +31,31 @@ The second-level images carry a dedicated contiguous block at `0x17300`:
 Both have an additional small run `0x17FE0–0x17FF7` (24 bytes). The two
 images embed **different-sized** DSP blocks; the reason is unknown.
 
-## Classification
+## Classification (E5.1-audited)
 
-`DSP_PROGRAM_EMBEDDED_IN_FIRMWARE_IMAGE` for both images. The execution
-mechanism is **not** classified further:
+`DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START` for both images. The
+only firmware-proven link between the block and the DSP is the
+`DSP_PC_START` derivation; block content, executability and the
+execution mechanism are unproven:
 
-* no copy loop into the SC14480 microcode-RAM window (`0x0103xxxx`) was
-  found; the only `0x0104xxxx` literal is normal's `0x23F28 movd
+* a real scan for absolute stores/loads into the SC14480 microcode
+  windows (`0x0103xxxx`/`0x0104xxxx`) found none
+  (`NONE_FOUND_BY_THIS_SCAN` — absence recorded, not proof);
+* the only `0x0104xxxx` literal is normal's `0x23F28 movd
   $0x1044d:l,(r13)` — an odd data pointer, not a ROM-window reference;
-* whether the Gen2DSP executes the `0x17300` block in place (flash
-  alias), from a hidden copy, or from internal ROM is undecidable from
-  these images;
 * the microcode itself is not disassembled (no DSP disassembler, no
   SC14448 DSP documentation offline).
+
+## SC14480 Table 63 conflict (E5.1)
+
+The firmware transform `(addr>>1)+0xC000 (mod 2^16)` is identical to
+the SC14480 Table 63 linear rule `DSP = (CR16>>1) − 0x4000 (mod 2^16)`.
+Under Table 63, CR16 `0x17300` lies in the row **«Gen2DSP Micro code
+RAM (Reserved)»** (`0x0001.4000–0x0001.7FFF → 0x6000–0x7FFF`), not in
+the active shared-RAM row (`0x0001.0000–0x0001.3FFF → 0x4000–0x5FFF`).
+This is a significant SC14448-vs-SC14480 difference to resolve (Q82):
+the proven fact is the written value `0x7980`; its hardware meaning is
+open.
 
 ## The companion data-space transform
 

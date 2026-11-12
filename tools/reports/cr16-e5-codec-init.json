@@ -55,7 +55,7 @@
      "raw_bytes": "20d0",
      "disassembly": "storw r2,0x0:s(r1,r0)",
      "effective_address": 16734210,
-     "value_or_bitop": "or 0x1c0 (LSRATT=-12dB)"
+     "value_or_bitop": "or 0x1c0 (LSRATT=111 -> -12 dB, Table 113)"
     },
     {
      "label": "codec1_lsr_mode_p",
@@ -87,7 +87,7 @@
      "raw_bytes": "20d0",
      "disassembly": "storw r2,0x0:s(r1,r0)",
      "effective_address": 16734210,
-     "value_or_bitop": "LSRATT=001 (2 dB final gain)"
+     "value_or_bitop": "0 dB nominal (Table 299 level at 0 dBm0) (LSRATT=001)"
     },
     {
      "label": "dsp_init_adda_store",
@@ -144,7 +144,7 @@
     "vref_sequence_matches_reference_order": "bias on -> VREF_INIT=1 precharge -> delay loop (0x7d0 iterations) -> MIC/LSR amplifiers on; the reference SC14480 note 57 recommends the same order with >=100us wait",
     "powerdown_then_powerup_pair": "init or 3 on CODEC_ADDA; runtime enable and 0x7ffc on CODEC_ADDA",
     "mic_config": "single-ended MICp (MIC_MODE=01), gain 0 dB (MIC_GAIN=0000), controlled by MIC_GAIN (DSP_CTRL bit10=0)",
-    "lsr_config": "differential DA to LSR+/LSR-, amplifiers on, final 2 dB",
+    "lsr_config": "differential DA to LSR+/LSR-, amplifiers on, final LSRATT=001 -> 0 dB nominal (SC14480 Table 299), after an intermediate LSRATT=111 (-12 dB) step",
     "tone_config": "RNG_PR_DIS=1 (RING protection diodes disabled), CID_PR_DIS=1 (set in pad init)",
     "pad_gpio_sites": [
      {
@@ -248,7 +248,7 @@
      "raw_bytes": "20d0",
      "disassembly": "storw r2,0x0:s(r1,r0)",
      "effective_address": 16734210,
-     "value_or_bitop": "or 0x1c0 (LSRATT=-12dB)"
+     "value_or_bitop": "or 0x1c0 (LSRATT=111 -> -12 dB, Table 113)"
     },
     {
      "label": "codec1_lsr_mode_p",
@@ -280,7 +280,7 @@
      "raw_bytes": "20d0",
      "disassembly": "storw r2,0x0:s(r1,r0)",
      "effective_address": 16734210,
-     "value_or_bitop": "LSRATT=001 (2 dB final gain)"
+     "value_or_bitop": "0 dB nominal (Table 299 level at 0 dBm0) (LSRATT=001)"
     },
     {
      "label": "dsp_init_adda_store",
@@ -337,7 +337,7 @@
     "vref_sequence_matches_reference_order": "bias on -> VREF_INIT=1 precharge -> delay loop (0x7d0 iterations) -> MIC/LSR amplifiers on; the reference SC14480 note 57 recommends the same order with >=100us wait",
     "powerdown_then_powerup_pair": "init or 3 on CODEC_ADDA; runtime enable and 0x7ffc on CODEC_ADDA",
     "mic_config": "single-ended MICp (MIC_MODE=01), gain 0 dB (MIC_GAIN=0000), controlled by MIC_GAIN (DSP_CTRL bit10=0)",
-    "lsr_config": "differential DA to LSR+/LSR-, amplifiers on, final 2 dB",
+    "lsr_config": "differential DA to LSR+/LSR-, amplifiers on, final LSRATT=001 -> 0 dB nominal (SC14480 Table 299), after an intermediate LSRATT=111 (-12 dB) step",
     "tone_config": "RNG_PR_DIS=1 (RING protection diodes disabled), CID_PR_DIS=1 (set in pad init)",
     "pad_gpio_sites": [
      {

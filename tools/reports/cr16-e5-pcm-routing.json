@@ -159,7 +159,7 @@
      },
      "effective_address": "0x01027fb8",
      "structure": 165884,
-     "status": "PROVEN_FIRMWARE_READ; caller chain main->dispatcher -> monitor verified locally"
+     "status": "PROVEN_FIRMWARE_READ; main -> dispatcher (direct call) -> monitor block (direct fallthrough) edges verified"
     },
     "interface_mismatch_with_linux": [
      "Linux OEM side: 8 x 16-bit slots, nominal BCLK 1.024 MHz",
@@ -341,7 +341,7 @@
      },
      "effective_address": "0x01027fb8",
      "structure": 161094,
-     "status": "PROVEN_FIRMWARE_READ; caller chain main->dispatcher -> monitor verified locally"
+     "status": "PROVEN_FIRMWARE_READ; main -> dispatcher (direct call) -> monitor block (direct fallthrough) edges verified"
     },
     "interface_mismatch_with_linux": [
      "Linux OEM side: 8 x 16-bit slots, nominal BCLK 1.024 MHz",

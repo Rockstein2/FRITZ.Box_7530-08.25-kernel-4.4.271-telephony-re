@@ -30,10 +30,12 @@ on `0xFF5804`) and powers the converters.
 `(andw r1 | 0x1000)` with r1=0xCFFF (MIC_CADJ=00), `cbitw 2` (MIC_PD=0,
 amplifier on).
 
-`0x00FF5802` CODEC_LSR_REG: `orw 0x1C0` (LSRATT=111, −12 dB), `(andw
-0xFFFC | 2)` (LSRP_MODE=10, differential DA+), `(andw 0xFFE7 | 0x10)`
-(LSRN_MODE=10, differential DA−), `cbitw 5, 9, 2` (LSRN_PD=0, LSREN_SE=0,
-LSRP_PD=0), `(andw 0xFE3F | 0x40)` (LSRATT=001, final 2 dB).
+`0x00FF5802` CODEC_LSR_REG: `orw 0x1C0` (LSRATT=111, −12 dB, Table 113),
+`(andw 0xFFFC | 2)` (LSRP_MODE=10, differential DA+), `(andw 0xFFE7 |
+0x10)` (LSRN_MODE=10, differential DA−), `cbitw 5, 9, 2` (LSRN_PD=0,
+LSREN_SE=0, LSRP_PD=0), `(andw 0xFE3F | 0x40)` (**LSRATT=001 → 0 dB
+nominal**, Table 299 level at 0 dBm0 — the E5 text «+2 dB» was wrong and
+is corrected).
 
 `0x00FF5806` CODEC_TONE_REG: `sbitw 3` (RNG_PR_DIS=1, RING protection
 diodes disabled) in part 1; `sbitw 1` (CID_PR_DIS=1) in the pad init —

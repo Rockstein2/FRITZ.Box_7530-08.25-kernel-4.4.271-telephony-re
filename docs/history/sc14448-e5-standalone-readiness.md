@@ -18,21 +18,24 @@
 ## Assessment
 
 The strongest E5 result for a standalone driver: the OEM firmware carries
-a **complete, self-describing DSP/CODEC/PCM bring-up** — clock dividers,
-CODEC analog order, PCM master/slave modes and the DSP start address are
-all instruction-proven with concrete values, in both images. The plausible
-model is therefore the one the task proposed: keep the OEM firmware as a
-**closed DSP/CODEC engine** and drive it from Linux, instead of
-reimplementing the analog bring-up.
+**candidate** DSP/CODEC/PCM bring-up register sequences — clock
+dividers, CODEC analog order, PCM master/slave modes and the DSP start
+address are all instruction-proven with concrete values, in both images.
+A plausible model is therefore the one the task proposed: keep the OEM
+firmware as a **closed DSP/CODEC engine** and drive it from Linux,
+instead of reimplementing the analog bring-up.
 
-That model is **not yet proven safe to build on**:
+That model is **not proven and cannot be built on yet** (E5.1 audit):
 
 1. every register identity is an SC14480 analogy — the SC14448 map is
    unconfirmed;
-2. whether the DSP executes the embedded `0x17300` block (and therefore
-   whether the engine even runs) is unproven;
-3. audio timing is configured for DIP (`<A_NORM>`) synchronisation —
-   whether the DIP must be radio-active is unknown;
+2. the `0x17300` block is only a **candidate** DSP program
+   (`DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START`); under the SC14480
+   Table 63 its CR16 range is a *Reserved* microcode region, and whether
+   the DSP executes it at all is unproven;
+3. audio timing is configured for DIP (`<A_NORM>`) synchronisation of
+   the main counter — whether the DIP must be radio-active is unknown,
+   and other DSP start sources are not excluded;
 4. no command path to any analog line function is proved (E4.2), so FON
    control stays out of reach regardless of the audio engine;
 5. the Linux-side TDM geometry (8×16-bit slots, 1.024 MHz) does not

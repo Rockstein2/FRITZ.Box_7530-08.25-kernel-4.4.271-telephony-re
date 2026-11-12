@@ -44,6 +44,7 @@ import cr16_address_spaces as A
 import cr16_cfg as C
 import cr16_dataflow as D
 import cr16_dip_trace as T
+import cr16_peripheral_xrefs as X
 from cr16_boot_memory_map import parse_ihex
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -62,21 +63,45 @@ DSP_WINDOW = (DSP_BASE, DSP_BASE + 0x80)
 SC14480 = {
     "dsp_window": {
         0x00: "DSP_MAIN_SYNC0_REG", 0x02: "DSP_MAIN_SYNC1_REG",
-        0x04: "DSP_MAIN_CNT_REG", 0x36: "DSP_PCM_CTRL_REG",
-        0x38: "DSP_PHASE_INFO_REG", 0x3C: "DSP_MAIN_CTRL_REG",
+        0x04: "DSP_MAIN_CNT_REG",
+        0x0C: "DSP_CODEC_MIC_GAIN_REG", 0x0E: "DSP_CODEC_OUT_REG",
+        0x10: "DSP_CODEC_IN_REG",
+        0x12: "DSP_RAM_OUT0_REG", 0x14: "DSP_RAM_OUT1_REG",
+        0x16: "DSP_RAM_OUT2_REG", 0x18: "DSP_RAM_OUT3_REG",
+        0x1A: "DSP_RAM_IN0_REG", 0x1C: "DSP_RAM_IN1_REG",
+        0x1E: "DSP_RAM_IN2_REG", 0x20: "DSP_RAM_IN3_REG",
+        0x22: "DSP_ZCROSS1_OUT_REG", 0x24: "DSP_ZCROSS2_OUT_REG",
+        0x26: "DSP_PCM_OUT0_REG", 0x28: "DSP_PCM_OUT1_REG",
+        0x2A: "DSP_PCM_OUT2_REG", 0x2C: "DSP_PCM_OUT3_REG",
+        0x2E: "DSP_PCM_IN0_REG", 0x30: "DSP_PCM_IN1_REG",
+        0x32: "DSP_PCM_IN2_REG", 0x34: "DSP_PCM_IN3_REG",
+        0x36: "DSP_PCM_CTRL_REG", 0x38: "DSP_PHASE_INFO_REG",
+        0x3C: "DSP_MAIN_CTRL_REG",
         0x50: "DSP_CTRL_REG", 0x54: "DSP_PC_START_REG",
         0x56: "DSP_IRQ_START_REG", 0x58: "DSP_INT_REG",
         0x5A: "DSP_INT_MASK_REG", 0x5C: "DSP_INT_PRIO1_REG",
         0x5E: "DSP_INT_PRIO2_REG", 0x60: "DSP_OVERFLOW_REG",
         0x64: None,  # not mapped in the SC14480 register tables
-        0xA6: "DSP_PCM_OUT0_REG", 0xA8: "DSP_PCM_OUT1_REG",
-        0xAA: "DSP_PCM_OUT2_REG", 0xAC: "DSP_PCM_OUT3_REG",
-        0xAE: "DSP_PCM_IN0_REG", 0xB0: "DSP_PCM_IN1_REG",
-        0xB2: "DSP_PCM_IN2_REG", 0xB4: "DSP_PCM_IN3_REG",
-        0x8E: "DSP_CODEC_OUT_REG", 0x90: "DSP_CODEC_IN_REG",
-        0x92: "DSP_RAM_OUT0_REG", 0x9A: "DSP_RAM_IN0_REG",
-        0x8C: "DSP_CODEC_MIC_GAIN_REG",
     },
+    # Table 63 (SC14480 rev 1.0, printed p132): micro code RAM/ROM map.
+    "table63_rows": [
+        {"cr16": "0x01000000-0x010003ff", "dsp": "0x0000-0x01ff",
+         "meaning": "DIP Micro code RAM"},
+        {"cr16": "0x01000400-0x01000fff", "dsp": "0x0200-0x07ff",
+         "meaning": "DIP Micro code RAM (reserved)"},
+        {"cr16": "0x01030000-0x010307ff", "dsp": "0x0000-0x03ff",
+         "meaning": "Gen2DSP Micro code RAM"},
+        {"cr16": "0x01030800-0x01037fff", "dsp": "0x0400-0x3fff",
+         "meaning": "Gen2DSP Micro code RAM (Reserved)"},
+        {"cr16": "0x00010000-0x00013fff", "dsp": "0x4000-0x5fff",
+         "meaning": "Gen2DSP Micro code RAM mapped in Shared RAM"},
+        {"cr16": "0x00014000-0x00017fff", "dsp": "0x6000-0x7fff",
+         "meaning": "Gen2DSP Micro code RAM (Reserved)"},
+        {"cr16": "0x01040000-0x0104afff", "dsp": "0x8000-0xd7ff",
+         "meaning": "Micro code ROM"},
+        {"cr16": "0x0104b000-0x0104ffff", "dsp": "0xd800-0xffff",
+         "meaning": "Reserved"},
+    ],
     "peripheral": {
         0x00FF4000: "CLK_AMBA_REG", 0x00FF4002: "CLK_CODEC_DIV_REG",
         0x00FF4004: "CLK_CODEC_REG", 0x00FF4006: "CLK_DSP_REG",
@@ -90,8 +115,8 @@ SC14480 = {
         0x00FF6006: "DIP_CTRL_REG", 0x00FF600E: "DIP_CTRL2_REG",
         0x00FF481E: "PAD_CTRL_REG", 0x00FF4836: "P0_DIR_REG",
         0x00FF4838: "P0_MODE_REG", 0x00FF4856: "P2_DIR_REG",
-        0x00FF4858: "P2_MODE_REG", 0x00FF4860: "P3_DIR_REG",
-        0x00FF4866: "P3_MODE_REG", 0x00FF4868: "P3_MODE_REG",
+        0x00FF4858: "P2_MODE_REG", 0x00FF4860: "P3_DATA_REG",
+        0x00FF4866: "P3_DIR_REG", 0x00FF4868: "P3_MODE_REG",
         0x00FF5404: "INT_PRIO0_REG", 0x00FF5402: "RESET_INT_PENDING_REG",
         0x00FF5406: "INT_PRIO1_REG", 0x00FF5408: "INT_PRIO2_REG",
         0x00FF540A: "INT_PRIO3_REG",
@@ -119,6 +144,12 @@ SC14480 = {
     "codec_mic_bits": {11: "MICH_ON", 10: "DSP_CTRL", 9: "MIC_OFFCOM_ON",
                        8: "MIC_OFFCOM_SG", 3: "MIC_MUTE", 2: "MIC_PD"},
     "codec_lsr_bits": {9: "LSREN_SE", 5: "LSRN_PD", 2: "LSRP_PD"},
+    # LSRATT field (bits 8-6), SC14480 Table 113 steps + Table 299 level.
+    "lsratt_gain": {
+        0b000: "+2 dB (Table 113 step table)",
+        0b001: "0 dB nominal (Table 299 level at 0 dBm0)",
+        0b111: "-12 dB (Table 113 step table)",
+    },
     "codec_adda_bits": {1: "AD_PD", 0: "DA_PD"},
     "codec_tone_bits": {3: "RNG_PR_DIS", 2: "RNG_PD", 1: "CID_PR_DIS",
                         0: "CID_PD"},
@@ -535,22 +566,34 @@ def dsp_data_word(cr16_addr):
     return ((cr16_addr >> 1) + 0x8000) & 0xFFFF
 
 
+def lsratt_gain(value):
+    """LSRATT (bits 8-6) gain label under the SC14480 analogy; unknown
+    step codes are reported as such, never invented."""
+    code = (value >> 6) & 0b111
+    return SC14480["lsratt_gain"].get(
+        code, f"LSRATT=0b{code:03b} (not in the quoted reference rows)")
+
+
 def classify_program_source(*, run_present, run_start, run_end, pc_value,
                             copy_loop_found, rom_literal_sites):
     """Classification gate; never silently promotes a guess.
 
-    A microcode-ROM-window candidate requires an even, window-like literal
-    (0x01040000..0x0104FFFF); odd data pointers do not qualify.
+    The only firmware-proven link between the embedded block and the DSP
+    is the DSP_PC_START derivation.  That makes the block a *candidate*
+    program referenced by the start address — not a proven program and
+    not a proven execution mechanism.
     """
     if not run_present:
         return ("DSP_PROGRAM_NOT_IN_IMAGE", "no firmware block at the "
                 "derived address")
     if run_end <= run_start:
         return ("DSP_PROGRAM_IMAGE_RUN_EMPTY", "zero-length block")
-    base = "DSP_PROGRAM_EMBEDDED_IN_FIRMWARE_IMAGE"
+    base = "DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START"
+    if pc_value is None:
+        return (base, "no DSP_PC_START value was derived")
     if copy_loop_found:
         return (base + "_COPY_LOOP_CANDIDATE",
-                "a copy loop into the DSP microcode region was detected")
+                "a copy loop into a microcode window was detected")
     window_like = [a for a in rom_literal_sites
                    if 0x01040000 <= int(a, 16) <= 0x0104FFFF and
                    int(a, 16) % 2 == 0]
@@ -558,8 +601,40 @@ def classify_program_source(*, run_present, run_start, run_end, pc_value,
         return (base + "_ROM_WINDOW_CANDIDATE",
                 "an even literal inside the SC14480 microcode-ROM window "
                 "was detected")
-    return (base, "firmware derives DSP_PC_START from this block; the "
-            "execution mechanism (flash alias vs copy vs ROM) is unproven")
+    return (base, "the firmware derives DSP_PC_START from this block "
+            "address; the block content, its executability and the "
+            "execution mechanism (flash alias vs copy vs ROM) are "
+            "unproven")
+
+
+def find_microcode_copy_candidates(fw):
+    """Factual search for CR16 stores/reads touching the SC14480 microcode
+    windows.  Returns evidence, not proof: absence only means no resolved
+    direct store was found by this scan."""
+    ram_window = (0x01030000, 0x01033FFF)
+    rom_window = (0x01040000, 0x0104FFFF)
+    stores, loads = [], []
+    for a, i in fw.insns.items():
+        if i.mnemonic not in ("storw", "stord", "storb",
+                              "loadw", "loadd", "loadb"):
+            continue
+        _, parsed = X.address_operand(i)
+        if not parsed or parsed[0] != "ABS":
+            continue
+        addr = X.abs_address(i)
+        if addr is None:
+            continue
+        if ram_window[0] <= addr < ram_window[1] or \
+                rom_window[0] <= addr < rom_window[1]:
+            (stores if i.mnemonic.startswith("stor") else loads).append(
+                f"0x{a:06x}")
+    return {"ram_window": [f"0x{ram_window[0]:08x}",
+                           f"0x{ram_window[1]:08x}"],
+            "rom_window": [f"0x{rom_window[0]:08x}",
+                           f"0x{rom_window[1]:08x}"],
+            "resolved_direct_stores": sorted(set(stores)),
+            "resolved_direct_loads": sorted(set(loads)),
+            "status": "NONE_FOUND_BY_THIS_SCAN"}
 
 
 def decode_fields(value, table, width=16):
@@ -815,8 +890,9 @@ def analyze(name, fw, mem, df):
             "read_site": cite(fw, s["phase_off"][0]),
             "effective_address": f"0x{DSP_BASE + 0x38:08x}",
             "structure": s["phase_struct"][0],
-            "status": "PROVEN_FIRMWARE_READ; caller chain main->dispatcher "
-                      "-> monitor verified locally",
+            "status": "PROVEN_FIRMWARE_READ; main -> dispatcher (direct "
+                      "call) -> monitor block (direct fallthrough) edges "
+                      "verified",
         },
     }
     ok_chain, en_chain = call_chain(fw, name, [
@@ -851,9 +927,12 @@ def analyze(name, fw, mem, df):
         unresolved_paths=unresolved([
             "the 0x7c00 helper patch target (r4,r3) is not resolved from "
             "any caller of the DSP config function",
-            "no CR16-side DSP_CR16_INT (bit4) write site was found; the "
-            "DSP is started by main-counter syncs (DSP_SYNC0-2) per the "
-            "MAIN_SYNC1=0 configuration",
+            "no CR16-side DSP_CR16_INT (bit4) write site was found in "
+            "either image; under the SC14480 analogy the main counter "
+            "(started on DIP <A_NORM> via DSP_MAIN_CTRL=0x0400) supplies "
+            "the periodic 8 kHz DSP_SYNC0-2 start sources; other trigger "
+            "sources (a CR16 bit4 write elsewhere, DIP interrupts) are "
+            "not excluded",
             "SC14448 meaning of [0xD6]+0x64 (written 0x0001) is not in the "
             "SC14480 reference tables"]),
         confidence="PROVEN_FIRMWARE_ACCESSES_WITH_REFERENCE_ANALOGIES")
@@ -880,7 +959,9 @@ def analyze(name, fw, mem, df):
     pc_value = dsp_pc_word(0x17300)
     if pc_value != 0x7980:
         raise ValueError(f"{name}: DSP_PC transform changed")
-    # search for copy loops / ROM literals (factual absence, not proof)
+    # factual searches: copy candidates into the microcode windows, ROM
+    # literals, and the transform sites (absence is recorded, not proof)
+    copy_search = find_microcode_copy_candidates(fw)
     copy_literals = [f"0x{a:06x}" for a, i in fw.insns.items()
                      if i.mnemonic == "movd" and
                      ("$0x103" in i.operands or "$0x104" in i.operands)]
@@ -890,10 +971,35 @@ def analyze(name, fw, mem, df):
     program_transform_sites = [f"0x{a:06x}" for a, i in fw.insns.items()
                                if i.mnemonic == "addw" and
                                "$0xc000" in i.operands]
+    # Table 63 (SC14480) comparison: the firmware transform is identical to
+    # the table's linear rule DSP = (CR16>>1) - 0x4000 (mod 2^16), and the
+    # block's CR16 range lies in the table's *Reserved* microcode row.
+    table63_rows = SC14480["table63_rows"]
+    cr16_word = 0x17300
+    region_row = [r for r in table63_rows
+                  if int(r["cr16"].split("-")[0], 16) <= cr16_word <=
+                  int(r["cr16"].split("-")[1], 16)]
+    table63 = {
+        "rows": table63_rows,
+        "linear_rule": "DSP = (CR16 >> 1) - 0x4000 (mod 2^16)",
+        "firmware_transform_identical_to_linear_rule": True,
+        "block_cr16_address": f"0x{cr16_word:06x}",
+        "block_table63_region": (region_row[0]["meaning"] + " ("
+                                  + region_row[0]["cr16"] + " -> "
+                                  + region_row[0]["dsp"] + ")")
+        if region_row else "OUTSIDE_ALL_SC14480_TABLE63_ROWS",
+        "table63_conflict": "under the SC14480 map the block lies in a "
+                            "microcode region marked Reserved, not in the "
+                            "active shared-RAM row; the SC14448 memory "
+                            "organisation is unknown and the whole "
+                            "second-level image (code at 0x0+) does not "
+                            "fit the SC14480 program-flash map either",
+    }
     kind, why = classify_program_source(
         run_present=block["run_present"],
         run_start=0x17300, run_end=0x17300 + block["byte_length"],
-        pc_value=pc_value, copy_loop_found=False,
+        pc_value=pc_value,
+        copy_loop_found=bool(copy_search["resolved_direct_stores"]),
         rom_literal_sites=copy_literals)
     dsp_prog = dict(common, instruction_provenance=[
         cite(fw, a) for a in (s["dsp_init_pc_lit"][0],
@@ -904,19 +1010,22 @@ def analyze(name, fw, mem, df):
             "embedded_block": block,
             "dsp_pc_start_value": f"0x{pc_value:04x}",
             "transform": "DSP_PC = ((flash_addr >> 1) + 0xC000) & 0xFFFF "
-                         "(firmware arithmetic, verified in both images)",
+                         "(firmware arithmetic, verified in both images; "
+                         "identical to the SC14480 Table 63 linear rule "
+                         "DSP = (CR16>>1) - 0x4000 mod 2^16)",
             "program_source_classification": kind,
             "program_source_why": why,
+            "block_content_validation": "NONE: the block is not decoded "
+                                        "as DSP instructions; no opcode/"
+                                        "structure check exists",
             "microcode_ram_literal_sites": copy_literals,
             "microcode_rom_literal_sites": copy_literals,
-            "copy_loop_found": False,
-            "copy_loop_search_scope": "storw/stord into 0x0103xxxx/"
-                                       "0x0104xxxx windows; no resolved "
-                                       "sites",
+            "microcode_window_copy_search": copy_search,
             "dsp_data_space_transform_sites": data_transform_sites,
             "dsp_program_space_transform_sites": program_transform_sites,
             "dsp_data_space_transform": "DSP_ADDR = ((cr16_addr >> 1) + "
-                                        "0x8000) & 0xFFFF (candidate)"},
+                                        "0x8000) & 0xFFFF (candidate)",
+            "sc14480_table63": table63},
         unresolved_paths=unresolved([
             "whether the Gen2DSP executes the 0x17300 block in place "
             "(flash alias), from a copy, or from internal ROM is unproven; "
@@ -924,7 +1033,10 @@ def analyze(name, fw, mem, df):
             "the DSP microcode itself is not disassembled and its "
             "PCM/CODEC data flow cannot be verified offline",
             "normal and p2test embed different-sized blocks "
-            "(0xB7A vs 0x6FA bytes); the difference is not explained"]),
+            "(0xB7A vs 0x6FA bytes); the difference is not explained",
+            "under the SC14480 Table 63 the block's CR16 range is a "
+            "Reserved microcode region, not the active shared-RAM row; "
+            "the SC14448 organisation is unknown"]),
         confidence="FIRMWARE_DERIVATION_PROVEN_EXECUTION_MECHANISM_UNKNOWN")
 
     # ---- E5-C: PCM routing -------------------------------------------------
@@ -992,14 +1104,15 @@ def analyze(name, fw, mem, df):
                   ("codec1_vref_all", 0x00FF5804,
                    "bits 8,9,6,5,1,0 cleared, bit4 set"),
                   ("codec1_mic_pd", 0x00FF5800, "bit2=0 (MIC_PD off)"),
-                  ("codec1_lsr_att", 0x00FF5802, "or 0x1c0 (LSRATT=-12dB)"),
+                  ("codec1_lsr_att", 0x00FF5802,
+                   "or 0x1c0 (LSRATT=111 -> -12 dB, Table 113)"),
                   ("codec1_lsr_mode_p", 0x00FF5802,
                    "LSRP_MODE=10 differential DA+"),
                   ("codec1_lsr_mode_n", 0x00FF5802,
                    "LSRN_MODE=10 differential DA-"),
                   ("codec1_lsr_pd", 0x00FF5802, "bit2=0 (LSRP_PD off)"),
                   ("codec1_lsr_final", 0x00FF5802,
-                   "LSRATT=001 (2 dB final gain)"),
+                   lsratt_gain(0x40) + " (LSRATT=001)"),
               )]
     en_codec = [dict(label=k, **cite(fw, s[k][0]), effective_address=addr,
                      value_or_bitop=v)
@@ -1030,7 +1143,9 @@ def analyze(name, fw, mem, df):
                           "(MIC_GAIN=0000), controlled by MIC_GAIN "
                           "(DSP_CTRL bit10=0)",
             "lsr_config": "differential DA to LSR+/LSR-, amplifiers on, "
-                          "final 2 dB",
+                          "final LSRATT=001 -> 0 dB nominal (SC14480 "
+                          "Table 299), after an intermediate LSRATT=111 "
+                          "(-12 dB) step",
             "tone_config": "RNG_PR_DIS=1 (RING protection diodes "
                            "disabled), CID_PR_DIS=1 (set in pad init)",
             "pad_gpio_sites": [cite(fw, s[k][0]) for k in
@@ -1060,12 +1175,21 @@ def analyze(name, fw, mem, df):
             "dsp_main_ctrl_value": "0x0400",
             "dsp_main_ctrl_analogy": SC14480["dsp_main_ctrl_bits"][0x400],
             "dsp_main_ctrl_dependency_class":
-            "DIP_DEPENDENT_START (waits for DIP <A_NORM> under the "
-            "SC14480 analogy; the main counter generates the 8 kHz audio "
-            "syncs)",
+            "MAIN_COUNTER_DIP_DEPENDENT_START (the *main counter*, not the "
+            "DSP itself, is configured to start on DIP <A_NORM> under the "
+            "SC14480 analogy; the counter generates the 8 kHz audio syncs)",
             "main_sync1_value": "0x0000 -> all audio interfaces at 8 kHz "
                                 "under the SC14480 analogy; DSP_SYNC0-2 = "
-                                "8 kHz periodic DSP start/interrupt",
+                                "8 kHz periodic DSP start/interrupt "
+                                "(one of several DSP start sources in the "
+                                "reference: DSP_SYNC, CR16 trigger, DIP "
+                                "interrupt)",
+            "dsp_trigger_sources_not_excluded": [
+                "CR16 DSP_CR16_INT (bit4) writes elsewhere or via "
+                "indirect paths",
+                "DIP interrupt triggers",
+                "main-counter DSP_SYNC0-2 once the counter runs",
+            ],
             "pll_sequence": ["0x0000 -> 0x0800 -> 0x0852 -> 0x085A "
                              "(CLK_PLL_CTRL with delays)"],
             "clk_dsp": "0x0009 (CLK_DSP_EN=1, divider 1 under analogy)",

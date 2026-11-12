@@ -93,8 +93,13 @@
    "dataflow_evidence": {
     "dsp_main_ctrl_value": "0x0400",
     "dsp_main_ctrl_analogy": "DSP_MAIN_CTRL=10: main counter starts on DIP <A_NORM> (DIP-synchronised start-up for voice connection)",
-    "dsp_main_ctrl_dependency_class": "DIP_DEPENDENT_START (waits for DIP <A_NORM> under the SC14480 analogy; the main counter generates the 8 kHz audio syncs)",
-    "main_sync1_value": "0x0000 -> all audio interfaces at 8 kHz under the SC14480 analogy; DSP_SYNC0-2 = 8 kHz periodic DSP start/interrupt",
+    "dsp_main_ctrl_dependency_class": "MAIN_COUNTER_DIP_DEPENDENT_START (the *main counter*, not the DSP itself, is configured to start on DIP <A_NORM> under the SC14480 analogy; the counter generates the 8 kHz audio syncs)",
+    "main_sync1_value": "0x0000 -> all audio interfaces at 8 kHz under the SC14480 analogy; DSP_SYNC0-2 = 8 kHz periodic DSP start/interrupt (one of several DSP start sources in the reference: DSP_SYNC, CR16 trigger, DIP interrupt)",
+    "dsp_trigger_sources_not_excluded": [
+     "CR16 DSP_CR16_INT (bit4) writes elsewhere or via indirect paths",
+     "DIP interrupt triggers",
+     "main-counter DSP_SYNC0-2 once the counter runs"
+    ],
     "pll_sequence": [
      "0x0000 -> 0x0800 -> 0x0852 -> 0x085A (CLK_PLL_CTRL with delays)"
     ],
@@ -228,8 +233,13 @@
    "dataflow_evidence": {
     "dsp_main_ctrl_value": "0x0400",
     "dsp_main_ctrl_analogy": "DSP_MAIN_CTRL=10: main counter starts on DIP <A_NORM> (DIP-synchronised start-up for voice connection)",
-    "dsp_main_ctrl_dependency_class": "DIP_DEPENDENT_START (waits for DIP <A_NORM> under the SC14480 analogy; the main counter generates the 8 kHz audio syncs)",
-    "main_sync1_value": "0x0000 -> all audio interfaces at 8 kHz under the SC14480 analogy; DSP_SYNC0-2 = 8 kHz periodic DSP start/interrupt",
+    "dsp_main_ctrl_dependency_class": "MAIN_COUNTER_DIP_DEPENDENT_START (the *main counter*, not the DSP itself, is configured to start on DIP <A_NORM> under the SC14480 analogy; the counter generates the 8 kHz audio syncs)",
+    "main_sync1_value": "0x0000 -> all audio interfaces at 8 kHz under the SC14480 analogy; DSP_SYNC0-2 = 8 kHz periodic DSP start/interrupt (one of several DSP start sources in the reference: DSP_SYNC, CR16 trigger, DIP interrupt)",
+    "dsp_trigger_sources_not_excluded": [
+     "CR16 DSP_CR16_INT (bit4) writes elsewhere or via indirect paths",
+     "DIP interrupt triggers",
+     "main-counter DSP_SYNC0-2 once the counter runs"
+    ],
     "pll_sequence": [
      "0x0000 -> 0x0800 -> 0x0852 -> 0x085A (CLK_PLL_CTRL with delays)"
     ],

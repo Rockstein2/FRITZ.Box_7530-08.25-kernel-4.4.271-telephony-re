@@ -519,7 +519,7 @@
       },
       "effective_address": "0x01027fb8",
       "structure": 165884,
-      "status": "PROVEN_FIRMWARE_READ; caller chain main->dispatcher -> monitor verified locally"
+      "status": "PROVEN_FIRMWARE_READ; main -> dispatcher (direct call) -> monitor block (direct fallthrough) edges verified"
      }
     }
    },
@@ -540,7 +540,7 @@
     "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
     "no all-path proof that no other code writes the DSP window",
     "the 0x7c00 helper patch target (r4,r3) is not resolved from any caller of the DSP config function",
-    "no CR16-side DSP_CR16_INT (bit4) write site was found; the DSP is started by main-counter syncs (DSP_SYNC0-2) per the MAIN_SYNC1=0 configuration",
+    "no CR16-side DSP_CR16_INT (bit4) write site was found in either image; under the SC14480 analogy the main counter (started on DIP <A_NORM> via DSP_MAIN_CTRL=0x0400) supplies the periodic 8 kHz DSP_SYNC0-2 start sources; other trigger sources (a CR16 bit4 write elsewhere, DIP interrupts) are not excluded",
     "SC14448 meaning of [0xD6]+0x64 (written 0x0001) is not in the SC14480 reference tables"
    ],
    "confidence": "PROVEN_FIRMWARE_ACCESSES_WITH_REFERENCE_ANALOGIES"
@@ -1063,7 +1063,7 @@
       },
       "effective_address": "0x01027fb8",
       "structure": 161094,
-      "status": "PROVEN_FIRMWARE_READ; caller chain main->dispatcher -> monitor verified locally"
+      "status": "PROVEN_FIRMWARE_READ; main -> dispatcher (direct call) -> monitor block (direct fallthrough) edges verified"
      }
     }
    },
@@ -1084,7 +1084,7 @@
     "the DSP executes microcode whose internal data flow cannot be verified offline (no DSP disassembler, no documented SC14448 map)",
     "no all-path proof that no other code writes the DSP window",
     "the 0x7c00 helper patch target (r4,r3) is not resolved from any caller of the DSP config function",
-    "no CR16-side DSP_CR16_INT (bit4) write site was found; the DSP is started by main-counter syncs (DSP_SYNC0-2) per the MAIN_SYNC1=0 configuration",
+    "no CR16-side DSP_CR16_INT (bit4) write site was found in either image; under the SC14480 analogy the main counter (started on DIP <A_NORM> via DSP_MAIN_CTRL=0x0400) supplies the periodic 8 kHz DSP_SYNC0-2 start sources; other trigger sources (a CR16 bit4 write elsewhere, DIP interrupts) are not excluded",
     "SC14448 meaning of [0xD6]+0x64 (written 0x0001) is not in the SC14480 reference tables"
    ],
    "confidence": "PROVEN_FIRMWARE_ACCESSES_WITH_REFERENCE_ANALOGIES"

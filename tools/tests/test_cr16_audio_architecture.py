@@ -64,7 +64,25 @@ ck("decode dsp_ctrl 0xc", [f["field"] for f in E.decode_fields(
    0x000C, E.SC14480["dsp_ctrl_bits"])],
    ["DSP_EN", "DSP_CLK_EN", "DSP_CR16_INT", "DBG_EN"])
 
-print("== program-source classification")
+print("== E5.1 audit: DSP register offset table (SC14480 Table 65)")
+TRUTH = {  # name -> absolute SC14480 address from the datasheet
+    "DSP_CODEC_MIC_GAIN_REG": 0x01027F8C, "DSP_CODEC_OUT_REG": 0x01027F8E,
+    "DSP_CODEC_IN_REG": 0x01027F90, "DSP_RAM_OUT0_REG": 0x01027F92,
+    "DSP_RAM_IN0_REG": 0x01027F9A, "DSP_PCM_OUT0_REG": 0x01027FA6,
+    "DSP_PCM_OUT3_REG": 0x01027FAC, "DSP_PCM_IN0_REG": 0x01027FAE,
+    "DSP_PCM_CTRL_REG": 0x01027FB6, "DSP_PHASE_INFO_REG": 0x01027FB8,
+    "DSP_MAIN_CTRL_REG": 0x01027FBC, "DSP_CTRL_REG": 0x01027FD0,
+    "DSP_PC_START_REG": 0x01027FD4, "DSP_INT_REG": 0x01027FD8,
+}
+by_name = {}
+for off, reg in E.SC14480["dsp_window"].items():
+    if reg:
+        by_name[reg] = E.DSP_BASE + off
+for reg, abs_addr in TRUTH.items():
+    ck(f"offset of {reg}", by_name.get(reg), abs_addr)
+ck("0x01027FE4 stays unmapped", E.SC14480["dsp_window"].get(0x64), None)
+
+print("== E5.1 audit: program-source classification (downgraded)")
 ck("not in image", E.classify_program_source(
     run_present=False, run_start=0, run_end=0, pc_value=0,
     copy_loop_found=False, rom_literal_sites=[])[0],
@@ -73,18 +91,44 @@ ck("empty run", E.classify_program_source(
     run_present=True, run_start=0x100, run_end=0x100, pc_value=0,
     copy_loop_found=False, rom_literal_sites=[])[0],
    "DSP_PROGRAM_IMAGE_RUN_EMPTY")
+ck("missing pc value stays candidate", E.classify_program_source(
+    run_present=True, run_start=0x100, run_end=0x140, pc_value=None,
+    copy_loop_found=False, rom_literal_sites=[])[0],
+   "DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START")
 ck("copy loop candidate", E.classify_program_source(
-    run_present=True, run_start=0x100, run_end=0x140, pc_value=0,
+    run_present=True, run_start=0x100, run_end=0x140, pc_value=0x7980,
     copy_loop_found=True, rom_literal_sites=[])[0].endswith(
         "COPY_LOOP_CANDIDATE"), True)
 ck("even ROM-window literal", E.classify_program_source(
-    run_present=True, run_start=0x100, run_end=0x140, pc_value=0,
+    run_present=True, run_start=0x100, run_end=0x140, pc_value=0x7980,
     copy_loop_found=False, rom_literal_sites=["0x01044000"])[0].endswith(
         "ROM_WINDOW_CANDIDATE"), True)
 ck("odd data pointer is not ROM", E.classify_program_source(
-    run_present=True, run_start=0x100, run_end=0x140, pc_value=0,
+    run_present=True, run_start=0x100, run_end=0x140, pc_value=0x7980,
     copy_loop_found=False, rom_literal_sites=["0x0104004d"])[0],
-   "DSP_PROGRAM_EMBEDDED_IN_FIRMWARE_IMAGE")
+   "DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START")
+ck("classification is a candidate, not EMBEDDED", E.classify_program_source(
+    run_present=True, run_start=0x17300, run_end=0x17E7A, pc_value=0x7980,
+    copy_loop_found=False, rom_literal_sites=[])[0],
+   "DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START")
+
+print("== E5.1 audit: SC14480 Table 63 linear rule")
+ck("firmware transform == Table 63 linear rule",
+   E.dsp_pc_word(0x17300), (0x17300 >> 1) - 0x4000)
+ck("0x00010000 maps to 0x4000", E.dsp_pc_word(0x10000), 0x4000)
+ck("0x17300 lies in a Reserved row", any(
+    "Reserved" in r["meaning"] and
+    int(r["cr16"].split("-")[0], 16) <= 0x17300 <=
+    int(r["cr16"].split("-")[1], 16)
+    for r in E.SC14480["table63_rows"]), True)
+
+print("== E5.1 audit: LSRATT gain labels")
+ck("LSRATT=111 is -12 dB", E.lsratt_gain(0x1C0), "-12 dB (Table 113 "
+   "step table)")
+ck("LSRATT=001 is 0 dB nominal", E.lsratt_gain(0x40), "0 dB nominal "
+   "(Table 299 level at 0 dBm0)")
+ck("LSRATT=000 is +2 dB", E.lsratt_gain(0x00), "+2 dB (Table 113 step "
+   "table)")
 
 print("== register-name discipline")
 ck("0x01027FE4 unmapped", E.reg_reference(0x01027FE4)["reference_name"],
@@ -95,6 +139,12 @@ for addr in (0x01027FD8, 0x00FF5800, 0x00FF6006):
     ref = E.reg_reference(addr)
     ck(f"0x{addr:08x} analogy only",
        ref["status"], "SC14480_ANALOGY_UNVERIFIED_SC14448")
+ck("0x00FF4860 is P3_DATA not DIR",
+   E.reg_reference(0x00FF4860)["reference_name"], "P3_DATA_REG")
+ck("0x00FF4866 is P3_DIR", E.reg_reference(0x00FF4866)["reference_name"],
+   "P3_DIR_REG")
+ck("0x00FF4868 is P3_MODE", E.reg_reference(0x00FF4868)["reference_name"],
+   "P3_MODE_REG")
 
 REPORTS = ROOT / "tools" / "reports"
 have_fw = A.OBJDUMP.is_file() and all(p.is_file() for _, p in A.IMAGES)
@@ -158,11 +208,35 @@ else:
     prog = bundles["cr16-e5-dsp-program-source.json"]["images"]
     for name, img in prog.items():
         ev = img["dataflow_evidence"]
-        ck(f"{name}: program source honest",
-           ev["program_source_classification"].startswith(
-               "DSP_PROGRAM_EMBEDDED_IN_FIRMWARE_IMAGE"), True)
+        ck(f"{name}: program source is a candidate only",
+           ev["program_source_classification"],
+           "DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START")
+        ck(f"{name}: no opcode validation claimed",
+           ev["block_content_validation"], "NONE: the block is not "
+           "decoded as DSP instructions; no opcode/structure check exists")
+        ck(f"{name}: copy-loop search recorded",
+           ev["microcode_window_copy_search"]["status"],
+           "NONE_FOUND_BY_THIS_SCAN")
+        ck(f"{name}: Table 63 conflict recorded",
+           "Reserved" in ev["sc14480_table63"]["block_table63_region"],
+           True)
+        ck(f"{name}: transform noted as Table 63 linear rule",
+           "Table 63 linear rule" in ev["transform"], True)
         ck(f"{name}: execution mechanism unknown",
            "EXECUTION_MECHANISM_UNKNOWN" in img["confidence"], True)
+    codec = bundles["cr16-e5-codec-init.json"]["images"]
+    for name, img in codec.items():
+        txt = json.dumps(img)
+        ck(f"{name}: LSR final is 0 dB nominal, not +2 dB",
+           "0 dB nominal" in txt and "2 dB final gain" not in txt, True)
+    clk = bundles["cr16-e5-clock-dependencies.json"]["images"]
+    for name, img in clk.items():
+        ev = img["dataflow_evidence"]
+        ck(f"{name}: main counter vs DSP trigger separated",
+           "main counter" in ev["dsp_main_ctrl_dependency_class"] and
+           "not the DSP" in ev["dsp_main_ctrl_dependency_class"], True)
+        ck(f"{name}: other DSP triggers not excluded",
+           bool(ev["dsp_trigger_sources_not_excluded"]), True)
 
     print("== fresh replay")
     with tempfile.TemporaryDirectory() as td:

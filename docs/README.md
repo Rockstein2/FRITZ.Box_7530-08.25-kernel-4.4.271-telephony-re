@@ -50,7 +50,7 @@ Verify the canonical layout and all SHA256 manifests with
 | `sc14448-e42-summary.md` | E4.2 allocator tag slicing, state/tag distinction and unresolved parser-branch reachability. |
 | `sc14448-e43-summary.md` | E4.3 conditional case effects, first case-9 indirect target and version differences; no invented runtime command path. |
 | `sc14448-e44-summary.md` | E4.4 TX-buffer adjacency, p2test byte writer, architectural register accesses and unresolved ingress/command links. |
-| `sc14448-e5-summary.md` | E5 Gen2DSP/PCM+/CODEC audio path: guarded `[0xD6]` DSP window, embedded DSP program (`0x17300` → PC `0x7980`), PCM master/slave config, CODEC analog order, DIP-coupled timing and the standalone readiness inventory. |
+| `sc14448-e5-summary.md` | E5/E5.1 Gen2DSP/PCM+/CODEC audio path: guarded `[0xD6]` DSP window, candidate DSP program (`0x17300` → PC `0x7980`, Table 63 conflict), PCM master/slave config, CODEC analog order, DIP-coupled timing and the standalone readiness inventory. |
 
 ### External reference registry (`references/`)
 
