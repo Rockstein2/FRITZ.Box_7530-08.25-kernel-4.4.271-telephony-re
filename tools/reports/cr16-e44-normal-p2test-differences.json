@@ -1,0 +1,140 @@
+{
+ "tool": "cr16-runtime-transport/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x00386a",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x009f84",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x009f9a",
+     "raw_bytes": "74000000fd0a",
+     "disassembly": "movd $0xafd:l,(r5,r4)"
+    }
+   ],
+   "cfg_evidence": {
+    "semantic_equivalence_of_97_prefix_matches": "NOT_PROVEN"
+   },
+   "dataflow_evidence": {
+    "queue_base": "0x02fd",
+    "TX_base": "0x0afd",
+    "TX_writer": "normal writer unresolved",
+    "case10_bounds": "0x12/0x17",
+    "case9_table_base": "0x11dda",
+    "confirmed_pair_equivalence": "only local byte-pump instruction shape; full function paths unproved"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "parser tag-0x23 producer path unproved (E4.2)",
+    "unknown indirect memory aliases, DMA and interrupt writers",
+    "physical bus/UART activity not observed"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x026f7c",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x009bc8",
+     "raw_bytes": "9701",
+     "disassembly": "push $0x2,r7,RA"
+    },
+    {
+     "instruction": "0x009bde",
+     "raw_bytes": "740000005d0a",
+     "disassembly": "movd $0xa5d:l,(r5,r4)"
+    },
+    {
+     "instruction": "0x009c34",
+     "raw_bytes": "2701",
+     "disassembly": "push $0x3,r7"
+    },
+    {
+     "instruction": "0x009c36",
+     "raw_bytes": "730000001595",
+     "disassembly": "movd $0x9515:l,(r4,r3)"
+    },
+    {
+     "instruction": "0x009c56",
+     "raw_bytes": "6090",
+     "disassembly": "loadw 0x0:s(r1,r0),r6"
+    },
+    {
+     "instruction": "0x009c64",
+     "raw_bytes": "7653",
+     "disassembly": "cmpw r7,r6"
+    },
+    {
+     "instruction": "0x009c68",
+     "raw_bytes": "6090",
+     "disassembly": "loadw 0x0:s(r1,r0),r6"
+    },
+    {
+     "instruction": "0x009c8c",
+     "raw_bytes": "23f0",
+     "disassembly": "storb r2,0x0:s(r4,r3)"
+    },
+    {
+     "instruction": "0x009c8e",
+     "raw_bytes": "70d0",
+     "disassembly": "storw r7,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x009c9a",
+     "raw_bytes": "00c2",
+     "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x009ca6",
+     "raw_bytes": "ffc08fff",
+     "disassembly": "bal (ra),*-0x9c34:m"
+    }
+   ],
+   "cfg_evidence": {
+    "semantic_equivalence_of_97_prefix_matches": "NOT_PROVEN"
+   },
+   "dataflow_evidence": {
+    "queue_base": "0x025d",
+    "TX_base": "0x0a5d",
+    "TX_writer": "p2test local writer and direct call",
+    "case10_bounds": "0x0c/0x11",
+    "case9_table_base": "0x00000",
+    "confirmed_pair_equivalence": "only local byte-pump instruction shape; full function paths unproved"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "parser tag-0x23 producer path unproved (E4.2)",
+    "unknown indirect memory aliases, DMA and interrupt writers",
+    "physical bus/UART activity not observed"
+   ]
+  }
+ }
+}

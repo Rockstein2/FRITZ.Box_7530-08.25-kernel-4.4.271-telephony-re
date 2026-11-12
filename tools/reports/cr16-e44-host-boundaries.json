@@ -1,0 +1,105 @@
+{
+ "tool": "cr16-runtime-transport/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x00386a",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x0039f2",
+     "raw_bytes": "00c07664",
+     "disassembly": "bal (ra),*+0x9e68:m"
+    },
+    {
+     "instruction": "0x009f9a",
+     "raw_bytes": "74000000fd0a",
+     "disassembly": "movd $0xafd:l,(r5,r4)"
+    },
+    {
+     "instruction": "0x009fb8",
+     "raw_bytes": "0fc90249",
+     "disassembly": "storw r0,0xf4902:m"
+    }
+   ],
+   "cfg_evidence": {
+    "software_queue_to_parser": "local direct path, conditional tag",
+    "parser_to_TX": "UNRESOLVED",
+    "peripheral_to_software_queue": "UNRESOLVED"
+   },
+   "dataflow_evidence": {
+    "bootloader_0x02_0x01_handshake": "SEPARATE_FIRST_LEVEL",
+    "runtime_UART_RX": "UNRESOLVED",
+    "DMA_or_polling_ingress": "UNRESOLVED",
+    "runtime_TX": "architectural writes proven; physical transmission not observed"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "parser tag-0x23 producer path unproved (E4.2)",
+    "unknown indirect memory aliases, DMA and interrupt writers",
+    "physical bus/UART activity not observed"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x026f7c",
+     "raw_bytes": "6701",
+     "disassembly": "push $0x7,r7"
+    },
+    {
+     "instruction": "0x02710c",
+     "raw_bytes": "00c05e03",
+     "disassembly": "bal (ra),*+0x2746a:m"
+    },
+    {
+     "instruction": "0x009bde",
+     "raw_bytes": "740000005d0a",
+     "disassembly": "movd $0xa5d:l,(r5,r4)"
+    },
+    {
+     "instruction": "0x009bfc",
+     "raw_bytes": "0fc90249",
+     "disassembly": "storw r0,0xf4902:m"
+    }
+   ],
+   "cfg_evidence": {
+    "software_queue_to_parser": "local direct path, conditional tag",
+    "parser_to_TX": "UNRESOLVED",
+    "peripheral_to_software_queue": "UNRESOLVED"
+   },
+   "dataflow_evidence": {
+    "bootloader_0x02_0x01_handshake": "SEPARATE_FIRST_LEVEL",
+    "runtime_UART_RX": "UNRESOLVED",
+    "DMA_or_polling_ingress": "UNRESOLVED",
+    "runtime_TX": "architectural writes proven; physical transmission not observed"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "parser tag-0x23 producer path unproved (E4.2)",
+    "unknown indirect memory aliases, DMA and interrupt writers",
+    "physical bus/UART activity not observed"
+   ]
+  }
+ }
+}

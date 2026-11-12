@@ -83,6 +83,11 @@ SC14448-E4.3: `python3 tools/cr16_command_effects.py` regenerates seven
 `test_cr16_command_effects.py` tests first indirect JAL and clobbers; the
 state-transition test keeps conditional edges separate from runtime proof.
 
+SC14448-E4.4: `python3 tools/cr16_runtime_transport.py` regenerates seven
+`reports/cr16-e44-*.json` from SHA256-checked firmware, gated by E4.2/E4.3.
+`test_cr16_runtime_transport.py` validates fresh-directory replay/rollback,
+and `test_cr16_host_boundaries.py` forbids unsupported RX and response claims.
+
 FON-E3.5: `python3 tools/cr16_pcm_ingress.py` regenerates the seven
 `reports/cr16-e35-*.json` candidate/proof-boundary inventories from both
 SHA-checked images. `cr16_fon_ctrl_trace.py` shares the same fail-closed

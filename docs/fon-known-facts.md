@@ -51,6 +51,12 @@ pointer. Case 13 reads a pointer32 and word16 from payload+3/+7 and
 performs a `storw` to the pointer on its selected path. Neither an external
 producer nor the pointer's reachable target range is proven.
 
+E4.2–E4.4 distinguish queue-item **state** byte (`item+2`, case-7 writes
+`0x23`) from **tag** (`item+3`, case-7 allocator supplies `0x22`). No
+producer-backed tag-`0x23` parser input, command→physical interface chain,
+or FON/PCM source-to-sink link has been established; TX byte-pump register
+writes remain firmware architectural accesses only.
+
 Status: **confirmed evidence only. Anything not listed here is either an open
 question (`fon-open-questions.md`) or historical reasoning under
 `docs/history/`.**

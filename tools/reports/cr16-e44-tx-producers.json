@@ -1,0 +1,228 @@
+{
+ "tool": "cr16-runtime-transport/1",
+ "images": {
+  "normal": {
+   "image": "normal",
+   "firmware_sha256": "7cac33c72b2222468f34033a15c35487aa35062265ab0013bb480068ebab7b31",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009f86",
+     "raw_bytes": "77000000ce93",
+     "disassembly": "movd $0x93ce:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x009f9a",
+     "raw_bytes": "74000000fd0a",
+     "disassembly": "movd $0xafd:l,(r5,r4)"
+    },
+    {
+     "instruction": "0x009fa4",
+     "raw_bytes": "24b0",
+     "disassembly": "loadb 0x0:s(r5,r4),r2"
+    },
+    {
+     "instruction": "0x009fa8",
+     "raw_bytes": "30d0",
+     "disassembly": "storw r3,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x009fb0",
+     "raw_bytes": "4353",
+     "disassembly": "cmpw r4,r3"
+    },
+    {
+     "instruction": "0x009fb4",
+     "raw_bytes": "00c2",
+     "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x009fd2",
+     "raw_bytes": "3253",
+     "disassembly": "cmpw r3,r2"
+    },
+    {
+     "instruction": "0x009fb8",
+     "raw_bytes": "0fc90249",
+     "disassembly": "storw r0,0xf4902:m"
+    },
+    {
+     "instruction": "0x009fc0",
+     "raw_bytes": "0fc90449",
+     "disassembly": "storw r0,0xf4904:m"
+    },
+    {
+     "instruction": "0x009fd6",
+     "raw_bytes": "5f7f0049",
+     "disassembly": "tbitw $0x5:s,0xf4900:m"
+    }
+   ],
+   "cfg_evidence": {
+    "main_calls_TX": true,
+    "direct_p2test_writer_call": [],
+    "normal_resolved_direct_buffer_writer": "UNRESOLVED"
+   },
+   "dataflow_evidence": {
+    "selected_TX": "RAM byte base+read_index \u2192 zero_extend \u2192 0x00ff4902 storw \u2192 0x00ff4904 storw",
+    "cursor_cells": [
+     "0x9376",
+     "0x9378",
+     "0x937a"
+    ],
+    "candidate_length_cell": "0x00e8 (image 0x07f0)",
+    "p2test_writer": "NOT_RESOLVED",
+    "response_link": "UNRESOLVED"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "parser tag-0x23 producer path unproved (E4.2)",
+    "unknown indirect memory aliases, DMA and interrupt writers",
+    "physical bus/UART activity not observed",
+    "complete TX full/empty/wrap and normal byte producers not exhaustively covered"
+   ]
+  },
+  "p2test": {
+   "image": "p2test",
+   "firmware_sha256": "6361384d0e3b717e33ca65111cef82df8952da28e24b9d3b94d055b20dbc4860",
+   "analysis_status": "CONVERGED_BOUNDED_PATHS",
+   "instruction_provenance": [
+    {
+     "instruction": "0x009bca",
+     "raw_bytes": "770000001595",
+     "disassembly": "movd $0x9515:l,(r8,r7)"
+    },
+    {
+     "instruction": "0x009bde",
+     "raw_bytes": "740000005d0a",
+     "disassembly": "movd $0xa5d:l,(r5,r4)"
+    },
+    {
+     "instruction": "0x009be8",
+     "raw_bytes": "24b0",
+     "disassembly": "loadb 0x0:s(r5,r4),r2"
+    },
+    {
+     "instruction": "0x009bec",
+     "raw_bytes": "30d0",
+     "disassembly": "storw r3,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x009bf4",
+     "raw_bytes": "4353",
+     "disassembly": "cmpw r4,r3"
+    },
+    {
+     "instruction": "0x009bf8",
+     "raw_bytes": "00c2",
+     "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x009c16",
+     "raw_bytes": "3253",
+     "disassembly": "cmpw r3,r2"
+    },
+    {
+     "instruction": "0x009bfc",
+     "raw_bytes": "0fc90249",
+     "disassembly": "storw r0,0xf4902:m"
+    },
+    {
+     "instruction": "0x009c04",
+     "raw_bytes": "0fc90449",
+     "disassembly": "storw r0,0xf4904:m"
+    },
+    {
+     "instruction": "0x009c1a",
+     "raw_bytes": "5f7f0049",
+     "disassembly": "tbitw $0x5:s,0xf4900:m"
+    },
+    {
+     "instruction": "0x009c34",
+     "raw_bytes": "2701",
+     "disassembly": "push $0x3,r7"
+    },
+    {
+     "instruction": "0x009c36",
+     "raw_bytes": "730000001595",
+     "disassembly": "movd $0x9515:l,(r4,r3)"
+    },
+    {
+     "instruction": "0x009c56",
+     "raw_bytes": "6090",
+     "disassembly": "loadw 0x0:s(r1,r0),r6"
+    },
+    {
+     "instruction": "0x009c64",
+     "raw_bytes": "7653",
+     "disassembly": "cmpw r7,r6"
+    },
+    {
+     "instruction": "0x009c68",
+     "raw_bytes": "6090",
+     "disassembly": "loadw 0x0:s(r1,r0),r6"
+    },
+    {
+     "instruction": "0x009c8c",
+     "raw_bytes": "23f0",
+     "disassembly": "storb r2,0x0:s(r4,r3)"
+    },
+    {
+     "instruction": "0x009c8e",
+     "raw_bytes": "70d0",
+     "disassembly": "storw r7,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x009c9a",
+     "raw_bytes": "00c2",
+     "disassembly": "storw $0x0:s,0x0:s(r1,r0)"
+    },
+    {
+     "instruction": "0x009ca6",
+     "raw_bytes": "ffc08fff",
+     "disassembly": "bal (ra),*-0x9c34:m"
+    }
+   ],
+   "cfg_evidence": {
+    "main_calls_TX": true,
+    "direct_p2test_writer_call": [
+     {
+      "instruction": "0x009ca6",
+      "raw_bytes": "ffc08fff",
+      "disassembly": "bal (ra),*-0x9c34:m"
+     }
+    ],
+    "normal_resolved_direct_buffer_writer": null
+   },
+   "dataflow_evidence": {
+    "selected_TX": "RAM byte base+read_index \u2192 zero_extend \u2192 0x00ff4902 storw \u2192 0x00ff4904 storw",
+    "cursor_cells": [
+     "0x94ae",
+     "0x94b0",
+     "0x94b2"
+    ],
+    "candidate_length_cell": "0x00e8 (image 0x07f0)",
+    "p2test_writer": "r2 \u2192 RAM[0x0a5d+write_index]; advance cursor; selected full checks and PSR save/restore",
+    "response_link": "UNRESOLVED"
+   },
+   "unresolved_indirect_paths": [
+    "unresolved indirect entry/call and memory alias may change global coverage"
+   ],
+   "related_device_hypotheses": {
+    "SC14441 UART numbering": "RELATED_DEVICE_HINT"
+   },
+   "confidence": "PARTIALLY_PROVEN",
+   "unresolved_paths": [
+    "parser tag-0x23 producer path unproved (E4.2)",
+    "unknown indirect memory aliases, DMA and interrupt writers",
+    "physical bus/UART activity not observed",
+    "complete TX full/empty/wrap and normal byte producers not exhaustively covered"
+   ]
+  }
+ }
+}

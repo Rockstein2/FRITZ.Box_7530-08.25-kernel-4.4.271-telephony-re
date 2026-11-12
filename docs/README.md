@@ -49,6 +49,7 @@ Verify the canonical layout and all SHA256 manifests with
 | `sc14448-e41-summary.md` | E4.1 local software queue producer, item header/payload offsets, command13 pointer write and TX/host boundary. |
 | `sc14448-e42-summary.md` | E4.2 allocator tag slicing, state/tag distinction and unresolved parser-branch reachability. |
 | `sc14448-e43-summary.md` | E4.3 conditional case effects, first case-9 indirect target and version differences; no invented runtime command path. |
+| `sc14448-e44-summary.md` | E4.4 TX-buffer adjacency, p2test byte writer, architectural register accesses and unresolved ingress/command links. |
 
 ### External reference registry (`references/`)
 

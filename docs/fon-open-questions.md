@@ -39,6 +39,12 @@ pointer target, and command→TX response are unresolved. No Q46/Q55/Q75
 closure follows. Keep architectural abs20 and physical register identity
 as separate claims.
 
+E4.2–E4.4 (`sc14448-e42-summary.md` through `sc14448-e44-summary.md`)
+establish no producer-backed `0x23` parser branch, no parser-to-FON/PCM
+instruction path and no physical host RX. Case-9's first locally resolved
+indirect target and TX architectural register accesses do not close Q75,
+Q46 or Q55. Keep K1/K2 NO-GO.
+
 Status: **the only list of unresolved items for this project**
 
 Each item states what the question is, what would close it, and in which
