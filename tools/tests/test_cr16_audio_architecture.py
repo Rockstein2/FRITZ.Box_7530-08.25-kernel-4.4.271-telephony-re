@@ -91,26 +91,64 @@ ck("empty run", E.classify_program_source(
     run_present=True, run_start=0x100, run_end=0x100, pc_value=0,
     copy_loop_found=False, rom_literal_sites=[])[0],
    "DSP_PROGRAM_IMAGE_RUN_EMPTY")
-ck("missing pc value stays candidate", E.classify_program_source(
+ck("missing pc value is a mismatch", E.classify_program_source(
     run_present=True, run_start=0x100, run_end=0x140, pc_value=None,
+    copy_loop_found=False, rom_literal_sites=[])[0],
+   "DSP_PROGRAM_PC_ADDRESS_MISMATCH")
+ck("arbitrary pc value is a mismatch", E.classify_program_source(
+    run_present=True, run_start=0x100, run_end=0x140, pc_value=0x7980,
+    copy_loop_found=False, rom_literal_sites=[])[0],
+   "DSP_PROGRAM_PC_ADDRESS_MISMATCH")
+ck("consistent pair passes the gate", E.classify_program_source(
+    run_present=True, run_start=0x17300, run_end=0x17E7A,
+    pc_value=E.dsp_pc_word(0x17300),
     copy_loop_found=False, rom_literal_sites=[])[0],
    "DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START")
 ck("copy loop candidate", E.classify_program_source(
-    run_present=True, run_start=0x100, run_end=0x140, pc_value=0x7980,
-    copy_loop_found=True, rom_literal_sites=[])[0].endswith(
-        "COPY_LOOP_CANDIDATE"), True)
+    run_present=True, run_start=0x17300, run_end=0x17E7A,
+    pc_value=E.dsp_pc_word(0x17300), copy_loop_found=True,
+    rom_literal_sites=[])[0].endswith("COPY_LOOP_CANDIDATE"), True)
 ck("even ROM-window literal", E.classify_program_source(
-    run_present=True, run_start=0x100, run_end=0x140, pc_value=0x7980,
-    copy_loop_found=False, rom_literal_sites=["0x01044000"])[0].endswith(
+    run_present=True, run_start=0x17300, run_end=0x17E7A,
+    pc_value=E.dsp_pc_word(0x17300), copy_loop_found=False,
+    rom_literal_sites=["0x01044000"])[0].endswith(
         "ROM_WINDOW_CANDIDATE"), True)
 ck("odd data pointer is not ROM", E.classify_program_source(
-    run_present=True, run_start=0x100, run_end=0x140, pc_value=0x7980,
-    copy_loop_found=False, rom_literal_sites=["0x0104004d"])[0],
+    run_present=True, run_start=0x17300, run_end=0x17E7A,
+    pc_value=E.dsp_pc_word(0x17300), copy_loop_found=False,
+    rom_literal_sites=["0x0104004d"])[0],
    "DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START")
 ck("classification is a candidate, not EMBEDDED", E.classify_program_source(
-    run_present=True, run_start=0x17300, run_end=0x17E7A, pc_value=0x7980,
-    copy_loop_found=False, rom_literal_sites=[])[0],
+    run_present=True, run_start=0x17300, run_end=0x17E7A,
+    pc_value=E.dsp_pc_word(0x17300), copy_loop_found=False,
+    rom_literal_sites=[])[0],
    "DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START")
+
+print("== E5.1 audit: microcode copy scanner status derivation")
+def scan_fw(with_pair):
+    fw = C.Firmware([(0x0, bytes(0x20))])
+    insns = {0x200: C.Insn(0x200, 2, "storw", "r2,0x0:s(r3,r2)",
+                           b"\x00\x00")}
+    if with_pair:
+        insns[0x100] = C.Insn(0x100, 6, "movd", "$0x1030000:l,(r3,r2)",
+                              b"\x00" * 6)
+    fw.insns = insns
+    return fw
+scan_none = E.find_microcode_copy_candidates(scan_fw(False))
+ck("empty scan status derived from findings",
+   scan_none["status"], "NONE_FOUND_BY_THIS_SCAN")
+ck("empty scan has no stores", scan_none["stores_found"], False)
+scan_pair = E.find_microcode_copy_candidates(scan_fw(True))
+ck("pair store found by the scanner",
+   scan_pair["status"], "PAIR_BASED_STORES_FOUND")
+ck("pair store sets stores_found", scan_pair["stores_found"], True)
+ck("pair store names its base site",
+   scan_pair["pair_based_stores"][0]["base_pair_loaded_at"], "0x000100")
+ck("scanner documents its limitations",
+   "pair tracking follows only movd" in
+   scan_pair["limitations"][1], True)
+ck("scanner documents abs24 cannot encode the windows",
+   "abs24 cannot encode" in scan_pair["limitations"][0], True)
 
 print("== E5.1 audit: SC14480 Table 63 linear rule")
 ck("firmware transform == Table 63 linear rule",
@@ -187,7 +225,14 @@ else:
     pcm = bundles["cr16-e5-pcm-routing.json"]["images"]
     for name, img in pcm.items():
         ev = img["dataflow_evidence"]
-        ck(f"{name}: pcm composed", ev["pcm_ctrl_path_a_composed"], "0x0043")
+        ck(f"{name}: pcm base value", ev["pcm_ctrl_path_a_base"], "0x0043")
+        ck(f"{name}: pcm final values include FSC0DEL",
+           ev["pcm_ctrl_final_values"], {
+               "master_fscdel0": "0x0043", "master_fscdel1": "0x0063",
+               "slave_fscdel0": "0x0045", "slave_fscdel1": "0x0065"})
+        ck(f"{name}: base/final separation stated",
+           "final register value is conditional" in
+           ev["pcm_ctrl_fscdel_conditional"], True)
         ck(f"{name}: interface mismatch recorded",
            "1.024 MHz" in ev["interface_mismatch_with_linux"][0] and
            "4 PCM channels" in ev["interface_mismatch_with_linux"][1], True)
@@ -217,6 +262,10 @@ else:
         ck(f"{name}: copy-loop search recorded",
            ev["microcode_window_copy_search"]["status"],
            "NONE_FOUND_BY_THIS_SCAN")
+        ck(f"{name}: no stores found by the copy scan",
+           ev["microcode_window_copy_search"]["stores_found"], False)
+        ck(f"{name}: pc consistency check matches",
+           ev["pc_consistency_check"]["match"], True)
         ck(f"{name}: Table 63 conflict recorded",
            "Reserved" in ev["sc14480_table63"]["block_table63_region"],
            True)

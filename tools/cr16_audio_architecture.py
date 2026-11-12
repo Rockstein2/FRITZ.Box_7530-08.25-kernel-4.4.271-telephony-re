@@ -581,16 +581,23 @@ def classify_program_source(*, run_present, run_start, run_end, pc_value,
     The only firmware-proven link between the embedded block and the DSP
     is the DSP_PC_START derivation.  That makes the block a *candidate*
     program referenced by the start address — not a proven program and
-    not a proven execution mechanism.
+    not a proven execution mechanism.  The derived PC value must also be
+    consistent with the block's own start address under the firmware's
+    transform, otherwise the pair is classified as a mismatch.
     """
     if not run_present:
         return ("DSP_PROGRAM_NOT_IN_IMAGE", "no firmware block at the "
                 "derived address")
     if run_end <= run_start:
         return ("DSP_PROGRAM_IMAGE_RUN_EMPTY", "zero-length block")
+    expected = dsp_pc_word(run_start)
+    if pc_value != expected:
+        shown = f"0x{pc_value:04x}" if pc_value is not None else "None"
+        return ("DSP_PROGRAM_PC_ADDRESS_MISMATCH",
+                f"derived pc_value {shown} != "
+                f"dsp_pc_word(run_start) 0x{expected:04x}; the "
+                "classification gate refuses to link them")
     base = "DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START"
-    if pc_value is None:
-        return (base, "no DSP_PC_START value was derived")
     if copy_loop_found:
         return (base + "_COPY_LOOP_CANDIDATE",
                 "a copy loop into a microcode window was detected")
@@ -608,11 +615,24 @@ def classify_program_source(*, run_present, run_start, run_end, pc_value,
 
 
 def find_microcode_copy_candidates(fw):
-    """Factual search for CR16 stores/reads touching the SC14480 microcode
-    windows.  Returns evidence, not proof: absence only means no resolved
-    direct store was found by this scan."""
+    """Scan CR16 instructions for accesses touching the SC14480 microcode
+    windows.  Returns evidence with a status derived from the findings;
+    absence only means this scan found nothing, never a proof.
+
+    Two passes:
+      1. direct absolute addressing — note that abs24 cannot encode
+         addresses above 0xFFFFFF, so the >24-bit windows are in fact
+         unreachable this way; the pass is a low-alias completeness check;
+      2. register-pair bases loaded from a window literal (`movd
+         $imm:l,(rp)`) and then used by an access instruction.
+    """
     ram_window = (0x01030000, 0x01033FFF)
     rom_window = (0x01040000, 0x0104FFFF)
+    windows = (ram_window, rom_window)
+
+    def in_windows(addr):
+        return any(lo <= addr < hi for lo, hi in windows)
+
     stores, loads = [], []
     for a, i in fw.insns.items():
         if i.mnemonic not in ("storw", "stord", "storb",
@@ -622,19 +642,67 @@ def find_microcode_copy_candidates(fw):
         if not parsed or parsed[0] != "ABS":
             continue
         addr = X.abs_address(i)
-        if addr is None:
-            continue
-        if ram_window[0] <= addr < ram_window[1] or \
-                rom_window[0] <= addr < rom_window[1]:
+        if addr is not None and in_windows(addr):
             (stores if i.mnemonic.startswith("stor") else loads).append(
                 f"0x{a:06x}")
+    base_sites, pair_stores, pair_loads = [], [], []
+    pair_windows = {}
+    for a, i in fw.insns.items():
+        if i.mnemonic != "movd":
+            continue
+        m = X.MD_RE.match(i.operands.replace(" ", ""))
+        if not m:
+            continue
+        imm = int(m.group(1), 16)
+        if in_windows(imm):
+            pair_windows[(m.group(2), m.group(3))] = f"0x{a:06x}"
+            base_sites.append({"instruction": f"0x{a:06x}",
+                               "immediate": f"0x{imm:08x}",
+                               "pair": [m.group(2), m.group(3)]})
+    for a, i in fw.insns.items():
+        if i.mnemonic not in ("storw", "stord", "storb",
+                              "loadw", "loadd", "loadb"):
+            continue
+        _, parsed = X.address_operand(i)
+        if not parsed or parsed[0] != "DISP_RP":
+            continue
+        _disp, hi, lo = parsed[1]
+        if (hi, lo) in pair_windows:
+            (pair_stores if i.mnemonic.startswith("stor")
+             else pair_loads).append({
+                 "instruction": f"0x{a:06x}",
+                 "base_pair_loaded_at": pair_windows[(hi, lo)]})
+    if pair_stores:
+        status = "PAIR_BASED_STORES_FOUND"
+    elif stores:
+        status = "DIRECT_ABSOLUTE_STORES_FOUND"
+    elif pair_loads:
+        status = "PAIR_BASED_LOADS_FOUND"
+    elif loads:
+        status = "DIRECT_ABSOLUTE_LOADS_FOUND"
+    else:
+        status = "NONE_FOUND_BY_THIS_SCAN"
     return {"ram_window": [f"0x{ram_window[0]:08x}",
                            f"0x{ram_window[1]:08x}"],
             "rom_window": [f"0x{rom_window[0]:08x}",
                            f"0x{rom_window[1]:08x}"],
-            "resolved_direct_stores": sorted(set(stores)),
-            "resolved_direct_loads": sorted(set(loads)),
-            "status": "NONE_FOUND_BY_THIS_SCAN"}
+            "direct_absolute_stores": sorted(set(stores)),
+            "direct_absolute_loads": sorted(set(loads)),
+            "pair_base_sites": base_sites,
+            "pair_based_stores": pair_stores,
+            "pair_based_loads": pair_loads,
+            "stores_found": bool(stores or pair_stores),
+            "status": status,
+            "limitations": [
+                "abs24 cannot encode the >24-bit windows (maximum "
+                "0xFFFFFF); the direct-absolute pass is a low-alias "
+                "completeness check only",
+                "pair tracking follows only movd $imm:l bases; base "
+                "arithmetic (addd/subd), r12/r13 indexing and indirect "
+                "pointers are not modelled",
+                "DMA or hardware copy engines are not visible to this "
+                "scan",
+            ]}
 
 
 def decode_fields(value, table, width=16):
@@ -999,7 +1067,7 @@ def analyze(name, fw, mem, df):
         run_present=block["run_present"],
         run_start=0x17300, run_end=0x17300 + block["byte_length"],
         pc_value=pc_value,
-        copy_loop_found=bool(copy_search["resolved_direct_stores"]),
+        copy_loop_found=copy_search["stores_found"],
         rom_literal_sites=copy_literals)
     dsp_prog = dict(common, instruction_provenance=[
         cite(fw, a) for a in (s["dsp_init_pc_lit"][0],
@@ -1021,6 +1089,12 @@ def analyze(name, fw, mem, df):
             "microcode_ram_literal_sites": copy_literals,
             "microcode_rom_literal_sites": copy_literals,
             "microcode_window_copy_search": copy_search,
+            "pc_consistency_check": {
+                "derived_pc_value": f"0x{pc_value:04x}",
+                "expected_from_run_start":
+                    f"0x{dsp_pc_word(0x17300):04x}",
+                "match": pc_value == dsp_pc_word(0x17300),
+            },
             "dsp_data_space_transform_sites": data_transform_sites,
             "dsp_program_space_transform_sites": program_transform_sites,
             "dsp_data_space_transform": "DSP_ADDR = ((cr16_addr >> 1) + "
@@ -1051,17 +1125,25 @@ def analyze(name, fw, mem, df):
             "pcm_ctrl_effective_address": f"0x{DSP_BASE + 0x36:08x}",
             "pcm_ctrl_path_a_ops": [dict(op=o, bit=b)
                                     for o, b in PCM_PATH_A],
-            "pcm_ctrl_path_a_composed": f"0x{pcm_a:04x}",
-            "pcm_ctrl_path_a_mode":
-            "PCM_MASTER=1, PCM_PPOD=1, PCM_EN=1 (SC14480 analogy)",
+            "pcm_ctrl_path_a_base": f"0x{pcm_a:04x}",
             "pcm_ctrl_path_b_ops": [dict(op=o, bit=b)
                                     for o, b in PCM_PATH_B],
-            "pcm_ctrl_path_b_composed": f"0x{pcm_b:04x}",
+            "pcm_ctrl_path_b_base": f"0x{pcm_b:04x}",
+            "pcm_ctrl_fscdel_conditional":
+            "PCM_FSC0DEL (bit5) = not flag_byte bit3; the base values "
+            "below are composed from the unconditional bit ops only, the "
+            "final register value is conditional",
+            "pcm_ctrl_final_values": {
+                "master_fscdel0": f"0x{pcm_a:04x}",
+                "master_fscdel1": f"0x{pcm_a | 0x20:04x}",
+                "slave_fscdel0": f"0x{pcm_b:04x}",
+                "slave_fscdel1": f"0x{pcm_b | 0x20:04x}",
+            },
+            "pcm_ctrl_path_a_mode":
+            "PCM_MASTER=1, PCM_PPOD=1, PCM_EN=1 (SC14480 analogy)",
             "pcm_ctrl_path_b_mode":
             "PCM_MASTER=0, DSP_PCM_SYNC=1, PCM_PPOD=1, PCM_EN=1 "
             "(slave synced to external PCM_FSC; SC14480 analogy)",
-            "pcm_ctrl_fscdel_conditional":
-            "PCM_FSC0DEL = not flag_byte bit3 (runtime-selected)",
             "path_select": "flag_byte bit0 (0 = path A master, 1 = path B "
                            "slave)",
             "flag_byte": f"0x{flag_byte:04x}",

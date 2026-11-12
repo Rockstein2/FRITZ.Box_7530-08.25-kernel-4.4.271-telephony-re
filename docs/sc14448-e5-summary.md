@@ -38,10 +38,12 @@ Audit record: `docs/history/sc14448-e51-audit.md`.
    Classification: **CANDIDATE_REFERENCED_BY_PC_START** — execution
    mechanism, content validity and the SC14480 «Reserved»-row conflict
    are all open (Q82/Q83).
-3. **PCM+ configuration?** Instruction-proven: PCM_CTRL master
-   `0x0043` / slave-synced `0x0045`, runtime-selected by a flag byte;
-   CLK_PCM_EN, PCM_CLK 1.152/2.304 MHz, MAIN_SYNC1=0 (8 kHz frame),
-   SLOTCNT_RES, main-loop PHASE_INFO monitor — under analogy.
+3. **PCM+ configuration?** Instruction-proven: PCM_CTRL master base
+   `0x0043` / slave-synced base `0x0045`, with the FSC0DEL bit5
+   conditional on the runtime flag byte (finals `0x0043/0x0063` and
+   `0x0045/0x0065`); CLK_PCM_EN, PCM_CLK 1.152/2.304 MHz, MAIN_SYNC1=0
+   (8 kHz frame), SLOTCNT_RES, main-loop PHASE_INFO monitor — under
+   analogy.
 4. **PCM ↔ DSP ↔ CODEC route?** Still unproven and now explicitly
    bounded: the per-sample path is inside the undecoded `0x17300`
    microcode candidate (Q83). CONFIGURATION_PROVEN,

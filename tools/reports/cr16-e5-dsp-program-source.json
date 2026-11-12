@@ -66,9 +66,23 @@
       "0x01040000",
       "0x0104ffff"
      ],
-     "resolved_direct_stores": [],
-     "resolved_direct_loads": [],
-     "status": "NONE_FOUND_BY_THIS_SCAN"
+     "direct_absolute_stores": [],
+     "direct_absolute_loads": [],
+     "pair_base_sites": [],
+     "pair_based_stores": [],
+     "pair_based_loads": [],
+     "stores_found": false,
+     "status": "NONE_FOUND_BY_THIS_SCAN",
+     "limitations": [
+      "abs24 cannot encode the >24-bit windows (maximum 0xFFFFFF); the direct-absolute pass is a low-alias completeness check only",
+      "pair tracking follows only movd $imm:l bases; base arithmetic (addd/subd), r12/r13 indexing and indirect pointers are not modelled",
+      "DMA or hardware copy engines are not visible to this scan"
+     ]
+    },
+    "pc_consistency_check": {
+     "derived_pc_value": "0x7980",
+     "expected_from_run_start": "0x7980",
+     "match": true
     },
     "dsp_data_space_transform_sites": [
      "0x0005ba",
@@ -206,9 +220,23 @@
       "0x01040000",
       "0x0104ffff"
      ],
-     "resolved_direct_stores": [],
-     "resolved_direct_loads": [],
-     "status": "NONE_FOUND_BY_THIS_SCAN"
+     "direct_absolute_stores": [],
+     "direct_absolute_loads": [],
+     "pair_base_sites": [],
+     "pair_based_stores": [],
+     "pair_based_loads": [],
+     "stores_found": false,
+     "status": "NONE_FOUND_BY_THIS_SCAN",
+     "limitations": [
+      "abs24 cannot encode the >24-bit windows (maximum 0xFFFFFF); the direct-absolute pass is a low-alias completeness check only",
+      "pair tracking follows only movd $imm:l bases; base arithmetic (addd/subd), r12/r13 indexing and indirect pointers are not modelled",
+      "DMA or hardware copy engines are not visible to this scan"
+     ]
+    },
+    "pc_consistency_check": {
+     "derived_pc_value": "0x7980",
+     "expected_from_run_start": "0x7980",
+     "match": true
     },
     "dsp_data_space_transform_sites": [
      "0x000bb2",

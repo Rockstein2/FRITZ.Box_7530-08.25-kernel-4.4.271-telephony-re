@@ -96,8 +96,7 @@
       "bit": 0
      }
     ],
-    "pcm_ctrl_path_a_composed": "0x0043",
-    "pcm_ctrl_path_a_mode": "PCM_MASTER=1, PCM_PPOD=1, PCM_EN=1 (SC14480 analogy)",
+    "pcm_ctrl_path_a_base": "0x0043",
     "pcm_ctrl_path_b_ops": [
      {
       "op": "c",
@@ -140,9 +139,16 @@
       "bit": 0
      }
     ],
-    "pcm_ctrl_path_b_composed": "0x0045",
+    "pcm_ctrl_path_b_base": "0x0045",
+    "pcm_ctrl_fscdel_conditional": "PCM_FSC0DEL (bit5) = not flag_byte bit3; the base values below are composed from the unconditional bit ops only, the final register value is conditional",
+    "pcm_ctrl_final_values": {
+     "master_fscdel0": "0x0043",
+     "master_fscdel1": "0x0063",
+     "slave_fscdel0": "0x0045",
+     "slave_fscdel1": "0x0065"
+    },
+    "pcm_ctrl_path_a_mode": "PCM_MASTER=1, PCM_PPOD=1, PCM_EN=1 (SC14480 analogy)",
     "pcm_ctrl_path_b_mode": "PCM_MASTER=0, DSP_PCM_SYNC=1, PCM_PPOD=1, PCM_EN=1 (slave synced to external PCM_FSC; SC14480 analogy)",
-    "pcm_ctrl_fscdel_conditional": "PCM_FSC0DEL = not flag_byte bit3 (runtime-selected)",
     "path_select": "flag_byte bit0 (0 = path A master, 1 = path B slave)",
     "flag_byte": "0x93cd",
     "flag_byte_image_value": "NOT_IN_IMAGE",
@@ -278,8 +284,7 @@
       "bit": 0
      }
     ],
-    "pcm_ctrl_path_a_composed": "0x0043",
-    "pcm_ctrl_path_a_mode": "PCM_MASTER=1, PCM_PPOD=1, PCM_EN=1 (SC14480 analogy)",
+    "pcm_ctrl_path_a_base": "0x0043",
     "pcm_ctrl_path_b_ops": [
      {
       "op": "c",
@@ -322,9 +327,16 @@
       "bit": 0
      }
     ],
-    "pcm_ctrl_path_b_composed": "0x0045",
+    "pcm_ctrl_path_b_base": "0x0045",
+    "pcm_ctrl_fscdel_conditional": "PCM_FSC0DEL (bit5) = not flag_byte bit3; the base values below are composed from the unconditional bit ops only, the final register value is conditional",
+    "pcm_ctrl_final_values": {
+     "master_fscdel0": "0x0043",
+     "master_fscdel1": "0x0063",
+     "slave_fscdel0": "0x0045",
+     "slave_fscdel1": "0x0065"
+    },
+    "pcm_ctrl_path_a_mode": "PCM_MASTER=1, PCM_PPOD=1, PCM_EN=1 (SC14480 analogy)",
     "pcm_ctrl_path_b_mode": "PCM_MASTER=0, DSP_PCM_SYNC=1, PCM_PPOD=1, PCM_EN=1 (slave synced to external PCM_FSC; SC14480 analogy)",
-    "pcm_ctrl_fscdel_conditional": "PCM_FSC0DEL = not flag_byte bit3 (runtime-selected)",
     "path_select": "flag_byte bit0 (0 = path A master, 1 = path B slave)",
     "flag_byte": "0x9514",
     "flag_byte_image_value": "NOT_IN_IMAGE",

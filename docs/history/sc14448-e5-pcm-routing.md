@@ -12,11 +12,16 @@ itself overwrites with the return value of a hardware/state helper
 (`0x3CBE`/`0x278DA` wrapper, `r2=7`); the byte is **not** image-initialized
 in either image, so the mode is a runtime decision.
 
-| Path | Bit ops (in firmware order) | Composed | Meaning under analogy |
-|---|---|---|---|
-| A (flag bit0=0) | `sbitw 1, sbitw 6`, then clear 7,8,9,15, keep `&0x83FF`, `sbitw 0` | `0x0043` | PCM_MASTER=1, PCM_PPOD=1 (open drain), PCM_EN=1 |
-| B (flag bit0=1) | `cbitw 1, sbitw 2, cbitw 4,3, sbitw 6`, same tail | `0x0045` | PCM_MASTER=0 (slave), DSP_PCM_SYNC=1 (count enable on external PCM_FSC), PPOD, EN |
-| both | `PCM_FSC0DEL = not flag bit3` | `+0x20` | frame-sync placement, runtime-selected |
+| Path | Bit ops (in firmware order) | Base | Final (FSC0DEL conditional) | Meaning under analogy |
+|---|---|---|---|---|
+| A (flag bit0=0) | `sbitw 1, sbitw 6`, then clear 7,8,9,15, keep `&0x83FF`, `sbitw 0` | `0x0043` | `0x0043` / `0x0063` | PCM_MASTER=1, PCM_PPOD=1 (open drain), PCM_EN=1 |
+| B (flag bit0=1) | `cbitw 1, sbitw 2, cbitw 4,3, sbitw 6`, same tail | `0x0045` | `0x0045` / `0x0065` | PCM_MASTER=0 (slave), DSP_PCM_SYNC=1 (count enable on external PCM_FSC), PPOD, EN |
+| both | `PCM_FSC0DEL = not flag bit3` | — | `+0x20` | frame-sync placement, runtime-selected |
+
+The base value is composed from the unconditional bit ops; the final
+register value is conditional on the runtime flag byte — the report
+separates `pcm_ctrl_path_a/b_base` from `pcm_ctrl_final_values`
+(`0x0043/0x0063` master, `0x0045/0x0065` slave).
 
 The transient `sbitw 11` / `sbitw 9` steps are wiped by the later
 `cbitw 9` / `andw 0x83FF` — they are recorded as transient, not part of

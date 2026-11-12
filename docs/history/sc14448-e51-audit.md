@@ -107,3 +107,28 @@ open. No hardware stage may be scheduled on this evidence; K1/K2 remain
 NO-GO. The decisive next evidence is the SC14448-side meaning of DSP PC
 `0x7980` (Q82): a SC14448 memory/system-controller document, or a
 runtime observation — the latter is explicitly out of scope here.
+
+## Follow-up fixes (review round 2)
+
+Three further findings were corrected after the first audit commit:
+
+1. **Classifier strictness.** `classify_program_source()` now checks
+   `pc_value == dsp_pc_word(run_start)` before granting
+   `DSP_PROGRAM_CANDIDATE_REFERENCED_BY_PC_START`; any inconsistency
+   (including `pc_value = None`) returns
+   `DSP_PROGRAM_PC_ADDRESS_MISMATCH`. The report records the check as
+   `pc_consistency_check`.
+2. **Copy-scanner status.** `find_microcode_copy_candidates()` derives
+   its status from the findings (`PAIR_BASED_STORES_FOUND`,
+   `DIRECT_ABSOLUTE_STORES_FOUND`, `PAIR_BASED_LOADS_FOUND`,
+   `DIRECT_ABSOLUTE_LOADS_FOUND`, else `NONE_FOUND_BY_THIS_SCAN`) and
+   now also scans register-pair bases loaded from a window literal
+   (`movd $imm:l,(rp)`). Documented limitations: abs24 cannot encode
+   the >24-bit windows at all (the direct-absolute pass is a low-alias
+   completeness check), pair tracking follows only `movd` bases (no
+   `addd`/`r12`/`r13`/indirect), and DMA/hardware copies are invisible.
+   For both real images the result stays `NONE_FOUND_BY_THIS_SCAN`.
+3. **PCM_CTRL base vs final.** The report separates the unconditional
+   base values (`master 0x0043`, `slave 0x0045`) from the conditional
+   finals with FSC0DEL (`master 0x0043/0x0063`,
+   `slave 0x0045/0x0065`); `pcm_ctrl_final_values` states all four.

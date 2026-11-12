@@ -9,7 +9,7 @@
 | SC14448 reset/boot | PARTIALLY (bootloader handshake separate) | NO | NO | LIMITED | YES |
 | firmware loading | PARTIALLY (image loads at fixed addresses incl. the `0x17300` DSP block) | NO | NO | LIMITED | YES |
 | clock initialization | PROVEN (PLL `0x0800→0x0852→0x085A`, CODEC/PER/DSP dividers, CLK_AMBA) | PROVEN | SC14480_ANALOGY | YES | YES |
-| PCM+ configuration | PROVEN (master `0x43` / slave `0x45`, 8 kHz frame, PCM_CLK select) | PROVEN | SC14480_ANALOGY | PARTIALLY | YES |
+| PCM+ configuration | PROVEN (master base `0x43`, slave base `0x45`, FSC0DEL-conditional finals `0x43/0x63` and `0x45/0x65`, 8 kHz frame, PCM_CLK select) | PROVEN (base + conditional values) | SC14480_ANALOGY | PARTIALLY | YES |
 | DSP initialization | PROVEN (powerdown → program select `0x7980` → enable) | PROVEN | SC14480_ANALOGY | YES | YES |
 | CODEC initialization | PROVEN (VREF→MIC→LSR→ADDA powerup order) | PROVEN (bit sequences) | SC14480_ANALOGY | YES | YES |
 | audio routing | UNRESOLVED (inside DSP microcode) | NO | NO | NO | YES |
